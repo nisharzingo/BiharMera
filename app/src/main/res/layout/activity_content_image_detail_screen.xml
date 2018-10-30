@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.Activity.ContentImageDetailScreen">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/imageView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:src="@drawable/water_sports"
+                    android:scaleType="centerCrop"
+                    app:riv_corner_radius="3dip"
+                    app:riv_oval="false" />
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:tint="@color/white"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/ic_back2"/>
+
+
+
+
+            </FrameLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12sp"
+                android:orientation="vertical">
+
+                <tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplayRegular
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#a0a0a0"
+                    android:textSize="14sp"
+                    android:text="Sports"/>
+
+
+                <tv.merabihar.app.merabihar.CustomFonts.MyTextView_SF_Pro_Light
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Water Sports in Bihar"
+                    android:textSize="18sp"
+                    android:textColor="@color/txt_color"
+                    android:layout_marginTop="3dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="2dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_clock1"/>
+
+
+                    <tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplayRegular
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="14 Mins"
+                        android:textColor="@color/txt_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+
+                <tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#sports #bihar"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/colorPrimary"/>
+
+
+                <tv.merabihar.app.merabihar.CustomFonts.MyTextView_SF_Pro_Light
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bihar management has taken projects within the latest past to make the state extra adventure sports pleasant. The authorities consequently introduced its dream mission of “Adventure Water Sports Facility” at Ganga River to pave the manner for the introduction of various types of watersports in the famend river. The watersports facility has been deliberate at Ganga River in Patna that's located at its bank. The twin purpose of launching such undertaking inside the state capital is to make certain that the project completes in its stipulated time and most importantly the traffic discover higher options to involve in the more than one journey sports inclusive of watersports facility at the Gandhi Ghat Patna. It has been planned to develop consistent with the ones in different components of the country just like the well-known floor water aquatics of Goa, Pondicherry, Maharashtra and Karnataka amongst others. Proposed watersports facility is simply going to facilitate ideal alternatives to the Patna traffic to involve in such unique adventure sports. It may be a remarkable source of eco-tourism as well. The proposed attractions of watersports in Patna are availability of Jet skiing motorcycles; water boats; towable inflatable rubber rafts and oxygen-filled water balls among others. Such proposed developmental projects are going to make a huge difference within the country of Bihar via a lift to sort of sports activities sports."
+                    android:textColor="@color/txt_color"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="15dp"
+                    android:lineSpacingExtra="5dp"/>
+
+
+
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <customfonts.Button_SF_Pro_Display_Semibold
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="Prev Chapter"
+            android:textSize="11sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="7.5dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@drawable/grey_rect"/>
+
+        <customfonts.Button_SF_Pro_Display_Semibold
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="7.5dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:text="Next Chapter"
+            android:textSize="11sp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@drawable/red_rect"/>
+    </LinearLayout>-->
+
+
+</RelativeLayout>

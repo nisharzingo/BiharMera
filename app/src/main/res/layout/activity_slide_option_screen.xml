@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/city_slide"
+    tools:context=".UI.Activity.SlideOptionScreen">
+
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/app_logos"
+        android:src="@drawable/app_logo"
+        android:layout_gravity="center"
+        android:layout_marginTop="150dp"/>
+
+    <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mera Bihar"
+        android:textColor="#ffffff"
+        android:textSize="28sp"
+        android:paddingBottom="10dp"
+        android:layout_marginLeft="45dp"
+        android:gravity="center"
+        android:layout_marginRight="45dp"
+        android:layout_marginTop="10dp"/>
+
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="#8d000000"
+        android:layout_height="wrap_content">
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/view_pager_slide">
+
+        </android.support.v4.view.ViewPager>
+
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@+id/view"
+            app:ci_drawable="@drawable/ic_dot"
+            app:ci_drawable_unselected="@drawable/ic_dot"
+            app:ci_height="8dp"
+            app:ci_width="8dp"
+            android:backgroundTint="@android:color/white"/>
+
+
+
+
+        <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/signup_ract"
+            android:text="Sign Up"
+            android:id="@+id/signUp"
+            android:paddingTop="13dp"
+            android:paddingBottom="15dp"
+            android:textSize="18sp"
+            android:paddingRight="50dp"
+            android:paddingLeft="50dp"
+            android:gravity="bottom"
+            android:layout_gravity="center"
+            android:textColor="#ffffff"/>
+
+        <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mediatransperent_ract"
+            android:text="Login"
+            android:id="@+id/login"
+            android:paddingTop="13dp"
+            android:paddingBottom="15dp"
+            android:textSize="18sp"
+            android:paddingRight="58dp"
+            android:paddingLeft="58dp"
+            android:gravity="bottom"
+            android:layout_gravity="center"
+            android:layout_marginTop="70dp"
+            android:textColor="#ffffff"/>
+    </FrameLayout>
+
+
+</LinearLayout>
