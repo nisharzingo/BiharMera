@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Mera Bihar</string>
+
+    <string name="terms">I agree to the <u> Privacy Policy</u>.</string>
+
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="story">Story</string>
+    <string name="video">Video</string>
+    <string name="account">Account</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

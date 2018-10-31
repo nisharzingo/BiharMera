@@ -1,0 +1,123 @@
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/txt_color"
+                    android:text="Trending in Mera Bihar"
+                    android:textSize="17sp"/>
+
+                <tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="VIEW ALL"
+                    android:textColor="#dd3e3e"/>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/trending_contents"
+                android:scrollbars="none"
+                android:layout_margin="5dp"
+
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/txt_color"
+                    android:text="Recommended For you"
+                    android:textSize="17sp"/>
+
+                <tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    android:text="VIEW ALL"
+                    android:textColor="#dd3e3e"/>
+            </LinearLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/all_contents"
+                android:scrollbars="none"
+                android:layout_margin="5dp"
+                android:paddingBottom="24dp"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="#ffffff"
+                android:id="@+id/progress_loding"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:layout_alignParentBottom="true">
+
+                <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="loading"
+                    android:textColor="#b7c4cb"/>
+
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/loading"
+                    android:layout_marginRight="10dp"/>
+
+
+                <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="content"
+                    android:textColor="#b7c4cb"/>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

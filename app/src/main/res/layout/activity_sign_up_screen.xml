@@ -43,15 +43,61 @@
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
             android:hint="Full Name"
+            android:id="@+id/full_name"
             android:inputType="text"
             android:textColor="#000000"
-            android:textColorHint="#d3d3d3" />
+            android:textColorHint="@color/text_grey" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="9dp"
             android:background="#b9b9b9" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center">
+            <RadioButton
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:button="@drawable/editext_border"
+                android:background="@drawable/radio_btn_selector"
+                android:textColor="@drawable/rbtn_textcolor_selector"
+                android:text="Male"
+                android:id="@+id/sign_up_male"
+                android:textSize="16sp"
+                android:gravity="center"
+                />
+            <RadioButton
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:button="@drawable/editext_border"
+                android:background="@drawable/radio_btn_selector"
+                android:textColor="@drawable/rbtn_textcolor_selector"
+                android:text="Female"
+
+                android:id="@+id/sign_up_female"
+                android:textSize="16sp"
+                android:gravity="center"/>
+            <RadioButton
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:button="@drawable/editext_border"
+                android:background="@drawable/radio_btn_selector"
+                android:textColor="@drawable/rbtn_textcolor_selector"
+                android:text="Other"
+                android:id="@+id/sign_up_other"
+                android:textSize="16sp"
+                android:gravity="center"
+
+                />
+        </RadioGroup>
 
         <EditText
             android:layout_width="match_parent"
@@ -60,9 +106,10 @@
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
             android:hint="Email address"
+            android:id="@+id/email"
             android:inputType="textEmailAddress"
             android:textColor="#000000"
-            android:textColorHint="#d3d3d3" />
+            android:textColorHint="@color/text_grey" />
 
         <View
             android:layout_width="match_parent"
@@ -77,9 +124,10 @@
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
             android:hint="Mobile Number"
+            android:id="@+id/mobile_number"
             android:inputType="number"
             android:textColor="#000000"
-            android:textColorHint="#d3d3d3" />
+            android:textColorHint="@color/text_grey" />
 
         <View
             android:layout_width="match_parent"
@@ -94,9 +142,10 @@
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
             android:hint="Password"
+            android:id="@+id/password"
             android:inputType="textPassword"
             android:textColor="#000000"
-            android:textColorHint="#d3d3d3" />
+            android:textColorHint="@color/text_grey" />
 
         <View
             android:layout_width="match_parent"
@@ -111,9 +160,10 @@
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
             android:hint="Confirm Password"
+            android:id="@+id/confirm_password"
             android:inputType="textPassword"
             android:textColor="#000000"
-            android:textColorHint="#d3d3d3" />
+            android:textColorHint="@color/text_grey"/>
 
         <View
             android:layout_width="match_parent"
@@ -127,10 +177,11 @@
             android:layout_marginTop="30dp"
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
-            android:hint="Referal Code"
+            android:hint="Referal Code(Optional)"
+            android:id="@+id/referal_code"
             android:inputType="text"
             android:textColor="#000000"
-            android:textColorHint="#d3d3d3" />
+            android:textColorHint="@color/text_grey" />
 
         <View
             android:layout_width="match_parent"
@@ -138,7 +189,34 @@
             android:layout_marginTop="9dp"
             android:background="#b9b9b9" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <CheckBox
+                android:textSize="@dimen/veryTinyFont"
+                android:textColor="@color/grey_charcoal"
+                android:textColorLink="@color/blue_express_delivery"
+                android:id="@+id/termsCondition"
 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8.0dip"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:id="@+id/termsConditionText"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_gravity="center"
+                android:text="@string/terms"/>
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -166,6 +244,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:id="@+id/login_screen"
             android:text="Login, if you’ve an Account!"
             android:textSize="20sp"
             android:textColor="@color/colorPrimary"

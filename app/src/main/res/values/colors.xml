@@ -9,4 +9,18 @@
     <color name="black">#000000</color>
     <color name="txt_color">#1f2833</color>
 
+    <color name="text_grey">#424D58</color>
+    <color name="grey_charcoal">#ff39444f</color>
+    <color name="blue_express_delivery">#ff0faef2</color>
+
+    <color name="listsub1">#7b7b7b</color>
+    <color name="listsub2">#9e9e9e</color>
+    <color name="listtext">#585858</color>
+
+    <color name="colorTex">#585858</color>
+    <color name="colordevider">#64dad8d8</color>
+    <color name="colorblue">#4c71f5</color>
+    <color name="colorSub">#b0afaf</color>
+
+
 </resources>

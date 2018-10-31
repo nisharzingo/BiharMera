@@ -5,9 +5,10 @@ android {
     defaultConfig {
         applicationId "tv.merabihar.app.merabihar"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -37,9 +38,17 @@ dependencies {
     compile 'com.github.rey5137:material:1.2.2'
     compile 'com.mikhaellopez:circularimageview:2.0.1'
 
-    compile 'com.makeramen:roundedimageview:2.2.1'
+    compile 'com.makeramen:roundedimageview:2.3.0'
 
     compile 'me.relex:circleindicator:1.2.2@aar'
+
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.googlecode.json-simple:json-simple:1.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    //round image
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
