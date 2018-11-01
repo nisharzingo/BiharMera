@@ -1,0 +1,131 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_layout"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clickable="false"
+                android:saveEnabled="false"
+                app:srcCompat="@drawable/ic_search_black_24dp"
+                ></ImageView>
+
+            <EditText android:id="@+id/search_editText"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:hint="Search.."
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+
+                android:focusable="true"
+
+                android:background="@android:color/transparent"
+                android:inputType="textVisiblePassword"/>
+
+        </LinearLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:id="@+id/scroll_interest">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:id="@+id/on_layout"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:text="Suggested"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10sp"
+                        android:id="@+id/interest_following_list"
+                        android:scrollbars="none"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:id="@+id/non_layout"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:text="Others"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/interest_non_following_list"
+                        android:scrollbars="none"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_marginTop="10dp"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/interest_list"
+            android:scrollbars="none"
+            android:nestedScrollingEnabled="false"
+            android:visibility="gone"
+            android:layout_margin="10dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            />
+
+
+    </LinearLayout>
+
+
+
+    <ProgressBar
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"/>
+
+</FrameLayout>

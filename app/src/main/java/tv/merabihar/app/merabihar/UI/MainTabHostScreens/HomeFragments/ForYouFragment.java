@@ -23,6 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerAdapter;
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
+import tv.merabihar.app.merabihar.CustomInterface.OnBottomReachedListener;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
 import tv.merabihar.app.merabihar.Model.CategoryAndContentList;
 import tv.merabihar.app.merabihar.Model.Contents;
@@ -47,10 +48,10 @@ public class ForYouFragment extends Fragment {
     ContentRecyclerAdapter adapter;
     LinearLayoutManager linearLayoutManager;
 
-    private static final int PAGE_START = 1;
+    private static final int PAGE_START =1;
     private boolean isLoading = false;
     private boolean isLastPage = false;
-    private int TOTAL_PAGES ;
+    private int TOTAL_PAGES = 10 ;
     private int currentPage = PAGE_START;
 
     private String TAG="BlogList";
@@ -86,6 +87,8 @@ public class ForYouFragment extends Fragment {
             progressBar = (LinearLayout) view.findViewById(R.id.progress_loding);
             mCategoryContents = (RecyclerView) view.findViewById(R.id.all_contents);
 
+            adapter = new ContentRecyclerAdapter(getActivity());
+
             linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
             mCategoryContents.setLayoutManager(linearLayoutManager);
             mCategoryContents.setNestedScrollingEnabled(false);
@@ -95,10 +98,11 @@ public class ForYouFragment extends Fragment {
             mTrendingContents.setNestedScrollingEnabled(false);
 
             mCategoryContents.setItemAnimator(new DefaultItemAnimator());
-            adapter = new ContentRecyclerAdapter(getActivity());
+
             mCategoryContents.setAdapter(adapter);
 
             mCategoryContents.addOnScrollListener(new PageScrollListener(linearLayoutManager) {
+
                 @Override
                 protected void loadMoreItems() {
                     isLoading = true;
@@ -124,6 +128,7 @@ public class ForYouFragment extends Fragment {
             });
 
 
+
             getTrendingContent();
             loadFirstSetOfContents();
             return view;
@@ -145,7 +150,7 @@ public class ForYouFragment extends Fragment {
             public void run() {
 
                 final ContentAPI categoryAPI = Util.getClient().create(ContentAPI.class);
-                Call<ArrayList<Contents>> getCat = categoryAPI.getContentPageByCityId(Constants.CITY_ID,1,10);
+                Call<ArrayList<Contents>> getCat = categoryAPI.getContentPageByCityId(Constants.CITY_ID,1,5);
                 //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
 
                 getCat.enqueue(new Callback<ArrayList<Contents>>() {
@@ -163,10 +168,10 @@ public class ForYouFragment extends Fragment {
                             if( response.body().size()!= 0){
                                 loadFirstPage(response.body());
                             }else{
+                                adapter.removeLoadingFooter();
+                                isLastPage = true;
                                 isLoading = true;
-
-                                currentPage = currentPage+1;
-                                loadNextSetOfItems();
+                                progressBar.setVisibility(View.GONE);
                             }
 
 
@@ -252,6 +257,7 @@ public class ForYouFragment extends Fragment {
         Log.d(TAG, "loadFirstPage: "+list.size());
         //Collections.reverse(list);
         progressBar.setVisibility(View.GONE);
+        //ArrayList<Contents> contents = Contents.
         adapter.addAll(list);
 
         if (list != null && list.size() !=0)
@@ -270,7 +276,7 @@ public class ForYouFragment extends Fragment {
                 ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
 
                 Call<ArrayList<Contents>> getAllBookings = bookingApi.
-                        getContentPageByCityId(Constants.CITY_ID,currentPage,10);
+                        getContentPageByCityId(Constants.CITY_ID,currentPage,5);
 
                 getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
                     @Override
@@ -322,7 +328,7 @@ public class ForYouFragment extends Fragment {
 
         adapter.addAll(list);
 
-        if (list != null && list.size() !=0)
+        if (list != null && list.size() !=0 )
         {
             adapter.addLoadingFooter();
             Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);

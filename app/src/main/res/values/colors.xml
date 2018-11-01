@@ -22,5 +22,7 @@
     <color name="colorblue">#4c71f5</color>
     <color name="colorSub">#b0afaf</color>
 
+    <color name="transparentBlack">#5e000000</color>
+
 
 </resources>

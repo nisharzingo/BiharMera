@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import tv.merabihar.app.merabihar.Model.FollowerNonFollowers;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 
 /**
@@ -51,6 +52,6 @@ public interface ProfileAPI {
     @GET("Profiles/GetProfileByUserRoleId/{UserRoleId}")
     Call<ArrayList<UserProfile>> getUserByUserRoleId(@Path("UserRoleId") int id);
 
-    /*@GET("Follow/GetFollowersAndNonFollowersByProfileId/{ProfileId}")
-    Call<FollowerNonFollowers> getOtherProfiles(@Path("ProfileId") int id);*/
+    @GET("Follow/GetFollowersAndNonFollowersByProfileId/{ProfileId}")
+    Call<FollowerNonFollowers> getOtherProfiles(@Path("ProfileId") int id);
 }

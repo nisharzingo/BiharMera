@@ -17,8 +17,17 @@ public interface ContentAPI {
     @GET("Pagination/GetContentByCityId/{CityId}")
     Call<ArrayList<Contents>> getContentPageByCityId(@Path("CityId") int id, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
+    @GET("Pagination/GetContentByCategoryId/{CategoryId}")
+    Call<ArrayList<Contents>> getContentPageByCategoryId(@Path("CategoryId") int id, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+
     @GET("Contents/GetTopFiveContent")
     Call<ArrayList<Contents>> getTrendingContent();
+
+    @GET("Contents/GetContentByProfileId/{ProfileId}")
+    Call<ArrayList<Contents>> getContentByProfileId(@Path("ProfileId") int id);
+
+    @GET("Pagination/GetContentByCityIdAndContentType/{CityId}/{ContentType}")
+    Call<ArrayList<Contents>> getContentByVideoAndCity(@Path("CityId") int id,@Path("ContentType") String type, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
 
 }

@@ -1,12 +1,15 @@
 package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alexzh.circleimageview.CircleImageView;
@@ -23,6 +26,8 @@ import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.ContentDetailScreen;
+import tv.merabihar.app.merabihar.UI.Activity.ContentImageDetailScreen;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
@@ -148,7 +153,28 @@ public class ContentRecyclerHorizontal extends RecyclerView.Adapter<ContentRecyc
             }
 
 
+            holder.mContentDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                    if(contents.getContentType().equalsIgnoreCase("Video")){
+
+                        Intent intent = new Intent(context, ContentDetailScreen.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Contents",contents);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+
+                    }else if(contents.getContentType().equalsIgnoreCase("Image")){
+
+                        Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Contents",contents);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                    }
+                }
+            });
 
         }
 
@@ -169,6 +195,7 @@ public class ContentRecyclerHorizontal extends RecyclerView.Adapter<ContentRecyc
         MyTextView_Lato_Regular mProfileName,mDuration,mContentTitle,mContentDesc;
 
         ImageView mContentPic;
+        LinearLayout mContentDetail;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -181,6 +208,7 @@ public class ContentRecyclerHorizontal extends RecyclerView.Adapter<ContentRecyc
             mContentTitle = (MyTextView_Lato_Regular) itemView.findViewById(R.id.content_title_horz);
             mContentDesc = (MyTextView_Lato_Regular) itemView.findViewById(R.id.content_desc_horz);
             mContentPic = (ImageView) itemView.findViewById(R.id.content_pic_horz);
+            mContentDetail = (LinearLayout) itemView.findViewById(R.id.content_detail);
 
         }
 
