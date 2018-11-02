@@ -1,11 +1,14 @@
 package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.alexzh.circleimageview.CircleImageView;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -21,6 +24,7 @@ import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.InterestContentMapping;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.InterestContentListScreen;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
@@ -113,6 +117,20 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
                 }
             }
 
+            holder.mInterestLay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(context, InterestContentListScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Interest",content.getZingoInterst());
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+
+                }
+            });
+
+
 
         }
 
@@ -130,6 +148,7 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
 
         RoundedImageView mContentImage;
         MyTextView_Lato_Regular mInterestName;
+        LinearLayout mInterestLay;
 
 
 
@@ -141,6 +160,7 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
 
             mInterestName = (MyTextView_Lato_Regular) itemView.findViewById(R.id.interest_name);
             mContentImage = (RoundedImageView) itemView.findViewById(R.id.content_image);
+            mInterestLay = (LinearLayout) itemView.findViewById(R.id.collection_lay);
 
         }
 

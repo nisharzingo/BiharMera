@@ -16,12 +16,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.alexzh.circleimageview.CircleImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -127,12 +127,14 @@ public class TabAccountActivity extends AppCompatActivity {
                             System.out.println("Inside api");
 
                             UserProfile profile = response.body();
+                            mProfileName.setText(""+profile.getFullName());
+                            mProfileAbout.setText(""+profile.getPrefix());
 
                             if(profile.getProfilePhoto()!=null){
 
                                 String base=profile.getProfilePhoto();
-                                mProfileName.setText(""+profile.getFullName());
-                                mProfileAbout.setText(""+profile.getPrefix());
+
+
 
                                 if(base != null && !base.isEmpty()){
                                     Picasso.with(TabAccountActivity.this).load(base).placeholder(R.drawable.profile_image).

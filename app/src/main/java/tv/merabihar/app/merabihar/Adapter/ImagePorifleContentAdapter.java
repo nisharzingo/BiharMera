@@ -1,6 +1,8 @@
 package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import java.util.List;
 
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.ContentDetailScreen;
+import tv.merabihar.app.merabihar.UI.Activity.ContentImageDetailScreen;
 
 /**
  * Created by ZingoHotels Tech on 01-11-2018.
@@ -84,6 +88,30 @@ public class ImagePorifleContentAdapter extends RecyclerView.Adapter<ImagePorifl
                 }
 
             }
+
+
+            holder.accountpic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(contents.getContentType().equalsIgnoreCase("Video")){
+
+                        Intent intent = new Intent(context, ContentDetailScreen.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Contents",contents);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+
+                    }else if(contents.getContentType().equalsIgnoreCase("Image")){
+
+                        Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Contents",contents);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                    }
+                }
+            });
 
         }
 

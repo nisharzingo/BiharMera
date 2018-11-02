@@ -1,9 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabPostOptionsActivity">
+    android:orientation="vertical"
+    tools:context=".UI.MainTabHostScreens.TabPostOptionsActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:id="@+id/gallery_post"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/theme_combo"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/attach"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center|center_vertical"
+                    />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_weight="1"
+                    android:gravity="bottom|center_horizontal"
+                    android:text="Gallery"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="2dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="#FFFFFF"
+                    />
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_weight="1"
+            android:id="@+id/youtube_url"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/theme_combo"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/youtube_symbol"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center|center_vertical"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="Youtube Video"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="2dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="#FFFFFF"
+                    />
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -23,16 +23,15 @@
 
 
 
-            <com.alexzh.circleimageview.CircleImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_photo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-
-                android:src="@drawable/profile_image"
                 android:layout_gravity="center"
-                android:gravity="fill"
-                app:view_borderWidth="1dp"
-                 />
+                android:elevation="50dp"
+                android:padding="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_image" />
 
 
             <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular

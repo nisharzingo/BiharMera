@@ -1,6 +1,8 @@
 package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.InterestContentListScreen;
+import tv.merabihar.app.merabihar.UI.Activity.ProfileScreen;
 
 /**
  * Created by ZingoHotels Tech on 01-11-2018.
@@ -67,6 +71,11 @@ public class ProfileSearchAdapter extends RecyclerView.Adapter<ProfileSearchAdap
                 @Override
                 public void onClick(View view) {
 
+                    Intent intent = new Intent(context, ProfileScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Profile",profile);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
 
                 }
             });

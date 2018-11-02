@@ -87,8 +87,34 @@
         <activity
             android:name=".UI.Activity.InterestListScreen"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UI.Activity.CategoryContentList"
-            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".UI.Activity.CategoryContentList"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UI.Activity.InterestContentListScreen"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".UI.Activity.VideoPlayerScreen" />
+        <activity
+            android:name=".UI.YoutubePlayList.YouTubeListScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.MainTabHostScreens.PostContent.PostContentScreen"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UI.MainTabHostScreens.PostContent.PostVideoYoutubeContent"
+            android:theme="@style/AppTheme" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="@string/file_provider_authority"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_path" />
+        </provider>
+
+        <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign"></activity>
     </application>
 
 </manifest>

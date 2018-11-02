@@ -53,15 +53,19 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.alexzh.circleimageview.CircleImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profile_photo"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/profile_image"
                         android:layout_gravity="center"
-                        android:gravity="fill"
+                        android:elevation="50dp"
+                        android:padding="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/profile_image"
                         app:view_borderWidth="1dp"
-                        app:view_borderColor="#cccccc" />
+                        app:view_borderColor="#cccccc"/>
+
+
                 </LinearLayout>
                 <LinearLayout
                     android:layout_weight="1"

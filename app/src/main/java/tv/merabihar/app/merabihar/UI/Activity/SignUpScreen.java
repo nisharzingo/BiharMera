@@ -489,6 +489,7 @@ public class SignUpScreen extends AppCompatActivity {
                                 Toast.makeText(SignUpScreen.this,"Profile created Successfull",Toast.LENGTH_SHORT).show();
                                 //Intent intent = new Intent(SignUpScreen.this, PickInterestsScreenForProfile.class);
                                 Intent intent = new Intent(SignUpScreen.this, ProfileScreen.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 SignUpScreen.this.finish();
 

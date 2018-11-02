@@ -26,9 +26,10 @@
             android:id="@+id/main_title_tabs"/>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_sign2"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/tv_icon"
+            android:id="@+id/video"
             android:layout_gravity="end"
             android:layout_margin="10dp"/>
     </FrameLayout>

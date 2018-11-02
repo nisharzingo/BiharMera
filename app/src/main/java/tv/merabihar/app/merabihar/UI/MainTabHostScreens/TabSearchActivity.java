@@ -160,10 +160,10 @@ public class TabSearchActivity extends AppCompatActivity {
 
     public void getCategories()
     {
-        final ProgressDialog dialog = new ProgressDialog(TabSearchActivity.this);
+/*        final ProgressDialog dialog = new ProgressDialog(TabSearchActivity.this);
         dialog.setMessage("Loading Categories");
         dialog.setCancelable(false);
-        dialog.show();
+        dialog.show();*/
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -177,10 +177,10 @@ public class TabSearchActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
-                        if(dialog != null)
+                       /* if(dialog != null)
                         {
                             dialog.dismiss();
-                        }
+                        }*/
                         if(response.code() == 200)
                         {
 
@@ -204,10 +204,10 @@ public class TabSearchActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
-                        if(dialog != null)
+                       /* if(dialog != null)
                         {
                             dialog.dismiss();
-                        }
+                        }*/
                         Toast.makeText(TabSearchActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         mCategoryLayout.setVisibility(View.GONE);
                     }

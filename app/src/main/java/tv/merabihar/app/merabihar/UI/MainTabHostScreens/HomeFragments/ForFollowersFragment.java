@@ -21,12 +21,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerAdapter;
+import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
 import tv.merabihar.app.merabihar.WebAPI.InterestProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 
@@ -36,7 +38,7 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 public class ForFollowersFragment extends Fragment {
 
     SwipeRefreshLayout pullToRefresh;
-    RecyclerView mFollowerContent,mFollowingContent,mInterestContent;
+    RecyclerView mFollowerContent,mFollowingContent,mInterestContent,mTrendingContents;
     int profileId = 0;
 
     ContentRecyclerAdapter adapter;
@@ -86,6 +88,9 @@ public class ForFollowersFragment extends Fragment {
             mInterestContent.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             mInterestContent.setNestedScrollingEnabled(false);
 
+            mTrendingContents = (RecyclerView) view.findViewById(R.id.trending_contents);
+            mTrendingContents.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            mTrendingContents.setNestedScrollingEnabled(false);
 
 
             profileId = PreferenceHandler.getInstance(getActivity()).getUserId();
@@ -100,23 +105,10 @@ public class ForFollowersFragment extends Fragment {
                         getFollowingByProfileId(profileId);
                     }
                 };
-                Thread following = new Thread(){
 
-                    public void run(){
-                        getFollowerByProfileId(profileId);
-                    }
-                };
-
-                Thread interest = new Thread(){
-
-                    public void run(){
-                        getContentsofInterest(profileId);
-                    }
-                };
 
                 follower.start();
-                following.start();
-                interest.start();
+
 
             }else{
 
@@ -227,20 +219,28 @@ public class ForFollowersFragment extends Fragment {
                                     adapter = new ContentRecyclerAdapter(getActivity());
                                     mFollowerContent.setAdapter(adapter);
                                     adapter.addAll(followingContents);
+
+                                    getFollowerByProfileId(profileId);
+
+
+
+
+                                }else{
+                                    getFollowerByProfileId(profileId);
                                 }
 
 
                             }
                             else
                             {
-
+                                getFollowerByProfileId(profileId);
 
                             }
                         }
                         else
                         {
 
-
+                            getFollowerByProfileId(profileId);
                         }
 //                callGetStartEnd();
                     }
@@ -249,7 +249,7 @@ public class ForFollowersFragment extends Fragment {
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
 
-
+                        getFollowerByProfileId(profileId);
 
                         Log.e("TAG", t.toString());
                     }
@@ -308,19 +308,21 @@ public class ForFollowersFragment extends Fragment {
                                     adapter = new ContentRecyclerAdapter(getActivity());
                                     mFollowingContent.setAdapter(adapter);
                                     adapter.addAll(followingContents);
+
+                                    getContentsofInterest(profileId);
                                 }
 
 
                             }
                             else
                             {
-
+                                getContentsofInterest(profileId);
 
                             }
                         }
                         else
                         {
-
+                            getContentsofInterest(profileId);
 
                         }
 //                callGetStartEnd();
@@ -377,9 +379,65 @@ public class ForFollowersFragment extends Fragment {
                             else
                             {
 
+                                getTrendingContent();
 
                             }
                         }else{
+
+                            getTrendingContent();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
+
+
+                        getTrendingContent();
+                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //System.out.println(TAG+" thread started");
+
+            }
+
+        });
+
+    }
+
+    public void getTrendingContent()
+    {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final ContentAPI categoryAPI = Util.getClient().create(ContentAPI.class);
+                Call<ArrayList<Contents>> getCat = categoryAPI.getTrendingContent();
+                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                getCat.enqueue(new Callback<ArrayList<Contents>>() {
+
+                    @Override
+                    public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
+
+
+
+                        if(response.code() == 200 && response.body()!= null)
+                        {
+
+
+                            if(response.body().size()!=0){
+
+                                ContentRecyclerHorizontal adapters = new ContentRecyclerHorizontal(getActivity(),response.body());
+                                mTrendingContents.setAdapter(adapters);
+                            }
+
+                        }else{
+
 
                         }
                     }

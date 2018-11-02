@@ -151,6 +151,7 @@ public class LoginScreen extends AppCompatActivity {
                                 Toast.makeText(LoginScreen.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent(LoginScreen.this, TabMainActivity.class);
                                 i.putExtra("Profile",dto);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(i);
                                 finish();
 

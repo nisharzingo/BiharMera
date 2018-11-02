@@ -104,7 +104,7 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             imgVideo.setImageResource(R.drawable.video_gallery);
             tabVideo.setIndicator(tabIndicatorVideo);
             //tabNotification.setContent(new Intent(this, NotificationOptionsActivity.class));
-            tabVideo.setContent(new Intent(this, TabVideoActivity.class));
+            tabVideo.setContent(new Intent(this, TabVideoNewDesign.class));
 
             labelAccount.setText(getResources().getString(R.string.account));
             imgAccount.setImageResource(R.drawable.person_icon_navi);

@@ -26,7 +26,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <com.alexzh.circleimageview.CircleImageView
+               <!-- <com.alexzh.circleimageview.CircleImageView
                     android:id="@+id/profile_photo"
                     android:layout_width="100px"
                     android:layout_height="100px"
@@ -34,7 +34,21 @@
                     android:scaleType="centerCrop"
                     android:gravity="fill"
                     app:view_borderWidth="1dp"
-                    app:view_borderColor="#cccccc" />
+                    app:view_borderColor="#cccccc" />-->
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_photo"
+                    android:layout_width="150px"
+                    android:layout_height="150px"
+                    android:layout_gravity="center"
+                    android:elevation="50dp"
+                    android:padding="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/profile_image"
+                    app:view_borderWidth="1dp"
+                    app:view_borderColor="#cccccc"/>
+
+
 
 
                 <LinearLayout
