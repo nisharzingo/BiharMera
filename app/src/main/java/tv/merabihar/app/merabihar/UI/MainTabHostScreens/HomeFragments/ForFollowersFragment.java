@@ -22,9 +22,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerAdapter;
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
+import tv.merabihar.app.merabihar.Adapter.NonFollowersAdapter;
+import tv.merabihar.app.merabihar.Adapter.ProfileListAdapter;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabAccountActivity;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
@@ -38,7 +41,7 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 public class ForFollowersFragment extends Fragment {
 
     SwipeRefreshLayout pullToRefresh;
-    RecyclerView mFollowerContent,mFollowingContent,mInterestContent,mTrendingContents;
+    RecyclerView mFollowerContent,mFollowingContent,mInterestContent,mTrendingContents,mNonFollowers;
     int profileId = 0;
 
     ContentRecyclerAdapter adapter;
@@ -92,6 +95,10 @@ public class ForFollowersFragment extends Fragment {
             mTrendingContents.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             mTrendingContents.setNestedScrollingEnabled(false);
 
+            mNonFollowers = (RecyclerView) view.findViewById(R.id.people_non_follow);
+            mNonFollowers.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+            mNonFollowers.setNestedScrollingEnabled(false);
+
 
             profileId = PreferenceHandler.getInstance(getActivity()).getUserId();
 
@@ -134,23 +141,10 @@ public class ForFollowersFragment extends Fragment {
                                 getFollowingByProfileId(profileId);
                             }
                         };
-                        Thread following = new Thread(){
 
-                            public void run(){
-                                getFollowerByProfileId(profileId);
-                            }
-                        };
-
-                        Thread interest = new Thread(){
-
-                            public void run(){
-                                getContentsofInterest(profileId);
-                            }
-                        };
 
                         follower.start();
-                        following.start();
-                        interest.start();
+
 
                     }else{
 
@@ -379,12 +373,22 @@ public class ForFollowersFragment extends Fragment {
                             else
                             {
 
-                                getTrendingContent();
+                                if(value){
+
+                                }else{
+                                    getTrendingContent(id);
+                                }
+
+
 
                             }
                         }else{
 
-                            getTrendingContent();
+                            if(value){
+
+                            }else{
+                                getTrendingContent(id);
+                            }
 
                         }
                     }
@@ -393,7 +397,11 @@ public class ForFollowersFragment extends Fragment {
                     public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
 
 
-                        getTrendingContent();
+                        if(value){
+
+                        }else{
+                            getTrendingContent(id);
+                        }
                         Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -407,7 +415,7 @@ public class ForFollowersFragment extends Fragment {
 
     }
 
-    public void getTrendingContent()
+    public void getTrendingContent(final int id)
     {
 
 
@@ -429,15 +437,19 @@ public class ForFollowersFragment extends Fragment {
                         if(response.code() == 200 && response.body()!= null)
                         {
 
-
+                            mFollowerContent.setVisibility(View.GONE);
+                            mFollowingContent.setVisibility(View.GONE);
+                            mInterestContent.setVisibility(View.GONE);
                             if(response.body().size()!=0){
 
                                 ContentRecyclerHorizontal adapters = new ContentRecyclerHorizontal(getActivity(),response.body());
                                 mTrendingContents.setAdapter(adapters);
+                                getNonFollowers(id);
                             }
 
                         }else{
 
+                            getNonFollowers(id);
 
                         }
                     }
@@ -445,7 +457,7 @@ public class ForFollowersFragment extends Fragment {
                     @Override
                     public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
 
-
+                        getNonFollowers(id);
 
                         Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
@@ -459,5 +471,68 @@ public class ForFollowersFragment extends Fragment {
         });
 
     }
+
+    private void getNonFollowers(final int id){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
+                Call<ArrayList<UserProfile>> call = apiService.getNonFollowersByProfileId(id);
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+//                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
+                        int statusCode = response.code();
+
+
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfile = response.body();
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+
+                                Collections.shuffle(responseProfile);
+                                NonFollowersAdapter adapter = new NonFollowersAdapter(getActivity(),responseProfile);
+                                mNonFollowers.setAdapter(adapter);
+
+
+                            }
+                            else
+                            {
+
+
+
+                            }
+                        }
+                        else
+                        {
+
+                            Toast.makeText(getActivity(),response.message(),Toast.LENGTH_SHORT).show();
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+                        // Log error here since request failed
+
+
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
+
 
 }

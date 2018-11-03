@@ -50,7 +50,7 @@ public class SplashScreen extends AppCompatActivity {
 
             Animation fade_in = AnimationUtils.loadAnimation(this,R.anim.fade_in);
 
-            appLogo.startAnimation(fade_in);
+           // appLogo.startAnimation(fade_in);
 
 
             new Handler().postDelayed(new Runnable() {

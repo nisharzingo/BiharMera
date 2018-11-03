@@ -101,7 +101,7 @@ public class ForYouFragment extends Fragment {
 
             mCategoryContents.setAdapter(adapter);
 
-            mCategoryContents.addOnScrollListener(new PageScrollListener(linearLayoutManager) {
+            mCategoryContents.setOnScrollListener(new PageScrollListener(linearLayoutManager) {
 
                 @Override
                 protected void loadMoreItems() {
@@ -166,6 +166,7 @@ public class ForYouFragment extends Fragment {
 
 
                             if( response.body().size()!= 0){
+                                System.out.println("Response Body size = "+response.body().size());
                                 loadFirstPage(response.body());
                             }else{
                                 adapter.removeLoadingFooter();
@@ -303,6 +304,9 @@ public class ForYouFragment extends Fragment {
                             }
                             else
                             {
+                                Log.d(TAG, "loadNextPage: " + currentPage+" == "+"FALSE = "+response.body().size());
+                                adapter.removeLoadingFooter();
+                                isLastPage = true;
 
                             }
                         }catch (Exception e){

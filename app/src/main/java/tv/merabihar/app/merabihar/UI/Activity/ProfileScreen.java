@@ -1,7 +1,9 @@
 package tv.merabihar.app.merabihar.UI.Activity;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,9 +29,12 @@ import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ImagePorifleContentAdapter;
 import tv.merabihar.app.merabihar.Adapter.ListViewAdapter;
 import tv.merabihar.app.merabihar.Adapter.ProfileListAdapter;
+import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.Model.BeanClass;
 import tv.merabihar.app.merabihar.Model.Contents;
+import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
+import tv.merabihar.app.merabihar.Model.ProfileFollowMapping;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabAccountActivity;
@@ -48,10 +53,12 @@ public class ProfileScreen extends AppCompatActivity {
             mFollowers,mFollowings,mNoPosts;
     RecyclerView mFollowingPeoples;
     RecyclerView mPostsList;
+    AppCompatButton mFollowOption;
     //ListView mPostsList;
     ProgressBar progressBar;
 
     UserProfile profile;
+    int profileId=0,mappingId=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +83,7 @@ public class ProfileScreen extends AppCompatActivity {
             mFollowingPeoples = (RecyclerView)findViewById(R.id.follow_profiles);
             mPostsList = (RecyclerView)findViewById(R.id.listviews);
             progressBar = (ProgressBar)findViewById(R.id.progressBar);
+            mFollowOption = (AppCompatButton) findViewById(R.id.follow_unfollow);
 
             mFollowingPeoples.setLayoutManager(new LinearLayoutManager(ProfileScreen.this, LinearLayoutManager.HORIZONTAL, false));
             mFollowingPeoples.setNestedScrollingEnabled(false);
@@ -90,20 +98,59 @@ public class ProfileScreen extends AppCompatActivity {
            if(bundle!=null){
 
                profile = (UserProfile)bundle.getSerializable("Profile");
+               profileId = bundle.getInt("ProfileId");
            }
             if(profile!=null){
 
+               profileId = profile.getProfileId();
                 getProfile(profile.getProfileId());
                 getProfileContent(profile.getProfileId());
                 getFollowingByProfileId(profile.getProfileId());
                 getFollowersByProfileId(profile.getProfileId());
+                getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profile.getProfileId());
 
 
+            }else if(profileId!=0){
+                getProfile(profileId);
+                getProfileContent(profileId);
+                getFollowingByProfileId(profileId);
+                getFollowersByProfileId(profileId);
+                getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profileId);
             }else{
 
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
 
 
+            mFollowOption.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String follow = mFollowOption.getText().toString();
+
+                    if(follow!=null&&!follow.isEmpty()){
+
+                        if(follow.equalsIgnoreCase("Follow")){
+
+                            ProfileFollowMapping pm = new ProfileFollowMapping();
+                            pm.setFollowerId(profileId);
+                            pm.setProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId());
+                            profileFollow(pm);
+
+                        }else if(follow.equalsIgnoreCase("Unfollow")){
+
+
+                            if(mappingId!=0){
+
+                                deleteFollow(mappingId);
+
+                            }else{
+                                Toast.makeText(ProfileScreen.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
+            });
 
         }catch (Exception e){
             e.printStackTrace();
@@ -406,6 +453,192 @@ public class ProfileScreen extends AppCompatActivity {
 
         });
 
+    }
+
+    private void getFollowingsByProfileId(final int id, final int contentProfileId){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
+                Call<ArrayList<FollowsWithMapping>> call = apiService.getFollowingsWithMappingByProfileId(id);
+
+                call.enqueue(new Callback<ArrayList<FollowsWithMapping>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<FollowsWithMapping>> call, Response<ArrayList<FollowsWithMapping>> response) {
+//                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
+                        int statusCode = response.code();
+
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<FollowsWithMapping> responseProfile = response.body();
+                            boolean value = false;
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+
+                                for (FollowsWithMapping profile:responseProfile) {
+
+                                    if(profile.getFollowers().getProfileId()==contentProfileId){
+
+                                        value = true;
+
+                                       mappingId = profile.getFollowMapping().getFollowId();
+
+                                        break;
+                                    }
+
+                                }
+
+                                if(value){
+                                    mFollowOption.setVisibility(View.VISIBLE);
+                                    mFollowOption.setText("Unfollow");
+
+                                }else{
+                                    mFollowOption.setVisibility(View.VISIBLE);
+                                    mFollowOption.setText("Follow");
+                                }
+
+
+
+                            }
+                            else
+                            {
+                                mFollowOption.setVisibility(View.VISIBLE);
+                                mFollowOption.setText("Follow");
+
+                            }
+                        }
+                        else
+                        {
+
+
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<FollowsWithMapping>> call, Throwable t) {
+                        // Log error here since request failed
+
+
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
+
+    private void profileFollow(final ProfileFollowMapping intrst) {
+
+
+        final ProgressDialog dialog = new ProgressDialog(ProfileScreen.this);
+        dialog.setMessage("Loading..");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ProfileFollowAPI mapApi = Util.getClient().create(ProfileFollowAPI.class);
+                Call<ProfileFollowMapping> response = mapApi.postInterest(intrst);
+                response.enqueue(new Callback<ProfileFollowMapping>() {
+                    @Override
+                    public void onResponse(Call<ProfileFollowMapping> call, Response<ProfileFollowMapping> response) {
+
+                        System.out.println(response.code());
+
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+
+                            mFollowOption.setText("Unfollow");
+                            mappingId = response.body().getFollowId();
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+                        Toast.makeText(ProfileScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
+    }
+
+    private void deleteFollow(final int mapId) {
+
+
+        final ProgressDialog dialog = new ProgressDialog(ProfileScreen.this);
+        dialog.setMessage("Loading..");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ProfileFollowAPI mapApi = Util.getClient().create(ProfileFollowAPI.class);
+                Call<ProfileFollowMapping> response = mapApi.deleteIntrs(mapId);
+                response.enqueue(new Callback<ProfileFollowMapping>() {
+                    @Override
+                    public void onResponse(Call<ProfileFollowMapping> call, Response<ProfileFollowMapping> response) {
+
+                        System.out.println(response.code());
+
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+
+                            mFollowOption.setText("Follow");
+                            mappingId = 0;
+
+                        }
+                        else
+                        {
+                            Toast.makeText(ProfileScreen.this, "Please try again", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+                        Toast.makeText(ProfileScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
     }
 
 }

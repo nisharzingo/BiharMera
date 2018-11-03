@@ -18,6 +18,7 @@ import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 
 /**
  * Created by ZingoHotels Tech on 01-11-2018.
@@ -56,7 +57,14 @@ public class ProfileListAdapter extends RecyclerView.Adapter<ProfileListAdapter.
 
         if(profile!=null){
 
-            holder.mProfileName.setText(""+profile.getFullName());
+            if(PreferenceHandler.getInstance(context).getUserId()==profile.getProfileId()){
+
+                holder.mProfileName.setText("You");
+            }else{
+                holder.mProfileName.setText(""+profile.getFullName());
+            }
+
+
 
             String base=profile.getProfilePhoto();
             if(base != null && !base.isEmpty()){

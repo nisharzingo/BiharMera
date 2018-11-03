@@ -15,12 +15,11 @@
         android:layout_gravity="center"
         android:layout_margin="5dp"
         app:cardElevation="5dp"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="20dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-
             android:orientation="vertical">
 
             <FrameLayout
@@ -33,7 +32,6 @@
                 android:id="@+id/category_card_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:src="@drawable/no_image"
                 android:scaleType="fitXY"
                />
@@ -49,7 +47,7 @@
                     android:letterSpacing="0.1"
                     android:text=""
                     android:gravity="center"
-                    android:layout_gravity="center"
+                    android:layout_gravity="bottom"
                     android:id="@+id/category_name"
                     android:layout_margin="5dp"
                     android:textSize="12dp"

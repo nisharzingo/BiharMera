@@ -114,7 +114,12 @@
                 android:resource="@xml/file_provider_path" />
         </provider>
 
-        <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign"></activity>
+        <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign" />
+        <activity
+            android:name=".UI.Activity.FollowOptions.FollowOptionsActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".UI.Activity.CommentsScreen"
+            android:theme="@style/AppTheme" ></activity>
     </application>
 
 </manifest>

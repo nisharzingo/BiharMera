@@ -51,6 +51,15 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/people_non_follow"
+                android:scrollbars="none"
+
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/trending_contents"
                 android:scrollbars="none"
                 android:layout_margin="5dp"

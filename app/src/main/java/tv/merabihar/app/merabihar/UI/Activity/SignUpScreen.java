@@ -25,6 +25,7 @@ import retrofit2.Response;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.Model.UserRole;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabMainActivity;
 import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
@@ -488,7 +489,7 @@ public class SignUpScreen extends AppCompatActivity {
 
                                 Toast.makeText(SignUpScreen.this,"Profile created Successfull",Toast.LENGTH_SHORT).show();
                                 //Intent intent = new Intent(SignUpScreen.this, PickInterestsScreenForProfile.class);
-                                Intent intent = new Intent(SignUpScreen.this, ProfileScreen.class);
+                                Intent intent = new Intent(SignUpScreen.this, TabMainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 SignUpScreen.this.finish();

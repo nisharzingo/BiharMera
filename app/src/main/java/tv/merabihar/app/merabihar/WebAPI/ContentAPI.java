@@ -30,6 +30,10 @@ public interface ContentAPI {
     @GET("Contents/GetTopFiveContent")
     Call<ArrayList<Contents>> getTrendingContent();
 
+    @GET("Contents/{id}")
+    Call<Contents> getContentsById(@Path("id") int id);
+
+
     @POST("Contents")
     Call<Contents> postContent(@Body Contents body);
 

@@ -1,6 +1,7 @@
 package tv.merabihar.app.merabihar.UI.MainTabHostScreens;
 
 import android.accounts.Account;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -32,6 +33,7 @@ import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.FollowOptions.FollowOptionsActivity;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
@@ -95,8 +97,18 @@ public class TabAccountActivity extends AppCompatActivity {
 
             }else{
 
+                Toast.makeText(this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
+
             }
 
+            mFollow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent follow = new Intent(TabAccountActivity.this, FollowOptionsActivity.class);
+                    startActivity(follow);
+                }
+            });
 
 
         }catch (Exception e){
@@ -127,8 +139,13 @@ public class TabAccountActivity extends AppCompatActivity {
                             System.out.println("Inside api");
 
                             UserProfile profile = response.body();
+
                             mProfileName.setText(""+profile.getFullName());
-                            mProfileAbout.setText(""+profile.getPrefix());
+                            if(profile.getPrefix()!=null){
+
+                                mProfileAbout.setText(""+profile.getPrefix());
+                            }
+
 
                             if(profile.getProfilePhoto()!=null){
 

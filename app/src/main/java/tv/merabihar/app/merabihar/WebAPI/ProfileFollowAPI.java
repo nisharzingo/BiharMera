@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
 import tv.merabihar.app.merabihar.Model.ProfileFollowMapping;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 
@@ -30,11 +31,17 @@ public interface ProfileFollowAPI {
     @GET("Follow/GetFollowingByProfileId/{ProfileId}")
     Call<ArrayList<UserProfile>> getFollowersByProfileId(@Path("ProfileId") int id);
 
+    @GET("Follow/GetNonFollowersByProfileId/{ProfileId}")
+    Call<ArrayList<UserProfile>> getNonFollowersByProfileId(@Path("ProfileId") int id);
+
     @GET("Follow/GetFollowersByProfileId/{ProfileId}")
     Call<ArrayList<UserProfile>> getFollowingByProfileId(@Path("ProfileId") int id);
 
     @GET("Follow/GetFollowersContentByProfileId/{ProfileId}")
     Call<ArrayList<UserProfile>> getFollowersContentByProfileId(@Path("ProfileId") int id);
+
+    @GET("Follow/GetFollowersWithMappingByProfileId/{ProfileId}")
+    Call<ArrayList<FollowsWithMapping>> getFollowingsWithMappingByProfileId(@Path("ProfileId") int id);
 
     @GET("Follow/GetFollowingContentByProfileId/{ProfileId}")
     Call<ArrayList<UserProfile>> getFollowingContentByProfileId(@Path("ProfileId") int id);
