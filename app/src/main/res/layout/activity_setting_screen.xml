@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/settingtoolbar"
+        >
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/setting_profile_logo"
+            android:src="@drawable/app_logo"/>
+    </android.support.v7.widget.Toolbar>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/curve_background"
+            android:layout_below="@id/settingtoolbar">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="80dp"
+                android:background="#ACACAC" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="79dp"
+                android:id="@+id/reward_ll1"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.rey.material.widget.LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="---"
+                        android:id="@+id/coins_value"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Coins"
+                        />
+
+                </com.rey.material.widget.LinearLayout>
+
+                <com.rey.material.widget.LinearLayout
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="---"
+                        android:id="@+id/balance_value"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="balance"
+                        />
+
+
+                </com.rey.material.widget.LinearLayout>
+
+
+
+                <com.rey.material.widget.LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="---"
+                        android:id="@+id/invite_value"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Invite"
+                        />
+
+                </com.rey.material.widget.LinearLayout>
+
+            </LinearLayout>
+            <!--ll layout1-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_below="@id/reward_ll1"
+                android:gravity="center"
+                android:id="@+id/reward_ll2"
+                android:orientation="horizontal">
+
+                <com.rey.material.widget.LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:id="@+id/withdraw_value"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/withdrawal"/>
+
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Withdraw"
+                        />
+
+                </com.rey.material.widget.LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#ACACAC" />
+
+                <com.rey.material.widget.LinearLayout
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/records_value"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/clipboard"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="balance"
+                        />
+                </com.rey.material.widget.LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#ACACAC" />
+
+                <com.rey.material.widget.LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:id="@+id/income_value"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/profit"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Income"
+                        android:layout_marginTop="10dp"
+                        />
+                </com.rey.material.widget.LinearLayout>
+            </LinearLayout>
+            <!--ll layout 2-->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/reward_layout3"
+                android:gravity="center_vertical"
+                android:layout_below="@id/reward_ll2"
+                android:text="Make Money"
+                android:paddingLeft="15dp"
+                android:background="#e7e1e1">
+            </TextView>
+
+
+            <LinearLayout
+                android:id="@+id/reward_ll3"
+                android:layout_width="match_parent"
+                android:layout_height="184dp"
+                android:layout_below="@id/reward_layout3"
+                android:background="@color/colorPrimary"
+                android:foregroundGravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="20dp"
+                        android:text="Invite Each Friend"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="50 Coins"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textEnd"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="1"
+                        android:text="  >  "
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_below="@id/reward_ll1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/invite_whatsapp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/icons_background">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/whatsapp" />
+
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="WhatsApp"
+                            android:textColor="@color/white" />
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/invite_facebook"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/icons_background">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/facebook" />
+
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Facebook"
+                            android:textColor="@color/white" />
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/invite_sms"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/icons_background">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/sms" />
+
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="SMS"
+                            android:textColor="@color/white" />
+
+
+                    </com.rey.material.widget.LinearLayout>
+
+                    <com.rey.material.widget.LinearLayout
+                        android:id="@+id/invite_more"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/icons_background">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/more" />
+
+
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="More"
+                            android:textColor="@color/white" />
+                    </com.rey.material.widget.LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/reward_ll3"
+                android:id="@+id/setting_checkin"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Check In"
+                    android:paddingLeft="15dp">
+                </TextView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="wrap_content"
+                    android:text=" > "/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_below="@id/setting_checkin"
+                android:id="@+id/border_setting_checkin"
+                android:layout_height="1dp"
+                android:background="#ACACAC" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="1dp"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_below="@id/border_setting_checkin"
+                android:gravity="center_vertical"
+                android:id="@+id/setting_FAQ"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="FAQs"
+                    android:paddingLeft="15dp">
+                </TextView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:layout_marginRight="15dp"
+                    android:layout_height="wrap_content"
+                    android:text=" > "/>
+
+            </LinearLayout>
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/setting_FAQ"
+                android:background="#ACACAC" />
+
+
+
+
+
+
+
+        </RelativeLayout>
+
+
+</RelativeLayout>
