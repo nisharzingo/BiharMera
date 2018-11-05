@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@android:id/tabhost"
+    android:background="@drawable/theme_combo"
+    android:layout_height="match_parent"
+    tools:context=".UI.Activity.Influencer.InviteScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <ImageView
+            android:id="@+id/tv_header_title"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="left"
+            android:src="@drawable/close_button" />
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/linear_layout_background"
+        android:orientation="vertical">
+
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/linear_layout_background"
+            android:id="@android:id/tabcontent"
+            android:layout_marginBottom="2dp"></FrameLayout>
+
+        <TabWidget
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            android:layout_margin="10dp"
+            android:id="@android:id/tabs">
+
+        </TabWidget>
+
+
+    </FrameLayout>
+    </LinearLayout>
+
+</TabHost>

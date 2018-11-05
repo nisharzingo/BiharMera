@@ -32,13 +32,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemes">
-        <activity android:name=".UI.Activity.SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".UI.Activity.SplashScreen" />
         <activity android:name=".UI.Activity.SlideOptionScreen" />
         <activity
             android:name=".UI.Activity.LoginScreen"
@@ -118,8 +112,21 @@
         <activity
             android:name=".UI.Activity.FollowOptions.FollowOptionsActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UI.Activity.CommentsScreen"
-            android:theme="@style/AppTheme" ></activity>
+        <activity
+            android:name=".UI.Activity.CommentsScreen"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UI.Activity.Influencer.InfluencerProgramViewScreen"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".UI.Activity.Influencer.InviteScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".UI.Activity.Influencer.InviteFriendsScreen" />
+        <activity android:name=".UI.Activity.Influencer.FriendListScreen"></activity>
     </application>
 
 </manifest>

@@ -23,6 +23,7 @@
     <color name="colorSub">#b0afaf</color>
 
     <color name="transparentBlack">#5e000000</color>
+    <color name="red_login">#ff1744</color>
 
 
 </resources>

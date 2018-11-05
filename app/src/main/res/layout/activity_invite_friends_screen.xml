@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/theme_combo"
+    tools:context="tv.merabihar.app.merabihar.UI.Activity.Influencer.InviteFriendsScreen">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:id="@+id/invite_earn"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/invite_earn"
+            app:layout_collapseMode="parallax"/>
+
+
+        <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
+            android:id="@+id/target_title"
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/invite_earn"
+            android:text="Invite friends and make money."
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:lineSpacingExtra="3dp"
+            />
+
+        <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
+            android:id="@+id/referal_code_tv"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:text="Referal Code"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:layout_above="@+id/referal_code_text"
+            android:textColor="@color/white"
+            android:lineSpacingExtra="3dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text=""
+            android:id="@+id/referal_code_text"
+            android:textColor="#FFFFFF"
+            android:layout_above="@+id/share"
+            android:textSize="25dp"
+            android:gravity="center"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/share"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:layout_alignParentBottom="true">
+
+            <LinearLayout
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:id="@+id/whatsapp_invite"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/icons_background">
+
+                <ImageView
+                    android:id="@+id/whatsapp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/whatsapp_icons"
+                    app:layout_collapseMode="parallax"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/facebook_invite"
+                android:background="@drawable/icons_background">
+
+                <ImageView
+                    android:id="@+id/facebook"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/facebook_icon"
+                    app:layout_collapseMode="parallax"/>
+
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:id="@+id/sms_invite"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/icons_background">
+
+                <ImageView
+                    android:id="@+id/sms"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sms_icon"
+                    app:layout_collapseMode="parallax"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/more_invite"
+                android:layout_margin="5dp"
+                android:background="@drawable/icons_background">
+
+                <ImageView
+                    android:id="@+id/more"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/more_icon"
+                    app:layout_collapseMode="parallax"/>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
