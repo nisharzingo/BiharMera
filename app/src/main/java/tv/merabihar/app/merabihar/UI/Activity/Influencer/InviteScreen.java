@@ -2,12 +2,8 @@ package tv.merabihar.app.merabihar.UI.Activity.Influencer;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +13,12 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import tv.merabihar.app.merabihar.R;
-import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabAccountActivity;
-import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabHomeNewDesign;
-import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabMainActivity;
-import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabPostOptionsActivity;
-import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabSearchActivity;
-import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabVideoActivity;
+import tv.merabihar.app.merabihar.UI.Activity.FriendList.FriendListScreen;
 
 public class InviteScreen extends TabActivity implements TabHost.OnTabChangeListener {
 
     TabHost tabHost;
+    ImageView mBack;
     View tabIndicatorInvite,tabIndicatorFriend;
 
     public static String HOME_TAB = "Home Tab";
@@ -48,6 +40,7 @@ public class InviteScreen extends TabActivity implements TabHost.OnTabChangeList
         try{
             setContentView(R.layout.activity_invite_screen);
             tabHost = (TabHost) findViewById(android.R.id.tabhost);
+            mBack = (ImageView) findViewById(R.id.tv_header_title);
 
             tabIndicatorInvite = LayoutInflater.from(this).inflate(R.layout.tab_host_invite, null);
             tabIndicatorFriend= LayoutInflater.from(this).inflate(R.layout.tab_host_invite, null);
@@ -109,6 +102,14 @@ public class InviteScreen extends TabActivity implements TabHost.OnTabChangeList
             {
                 tabHost.setCurrentTab(page);
             }
+
+            mBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    InviteScreen.this.finish();
+                }
+            });
         }
         catch (Exception ex)
         {

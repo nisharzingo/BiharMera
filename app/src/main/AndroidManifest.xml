@@ -86,14 +86,7 @@
         <activity
             android:name=".UI.Activity.CategoryContentList"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UI.Activity.SettingScreen">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".UI.Activity.SettingScreen"></activity>
         <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign" />
         <activity
             android:name=".UI.Activity.FollowOptions.FollowOptionsActivity"
@@ -104,11 +97,17 @@
         <activity
             android:name=".UI.Activity.Influencer.InfluencerProgramViewScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".UI.Activity.Influencer.InviteScreen">
-
-        </activity>
+        <activity android:name=".UI.Activity.Influencer.InviteScreen"></activity>
         <activity android:name=".UI.Activity.Influencer.InviteFriendsScreen" />
-        <activity android:name=".UI.Activity.Influencer.FriendListScreen"></activity>
+        <activity android:name=".UI.Activity.FriendList.FriendListScreen" />
+        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

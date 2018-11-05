@@ -14,6 +14,7 @@ public class Constants {
     public static final String USER_PHONENUMER = "user_phonenumber";
     public static final String TOKEN = "auth_token";
     public static final String USER_NAME = "user_name";
+    public static final String REFERAL_CODE = "user_name";
     public static final String USER_FULL_NAME = "user_full_name";
     public static final String Travelerr_ID = "traveler_id";
     public static final int CITY_ID = 14;

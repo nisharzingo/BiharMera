@@ -12,19 +12,80 @@
         android:id="@+id/settingtoolbar"
         >
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/setting_profile_logo"
-            android:src="@drawable/app_logo"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_photo_settings"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="left"
+                android:elevation="50dp"
+                android:padding="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_image"
+                app:view_borderWidth="1dp"
+                app:view_borderColor="#cccccc"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.1"
+                android:id="@+id/profile_name_settings"
+
+                android:textSize="18dp"
+                android:textColor="#fff"
+                android:textAlignment="viewStart"
+                android:layout_marginTop="20dp"/>
+
+            <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.1"
+                android:id="@+id/profile_referal_code_settings"
+                android:textSize="15dp"
+
+                android:textColor="#fff"
+                android:textAlignment="viewStart"
+                />
+
+
+        </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+
     </android.support.v7.widget.Toolbar>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/settingtoolbar"
+        android:background="@drawable/curve_background">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/curve_background"
-            android:layout_below="@id/settingtoolbar">
+
+            >
+            <ProgressBar
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+
+                android:id="@+id/progressBar_settings"
+                android:layout_centerHorizontal="true"/>
+
 
             <View
                 android:layout_width="match_parent"
@@ -52,7 +113,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="---"
+                        android:text="0"
                         android:id="@+id/coins_value"/>
 
                     <TextView
@@ -74,13 +135,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="---"
+                        android:text="0"
                         android:id="@+id/balance_value"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="balance"
+                        android:text="Balance"
                         />
 
 
@@ -99,7 +160,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="---"
+                        android:text="0"
                         android:id="@+id/invite_value"/>
 
                     <TextView
@@ -223,6 +284,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/invite_screen"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
@@ -275,6 +337,7 @@
                         <LinearLayout
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:id="@+id/whatsapp_invite"
                             android:background="@drawable/icons_background">
 
                             <ImageView
@@ -309,6 +372,7 @@
                         <LinearLayout
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:id="@+id/facebook_invite"
                             android:background="@drawable/icons_background">
 
                             <ImageView
@@ -341,6 +405,7 @@
                         <LinearLayout
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:id="@+id/sms_invite"
                             android:background="@drawable/icons_background">
 
                             <ImageView
@@ -376,6 +441,7 @@
                         <LinearLayout
                             android:layout_width="70dp"
                             android:layout_height="70dp"
+                            android:id="@+id/more_invite"
                             android:background="@drawable/icons_background">
 
                             <ImageView
@@ -401,7 +467,7 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@id/reward_ll3"
@@ -450,7 +516,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="FAQs"
+                    android:text="Friend List"
                     android:paddingLeft="15dp">
                 </TextView>
 
@@ -471,14 +537,22 @@
                 android:layout_height="1dp"
                 android:layout_below="@id/setting_FAQ"
                 android:background="#ACACAC" />
+-->
 
 
 
-
-
+            <ListView
+                android:id="@+id/settings_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="#979494"
+                android:layout_below="@+id/reward_ll3"
+                android:scrollbars="none"
+                >
+            </ListView>
 
 
         </RelativeLayout>
-
+    </android.support.v4.widget.NestedScrollView>
 
 </RelativeLayout>

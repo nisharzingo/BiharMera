@@ -5,11 +5,19 @@ import android.os.Bundle;
 
 import tv.merabihar.app.merabihar.R;
 
-public class FriendListScreen extends AppCompatActivity {
+public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_list_screen);
+
+        try{
+
+            setContentView(R.layout.activity_influencer_program_detail_screen);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

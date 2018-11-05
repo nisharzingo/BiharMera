@@ -105,6 +105,16 @@ public class PreferenceHandler {
         return sh.getString(Constants.USER_NAME,"");
     }
 
+    public void setReferalcode(String username)
+    {
+        sh.edit().putString(Constants.REFERAL_CODE,username).apply();
+    }
+
+    public String getReferalcode()
+    {
+        return sh.getString(Constants.REFERAL_CODE,"");
+    }
+
     public void setPhoneNumber(String phonenumber)
     {
         sh.edit().putString(Constants.USER_PHONENUMER,phonenumber).apply();

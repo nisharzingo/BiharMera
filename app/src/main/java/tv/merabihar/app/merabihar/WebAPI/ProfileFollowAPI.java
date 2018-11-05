@@ -51,4 +51,11 @@ public interface ProfileFollowAPI {
 
     @GET("Follows/{id}")
     Call<ProfileFollowMapping> getInterestById(@Path("id") int id);
+
+    @GET("Profiles/GetAllProfileByReferralCodeUsed/{ReferralCodeUsed}")
+    Call<ArrayList<UserProfile>> getDirectReferedProfile(@Path("ReferralCodeUsed") String id);
+
+    @GET("Profiles/GetAllProfileByReferralCodeOfSuperParents/{ReferralCodeOfSuperParents}")
+    Call<ArrayList<UserProfile>> getInDirectReferedProfile(@Path("ReferralCodeOfSuperParents") String id);
+
 }

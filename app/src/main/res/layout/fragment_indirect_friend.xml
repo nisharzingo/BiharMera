@@ -1,0 +1,24 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="tv.merabihar.app.merabihar.UI.Activity.FriendList.IndirectFriendFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/influnecer_indirect_friend_list"
+        android:scrollbars="none"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        />
+
+    <ProgressBar
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:id="@+id/progressBar_indirect"
+        android:layout_centerInParent="true"/>
+
+</FrameLayout>

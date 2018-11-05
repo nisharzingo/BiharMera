@@ -34,6 +34,7 @@ import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.FollowOptions.FollowOptionsActivity;
+import tv.merabihar.app.merabihar.UI.Activity.SettingScreen;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
@@ -110,6 +111,15 @@ public class TabAccountActivity extends AppCompatActivity {
                 }
             });
 
+            mSettings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent follow = new Intent(TabAccountActivity.this, SettingScreen.class);
+                    startActivity(follow);
+                }
+            });
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -146,6 +156,7 @@ public class TabAccountActivity extends AppCompatActivity {
                                 mProfileAbout.setText(""+profile.getPrefix());
                             }
 
+                            PreferenceHandler.getInstance(TabAccountActivity.this).setReferalcode(profile.getReferralCodeToUseForOtherProfile());
 
                             if(profile.getProfilePhoto()!=null){
 
