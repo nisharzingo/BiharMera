@@ -56,7 +56,7 @@ public class ForYouFragment extends Fragment {
 
     private String TAG="BlogList";
 
-
+    private boolean _hasLoadedOnce = false;
 
     public ForYouFragment() {
         // Required empty public constructor
@@ -101,36 +101,12 @@ public class ForYouFragment extends Fragment {
 
             mCategoryContents.setAdapter(adapter);
 
-            mCategoryContents.setOnScrollListener(new PageScrollListener(linearLayoutManager) {
-
-                @Override
-                protected void loadMoreItems() {
-                    isLoading = true;
-
-                    currentPage = currentPage+1;
-                    loadNextSetOfItems();
-                }
-
-                @Override
-                public int getTotalPageCount() {
-                    return currentPage;
-                }
-
-                @Override
-                public boolean isLastPage() {
-                    return isLastPage;
-                }
-
-                @Override
-                public boolean isLoading() {
-                    return isLoading;
-                }
-            });
-
 
 
             getTrendingContent();
             loadFirstSetOfContents();
+
+
             return view;
 
         }catch (Exception e){
@@ -343,5 +319,47 @@ public class ForYouFragment extends Fragment {
             Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
         }
     }
+    @Override
+    public void setUserVisibleHint(boolean isFragmentVisible_) {
+        super.setUserVisibleHint(true);
+
+        if (this.isVisible()) {
+            // we check that the fragment is becoming visible
+            if (isFragmentVisible_ && !_hasLoadedOnce) {
+                if (Util.isNetworkAvailable(getActivity())) {
+
+                    mCategoryContents.setOnScrollListener(new PageScrollListener(linearLayoutManager) {
+
+                        @Override
+                        protected void loadMoreItems() {
+                            isLoading = true;
+
+                            currentPage = currentPage+1;
+                            loadNextSetOfItems();
+                        }
+
+                        @Override
+                        public int getTotalPageCount() {
+                            return currentPage;
+                        }
+
+                        @Override
+                        public boolean isLastPage() {
+                            return isLastPage;
+                        }
+
+                        @Override
+                        public boolean isLoading() {
+                            return isLoading;
+                        }
+                    });
+
+
+                }
+                _hasLoadedOnce = true;
+            }
+        }
+    }
+
 
 }

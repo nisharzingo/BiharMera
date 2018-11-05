@@ -47,6 +47,7 @@ public class ForFollowersFragment extends Fragment {
     ContentRecyclerAdapter adapter;
     boolean value = false;
 
+    private boolean _hasLoadedOnce = false;
 
 
     public ForFollowersFragment() {
@@ -103,23 +104,7 @@ public class ForFollowersFragment extends Fragment {
             profileId = PreferenceHandler.getInstance(getActivity()).getUserId();
 
 
-            if(profileId!=0){
 
-
-                Thread follower = new Thread(){
-
-                    public void run(){
-                        getFollowingByProfileId(profileId);
-                    }
-                };
-
-
-                follower.start();
-
-
-            }else{
-
-            }
 
 
             pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -532,6 +517,39 @@ public class ForFollowersFragment extends Fragment {
                 });
             }
         });
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isFragmentVisible_) {
+        super.setUserVisibleHint(true);
+
+        if (this.isVisible()) {
+            // we check that the fragment is becoming visible
+            if (isFragmentVisible_ && !_hasLoadedOnce) {
+                if (Util.isNetworkAvailable(getActivity())) {
+
+                    if(profileId!=0){
+
+
+                        Thread follower = new Thread(){
+
+                            public void run(){
+                                getFollowingByProfileId(profileId);
+                            }
+                        };
+
+
+                        follower.start();
+
+
+                    }else{
+
+                    }
+
+                }
+                _hasLoadedOnce = true;
+            }
+        }
     }
 
 

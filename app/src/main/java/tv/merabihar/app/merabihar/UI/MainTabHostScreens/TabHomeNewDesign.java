@@ -36,6 +36,7 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
             //Adding adapter to pager
             viewPager.setAdapter(adapter);
 
+
             //Adding onTabSelectedListener to swipe views
             tabLayout.addOnTabSelectedListener(this);
             tabLayout.setupWithViewPager(viewPager);
