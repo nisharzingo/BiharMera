@@ -1,80 +1,607 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card-view="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
-    android:orientation="vertical"
-
-    tools:context=".UI.Activity.Influencer.InfluencerProgramDetailScreen">
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/collapsing_toolbar_appbarlayout"
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="250dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
 
-        <!--  app:contentScrim : The Toolbar color when the
-              collapsing toolbar is collapsed. -->
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar_layout"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-            app:contentScrim="@color/colorPrimary" >
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp"
+            android:fitsSystemWindows="true">
 
-            <!-- app:layout_collapseMode : parallax means an animation effect,
-                 pin means fixed. -->
             <ImageView
-                android:id="@+id/collapsing_toolbar_image_view"
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/theme_combo"
+                android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"/>
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/collapsing_toolbar"
+                android:id="@+id/toolbar"
+                android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"/>
-
-
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
-
     </android.support.design.widget.AppBarLayout>
 
-
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:id="@+id/cardview_data_count"
         android:layout_height="match_parent"
         android:layout_marginTop="-30dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/collopasing_linear"
-        android:layout_below="@+id/collapsing_toolbar_appbarlayout"
-        card-view:cardElevation="5dp"
-        card_view:cardCornerRadius="30dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:id="@+id/cardview_data_count"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:layout_marginLeft="15dp"
+            android:padding="10dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/collopasing_linear">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="40dp">
+
+                <ImageView
+                    android:src="@drawable/orange_clock"
+                    android:layout_width="15dp"
+                    android:layout_gravity="bottom"
+                    android:layout_height="15dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#c76a22"
+                    android:text="  150 days left to expire"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="#464545"
+                    android:text="Offer Terms &#38; Conditions"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5px"
+                    android:textSize="12sp"
+                    android:text="* Offer only valid on Mobile"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="3dp"
+                android:background="#ACACAC"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="7dp">
+
+
+                <!-- stage1 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/influncer_stage1"
+                    android:orientation="vertical">
+
+                    <!--1st month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="1st Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--2nd month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="2nd Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--3rd month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="3rd Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--4th month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="4th Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--5th month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="5th Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!--stage 1 end-->
+
+
+                <!--stage2 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/influencer_stage2"
+                    android:orientation="vertical">
+
+                    <!--1st-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="1st"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--2nd -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="2nd"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!--stage 2 end-->
+
+
+
+                <!-- stage3 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/influncer_stage3"
+                    android:orientation="vertical">
+
+                    <!--1st-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="1st Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--2nd -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="2nd Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--3rd -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="3rd Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--4th -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="4th Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--5th-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="1st Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--6th -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="2nd Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--7th-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:background="#176e0b"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="3rd Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--8th -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ovel_tick"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="4th Month"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!--stage 3 end-->
+
+            </LinearLayout>
 
         </LinearLayout>
-    </LinearLayout>
 
 
-
-
-
-
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

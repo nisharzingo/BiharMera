@@ -104,18 +104,16 @@
         <activity android:name=".UI.Activity.Influencer.InviteFriendsScreen" />
         <activity android:name=".UI.Activity.FriendList.FriendListScreen" />
         <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen">
-
-
-
-        </activity>
-
-        <activity android:name=".UI.Activity.Influencer.Income">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".UI.Activity.Influencer.Income">
+
+
         </activity>
     </application>
 
