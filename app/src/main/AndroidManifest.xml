@@ -92,6 +92,7 @@
         <activity
             android:name=".UI.Activity.CategoryContentList"
             android:theme="@style/AppTheme" />
+
         <activity android:name=".UI.Activity.SettingScreen"></activity>
         <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign" />
         <activity
