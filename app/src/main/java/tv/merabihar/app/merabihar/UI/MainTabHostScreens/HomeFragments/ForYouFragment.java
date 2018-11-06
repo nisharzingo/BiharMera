@@ -100,6 +100,30 @@ public class ForYouFragment extends Fragment {
             mCategoryContents.setItemAnimator(new DefaultItemAnimator());
 
             mCategoryContents.setAdapter(adapter);
+            mCategoryContents.setOnScrollListener(new PageScrollListener(linearLayoutManager) {
+                @Override
+                protected void loadMoreItems() {
+                    isLoading = true;
+
+                    currentPage = currentPage+1;
+                    loadNextSetOfItems();
+                }
+
+                @Override
+                public int getTotalPageCount() {
+                    return currentPage;
+                }
+
+                @Override
+                public boolean isLastPage() {
+                    return isLastPage;
+                }
+
+                @Override
+                public boolean isLoading() {
+                    return isLoading;
+                }
+            });
 
 
 

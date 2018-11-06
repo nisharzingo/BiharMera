@@ -8,13 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ActiveTargetFragmentsAdapter;
 import tv.merabihar.app.merabihar.Adapter.TargetInfluencerAdapter;
+import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.TargetDes;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Util.PreferenceHandler;
+import tv.merabihar.app.merabihar.Util.ThreadExecuter;
+import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.SubscribedGoalsAPI;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,9 +34,9 @@ public class ActiveTargetFragment extends Fragment {
     RecyclerView recyclerView;
     private ProgressBar mProgressBar;
 
-    ArrayList<TargetDes> targetDesArrayList;
+    ArrayList<SubscribedGoals> targetDesArrayList;
 
-    TargetDes targetDes;
+    SubscribedGoals targetDes;
 
     public ActiveTargetFragment() {
         // Required empty public constructor
@@ -59,32 +68,70 @@ public class ActiveTargetFragment extends Fragment {
 
             targetDesArrayList = new ArrayList<>();
 
-            targetDes = new TargetDes();
-            targetDes.setTitle("Refer 5000 users - Earn Rs 2500");
-            targetDes.setDesc("Get 50 coins after 1 user signup by using your refer code");
+            getGoalsByProfileId(PreferenceHandler.getInstance(getActivity()).getUserId());
 
-            targetDesArrayList.add(targetDes);
 
-            targetDes = new TargetDes();
-            targetDes.setTitle("Login 5 days in a Week - Earn Rs 500");
-            targetDes.setDesc("Get 50 coins after 1 user signup by using your refer code");
-
-            targetDesArrayList.add(targetDes);
-
-            targetDes = new TargetDes();
-            targetDes.setTitle("Refer 5000 users - Earn Rs 2500");
-            targetDes.setDesc("Get 50 coins after 1 user signup by using your refer code");
-
-            targetDesArrayList.add(targetDes);
-
-            ActiveTargetFragmentsAdapter adapter = new ActiveTargetFragmentsAdapter(getActivity(),targetDesArrayList);
-            recyclerView.setAdapter(adapter);
             return view;
 
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void getGoalsByProfileId(final int id)
+    {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final SubscribedGoalsAPI categoryAPI = Util.getClient().create(SubscribedGoalsAPI.class);
+                Call<ArrayList<SubscribedGoals>> getCat = categoryAPI.getSubscribedGoalsByProfileId(id);
+                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                getCat.enqueue(new Callback<ArrayList<SubscribedGoals>>() {
+
+                    @Override
+                    public void onResponse(Call<ArrayList<SubscribedGoals>> call, Response<ArrayList<SubscribedGoals>> response) {
+
+
+                        targetDesArrayList =response.body();
+                        if(response.code() == 200 && targetDesArrayList!= null)
+                        {
+
+
+                            ActiveTargetFragmentsAdapter adapter = new ActiveTargetFragmentsAdapter(getActivity(),targetDesArrayList);
+                            recyclerView.setAdapter(adapter);
+
+
+
+
+                        }else{
+
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
+
+
+
+
+                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //System.out.println(TAG+" thread started");
+
+            }
+
+        });
+
     }
 
 }

@@ -785,9 +785,7 @@ public class PostContentScreen extends AppCompatActivity {
                             postEmail(emailModel);*/
 
                             Toast.makeText(PostContentScreen.this,"Blog created Successfull",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(PostContentScreen.this, TabMainActivity.class);
-                            startActivity(intent);
-                            PostContentScreen.this.finish();
+                            success();
                         }
                         else
                         {
@@ -940,9 +938,7 @@ public class PostContentScreen extends AppCompatActivity {
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
                             Toast.makeText(PostContentScreen.this,"Blog created Successfull",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(PostContentScreen.this, TabMainActivity.class);
-                            startActivity(intent);
-                            PostContentScreen.this.finish();
+                            success();
                         }
                         else
                         {
@@ -992,9 +988,7 @@ public class PostContentScreen extends AppCompatActivity {
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
                             Toast.makeText(PostContentScreen.this,"Blog created Successfull",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(PostContentScreen.this, TabMainActivity.class);
-                            startActivity(intent);
-                            PostContentScreen.this.finish();
+                            success();
                         }
                         else
                         {
@@ -1070,6 +1064,14 @@ public class PostContentScreen extends AppCompatActivity {
 
         });
 
+    }
+
+    public void success(){
+
+
+        Intent intent = new Intent(PostContentScreen.this, TabMainActivity.class);
+        startActivity(intent);
+        PostContentScreen.this.finish();
     }
 
 }

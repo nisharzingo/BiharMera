@@ -47,7 +47,7 @@ public class InviteFriendsScreen extends AppCompatActivity {
 
             if(profileId!=0){
 
-                mReferalCode.setText("MBIR"+profileId);
+                mReferalCode.setText("MBR"+profileId);
             }
 
             mReferalCode.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +61,8 @@ public class InviteFriendsScreen extends AppCompatActivity {
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipData clip = ClipData.newPlainText("label", text);
                         clipboard.setPrimaryClip(clip);
+
+                        Toast.makeText(InviteFriendsScreen.this, "Text copied", Toast.LENGTH_SHORT).show();
 
                     }
 

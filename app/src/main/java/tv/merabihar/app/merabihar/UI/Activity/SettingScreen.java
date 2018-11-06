@@ -59,7 +59,7 @@ public class SettingScreen extends AppCompatActivity {
 
     String referalCode,referCodeProfile;
 
-    UserProfile profile;
+    UserProfile profiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,6 +240,8 @@ public class SettingScreen extends AppCompatActivity {
 
                             UserProfile profile = response.body();
 
+                            profiles = response.body();
+
                             PreferenceHandler.getInstance(SettingScreen.this).setReferalcode(profile.getReferralCodeToUseForOtherProfile());
 
                             mProfileName.setText(""+profile.getFullName());
@@ -248,7 +250,7 @@ public class SettingScreen extends AppCompatActivity {
                                 mReferalCode.setText(""+profile.getReferralCodeToUseForOtherProfile());
                             }else{
 
-                                mReferalCode.setText("MBIR"+profile.getProfileId());
+                                mReferalCode.setText("MBR"+profile.getProfileId());
                             }
 
                             coinsUsed = profile.getUsedAmount();
@@ -287,14 +289,14 @@ public class SettingScreen extends AppCompatActivity {
         });
     }
 
-    public void UpdateProfile(final int id){
+    public void UpdateProfile(final UserProfile userProfile){
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
 
                 final ProfileAPI subCategoryAPI = Util.getClient().create(ProfileAPI.class);
-                Call<UserProfile> getProf = subCategoryAPI.getProfileById(id);
+                Call<UserProfile> getProf = subCategoryAPI.updateProfile(userProfile.getProfileId(),userProfile);
                 //Call<ArrayList<Blogs>> getBlog = blogApi.getBlogs();
 
                 getProf.enqueue(new Callback<UserProfile>() {
@@ -574,9 +576,52 @@ public class SettingScreen extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if(referCodeProfile==null||referCodeProfile.isEmpty()){
+        boolean update = false;
+
+        if(profiles!=null){
+
+            if(referCodeProfile==null||referCodeProfile.isEmpty()){
+
+                profiles.setReferralCodeToUseForOtherProfile(mReferalCode.getText().toString());
+                update = true;
+
+            }
+
+            int coins = Integer.parseInt(mCoins.getText().toString());
+
+            String balanceText = mBalance.getText().toString();
+            double balance = 0;
+
+            if(balanceText!=null&&!balanceText.isEmpty()&&balanceText.contains("Rs")){
+
+                balance = Double.parseDouble(balanceText.split(" ")[1]);
+
+
+            }
+
+            if(coinsUsed!=coins){
+
+                profiles.setUsedAmount(coins);
+                update = true;
+
+            }
+
+            if(wallet!=(int)balance){
+
+                profiles.setWalletBalance((int)balance);
+                update = true;
+
+            }
+
+
+            if(update){
+
+                UpdateProfile(profiles);
+            }
 
 
         }
+
+
     }
 }
