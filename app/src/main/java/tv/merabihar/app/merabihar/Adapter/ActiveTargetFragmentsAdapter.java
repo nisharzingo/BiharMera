@@ -1,31 +1,26 @@
 package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.squareup.picasso.Picasso;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
-import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.Model.TargetDes;
-import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
-import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 
-/**
- * Created by ZingoHotels Tech on 05-11-2018.
- */
+public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTargetFragmentsAdapter.ViewHolder> {
 
-public class TargetInfluencerAdapter extends RecyclerView.Adapter<TargetInfluencerAdapter.ViewHolder> {
     private Context context;
     private ArrayList<TargetDes> list;
-    public TargetInfluencerAdapter(Context context,ArrayList<TargetDes> list) {
+    public ActiveTargetFragmentsAdapter(Context context,ArrayList<TargetDes> list) {
 
         this.context = context;
         this.list = list;
@@ -37,7 +32,7 @@ public class TargetInfluencerAdapter extends RecyclerView.Adapter<TargetInfluenc
 
         try{
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.adapter_target_des, parent, false);
+                    .inflate(R.layout.active_fragement_adapter, parent, false);
             ViewHolder viewHolder = new ViewHolder(v);
             return viewHolder;
 
@@ -53,12 +48,6 @@ public class TargetInfluencerAdapter extends RecyclerView.Adapter<TargetInfluenc
 
         final TargetDes targetDes = list.get(position);
 
-        if(targetDes!=null){
-
-            holder.mTitle.setText(""+targetDes.getTitle());
-            holder.mDesc.setText(""+targetDes.getDesc());
-
-        }
     }
 
     @Override
@@ -69,24 +58,25 @@ public class TargetInfluencerAdapter extends RecyclerView.Adapter<TargetInfluenc
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder  {
 
-        MyTextView_Lato_Regular mTitle,mDesc;
+    class ViewHolder extends RecyclerView.ViewHolder {
 
+        TextView offerTitle, offerDetails;
+        Button activate_offer;
+        CircleImageView offerLogo;
 
         public ViewHolder(View itemView) {
             super(itemView);
             context = itemView.getContext();
             itemView.setClickable(true);
 
-            mTitle = (MyTextView_Lato_Regular) itemView.findViewById(R.id.target_title);
-            mDesc = (MyTextView_Lato_Regular) itemView.findViewById(R.id.target_des);
+            offerDetails = itemView.findViewById(R.id.offer_details);
+            offerTitle = itemView.findViewById(R.id.offer_title);
+            activate_offer = itemView.findViewById(R.id.activate_offer);
+            offerLogo = itemView.findViewById(R.id.offer_logo);
 
 
         }
 
-
     }
-
-
 }

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -28,6 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.NavigationListAdapter;
+import tv.merabihar.app.merabihar.Adapter.ReferalPeopleListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.Model.NavBarItems;
 import tv.merabihar.app.merabihar.Model.UserProfile;
@@ -40,6 +42,7 @@ import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
+import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 
 public class SettingScreen extends AppCompatActivity {
 
@@ -47,11 +50,16 @@ public class SettingScreen extends AppCompatActivity {
     CircleImageView mProfilePhoto;
     ProgressBar progressBar;
     LinearLayout mWhatsapp,mFaceBook,mSms,mMore,mInviteScreen;
+    TextView mCoins,mBalance,mInvite;
 
     ListView navBarListView;
     String[] title = null;
 
-    int profileId=0;
+    int profileId=0,wallet=0,coinsUsed=0;
+
+    String referalCode,referCodeProfile;
+
+    UserProfile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +81,16 @@ public class SettingScreen extends AppCompatActivity {
             mMore = (LinearLayout)findViewById(R.id.more_invite);
             mInviteScreen = (LinearLayout)findViewById(R.id.invite_screen);
 
+            mCoins = (TextView) findViewById(R.id.coins_value);
+            mBalance = (TextView)findViewById(R.id.balance_value);
+            mInvite = (TextView)findViewById(R.id.invite_value);
 
 
+          referalCode = PreferenceHandler.getInstance(SettingScreen.this).getReferalcode();
+
+            if(referalCode!=null&&!referalCode.isEmpty()){
+                getDirectRefer(referalCode);
+            }
 
 
 
@@ -235,6 +251,76 @@ public class SettingScreen extends AppCompatActivity {
                                 mReferalCode.setText("MBIR"+profile.getProfileId());
                             }
 
+                            coinsUsed = profile.getUsedAmount();
+                            wallet = profile.getWalletBalance();
+                            referCodeProfile = profile.getReferralCodeToUseForOtherProfile();
+
+                            if(profile.getProfilePhoto()!=null){
+
+                                String base=profile.getProfilePhoto();
+
+
+
+                                if(base != null && !base.isEmpty()){
+                                    Picasso.with(SettingScreen.this).load(base).placeholder(R.drawable.profile_image).
+                                            error(R.drawable.profile_image).into(mProfilePhoto);
+
+                                }else{
+                                    mProfilePhoto.setImageResource(R.drawable.profile_image);
+                                }
+                            }
+
+
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserProfile> call, Throwable t) {
+
+                    }
+                });
+
+            }
+
+        });
+    }
+
+    public void UpdateProfile(final int id){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final ProfileAPI subCategoryAPI = Util.getClient().create(ProfileAPI.class);
+                Call<UserProfile> getProf = subCategoryAPI.getProfileById(id);
+                //Call<ArrayList<Blogs>> getBlog = blogApi.getBlogs();
+
+                getProf.enqueue(new Callback<UserProfile>() {
+
+                    @Override
+                    public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
+
+                        progressBar.setVisibility(View.GONE);
+
+                        if (response.code() == 200)
+                        {
+                            System.out.println("Inside api");
+
+                            UserProfile profile = response.body();
+
+                            PreferenceHandler.getInstance(SettingScreen.this).setReferalcode(profile.getReferralCodeToUseForOtherProfile());
+
+                            mProfileName.setText(""+profile.getFullName());
+                            if(profile.getReferralCodeToUseForOtherProfile()!=null){
+
+                                mReferalCode.setText(""+profile.getReferralCodeToUseForOtherProfile());
+                            }else{
+
+                                mReferalCode.setText("MBIR"+profile.getProfileId());
+                            }
+
 
                             if(profile.getProfilePhoto()!=null){
 
@@ -353,5 +439,144 @@ public class SettingScreen extends AppCompatActivity {
         listView.setLayoutParams(params);
         listView.requestLayout();
         //mImagesList.getChildAt(0).requestFocus();
+    }
+
+    private void getDirectRefer(final String code){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
+                Call<ArrayList<UserProfile>> call = apiService.getDirectReferedProfile(code);
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+//                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
+                        int statusCode = response.code();
+
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfile = response.body();
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+                                //Collections.shuffle(responseProfile);
+
+
+                                getInDirectRefer(code,responseProfile.size());
+
+
+                            }
+                            else
+                            {
+
+
+                            }
+                        }
+                        else
+                        {
+
+
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+                        // Log error here since request failed
+
+
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
+
+    private void getInDirectRefer(final String code,final int directCount){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
+                Call<ArrayList<UserProfile>> call = apiService.getInDirectReferedProfile(code);
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+//                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
+                        int statusCode = response.code();
+
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfile = response.body();
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+                                //Collections.shuffle(responseProfile);
+
+
+                                mInvite.setText(""+responseProfile.size());
+
+                                int indirectCount = responseProfile.size();
+                                int balance = indirectCount - directCount;
+
+                                int amount = (balance * 10)+(directCount*50);
+
+                                mCoins.setText(""+amount);
+                                mBalance.setText("Rs "+((amount*1.0)/100.0));
+
+
+                            }
+                            else
+                            {
+
+
+                            }
+                        }
+                        else
+                        {
+
+
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+                        // Log error here since request failed
+
+
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if(referCodeProfile==null||referCodeProfile.isEmpty()){
+
+
+        }
     }
 }

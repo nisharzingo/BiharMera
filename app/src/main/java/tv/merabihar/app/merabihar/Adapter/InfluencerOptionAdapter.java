@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import tv.merabihar.app.merabihar.Model.Interest;
 import tv.merabihar.app.merabihar.UI.Activity.FollowOptions.FollowFragments.InterestFollowScreen;
 import tv.merabihar.app.merabihar.UI.Activity.FollowOptions.FollowFragments.PeopleFollowingScreen;
+import tv.merabihar.app.merabihar.UI.Activity.Influencer.ActiveTargetFragment;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.InfluencerTargetFragment;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForFollowersFragment;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForYouFragment;
@@ -39,7 +40,7 @@ public class InfluencerOptionAdapter  extends FragmentStatePagerAdapter {
                 return people;
 
             case 1:
-                InterestFollowScreen interest = new InterestFollowScreen();
+                ActiveTargetFragment interest = new ActiveTargetFragment();
                 return interest;
 
             default:

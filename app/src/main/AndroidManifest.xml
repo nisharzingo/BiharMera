@@ -34,6 +34,12 @@
         android:theme="@style/AppThemes">
         <activity android:name=".UI.Activity.SplashScreen">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity android:name=".UI.Activity.SlideOptionScreen" />
         <activity
@@ -96,18 +102,18 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".UI.Activity.Influencer.InfluencerProgramViewScreen"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
         <activity android:name=".UI.Activity.Influencer.InviteScreen"></activity>
         <activity android:name=".UI.Activity.Influencer.InviteFriendsScreen" />
         <activity android:name=".UI.Activity.FriendList.FriendListScreen" />
         <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
+
+        <activity android:name=".UI.Activity.Influencer.Income"></activity>
     </application>
 
 </manifest>

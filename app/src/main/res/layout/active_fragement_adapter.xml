@@ -1,0 +1,128 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <com.rey.material.widget.LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="149dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:id="@+id/offer_logo"
+            android:layout_width="wrap_content"
+            android:src="@drawable/bihar_nature"
+            android:layout_height="wrap_content" />
+
+    </com.rey.material.widget.LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="149dp"
+        android:paddingLeft="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textStyle="bold"
+            android:id="@+id/offer_title"
+            android:gravity="center_vertical"
+            android:textSize="19sp"
+            android:text="Earn Rs 120 Offer"
+            android:layout_weight="1"/>
+
+        <com.rey.material.widget.LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/month1_pb_circle"
+                android:src="@drawable/oval"/>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="1dp"
+                android:id="@+id/month1_pb_line"
+                android:background="#D9DBE4"
+                />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/month2_pb_circle"
+                android:src="@drawable/oval"/>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="1dp"
+                android:id="@+id/month2_pb_line"
+                android:background="#D9DBE4"
+                />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/month3_pb_circle"
+                android:src="@drawable/oval"/>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="1dp"
+                android:id="@+id/month3_pb_line"
+                android:background="#D9DBE4"
+                />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/month4_pb"
+                android:src="@drawable/oval"/>
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="1dp"
+                android:id="@+id/month4_pb_line"
+                android:background="#D9DBE4"
+                />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/month5_pb_circle"
+                android:src="@drawable/oval"/>
+
+        </com.rey.material.widget.LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/offer_details"
+            android:gravity="center_vertical"
+            android:text="You are only 5000 points away from earning Rs 120"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:padding="10dp"
+            android:textColor="#2ba2c6"
+            android:text="Activate Offer"
+            android:id="@+id/activate_offer"
+            android:background="@drawable/activate_offer_btn"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#918d8d"
+        />
+</LinearLayout>
+
