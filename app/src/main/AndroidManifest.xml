@@ -34,11 +34,6 @@
         android:theme="@style/AppThemes">
         <activity android:name=".UI.Activity.SplashScreen">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity android:name=".UI.Activity.SlideOptionScreen" />
@@ -114,7 +109,14 @@
 
         </activity>
 
-        <activity android:name=".UI.Activity.Influencer.Income"></activity>
+        <activity android:name=".UI.Activity.Influencer.Income">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

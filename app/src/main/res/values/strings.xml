@@ -16,6 +16,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="video_component_tag">video_container</string>
     <string name="file_provider_authority" translatable="false">tv.merabihar.app.merabihar.fileprovider</string>
+    <string name="income">Income</string>
 
 
     <array name="nav_user">

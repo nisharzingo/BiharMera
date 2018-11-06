@@ -44,20 +44,20 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/month1_pb_circle"
-                android:src="@drawable/oval"/>
+                android:src="@drawable/ovel_tick"/>
 
             <View
                 android:layout_width="20dp"
                 android:layout_height="1dp"
                 android:id="@+id/month1_pb_line"
-                android:background="#D9DBE4"
+                android:background="#176e0b"
                 />
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/month2_pb_circle"
-                android:src="@drawable/oval"/>
+                android:src="@drawable/oval_cross"/>
 
             <View
                 android:layout_width="20dp"
