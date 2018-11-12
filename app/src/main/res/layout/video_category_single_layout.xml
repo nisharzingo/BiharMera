@@ -14,13 +14,11 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:id="@+id/cat_title_name"
-        android:layout_marginLeft="8dp"
+        android:layout_margin="8dp"
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="15dp"
+        android:layout_margin="5dp"
         android:id="@+id/video_category_recyclerview_child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

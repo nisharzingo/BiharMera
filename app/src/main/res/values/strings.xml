@@ -26,4 +26,17 @@
         <item>Logout</item>
     </array>
 
+    <string name="term_policy">MERA BIHAR is committed to respecting and protecting the privacy of others. We pledge to guard your personal information in accordance with our privacy policy and respect the confidentiality of all visitor or subscriber data submitted to Mera Bihar Mobile Application.\n\n
+Sharing of Information MERA BIHAR will not disclose or share any information pertaining to sub-merchants to any other organization at any time unless the sub-merchant authorizes it.\n\n
+We share the personal information of customers like name, company name, address, telephone no, E-mail address only for our records purpose which is used later in the processing of the order, communicating with customers.\n\n
+Procurement of Information: We are committed to procure only the specific information from our customers &amp; Sub merchants. The Sub-Merchants may collect the personal information from their customers through the purchases that are made online through its site.\n\n
+The information we acquire by the customers &amp; Sub-Merchant is necessary to maintain the quality of services more efficiently.\n\n
+Security Measures: MERA BIHAR is highly concerned with the security measures as to maintain the data privacy &amp; confidentiality.\n\n
+All the personal information of a user is sent to our web server by using Secure Socket Layers (SSL) protocol, which encrypts all the information including your credit card information, before sending it to the Payment Gateway. This prevents the misuse of information from the unauthorized hands.\n\n
+Third Party Exposure: In online transaction, some important information will also be shared with the third parties as Credit card processors, concerned banks etc.\n\n
+MERA BIHAR is not responsible in any circumstances for any third party, which receives information of any customer by any unauthorized way.\n\n
+Recommendations &amp; Updations: Any suggestions &amp; updations regarding the privacy policy or any other questions &amp; views to update the policy will be appreciated in this case you may contact us.\n\n
+We respect the intention and purpose for which our clients submit any personal data. In accordance with our policy, we will not use any information for any means other than stated or implied (i.e., customer care, technical support, account management, etc.).\n\n
+</string>
+
 </resources>

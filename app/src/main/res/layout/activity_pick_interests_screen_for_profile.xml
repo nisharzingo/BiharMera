@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    tools:context=".UI.Activity.PickInterestsScreenForProfile">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <ImageView
+            android:id="@+id/tv_header_title"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="left"
+            android:src="@drawable/close_button" />
+    </android.support.v7.widget.Toolbar>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"
+        android:text="What interest you have?"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
+        android:textColor="#ffffff"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/linear_layout_background"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pick Your Interest"
+            android:paddingLeft="20dp"
+            android:id="@+id/title"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/interest_continue_btn"
+            android:background="@drawable/signup_ract"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Continue"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:textColor="#ffffff"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+
+            android:padding="5dp"
+            android:layout_below="@id/title"
+            android:layout_above="@id/interest_continue_btn"
+            >
+            <tv.merabihar.app.merabihar.CustomViews.CustomGridView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="3"
+                android:layout_marginTop="5dp"
+                android:choiceMode="multipleChoice"
+                android:id="@+id/interest_grid_view"
+
+
+
+                />
+        </ScrollView>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

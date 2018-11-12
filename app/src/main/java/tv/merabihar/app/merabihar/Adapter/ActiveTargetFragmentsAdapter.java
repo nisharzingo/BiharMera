@@ -1,7 +1,9 @@
 package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +29,7 @@ import tv.merabihar.app.merabihar.Model.Goals;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.TargetDes;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.Influencer.InfluencerProgramDetailScreen;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.GoalAPI;
@@ -65,6 +69,19 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
         if(targetDes!=null){
 
             getGoals(targetDes.getGoalId(),holder.offerTitle);
+
+            holder.mMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                    Intent i = new Intent(context, InfluencerProgramDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Goals",targetDes);
+                    i.putExtras(bundle);
+                    context.startActivity(i);
+                }
+            });
             if(targetDes.getGoalId()==1){
 
 
@@ -178,6 +195,7 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
         TextView offerTitle, offerDetails;
         Button activate_offer;
         CircleImageView offerLogo;
+        LinearLayout mMain;
         ImageView mCircle1,mCircle2,mCircle3,mCircle4,mCircle5;
         View mCircleView1,mCircleView2,mCircleView3,mCircleView4;
 
@@ -187,6 +205,7 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
             itemView.setClickable(true);
 
             offerDetails = itemView.findViewById(R.id.offer_details);
+            mMain = itemView.findViewById(R.id.layout_main);
             offerTitle = itemView.findViewById(R.id.offer_title);
             activate_offer = itemView.findViewById(R.id.activate_offer);
             offerLogo = itemView.findViewById(R.id.offer_logo);
@@ -211,6 +230,7 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
     {
 
 
+
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
@@ -231,6 +251,8 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
                         {
 
                             textView.setText(""+goals.getGoalName());
+
+
 
                         }else{
 

@@ -89,7 +89,7 @@
                     android:layout_gravity="center"
 
                     android:scaleType="centerCrop"
-                    android:src="@drawable/whatsapp_icons"
+                    android:src="@drawable/whatsapp"
                     app:layout_collapseMode="parallax"/>
 
 

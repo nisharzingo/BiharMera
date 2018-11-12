@@ -1,10 +1,12 @@
 package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.tuyenmonkey.mkloader.MKLoader;
 import java.util.ArrayList;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.ContentDetailScreen;
 
 public class VideoCategoryItemAdapter extends RecyclerView.Adapter<VideoCategoryItemAdapter.MyViewHolder> {
 
@@ -45,19 +48,25 @@ public class VideoCategoryItemAdapter extends RecyclerView.Adapter<VideoCategory
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
-        Contents mContent =  mContentsList.get(position);
+        final  Contents mContent =  mContentsList.get(position);
         ImageView content_poster = holder.content_poster;
         mCustomLoader = holder.customLoader;
 
         // load image from api
-        String urlString = "https://img.youtube.com/vi/m60m25m3sD8/0.jpg";
+        String urlString = "https://img.youtube.com/vi/"+mContent.getContentURL()+"/0.jpg";
         loadCroppedImage(urlString, content_poster);
 
         /*When clicked on the content image*/
         content_poster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(context, ContentDetailScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Contents",mContent);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
     }
@@ -77,7 +86,7 @@ public class VideoCategoryItemAdapter extends RecyclerView.Adapter<VideoCategory
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-                Log.e("Cropping Failed", errorDrawable.toString());
+               // Log.e("Cropping Failed", errorDrawable.toString());
 //                mCustomLoader.setVisibility(View.INVISIBLE);
             }
 

@@ -9,12 +9,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TabHost;
@@ -95,31 +92,31 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             TabHost.TabSpec tabMenu = tabHost.newTabSpec(ACCOUNT_TAB);
 /*9C9C9C*/
             labelHome.setText(getResources().getString(R.string.home));
-            imgHome.setImageResource(R.drawable.ic_home_black_24dp);
+            imgHome.setImageResource(R.drawable.home_icon);
             tabHome.setIndicator(tabIndicatorHome);
             Intent dash = new Intent(this, TabHomeNewDesign.class);
             tabHome.setContent(dash);
 
             labelSearch.setText(getResources().getString(R.string.search));
-            imgSearch.setImageResource(R.drawable.ic_search_black_24dp);
+            imgSearch.setImageResource(R.drawable.search_icons);
             tabStay.setIndicator(tabIndicatorStayView);
             tabStay.setContent(new Intent(this, TabSearchActivity.class));
             //tabStay.setContent(new Intent(this, RoomViewStayActivity.class));
 
             labelStory.setText(getResources().getString(R.string.story));
-            imgStory.setImageResource(R.drawable.ic_image_black_24dp);
+            imgStory.setImageResource(R.drawable.post_icons);
             tabNotification.setIndicator(tabIndicatorNotification);
             //tabNotification.setContent(new Intent(this, NotificationOptionsActivity.class));
             tabNotification.setContent(new Intent(this, TabPostOptionsActivity.class));
 
             labelVideo.setText(getResources().getString(R.string.video));
-            imgVideo.setImageResource(R.drawable.video_gallery);
+            imgVideo.setImageResource(R.drawable.video_icon);
             tabVideo.setIndicator(tabIndicatorVideo);
             //tabNotification.setContent(new Intent(this, NotificationOptionsActivity.class));
             tabVideo.setContent(new Intent(this, TabVideoNewDesign.class));
 
             labelAccount.setText(getResources().getString(R.string.account));
-            imgAccount.setImageResource(R.drawable.person_icon_navi);
+            imgAccount.setImageResource(R.drawable.account_icon);
             tabMenu.setIndicator(tabIndicatorMenu);
             tabMenu.setContent(new Intent(this, TabAccountActivity.class));
 
@@ -140,6 +137,7 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
                 final ImageView ad = (ImageView) view.findViewById(R.id.signin_popup_image);
                 final Button now = (Button) view.findViewById(R.id.signin_popup_showContent_btn);
                 final Button later = (Button) view.findViewById(R.id.signin_popup_earn_btn);
+                final TextView close = (TextView) view.findViewById(R.id.signin_popupclose_txt);
 
                 builder.setView(view);
 
@@ -158,6 +156,17 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
 
                     }
                 });
+
+               close.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+
+                       dialog.dismiss();
+
+
+                   }
+               });
+
 
                 later.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -222,23 +231,23 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
 
         labelHome.setTextColor(Color.parseColor("#000000"));
         labelHome.setTypeface(Typeface.DEFAULT);
-        imgHome.setImageResource(R.drawable.ic_home_black_24dp);
+        imgHome.setImageResource(R.drawable.home_icon);
 
         labelSearch.setTextColor(Color.parseColor("#000000"));
         labelSearch.setTypeface(Typeface.DEFAULT);
-        imgSearch.setImageResource(R.drawable.ic_search_black_24dp);
+        imgSearch.setImageResource(R.drawable.search_icons);
 
         labelStory.setTextColor(Color.parseColor("#000000"));
         labelStory.setTypeface(Typeface.DEFAULT);
-        imgStory.setImageResource(R.drawable.ic_image_black_24dp);
+        imgStory.setImageResource(R.drawable.post_icons);
 
         labelVideo.setTextColor(Color.parseColor("#000000"));
         labelVideo.setTypeface(Typeface.DEFAULT);
-        imgVideo.setImageResource(R.drawable.video_gallery);
+        imgVideo.setImageResource(R.drawable.video_icon);
 
         labelAccount.setTextColor(Color.parseColor("#000000"));
         labelAccount.setTypeface(Typeface.DEFAULT);
-        imgAccount.setImageResource(R.drawable.person_icon_navi);
+        imgAccount.setImageResource(R.drawable.account_icon);
 
 
         changeTabSelection(tabId);
@@ -249,23 +258,23 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
         if (HOME_TAB.equals(tabId)) {
             labelHome.setTextColor(Color.parseColor("#540CFA"));
             labelHome.setTypeface(null, Typeface.BOLD);
-            imgHome.setImageResource(R.drawable.selected_home);
+            imgHome.setImageResource(R.drawable.selected_home_icon);
         } else if (SEARCH_TAB.equals(tabId)) {
             labelSearch.setTextColor(Color.parseColor("#540CFA"));
             labelSearch.setTypeface(null, Typeface.BOLD);
-            imgSearch.setImageResource(R.drawable.selected_search);
+            imgSearch.setImageResource(R.drawable.selected_search_icons);
         } else if (STORY_TAB.equals(tabId)) {
             labelStory.setTextColor(Color.parseColor("#540CFA"));
             labelStory.setTypeface(null, Typeface.BOLD);
-            imgStory.setImageResource(R.drawable.selected_story);
+            imgStory.setImageResource(R.drawable.selected_post);
         } else if (VIDEO_TAB.equals(tabId)) {
             labelVideo.setTextColor(Color.parseColor("#540CFA"));
             labelVideo.setTypeface(null, Typeface.BOLD);
-            imgVideo.setImageResource(R.drawable.video_gallery_selected);
+            imgVideo.setImageResource(R.drawable.selected_video_icon);
         } else if (ACCOUNT_TAB.equals(tabId)) {
             labelAccount.setTextColor(Color.parseColor("#540CFA"));
             labelAccount.setTypeface(null, Typeface.BOLD);
-            imgAccount.setImageResource(R.drawable.selected_account);
+            imgAccount.setImageResource(R.drawable.selected_account_icon);
         }
     }
 

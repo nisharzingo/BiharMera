@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -46,8 +47,9 @@ public class InviteFriendsScreen extends AppCompatActivity {
             int profileId = PreferenceHandler.getInstance(InviteFriendsScreen.this).getUserId();
 
             if(profileId!=0){
-
-                mReferalCode.setText("MBR"+profileId);
+                String ref = "MBR"+profileId;
+                String referCodeText = Base64.encodeToString(ref.getBytes(), Base64.DEFAULT);
+                mReferalCode.setText(""+referCodeText);
             }
 
             mReferalCode.setOnClickListener(new View.OnClickListener() {

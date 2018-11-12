@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,11 +87,7 @@ public class SettingScreen extends AppCompatActivity {
             mInvite = (TextView)findViewById(R.id.invite_value);
 
 
-          referalCode = PreferenceHandler.getInstance(SettingScreen.this).getReferalcode();
 
-            if(referalCode!=null&&!referalCode.isEmpty()){
-                getDirectRefer(referalCode);
-            }
 
 
 
@@ -242,20 +239,35 @@ public class SettingScreen extends AppCompatActivity {
 
                             profiles = response.body();
 
-                            PreferenceHandler.getInstance(SettingScreen.this).setReferalcode(profile.getReferralCodeToUseForOtherProfile());
+
 
                             mProfileName.setText(""+profile.getFullName());
+                            String ref = "MBR"+profile.getProfileId();
+                            String referCodeText = Base64.encodeToString(ref.getBytes(), Base64.DEFAULT);
+                            PreferenceHandler.getInstance(SettingScreen.this).setReferalcode(ref);
                             if(profile.getReferralCodeToUseForOtherProfile()!=null){
 
-                                mReferalCode.setText(""+profile.getReferralCodeToUseForOtherProfile());
+
+
+                                if(referCodeText.equals(profile.getReferralCodeToUseForOtherProfile())){
+                                    mReferalCode.setText(""+profile.getReferralCodeToUseForOtherProfile());
+                                }else{
+                                    mReferalCode.setText(""+referCodeText);
+                                }
+
+
                             }else{
 
-                                mReferalCode.setText("MBR"+profile.getProfileId());
+                                ref = "MBR"+profile.getProfileId();
+                                referCodeText = Base64.encodeToString(ref.getBytes(), Base64.DEFAULT);
+                                mReferalCode.setText(""+referCodeText);
                             }
 
                             coinsUsed = profile.getUsedAmount();
                             wallet = profile.getWalletBalance();
-                            referCodeProfile = profile.getReferralCodeToUseForOtherProfile();
+
+                            referCodeProfile = "MBR"+profile.getProfileId();
+
 
                             if(profile.getProfilePhoto()!=null){
 
@@ -272,7 +284,11 @@ public class SettingScreen extends AppCompatActivity {
                                 }
                             }
 
+                            referalCode = PreferenceHandler.getInstance(SettingScreen.this).getReferalcode();
 
+                            if(referalCode!=null&&!referalCode.isEmpty()){
+                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                            }
 
 
                         }
@@ -306,8 +322,8 @@ public class SettingScreen extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        if (response.code() == 200)
-                        {
+                        if (response.code() == 204)
+                        {/*
                             System.out.println("Inside api");
 
                             UserProfile profile = response.body();
@@ -320,7 +336,7 @@ public class SettingScreen extends AppCompatActivity {
                                 mReferalCode.setText(""+profile.getReferralCodeToUseForOtherProfile());
                             }else{
 
-                                mReferalCode.setText("MBIR"+profile.getProfileId());
+                                mReferalCode.setText("MR"+profile.getProfileId());
                             }
 
 
@@ -340,7 +356,8 @@ public class SettingScreen extends AppCompatActivity {
                             }
 
 
-
+*/
+                            SettingScreen.this.finish();
 
                         }
                     }
@@ -443,7 +460,7 @@ public class SettingScreen extends AppCompatActivity {
         //mImagesList.getChildAt(0).requestFocus();
     }
 
-    private void getDirectRefer(final String code){
+    private void getDirectRefer(final String code,final double coinsValue,final double rupees){
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -472,19 +489,23 @@ public class SettingScreen extends AppCompatActivity {
                                 //Collections.shuffle(responseProfile);
 
 
-                                getInDirectRefer(code,responseProfile.size());
+                                getInDirectRefer(code,responseProfile.size(),coinsValue,rupees);
 
 
                             }
                             else
                             {
 
+                                mCoins.setText(""+(int)coinsValue);
+                                mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
 
                             }
                         }
                         else
                         {
 
+                            mCoins.setText(""+(int)coinsValue);
+                            mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
 
                         }
 //                callGetStartEnd();
@@ -493,7 +514,8 @@ public class SettingScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
-
+                        mCoins.setText(""+(int)coinsValue);
+                        mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
 
 
                         Log.e("TAG", t.toString());
@@ -503,7 +525,7 @@ public class SettingScreen extends AppCompatActivity {
         });
     }
 
-    private void getInDirectRefer(final String code,final int directCount){
+    private void getInDirectRefer(final String code,final int directCount,final double coinsValue,final double rupees){
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -535,24 +557,29 @@ public class SettingScreen extends AppCompatActivity {
                                 mInvite.setText(""+responseProfile.size());
 
                                 int indirectCount = responseProfile.size();
-                                int balance = indirectCount - directCount;
+                                int balance = (indirectCount - directCount);
 
-                                int amount = (balance * 10)+(directCount*50);
 
-                                mCoins.setText(""+amount);
+                                double amount = (balance * 10)+(directCount*50)+coinsValue;
+
+
+
+                                mCoins.setText(""+(int)amount);
                                 mBalance.setText("Rs "+((amount*1.0)/100.0));
 
 
                             }
                             else
                             {
-
+                                mCoins.setText(""+(int)coinsValue);
+                                mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
 
                             }
                         }
                         else
                         {
-
+                            mCoins.setText(""+(int)coinsValue);
+                            mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
 
                         }
 //                callGetStartEnd();
@@ -561,7 +588,8 @@ public class SettingScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
-
+                        mCoins.setText(""+(int)coinsValue);
+                        mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
 
 
                         Log.e("TAG", t.toString());
@@ -580,9 +608,11 @@ public class SettingScreen extends AppCompatActivity {
 
         if(profiles!=null){
 
-            if(referCodeProfile==null||referCodeProfile.isEmpty()){
+            if(referCodeProfile==null||referCodeProfile.isEmpty()||!referCodeProfile.equals(mReferalCode.getText().toString())){
 
-                profiles.setReferralCodeToUseForOtherProfile(mReferalCode.getText().toString());
+                String converted = Base64.encodeToString(mReferalCode.getText().toString().getBytes(), Base64.DEFAULT);
+                System.out.println(" Base 64 "+converted);
+                profiles.setReferralCodeToUseForOtherProfile(referCodeProfile);
                 update = true;
 
             }
@@ -620,6 +650,8 @@ public class SettingScreen extends AppCompatActivity {
             }
 
 
+        }else{
+            SettingScreen.this.finish();
         }
 
 

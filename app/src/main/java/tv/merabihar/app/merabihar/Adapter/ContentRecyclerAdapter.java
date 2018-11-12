@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -108,6 +109,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
 
     String url,fileNames;
     boolean isFirstTimePressed = false;
+    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n\n http://bit.ly/2JXcOnw";
 
     OnBottomReachedListener onBottomReachedListener;
 
@@ -176,15 +178,110 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                         if(contents!=null){
 
                             String contentTitle =contents.getTitle();
-                            String contentDesc =contents.getDescription();
+                            final String contentDesc =contents.getDescription();
                             String createdBy =contents.getCreatedBy();
                             String createdDate =contents.getCreatedDate();
 
                             holder.mProfileName.setText(""+createdBy);
                             holder.mContentTitle.setText(""+contentTitle);
                             holder.mContentDesc.setText(""+contentDesc);
+                           
+                            int countLine= holder.mContentDesc.getLineHeight();
+                            System.out.println("LineCount " + countLine);
+                            if (countLine>=25){
+                               holder.mMore.setVisibility(View.VISIBLE);
+                            }
                            // holder.mProfileName.setText(""+createdBy);
 
+                            holder.mMore.setOnClickListener(new View.OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+
+
+                                    holder.mContentDesc.setMaxLines(5);
+                                    holder.mContentDesc.setText(""+contentDesc);
+
+                                    int countLine= holder.mContentDesc.getLineHeight();
+                                    System.out.println("LineCount " + countLine);
+                                    if (countLine>=50){
+                                        holder.mMoreExtnd.setVisibility(View.GONE);
+                                        holder.mMoreLine.setVisibility(View.VISIBLE);
+                                        holder.mMore.setVisibility(View.GONE);
+                                        holder.mLess.setVisibility(View.GONE);
+                                    }else{
+                                        holder.mMore.setVisibility(View.GONE);
+                                        holder.mMoreLine.setVisibility(View.GONE);
+                                        holder.mMoreExtnd.setVisibility(View.GONE);
+                                        holder.mLess.setVisibility(View.VISIBLE);
+                                    }
+
+                                }
+                            });
+
+                            holder.mMoreLine.setOnClickListener(new View.OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+
+
+                                    holder.mContentDesc.setMaxLines(10);
+                                    holder.mContentDesc.setText(""+contentDesc);
+
+                                    int countLine= holder.mContentDesc.getLineHeight();
+                                    System.out.println("LineCount " + countLine);
+                                    if (countLine>=70){
+                                        holder.mMoreExtnd.setVisibility(View.VISIBLE);
+                                        holder.mMore.setVisibility(View.GONE);
+                                        holder.mMoreLine.setVisibility(View.GONE);
+                                        holder.mLess.setVisibility(View.GONE);
+                                    }else{
+                                        holder.mMore.setVisibility(View.GONE);
+                                        holder.mMoreExtnd.setVisibility(View.GONE);
+                                        holder.mMoreLine.setVisibility(View.GONE);
+                                        holder.mLess.setVisibility(View.VISIBLE);
+                                    }
+
+                                }
+                            });
+
+
+                            holder.mMoreExtnd.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    if(contents.getContentType().equalsIgnoreCase("Video")){
+
+                                        Intent intent = new Intent(context, ContentDetailScreen.class);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("Contents",contents);
+                                        intent.putExtras(bundle);
+                                        context.startActivity(intent);
+
+                                    }else if(contents.getContentType().equalsIgnoreCase("Image")){
+
+                                        Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("Contents",contents);
+                                        intent.putExtras(bundle);
+                                        context.startActivity(intent);
+                                    }
+                                }
+                            });
+
+                            holder.mLess.setOnClickListener(new View.OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+
+                                    holder.mLess.setVisibility(View.GONE);
+                                    holder.mMoreLine.setVisibility(View.GONE);
+                                    holder.mMoreExtnd.setVisibility(View.GONE);
+                                    holder.mMore.setVisibility(View.VISIBLE);
+                                    holder.mContentDesc.setMaxLines(2);
+
+                                }
+                            });
                             if(createdDate!=null||!createdDate.isEmpty()){
 
                                 if(createdDate.contains("T")){
@@ -269,12 +366,12 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
 
                                 if(profileLike){
 
-                                    holder.mLike.setImageResource(R.drawable.liked__icon);
+                                    holder.mLike.setImageResource(R.drawable.liked_icon);
                                 }
 
                                 if(profileDislike){
 
-                                    holder.mDislike.setImageResource(R.drawable.unliked_icon);
+                                    holder.mDislike.setImageResource(R.drawable.unliked_icons);
                                 }
                             }
 
@@ -398,7 +495,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                                             {
                                                 //System.out.println("isFirstTimePressed = "+isFirstTimePressed);
                                                 isFirstTimePressed = false;
-                                                if(profileId!=0 && holder.mLike.getDrawable().getConstantState()!=context.getResources().getDrawable(R.drawable.liked__icon).getConstantState()){
+                                                if(profileId!=0 && holder.mLike.getDrawable().getConstantState()!=context.getResources().getDrawable(R.drawable.liked_icon).getConstantState()){
 
                                                     holder.mLike.setEnabled(false);
                                                     Likes likes = new Likes();
@@ -406,7 +503,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                                                     likes.setProfileId(profileId);
                                                     likes.setLiked(true);
 
-                                                    if (holder.mDislike.getDrawable().getConstantState() == context.getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
+                                                    if (holder.mDislike.getDrawable().getConstantState() == context.getResources().getDrawable( R.drawable.unliked_icons).getConstantState())
                                                     {
                                                         if(holder.mDislikedId.getText().toString()!=null&&!holder.mDislikedId.getText().toString().isEmpty()){
 
@@ -553,7 +650,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                                         likes.setProfileId(profileId);
                                         likes.setLiked(false);
 
-                                        if (holder.mLike.getDrawable().getConstantState() == context.getResources().getDrawable( R.drawable.liked__icon).getConstantState())
+                                        if (holder.mLike.getDrawable().getConstantState() == context.getResources().getDrawable( R.drawable.liked_icon).getConstantState())
                                         {
                                             if(holder.mLikedId.getText().toString()!=null&&!holder.mLikedId.getText().toString().isEmpty()){
 
@@ -705,6 +802,45 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                                 }
                             });
 
+                            holder.mMoreShare.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    shareApplication();
+                                }
+                            });
+                            holder.mShare.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    fileNames = contents.getContentId()+""+contents.getProfileId();
+
+                                    AsyncTask mMyTask;
+                                    if(contents.getContentType().equalsIgnoreCase("Video")) {
+
+                                        url = contents.getContentURL();
+
+
+                                        if (url != null && !url.isEmpty()) {
+
+                                            mMyTask = new DownloadTasks()
+                                                    .execute(stringToURL(
+                                                            "https://img.youtube.com/vi/"+url+"/0.jpg"
+                                                    ));
+
+                                        }
+
+                                    }else{
+
+                                        mMyTask = new DownloadTasks()
+                                                .execute(stringToURL(
+                                                        ""+contents.getContentImage().get(0).getImages()
+                                                ));
+                                    }
+
+                                    //shareApplication();
+                                }
+                            });
+
 
                             holder.mComment.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -769,9 +905,10 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
         ImageView mIcon;
         LinearLayout mProfileContent;
         FrameLayout mContentDetail;
+        TextView mMore,mLess,mMoreExtnd,mMoreLine;
 
 
-        ImageView mLike,mDislike,mComment,mWhatsapp;
+        ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare;
 
         public ContentViewHolder(View view) {
             super(view);
@@ -790,12 +927,18 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
             mTags = (TextViewSFProDisplaySemibold) view.findViewById(R.id.content_tags);
             mContentPic = (RoundedImageView) view.findViewById(R.id.content_image);
             mIcon = (ImageView) view.findViewById(R.id.youtube_icon);
+            mMore = (TextView) view.findViewById(R.id.read_more);
+            mMoreExtnd = (TextView) view.findViewById(R.id.read_more_extend);
+            mMoreLine = (TextView) view.findViewById(R.id.read_more_extend_line);
+            mLess = (TextView) view.findViewById(R.id.read_less);
             mContentDetail = (FrameLayout) view.findViewById(R.id.content_detail);
             mProfileContent = (LinearLayout) view.findViewById(R.id.profile_lay_content);
             mLike = (ImageView) view.findViewById(R.id.likes_image);
             mDislike = (ImageView) view.findViewById(R.id.unlikes_image);
             mComment = (ImageView) view.findViewById(R.id.comments_image);
             mWhatsapp = (ImageView) view.findViewById(R.id.whatsapp_share);
+            mShare = (ImageView) view.findViewById(R.id.share_image);
+            mMoreShare = (ImageView) view.findViewById(R.id.more_icons);
 
 
         }
@@ -988,8 +1131,8 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
 
-                            like.setImageResource(R.drawable.liked__icon);
-                            dislike.setImageResource(R.drawable.unlike_icon);
+                            like.setImageResource(R.drawable.liked_icon);
+                            dislike.setImageResource(R.drawable.unlike_icons);
                             likedId.setText(""+response.body().getLikeId());
                             dislikeId.setText("");
                             String likeText = likeCount.getText().toString();
@@ -1056,8 +1199,8 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
 
-                            like.setImageResource(R.drawable.liked__icon);
-                            dislike.setImageResource(R.drawable.unlike_icon);
+                            like.setImageResource(R.drawable.liked_icon);
+                            dislike.setImageResource(R.drawable.unlike_icons);
                             likedId.setText(""+dislikedId);
                             dislikeId.setText("");
                             String likeText = likeCount.getText().toString();
@@ -1128,8 +1271,8 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
 
-                            like.setImageResource(R.drawable.unliked_icon);
-                            dislike.setImageResource(R.drawable.like_icon);
+                            like.setImageResource(R.drawable.unliked_icons);
+                            dislike.setImageResource(R.drawable.non_like);
                             likedId.setText(""+dislikedId);
                             dislikeId.setText("");
                             String likeText = likeCount.getText().toString();
@@ -1203,8 +1346,8 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                             {
                                 dialog.dismiss();
                             }
-                            dislike.setImageResource(R.drawable.unliked_icon);
-                            like.setImageResource(R.drawable.like_icon);
+                            dislike.setImageResource(R.drawable.unliked_icons);
+                            like.setImageResource(R.drawable.non_like);
 
                             dislikeId.setText(""+response.body().getLikeId());
                             likedId.setText("");
@@ -1398,7 +1541,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
 
 
          final ProgressDialog dialog = new ProgressDialog(context);
-        dialog.setMessage("Loading Packages");
+        dialog.setMessage("Following");
         dialog.setCancelable(false);
         dialog.show();
 
@@ -1570,7 +1713,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                     shareIntent.setPackage("com.whatsapp");
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
-                    shareIntent.putExtra(Intent.EXTRA_TEXT,"Check");
+                    shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
                     shareIntent.setType("image/png");
                     try{
 
@@ -1580,6 +1723,153 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                         Toast.makeText(context, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
                     }
                     //context.startActivity(Intent.createChooser(shareIntent,"Share with"));
+
+                }catch (Exception we)
+                {
+                    we.printStackTrace();
+                    Toast.makeText(context, "Unable to send,Check Permission", Toast.LENGTH_SHORT).show();
+                }
+
+            }else {
+                // Notify user that an error occurred while downloading image
+                //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private class DownloadTasks extends AsyncTask<URL,Void,Bitmap> {
+        // Before the tasks execution
+        protected void onPreExecute(){
+            // Display the progress dialog on async task start
+            //mProgressDialog.show();
+            //Toast.makeText(context, "Downloading image...", Toast.LENGTH_SHORT).show();
+        }
+
+        // Do the task in background/non UI thread
+        protected Bitmap doInBackground(URL...urls){
+            URL url = urls[0];
+            HttpURLConnection connection = null;
+
+            try{
+                // Initialize a new http url connection
+                connection = (HttpURLConnection) url.openConnection();
+
+                // Connect the http url connection
+                connection.connect();
+
+                // Get the input stream from http url connection
+                InputStream inputStream = connection.getInputStream();
+
+                /*
+                    BufferedInputStream
+                        A BufferedInputStream adds functionality to another input stream-namely,
+                        the ability to buffer the input and to support the mark and reset methods.
+                */
+                /*
+                    BufferedInputStream(InputStream in)
+                        Creates a BufferedInputStream and saves its argument,
+                        the input stream in, for later use.
+                */
+                // Initialize a new BufferedInputStream from InputStream
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+
+                /*
+                    decodeStream
+                        Bitmap decodeStream (InputStream is)
+                            Decode an input stream into a bitmap. If the input stream is null, or
+                            cannot be used to decode a bitmap, the function returns null. The stream's
+                            position will be where ever it was after the encoded data was read.
+
+                        Parameters
+                            is InputStream : The input stream that holds the raw data
+                                              to be decoded into a bitmap.
+                        Returns
+                            Bitmap : The decoded bitmap, or null if the image data could not be decoded.
+                */
+                // Convert BufferedInputStream to Bitmap object
+                Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
+
+                // Return the downloaded bitmap
+                return bmp;
+
+            }catch(IOException e){
+                e.printStackTrace();
+            }finally{
+                // Disconnect the http url connection
+                connection.disconnect();
+            }
+            return null;
+        }
+
+        // When all async task done
+        protected void onPostExecute(Bitmap result){
+            // Hide the progress dialog
+            // mProgressDialog.dismiss();
+
+            if(result!=null){
+                // Display the downloaded image into ImageView
+                //mImageView.setImageBitmap(result);
+
+                // Save bitmap to internal storage
+
+                // Set the ImageView image from internal storage
+                //mImageViewInternal.setImageURI(imageInternalUri);
+
+                try{
+
+
+
+                    File sd = Environment.getExternalStorageDirectory();
+                    String fileName = fileNames+ ".png";
+
+                    File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
+                    //create directory if not exist
+                    if (!directory.exists() && !directory.isDirectory()) {
+                        directory.mkdirs();
+                    }
+
+
+                    File file = new File(directory, fileName);
+
+                    //if(file.exists())
+
+                    Intent shareIntent;
+
+
+                    OutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        out.flush();
+                        out.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    fileName=file.getPath();
+
+                    Uri bmpUri = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        bmpUri = FileProvider.getUriForFile(context, "tv.merabihar.app.merabihar.fileprovider", file);
+                    }else{
+                        bmpUri = Uri.parse("file://"+fileName);
+                    }
+                    // Uri bmpUri = Uri.parse("file://"+path);
+                    shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+
+                    /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
+                    sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
+                    shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                    shareIntent.setType("image/png");
+                   /* try{
+
+                        context.startActivity(shareIntent);
+
+                    }catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(context, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+                    }*/
+                    context.startActivity(Intent.createChooser(shareIntent,"Share with"));
 
                 }catch (Exception we)
                 {
@@ -1626,6 +1916,37 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
         paint.setAntiAlias(true);
         paint.setUnderlineText(false);
         canvas.drawBitmap(resized,pw,ph,paint);
+        return result;
+    }
+
+    public Bitmap marks(Bitmap src) {
+
+        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.app_logo);
+        Bitmap layoutSrc = BitmapFactory.decodeResource(context.getResources(),R.drawable.layout_canvas);
+        int w = layoutSrc.getWidth();
+        int h = layoutSrc.getHeight();
+        int pw=w-w;
+        int ph=h-h;
+        int nw = (w * 10)/100;
+        int nh = (h * 10)/100;
+        Bitmap result = Bitmap.createBitmap(w, h, layoutSrc.getConfig());
+        Canvas canvas = new Canvas(result);
+        Bitmap resized = Bitmap.createScaledBitmap(icon, nw, nh, true);
+        Bitmap resizeds = Bitmap.createScaledBitmap(src, w, h/2, true);
+
+        // canvas.drawBitmap(src, 0, 0, null);
+        canvas.drawBitmap(resizeds, 0, 0, null);
+        canvas.drawBitmap(layoutSrc,0,0,null);
+        Paint paint = new Paint();
+
+        paint.setTextSize(15);
+        paint.setColor(Color.BLACK);
+        paint.setAntiAlias(true);
+        paint.setUnderlineText(false);
+        canvas.drawText("Content title", w+5, h+5, paint);
+        canvas.drawBitmap(resizeds,pw,ph,paint);
+        canvas.drawBitmap(resized,10,10,paint);
+
         return result;
     }
 

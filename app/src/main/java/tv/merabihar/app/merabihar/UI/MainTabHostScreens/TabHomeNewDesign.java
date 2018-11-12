@@ -45,7 +45,8 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
                 @Override
                 public void onClick(View view) {
 
-                    Intent video  = new Intent(TabHomeNewDesign.this, YouTubeListScreen.class);
+                    Intent video  = new Intent(TabHomeNewDesign.this, VideoCategoryScreens.class);
+                    //Intent video  = new Intent(TabHomeNewDesign.this, YouTubeListScreen.class);
                     startActivity(video);
                 }
             });

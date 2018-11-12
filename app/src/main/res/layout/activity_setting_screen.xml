@@ -450,7 +450,7 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_gravity="center"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/more" />
+                                android:src="@drawable/more_icon" />
 
 
                         </LinearLayout>

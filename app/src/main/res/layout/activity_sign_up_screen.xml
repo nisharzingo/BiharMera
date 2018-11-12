@@ -36,23 +36,43 @@
             android:textColor="#444444"
             android:textSize="18dp" />
 
-        <EditText
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/nameInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@fonts/roboto_light"
+            android:textColorHint="@color/text_grey"
+            android:hint="Full Name"
+
+            >
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/full_name"
+                android:maxLength="50"
+                android:fontFamily="@fonts/roboto_light"
+                android:inputType="text"
+                style="@style/fp_editText" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <!--<EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
             android:hint="Full Name"
-            android:id="@+id/full_name"
+
             android:inputType="text"
             android:textColor="#000000"
             android:textColorHint="@color/text_grey" />
-
-        <View
+-->
+       <!-- <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />
+            android:background="#b9b9b9" />-->
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -99,14 +119,33 @@
                 />
         </RadioGroup>
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/emailInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@fonts/roboto_light"
+            android:textColorHint="@color/text_grey"
+            android:hint="Email address"
+
+            >
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/email"
+                android:maxLength="50"
+                android:fontFamily="@fonts/roboto_light"
+                android:inputType="textEmailAddress"
+                style="@style/fp_editText" />
+        </android.support.design.widget.TextInputLayout>
+
+
+      <!--  <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
             android:hint="Email address"
-            android:id="@+id/email"
+
             android:inputType="textEmailAddress"
             android:textColor="#000000"
             android:textColorHint="@color/text_grey" />
@@ -115,16 +154,35 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />
+            android:background="#b9b9b9" />-->
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/mobile_numberInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@fonts/roboto_light"
+            android:textColorHint="@color/text_grey"
+            android:hint="Mobile Number"
+
+            >
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/mobile_number"
+                android:maxLength="50"
+                android:fontFamily="@fonts/roboto_light"
+                android:inputType="number"
+                style="@style/fp_editText" />
+        </android.support.design.widget.TextInputLayout>
+
+
+       <!-- <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
-            android:hint="Mobile Number"
-            android:id="@+id/mobile_number"
+
+
             android:inputType="number"
             android:textColor="#000000"
             android:textColorHint="@color/text_grey" />
@@ -133,16 +191,36 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />
+            android:background="#b9b9b9" />-->
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/passwordInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@fonts/roboto_light"
+            app:passwordToggleEnabled="true"
+            android:textColorHint="@color/text_grey"
+            android:hint="Password"
+
+            >
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/password"
+                android:maxLength="50"
+                android:fontFamily="@fonts/roboto_light"
+                android:inputType="textPassword"
+                style="@style/fp_editText" />
+        </android.support.design.widget.TextInputLayout>
+
+
+       <!-- <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
             android:hint="Password"
-            android:id="@+id/password"
+
             android:inputType="textPassword"
             android:textColor="#000000"
             android:textColorHint="@color/text_grey" />
@@ -151,16 +229,36 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />
+            android:background="#b9b9b9" />-->
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/cnfrmpasswordInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@fonts/roboto_light"
+            app:passwordToggleEnabled="true"
+            android:textColorHint="@color/text_grey"
+            android:hint="Confirm Password"
+
+            >
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/confirm_password"
+                android:maxLength="50"
+                android:fontFamily="@fonts/roboto_light"
+                android:inputType="textPassword"
+                style="@style/fp_editText" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <!--<EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
             android:hint="Confirm Password"
-            android:id="@+id/confirm_password"
+
             android:inputType="textPassword"
             android:textColor="#000000"
             android:textColorHint="@color/text_grey"/>
@@ -169,16 +267,36 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />
+            android:background="#b9b9b9" />-->
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/referal_codeInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@fonts/roboto_light"
+
+            android:textColorHint="@color/text_grey"
+            android:hint="Referal Code(Optional)"
+
+            >
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/referal_code"
+                android:maxLength="50"
+                android:fontFamily="@fonts/roboto_light"
+                android:inputType="text"
+                style="@style/fp_editText" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <!--<EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="#00000000"
             android:fontFamily="@fonts/roboto_light"
             android:hint="Referal Code(Optional)"
-            android:id="@+id/referal_code"
+
             android:inputType="text"
             android:textColor="#000000"
             android:textColorHint="@color/text_grey" />
@@ -188,7 +306,7 @@
             android:layout_height="2dp"
             android:layout_marginTop="9dp"
             android:background="#b9b9b9" />
-
+-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

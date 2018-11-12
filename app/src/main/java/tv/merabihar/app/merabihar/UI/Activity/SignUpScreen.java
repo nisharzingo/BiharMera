@@ -4,8 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -36,8 +40,8 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 public class SignUpScreen extends AppCompatActivity {
 
     FrameLayout mCreateAccount;
-    EditText mName,mEmail,mMobile,mPassword,mConfirmPassword,mReferalCode;
-    TextView mLoginScreen;
+    TextInputEditText mName,mEmail,mMobile,mPassword,mConfirmPassword,mReferalCode;
+    TextView mLoginScreen,mPrivacy;
     RadioButton mMale,mFemale,mOther;
     CheckBox mTerms;
 
@@ -49,13 +53,14 @@ public class SignUpScreen extends AppCompatActivity {
             setContentView(R.layout.activity_sign_up_screen);
 
             mCreateAccount = (FrameLayout)findViewById(R.id.createAccount);
-            mName = (EditText)findViewById(R.id.full_name);
-            mEmail = (EditText)findViewById(R.id.email);
-            mMobile = (EditText)findViewById(R.id.mobile_number);
-            mPassword = (EditText)findViewById(R.id.password);
-            mConfirmPassword = (EditText)findViewById(R.id.confirm_password);
-            mReferalCode = (EditText)findViewById(R.id.referal_code);
+            mName = (TextInputEditText)findViewById(R.id.full_name);
+            mEmail = (TextInputEditText)findViewById(R.id.email);
+            mMobile = (TextInputEditText)findViewById(R.id.mobile_number);
+            mPassword = (TextInputEditText)findViewById(R.id.password);
+            mConfirmPassword = (TextInputEditText)findViewById(R.id.confirm_password);
+            mReferalCode = (TextInputEditText)findViewById(R.id.referal_code);
             mLoginScreen = (TextView)findViewById(R.id.login_screen);
+            mPrivacy = (TextView)findViewById(R.id.termsConditionText);
             mMale = (RadioButton)findViewById(R.id.sign_up_male);
             mFemale = (RadioButton)findViewById(R.id.sign_up_female);
             mOther = (RadioButton)findViewById(R.id.sign_up_other);
@@ -89,6 +94,127 @@ public class SignUpScreen extends AppCompatActivity {
                 }
             });
 
+            mPrivacy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent create = new Intent(SignUpScreen.this,PrivacyPolicyScreen.class);
+                    startActivity(create);
+
+                }
+            });
+
+
+            mName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                    if( mName.getText().length()>0)
+                    {
+                        mName.setError(null);
+                    }
+
+                }
+            });
+
+            mEmail.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                    if( mEmail.getText().length()>0)
+                    {
+                        mEmail.setError(null);
+                    }
+
+                }
+            });
+
+            mMobile.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                    if( mMobile.getText().length()>0)
+                    {
+                        mMobile.setError(null);
+                    }
+
+                }
+            });
+
+            mPassword.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                    if( mPassword.getText().length()>0)
+                    {
+                        mPassword.setError(null);
+                    }
+
+                }
+            });
+
+            mConfirmPassword.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                    if( mConfirmPassword.getText().length()>0)
+                    {
+                        mConfirmPassword.setError(null);
+                    }
+
+                }
+            });
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -108,27 +234,51 @@ public class SignUpScreen extends AppCompatActivity {
 
         if(name==null||name.isEmpty()){
 
-            Toast.makeText(this, "Please enter Name", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Please enter Name", Toast.LENGTH_SHORT).show();
+            mName.requestFocus();
+            mName.setError("Please enter Name");
 
-        }else if(email==null||email.isEmpty()){
+        }else if(!isValidMail(email)){
 
-            Toast.makeText(this, "Please enter Email", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Please enter Email", Toast.LENGTH_SHORT).show();
+            mEmail.requestFocus();
+            mEmail.setError("Please enter Email");
 
-        }else if(mobile==null||mobile.isEmpty()){
+        }else if(!isValidMobile(mobile)){
 
-            Toast.makeText(this, "Please enter Mobile", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Please enter Mobile", Toast.LENGTH_SHORT).show();
+            mMobile.requestFocus();
+            mMobile.setError("Please enter valid Mobile");
 
         }else if(password==null||password.isEmpty()){
 
-            Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
+            mPassword.requestFocus();
+            mPassword.setError("Please enter Password");
+
+        }else if(password!=null&&!password.isEmpty()&&password.length()<8){
+
+            // Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
+            mPassword.requestFocus();
+            mPassword.setError("Password length is 8");
+
+        }else if(password!=null&&!password.isEmpty()&&password.contains(" ")){
+
+            // Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
+            mPassword.requestFocus();
+            mPassword.setError("Password should not contain space");
 
         }else if(confirmPassword==null||confirmPassword.isEmpty()){
 
-            Toast.makeText(this, "Please enter Confirm Password", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Please enter Confirm Password", Toast.LENGTH_SHORT).show();
+            mConfirmPassword.requestFocus();
+            mConfirmPassword.setError("Please enter Confirm Password");
 
         }else if(!password.equals(confirmPassword)){
 
-            Toast.makeText(this, "Password not match", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Password not match", Toast.LENGTH_SHORT).show();
+            mConfirmPassword.requestFocus();
+            mConfirmPassword.setError("Password is not matching");
         }else if(!mMale.isChecked()&&!mFemale.isChecked()&&!mOther.isChecked()){
 
             Toast.makeText(this, "Please select Gender", Toast.LENGTH_SHORT).show();
@@ -161,15 +311,40 @@ public class SignUpScreen extends AppCompatActivity {
 
             if(referal!=null&&!referal.isEmpty()){
 
-                profiles.setReferralCodeUsed(referal);
-                profiles.setUsedAmount(25);
-                checkUserByReferalCode(profiles,"Normal",referal);
+                String stringFromBase = new String(Base64.decode(referal, Base64.DEFAULT));
+                if(referal.contains("MBR")){
+                    profiles.setReferralCodeUsed(referal);
+                    profiles.setReferralAmount(50.0);
+                    profiles.setReferralAmountForOtherProfile(0.5);
+                    checkUserByReferalCode(profiles,"Normal",referal);
+                }else{
+                    profiles.setReferralCodeUsed(stringFromBase);
+                    profiles.setReferralAmount(50.0);
+                    profiles.setReferralAmountForOtherProfile(0.5);
+                    checkUserByReferalCode(profiles,"Normal",stringFromBase);
+                }
+
+
 
             }else{
                 checkUserByEmailId(profiles,"Normal");
             }
 
         }
+
+    }
+
+    private boolean isValidMobile(String phone) {
+
+        System.out.println("Mobile "+phone);
+        System.out.println("Mobile valid "+android.util.Patterns.PHONE.matcher(phone).matches());
+        return android.util.Patterns.PHONE.matcher(phone).matches();
+
+    }
+
+    private boolean isValidMail(String email) {
+
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 
     }
 
@@ -205,16 +380,23 @@ public class SignUpScreen extends AppCompatActivity {
                                 String referSuper = responseProfile.get(0).getReferralCodeOfSuperParents();
 
                                 if(referUsed!=null&&!referUsed.isEmpty()){
+
                                     userProfile.setReferralCodeOfParents(referUsed);
+
+
                                 }else{
                                     userProfile.setReferralCodeOfParents(userProfile.getReferralCodeUsed());
                                 }
 
                                 if(referSuper!=null&&!referSuper.isEmpty()){
-                                    userProfile.setReferralCodeOfSuperParents(referUsed);
+
+                                    userProfile.setReferralCodeOfSuperParents(referSuper);
+
                                 }else{
                                     if(referParent!=null&&!referParent.isEmpty()){
+
                                         userProfile.setReferralCodeOfSuperParents(referParent);
+
                                     }else{
                                         userProfile.setReferralCodeOfSuperParents(userProfile.getReferralCodeUsed());
                                     }
@@ -492,7 +674,7 @@ public class SignUpScreen extends AppCompatActivity {
 
                                 Toast.makeText(SignUpScreen.this,"Profile created Successfull",Toast.LENGTH_SHORT).show();
                                 //Intent intent = new Intent(SignUpScreen.this, PickInterestsScreenForProfile.class);
-                                Intent intent = new Intent(SignUpScreen.this, TabMainActivity.class);
+                                Intent intent = new Intent(SignUpScreen.this, PickInterestsScreenForProfile.class);
                                 intent.putExtra("Activity","SignUp");
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);

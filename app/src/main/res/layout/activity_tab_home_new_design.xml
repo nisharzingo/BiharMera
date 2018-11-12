@@ -26,12 +26,13 @@
             android:id="@+id/main_title_tabs"/>
 
         <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/tv_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/television"
             android:id="@+id/video"
-            android:layout_gravity="end"
-            android:layout_margin="10dp"/>
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"/>
     </FrameLayout>
 
 

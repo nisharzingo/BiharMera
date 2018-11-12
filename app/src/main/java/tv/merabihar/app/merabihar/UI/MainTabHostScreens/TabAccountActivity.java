@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -156,7 +157,9 @@ public class TabAccountActivity extends AppCompatActivity {
                                 mProfileAbout.setText(""+profile.getPrefix());
                             }
 
-                            PreferenceHandler.getInstance(TabAccountActivity.this).setReferalcode(profile.getReferralCodeToUseForOtherProfile());
+                            String ref = "MBR"+profile.getProfileId();
+                            String referCodeText = Base64.encodeToString(ref.getBytes(), Base64.DEFAULT);
+                            PreferenceHandler.getInstance(TabAccountActivity.this).setReferalcode(ref);
 
                             if(profile.getProfilePhoto()!=null){
 
