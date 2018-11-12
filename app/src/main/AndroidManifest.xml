@@ -85,7 +85,9 @@
         <activity
             android:name=".UI.Activity.CategoryContentList"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UI.Activity.SettingScreen" />
+        <activity android:name=".UI.Activity.SettingScreen">
+
+        </activity>
         <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign" />
         <activity
             android:name=".UI.Activity.FollowOptions.FollowOptionsActivity"
@@ -99,15 +101,16 @@
         <activity android:name=".UI.Activity.Influencer.InviteScreen" />
         <activity android:name=".UI.Activity.Influencer.InviteFriendsScreen" />
         <activity android:name=".UI.Activity.FriendList.FriendListScreen" />
-        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen"></activity>
-        <activity android:name=".UI.Activity.Influencer.Income"></activity>
-        <activity android:name=".UI.YoutubePlayList.YouTubeListScreen" />
-        <activity android:name=".UI.MainTabHostScreens.VideoCategoryScreens">
+        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".UI.Activity.Influencer.Income"></activity>
+        <activity android:name=".UI.YoutubePlayList.YouTubeListScreen" />
+        <activity android:name=".UI.MainTabHostScreens.VideoCategoryScreens">
         </activity>
     </application>
 
