@@ -1,6 +1,8 @@
 package tv.merabihar.app.merabihar.UI.MainTabHostScreens;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,11 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.SettingScreen;
 
 public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeListener{
 
@@ -37,6 +41,8 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
     int defaultValue = 0;
     public static final int MY_PERMISSIONS_REQUEST_RESULT = 1;
 
+    String type="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,12 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             setContentView(R.layout.activity_tab_main);
 
             Bundle bundle = getIntent().getExtras();
+
+            if(bundle!=null){
+
+                type = bundle.getString("Activity");
+
+            }
 
 
 
@@ -119,6 +131,59 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
 
 
 
+           if(type!=null&&!type.isEmpty()){
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(TabMainActivity.this);
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view = inflater.inflate(R.layout.earn_money_popup,null);
+
+                final ImageView ad = (ImageView) view.findViewById(R.id.signin_popup_image);
+                final Button now = (Button) view.findViewById(R.id.signin_popup_showContent_btn);
+                final Button later = (Button) view.findViewById(R.id.signin_popup_earn_btn);
+
+                builder.setView(view);
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+
+
+
+                now.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        dialog.dismiss();
+
+
+                    }
+                });
+
+                later.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        dialog.dismiss();
+                        Intent approve = new Intent(TabMainActivity.this,SettingScreen.class);
+
+                        startActivity(approve);
+
+                    }
+                });
+
+                ad.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    dialog.dismiss();
+                    Intent approve = new Intent(TabMainActivity.this,SettingScreen.class);
+
+                    startActivity(approve);
+
+                }
+            });
+
+           }
 
 
             /** Add the tabs to the TabHost to display. */

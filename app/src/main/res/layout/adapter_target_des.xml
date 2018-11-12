@@ -16,59 +16,64 @@
 
 
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-
                 android:gravity="center"
+
                 android:background="@drawable/theme_combo"
                 android:orientation="vertical">
 
-                <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
-                    android:id="@+id/target_title"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/goal_details"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
+                        android:id="@+id/target_title"
+                        android:layout_width="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:lineSpacingExtra="3dp"
+                        />
+
+                    <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
+                        android:id="@+id/target_des"
+                        android:layout_width="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:textColor="@color/white"
+                        android:lineSpacingExtra="3dp"
+                        />
+
+                </LinearLayout>
 
 
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:lineSpacingExtra="3dp"
-                    />
-
-                <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
-                    android:id="@+id/target_des"
-                    android:layout_width="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_height="wrap_content"
-
-                    android:gravity="center"
-                    android:textSize="15dp"
-
-                    android:textColor="@color/white"
-                    android:lineSpacingExtra="3dp"
-                    />
 
                 <android.support.v7.widget.AppCompatButton
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimary"
-
                     android:layout_gravity="bottom|end"
                     android:layout_margin="5dp"
-                    android:id="@+id/follow_interest"
+                    android:id="@+id/activated_offer"
                     android:background="@drawable/rect_grayoutline1"
                     android:layout_width="120dp"
                     android:layout_alignParentRight="true"
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
-                    android:text="View Details"
+                    android:text="Activate Offer"
                     android:textAllCaps="false"
 
                     />
 
-            </LinearLayout>
+            </FrameLayout>
 
     </android.support.v7.widget.CardView>
 

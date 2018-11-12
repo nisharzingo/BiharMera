@@ -1,6 +1,8 @@
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="150dp"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
     android:orientation="horizontal"
+    android:layout_margin="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -31,7 +33,7 @@
             android:id="@+id/offer_title"
             android:gravity="center_vertical"
             android:textSize="19sp"
-            android:text="Earn Rs 120 Offer"
+            android:text=""
             android:layout_weight="1"/>
 
         <com.rey.material.widget.LinearLayout
@@ -44,20 +46,20 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/month1_pb_circle"
-                android:src="@drawable/ovel_tick"/>
+                android:src="@drawable/oval"/>
 
             <View
                 android:layout_width="20dp"
                 android:layout_height="1dp"
                 android:id="@+id/month1_pb_line"
-                android:background="#176e0b"
+                android:background="#D9DBE4"
                 />
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/month2_pb_circle"
-                android:src="@drawable/oval_cross"/>
+                android:src="@drawable/oval"/>
 
             <View
                 android:layout_width="20dp"
@@ -103,13 +105,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="gone"
             android:id="@+id/offer_details"
             android:gravity="center_vertical"
             android:text="You are only 5000 points away from earning Rs 120"
             android:layout_weight="1"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="0dp"
             android:padding="10dp"
             android:textColor="#2ba2c6"

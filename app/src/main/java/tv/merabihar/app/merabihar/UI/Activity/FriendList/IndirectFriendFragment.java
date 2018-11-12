@@ -89,6 +89,71 @@ public class IndirectFriendFragment  extends Fragment {
                 ProfileFollowAPI apiService =
                         Util.getClient().create(ProfileFollowAPI.class);
 
+                Call<ArrayList<UserProfile>> call = apiService.getDirectReferedProfile(code);
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+//                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
+                        int statusCode = response.code();
+
+                        mProgressBar.setVisibility(View.GONE);
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfile = response.body();
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+                                //Collections.shuffle(responseProfile);
+
+                               getInDirectRefer(code,responseProfile);
+
+
+                            }
+                            else
+                            {
+
+                                getInDirectRefer(code,null);
+
+                            }
+                        }
+                        else
+                        {
+
+                            getInDirectRefer(code,null);
+
+                            Toast.makeText(getActivity(),response.message(),Toast.LENGTH_SHORT).show();
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+                        // Log error here since request failed
+
+                        mProgressBar.setVisibility(View.GONE);
+                        getInDirectRefer(code,null);
+
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
+
+    private void getInDirectRefer(final String code,final ArrayList<UserProfile> profileArrayList){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
                 Call<ArrayList<UserProfile>> call = apiService.getInDirectReferedProfile(code);
 
                 call.enqueue(new Callback<ArrayList<UserProfile>>() {
@@ -108,8 +173,19 @@ public class IndirectFriendFragment  extends Fragment {
                             {
                                 //Collections.shuffle(responseProfile);
 
-                                ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),responseProfile);
-                                recyclerView.setAdapter(adapter);
+                                if(profileArrayList!=null&&profileArrayList.size()!=0){
+
+
+                                    responseProfile.removeAll(profileArrayList);
+
+                                }
+
+                                if(responseProfile!=null&&responseProfile.size()!=0){
+
+                                    ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),responseProfile);
+                                    recyclerView.setAdapter(adapter);
+                                }
+
 
 
                             }

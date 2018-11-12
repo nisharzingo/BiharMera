@@ -20,7 +20,7 @@
 
 
     <array name="nav_user">
-        <item>Check-In</item>
+        <!--<item>Check-In</item>-->
         <item>Friends List</item>
         <item>Influencer Program</item>
         <item>Logout</item>

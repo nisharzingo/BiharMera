@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,19 +12,23 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
+import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tv.merabihar.app.merabihar.Adapter.ActiveTargetFragmentsAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_SF_Pro_Light;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplayRegular;
@@ -31,6 +36,7 @@ import tv.merabihar.app.merabihar.Model.ContentImages;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
 import tv.merabihar.app.merabihar.Model.ProfileFollowMapping;
+import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.Util.Constants;
@@ -39,8 +45,9 @@ import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
+import tv.merabihar.app.merabihar.WebAPI.SubscribedGoalsAPI;
 
-public class ContentDetailScreen extends AppCompatActivity implements YouTubePlayer.OnInitializedListener{
+public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener,YouTubePlayer.PlaybackEventListener{
 
 
     ImageView mback;
@@ -56,6 +63,8 @@ public class ContentDetailScreen extends AppCompatActivity implements YouTubePla
 
     Contents contents;
     int mappingId=0;
+    long videoTime = 0;
+    SubscribedGoals sg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,10 +190,12 @@ public class ContentDetailScreen extends AppCompatActivity implements YouTubePla
 
                 String vWatch = "W" + contents.getContentId();
                 getFollowingsByProfileId(profileId,contents.getProfileId());
+                getGoalsByProfileId(profileId);
 
 
                 if (contents.getProfile() == null) {
                     getProfile(contents.getProfileId());
+
                 } else {
 
 
@@ -344,6 +355,8 @@ public class ContentDetailScreen extends AppCompatActivity implements YouTubePla
 
         if (!wasRestored) {
             player.loadVideo(url);
+            videoTime = player.getCurrentTimeMillis();
+            System.out.println(" Time of video "+videoTime);
             //mPlayer.loadVideo("9rLZYyMbJic");
         }
         else
@@ -357,6 +370,8 @@ public class ContentDetailScreen extends AppCompatActivity implements YouTubePla
                                         YouTubeInitializationResult errorReason) {
         mPlayer = null;
     }
+
+
 
     private void getFollowingsByProfileId(final int id, final int contentProfileId){
 
@@ -543,4 +558,186 @@ public class ContentDetailScreen extends AppCompatActivity implements YouTubePla
             }
         });
     }
+
+
+    @Override
+    public void onPlaying() {
+
+        videoTime = mPlayer.getDurationMillis();
+        System.out.println("System time  vide "+videoTime);
+    }
+
+    @Override
+    public void onPaused() {
+        videoTime = mPlayer.getCurrentTimeMillis();
+        System.out.println("System time  vide "+mPlayer.getCurrentTimeMillis());
+    }
+
+    @Override
+    public void onStopped() {
+
+    }
+
+    @Override
+    public void onBuffering(boolean b) {
+
+    }
+
+    @Override
+    public void onSeekTo(int i) {
+
+    }
+
+    @Override
+    public void finish() {
+        Intent data = new Intent();
+        int t = (mPlayer.getCurrentTimeMillis()/1000);
+        data.putExtra("tiempo",t );
+        System.out.println("Value youtube "+t);
+        setResult(0, data);
+
+        if(sg!=null){
+
+            int value = Integer.parseInt(sg.getRewardsEarned());
+            sg.setRewardsEarned(""+(t+value));
+            if(sg.getStatus().equals("Activated")){
+
+                String endDate = sg.getEndDate();
+
+                if(endDate!=null&&!endDate.isEmpty()){
+
+                    if(endDate.contains("T")){
+
+                        String dats[] = endDate.split("T");
+                        try {
+                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dats[0]);
+
+                            if(new Date().getTime()-date.getTime()>0){
+
+                                sg.setExtraDescription(""+(54000-(t+value)));
+                                sg.setStatus("Penalty");
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+            sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+            profileSubScribed(sg);
+        }
+        super.finish();
+    }
+    public void getGoalsByProfileId(final int id)
+    {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final SubscribedGoalsAPI categoryAPI = Util.getClient().create(SubscribedGoalsAPI.class);
+                Call<ArrayList<SubscribedGoals>> getCat = categoryAPI.getSubscribedGoalsByProfileIdAndGoal(id,3);
+                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                getCat.enqueue(new Callback<ArrayList<SubscribedGoals>>() {
+
+                    @Override
+                    public void onResponse(Call<ArrayList<SubscribedGoals>> call, Response<ArrayList<SubscribedGoals>> response) {
+
+
+
+                        if(response.code() == 200 && response.body()!= null)
+                        {
+
+                            if(response.body().size()!=0){
+
+                                 sg = response.body().get(0);
+
+                                 if(sg!=null){
+
+
+                                 }
+
+
+                            }
+
+
+                        }else{
+
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
+
+
+
+
+                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //System.out.println(TAG+" thread started");
+
+            }
+
+        });
+
+    }
+
+    private void profileSubScribed(final SubscribedGoals sg) {
+
+        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
+        dialog.setMessage("Loading..");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                SubscribedGoalsAPI mapApi = Util.getClient().create(SubscribedGoalsAPI.class);
+                Call<SubscribedGoals> response = mapApi.updateSubscribedGoals(sg.getSubscribedGoalId(),sg);
+                response.enqueue(new Callback<SubscribedGoals>() {
+                    @Override
+                    public void onResponse(Call<SubscribedGoals> call, Response<SubscribedGoals> response) {
+
+                        System.out.println(response.code());
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SubscribedGoals> call, Throwable t) {
+
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+
+                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
+    }
+
 }
