@@ -33,12 +33,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemes">
         <activity android:name=".UI.Activity.SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
         <activity android:name=".UI.Activity.SlideOptionScreen" />
         <activity
@@ -91,8 +85,7 @@
         <activity
             android:name=".UI.Activity.CategoryContentList"
             android:theme="@style/AppTheme" />
-
-        <activity android:name=".UI.Activity.SettingScreen"></activity>
+        <activity android:name=".UI.Activity.SettingScreen" />
         <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign" />
         <activity
             android:name=".UI.Activity.FollowOptions.FollowOptionsActivity"
@@ -102,27 +95,20 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".UI.Activity.Influencer.InfluencerProgramViewScreen"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity android:name=".UI.Activity.Influencer.InviteScreen"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".UI.Activity.Influencer.InviteScreen" />
         <activity android:name=".UI.Activity.Influencer.InviteFriendsScreen" />
         <activity android:name=".UI.Activity.FriendList.FriendListScreen" />
-        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen">
+        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen"></activity>
+        <activity android:name=".UI.Activity.Influencer.Income"></activity>
+        <activity android:name=".UI.YoutubePlayList.YouTubeListScreen" />
+        <activity android:name=".UI.MainTabHostScreens.VideoCategoryScreens">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".UI.Activity.Influencer.Income">
-
-
-        </activity>
-        <activity
-            android:name=".UI.YoutubePlayList.YouTubeListScreen"
-            />
-
     </application>
 
 </manifest>

@@ -57,6 +57,7 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:id="@+id/radio_group_gender"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
@@ -81,7 +82,6 @@
                 android:background="@drawable/radio_btn_selector"
                 android:textColor="@drawable/rbtn_textcolor_selector"
                 android:text="Female"
-
                 android:id="@+id/sign_up_female"
                 android:textSize="16sp"
                 android:gravity="center"/>
