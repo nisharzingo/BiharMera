@@ -11,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import tv.merabihar.app.merabihar.BuildConfig;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabMainActivity;
@@ -25,7 +27,10 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         try{
+            Fresco.initialize(this);
+
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);

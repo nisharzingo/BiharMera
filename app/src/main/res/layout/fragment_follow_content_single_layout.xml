@@ -1,0 +1,129 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="500dp">
+
+    <!--ll child1-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="3dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="3dp"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/follow_frag_img_view1"
+                android:layout_weight="1">
+
+            </com.facebook.drawee.view.SimpleDraweeView>
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_width="match_parent"
+                android:id="@+id/follow_frag_img_view2"
+                android:scaleType="fitXY"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginTop="3dp">
+
+            </com.facebook.drawee.view.SimpleDraweeView>
+
+        </LinearLayout>
+
+        <!--For displaying video thumbnail-->
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="match_parent"
+            android:id="@+id/follow_frag_img_view3"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:layout_weight="1"
+            android:orientation="vertical">
+        </com.facebook.drawee.view.SimpleDraweeView>
+
+    </LinearLayout>
+
+
+    <!--ll child1-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_marginBottom="3dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:id="@+id/follow_frag_img_view4"
+                    android:layout_marginRight="3dp"
+                    android:layout_height="match_parent" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_marginRight="3dp"
+                    android:id="@+id/follow_frag_img_view5"
+                    android:layout_width="0dp"
+                    android:scaleType="fitXY"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="0dp"
+                    android:id="@+id/follow_frag_img_view6"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_marginBottom="3dp"
+            android:orientation="horizontal">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:id="@+id/follow_frag_img_view7"
+                    android:layout_marginRight="3dp"
+                    android:layout_height="match_parent" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_marginRight="3dp"
+                    android:id="@+id/follow_frag_img_view8"
+                    android:scaleType="fitXY"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="0dp"
+                    android:id="@+id/follow_frag_img_view9"
+                    android:scaleType="fitXY"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

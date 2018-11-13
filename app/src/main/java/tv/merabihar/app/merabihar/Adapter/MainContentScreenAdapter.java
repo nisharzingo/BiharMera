@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.FollowFragments;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForFollowersFragment;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForYouFragment;
 
@@ -35,8 +36,9 @@ public class MainContentScreenAdapter  extends FragmentStatePagerAdapter {
                 return people;
 
             case 1:
-                ForFollowersFragment interest = new ForFollowersFragment();
-                return interest;
+                FollowFragments followFragments = new FollowFragments();
+//                ForFollowersFragment interest = new ForFollowersFragment();
+                return followFragments;
 
             default:
                 return null;

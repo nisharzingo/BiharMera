@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -75,11 +76,6 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
         TextView closePopup = mPopupDialog.findViewById(R.id.popupclose_terms_condition_close);
         TextView termsCondText = mPopupDialog.findViewById(R.id.terms_condition_txt);
-/*
-        LinearLayout linearLayout = mPopupDialog.findViewById(R.id.termsandcondlinearlayout);
-        Animation animation = AnimationUtils.loadAnimation(this,R.anim.dialog_terms_cond);
-        linearLayout.setAnimation(animation);
-*/
 
         getGoals(targetDesc.getGoalId(),termsCondText);
 
@@ -91,6 +87,7 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
             }
         });
+        mPopupDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT); // setting popup width to match parent
         mPopupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mPopupDialog.getWindow().setGravity(Gravity.BOTTOM);
         mPopupDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);

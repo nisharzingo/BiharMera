@@ -107,7 +107,7 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             imgStory.setImageResource(R.drawable.post_icons);
             tabNotification.setIndicator(tabIndicatorNotification);
             //tabNotification.setContent(new Intent(this, NotificationOptionsActivity.class));
-            tabNotification.setContent(new Intent(this, TabPostOptionsActivity.class));
+            tabNotification.setContent(new Intent(this, TabPostMediaActivity.class));
 
             labelVideo.setText(getResources().getString(R.string.video));
             imgVideo.setImageResource(R.drawable.video_icon);
