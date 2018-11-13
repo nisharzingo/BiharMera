@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.SettingScreen;
 
 public class Income extends AppCompatActivity {
 
@@ -35,12 +36,29 @@ public class Income extends AppCompatActivity {
         coinTxt = findViewById(R.id.income_totalcoins_txt);
         rupeesTxt = findViewById(R.id.income_totalrupees_txt);
 
-        // fetch rupees from Api
-        String rupessString = "199.65222555";
+        mIncomeToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // perform whatever you want on back arrow click
+                Intent settingIntent = new Intent(Income.this, SettingScreen.class);
+                startActivity(settingIntent);
+                finish();
+            }
+        });
+
+
+
+        // fetch rupees from SettingScreen Activity
+       //  String rupessString = "199.65222555";
+
+        String coins = getIntent().getStringExtra("coins_value");
+        String rupessString = getIntent().getStringExtra("rupees_value");
+
 
         final float totalRupees = Float.parseFloat(rupessString);
         final String formatedRupee = String.format("%.02f", totalRupees);
         rupeesTxt.setText("₹" + formatedRupee);
+        coinTxt.setText(coins);
 
         withDrawBtn.setOnClickListener(new View.OnClickListener() {
             @Override

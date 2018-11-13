@@ -36,6 +36,7 @@ import tv.merabihar.app.merabihar.Model.NavBarItems;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.FriendList.FriendListScreen;
+import tv.merabihar.app.merabihar.UI.Activity.Influencer.Income;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.InfluencerProgramViewScreen;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.InviteScreen;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabAccountActivity;
@@ -52,6 +53,7 @@ public class SettingScreen extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayout mWhatsapp,mFaceBook,mSms,mMore,mInviteScreen;
     TextView mCoins,mBalance,mInvite;
+    LinearLayout withdraw_btn, balance_btn, income_btn;
 
     ListView navBarListView;
     String[] title = null;
@@ -86,7 +88,8 @@ public class SettingScreen extends AppCompatActivity {
             mBalance = (TextView)findViewById(R.id.balance_value);
             mInvite = (TextView)findViewById(R.id.invite_value);
 
-
+            withdraw_btn = findViewById(R.id.withdraw_ll_btn);
+            balance_btn  = findViewById(R.id.balance_ll_btn);
 
 
 
@@ -149,8 +152,6 @@ public class SettingScreen extends AppCompatActivity {
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/plain");
                     intent.putExtra(Intent.EXTRA_TEXT,!TextUtils.isEmpty(textBody) ? textBody : "");
-
-
 
                     boolean facebookAppFound = false;
                     List<ResolveInfo> matches = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
@@ -247,8 +248,6 @@ public class SettingScreen extends AppCompatActivity {
                             PreferenceHandler.getInstance(SettingScreen.this).setReferalcode(ref);
                             if(profile.getReferralCodeToUseForOtherProfile()!=null){
 
-
-
                                 if(referCodeText.equals(profile.getReferralCodeToUseForOtherProfile())){
                                     mReferalCode.setText(""+profile.getReferralCodeToUseForOtherProfile());
                                 }else{
@@ -266,14 +265,13 @@ public class SettingScreen extends AppCompatActivity {
                             coinsUsed = profile.getUsedAmount();
                             wallet = profile.getWalletBalance();
 
+                            // open income activity
+                            openIncomeActivity( String.valueOf(coinsUsed), String.valueOf( (coinsUsed*1.0)/100  ) );
+
                             referCodeProfile = "MBR"+profile.getProfileId();
-
-
                             if(profile.getProfilePhoto()!=null){
 
                                 String base=profile.getProfilePhoto();
-
-
 
                                 if(base != null && !base.isEmpty()){
                                     Picasso.with(SettingScreen.this).load(base).placeholder(R.drawable.profile_image).
@@ -495,7 +493,6 @@ public class SettingScreen extends AppCompatActivity {
                             }
                             else
                             {
-
                                 mCoins.setText(""+(int)coinsValue);
                                 mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
 
@@ -653,7 +650,25 @@ public class SettingScreen extends AppCompatActivity {
         }else{
             SettingScreen.this.finish();
         }
-
-
     }
+
+    // opening the incomeActivity
+    private void openIncomeActivity( final String coins, final String rupees) {
+
+        income_btn = findViewById(R.id.income_ll_btn);
+
+        income_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent incomeIntent = new Intent(SettingScreen.this, Income.class);
+                //get data from api
+                incomeIntent.putExtra("coins_value", coins);
+                incomeIntent.putExtra("rupees_value", rupees);
+                startActivity(incomeIntent);
+            }
+        });
+    }
+
+
 }
