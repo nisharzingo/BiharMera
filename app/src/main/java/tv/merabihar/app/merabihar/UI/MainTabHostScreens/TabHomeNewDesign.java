@@ -1,12 +1,16 @@
 package tv.merabihar.app.merabihar.UI.MainTabHostScreens;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import tv.merabihar.app.merabihar.Adapter.MainContentScreenAdapter;
 import tv.merabihar.app.merabihar.R;
@@ -18,6 +22,8 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
     TabLayout tabLayout;
     ViewPager viewPager;
     ImageView mVideo;
+    boolean isFirstTimePressed = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,4 +79,50 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
     public void onTabReselected(TabLayout.Tab tab) {
 
     }
+
+    @Override
+    public void onBackPressed() {
+
+
+
+
+       /* new CountDownTimer(2000, 2000) {
+            @Override
+            public void onTick(long l) {
+                if(!isFirstTimePressed)
+                {
+                    //System.out.println("isFirstTimePressed = "+isFirstTimePressed);
+                    Toast.makeText(TabHomeNewDesign.this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+                    isFirstTimePressed = true;
+                }
+                else
+                {
+
+                    isFirstTimePressed = false;
+                    finish();
+
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                isFirstTimePressed = false;
+            }
+        }.start();*/
+
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+
+                        TabHomeNewDesign.this.finish();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+
+    }
+
 }

@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TabHost;
@@ -137,12 +140,23 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
                 final ImageView ad = (ImageView) view.findViewById(R.id.signin_popup_image);
                 final Button now = (Button) view.findViewById(R.id.signin_popup_showContent_btn);
                 final Button later = (Button) view.findViewById(R.id.signin_popup_earn_btn);
-                final TextView close = (TextView) view.findViewById(R.id.signin_popupclose_txt);
+                final ImageView close = (ImageView) view.findViewById(R.id.close);
+
 
                 builder.setView(view);
 
                 final AlertDialog dialog = builder.create();
-                dialog.show();
+
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(dialog.getWindow().getAttributes());
+
+
+            lp.width = 500;
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+            dialog.show();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.getWindow().setAttributes(lp);
 
 
 
@@ -152,6 +166,7 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
                     public void onClick(View v) {
 
                         dialog.dismiss();
+                        //tabHost.setBackgroundColor(null);
 
 
                     }
@@ -210,7 +225,7 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             int pageno = getIntent().getIntExtra("TABNAME",0);
             if(pageno != 0)
             {
-                tabHost.setCurrentTab(pageno);
+                tabHost.setCurrentTab(pageno-1);
             }
             else
             {

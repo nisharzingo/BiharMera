@@ -431,4 +431,24 @@ public class TabAccountActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goBack();
+    }
+
+    private void goBack()
+    {
+        Intent intent = null;
+
+        intent = new Intent(TabAccountActivity.this,TabMainActivity.class);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        TabAccountActivity.this.finish();
+    }
+
 }

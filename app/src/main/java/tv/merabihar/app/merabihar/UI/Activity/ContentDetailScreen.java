@@ -1,10 +1,21 @@
 package tv.merabihar.app.merabihar.UI.Activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +30,15 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,12 +49,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ActiveTargetFragmentsAdapter;
+import tv.merabihar.app.merabihar.Adapter.CommentsListAdapter;
+import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_SF_Pro_Light;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplayRegular;
 import tv.merabihar.app.merabihar.Model.ContentImages;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
+import tv.merabihar.app.merabihar.Model.Likes;
 import tv.merabihar.app.merabihar.Model.ProfileFollowMapping;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.UserProfile;
@@ -43,6 +66,7 @@ import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.LikeAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 import tv.merabihar.app.merabihar.WebAPI.SubscribedGoalsAPI;
@@ -51,20 +75,28 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 
     ImageView mback;
-    TextViewSFProDisplayRegular mSubCategory,mReadTime;
+    TextViewSFProDisplayRegular mSubCategory,mReadTime,mNocomments;
     MyTextView_SF_Pro_Light mContentTitle,mContentDesc;
     MyTextView_Lato_Regular mProfileName,mFollow;
     CircleImageView mProfilePhoto;
     LinearLayout mProfileContent;
+    RecyclerView mCommentsList;
+
+    MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId;
+    ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare;
 
     private YouTubePlayerFragment playerFragmentTop;
     private YouTubePlayer mPlayer;
-    private String YouTubeKey = Constants.YOUTUBE,url;
+    private String YouTubeKey = Constants.YOUTUBE,url,urls;
 
     Contents contents;
     int mappingId=0;
     long videoTime = 0;
     SubscribedGoals sg;
+    int profileId = 0;
+
+    String fileNames;
+    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n\n http://bit.ly/2JXcOnw";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +106,11 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
             setContentView(R.layout.activity_content_detail_screen);
             //GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
-
+            profileId = PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId();
 
             mback = (ImageView)findViewById(R.id.back_view);
             mSubCategory = (TextViewSFProDisplayRegular)findViewById(R.id.subcategory_of_content);
+
             mReadTime = (TextViewSFProDisplayRegular)findViewById(R.id.read_time);
             mContentTitle = (MyTextView_SF_Pro_Light)findViewById(R.id.content_title);
             mContentDesc = (MyTextView_SF_Pro_Light)findViewById(R.id.content_desc);
@@ -86,6 +119,22 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             mProfilePhoto = (CircleImageView) findViewById(R.id.profile_photo);
             mProfileContent = (LinearLayout) findViewById(R.id.profile_lay_content);
             playerFragmentTop = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player_fragment_top);
+
+            mCommentsCount = (MyTextView_Lato_Regular) findViewById(R.id.comments_count);
+            mLikesCount = (MyTextView_Lato_Regular) findViewById(R.id.likes_count);
+            mDislikesCount = (MyTextView_Lato_Regular) findViewById(R.id.unlikes_count);
+            mLikedId = (MyTextView_Lato_Regular) findViewById(R.id.like_id);
+            mDislikedId = (MyTextView_Lato_Regular) findViewById(R.id.dislike_id);
+
+            mLike = (ImageView) findViewById(R.id.likes_image);
+            mDislike = (ImageView) findViewById(R.id.unlikes_image);
+            mComment = (ImageView) findViewById(R.id.comments_image);
+            mWhatsapp = (ImageView) findViewById(R.id.whatsapp_share);
+            mShare = (ImageView) findViewById(R.id.share_image);
+            mNocomments = (TextViewSFProDisplayRegular)findViewById(R.id.no_comments);
+            //mMoreShare = (ImageView) findViewById(R.id.more_icons);
+
+            mCommentsList = (RecyclerView) findViewById(R.id.comments_list);
 
             final Bundle bundle = getIntent().getExtras();
             if(bundle!=null){
@@ -174,6 +223,205 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 }
             });
 
+
+            mLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(profileId!=0){
+
+                        mLike.setEnabled(false);
+                        Likes likes = new Likes();
+                        likes.setContentId(contents.getContentId());
+                        likes.setProfileId(profileId);
+                        likes.setLiked(true);
+
+                        if (mDislike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
+                        {
+                            if(mDislikedId.getText().toString()!=null&&!mDislikedId.getText().toString().isEmpty()){
+
+
+                                updateLike(likes,mLike,mLikesCount,Integer.parseInt(mDislikedId.getText().toString()),mDislike,mDislikedId,mDislikesCount,mLikedId);
+                            }
+                        }
+                        else
+                        {
+
+                            postLike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
+                        }
+
+
+
+
+                                       /* }else{
+
+                                            postLike(likes,holder.mLike,holder.mLiked,holder.mLikeCount,holder.mLikedId);
+                                        }*/
+
+                    }else {
+                        new AlertDialog.Builder(ContentDetailScreen.this)
+                                .setMessage("Please login/Signup to Like the Story")
+                                .setCancelable(false)
+                                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        Intent login = new Intent(ContentDetailScreen.this, LoginScreen.class);
+                                        startActivity(login);
+
+                                    }
+                                })
+                                .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        Intent signUp = new Intent(ContentDetailScreen.this, SignUpScreen.class);
+                                        startActivity(signUp);
+
+                                    }
+                                })
+                                .show();
+                    }
+                }
+            });
+
+            mDislike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(profileId!=0){
+
+                        mDislike.setEnabled(false);
+                        Likes likes = new Likes();
+                        likes.setContentId(contents.getContentId());
+                        likes.setProfileId(profileId);
+                        likes.setLiked(false);
+
+                        if (mLike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.liked_icon).getConstantState())
+                        {
+                            if(mLikedId.getText().toString()!=null&&!mLikedId.getText().toString().isEmpty()){
+
+
+                                updatedisLike(likes,mDislike,mDislikesCount,Integer.parseInt(mLikedId.getText().toString()),mLike,mLikedId,mLikesCount,mDislikedId);
+                            }
+                        }
+                        else
+                        {
+
+                            postDislike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
+                        }
+
+
+
+
+                                       /* }else{
+
+                                            postLike(likes,holder.mLike,holder.mLiked,holder.mLikeCount,holder.mLikedId);
+                                        }*/
+
+                    }else {
+                        new AlertDialog.Builder(ContentDetailScreen.this)
+                                .setMessage("Please login/Signup to Like the Story")
+                                .setCancelable(false)
+                                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        Intent login = new Intent(ContentDetailScreen.this, LoginScreen.class);
+                                        startActivity(login);
+
+                                    }
+                                })
+                                .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        Intent signUp = new Intent(ContentDetailScreen.this, SignUpScreen.class);
+                                        startActivity(signUp);
+
+                                    }
+                                })
+                                .show();
+                    }
+                }
+            });
+
+
+            mWhatsapp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fileNames = contents.getContentId()+""+contents.getProfileId();
+
+                    AsyncTask mMyTask;
+                    if(contents.getContentType().equalsIgnoreCase("Video")) {
+
+                        urls = contents.getContentURL();
+
+
+                        if (urls != null && !urls.isEmpty()) {
+
+                            mMyTask = new DownloadTask()
+                                    .execute(stringToURL(
+                                            "https://img.youtube.com/vi/"+urls+"/0.jpg"
+                                    ));
+
+                        }
+
+                    }else{
+
+                        mMyTask = new DownloadTask()
+                                .execute(stringToURL(
+                                        ""+contents.getContentImage().get(0).getImages()
+                                ));
+                    }
+
+                    //shareApplication();
+                }
+            });
+
+
+            mShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fileNames = contents.getContentId()+""+contents.getProfileId();
+
+                    AsyncTask mMyTask;
+                    if(contents.getContentType().equalsIgnoreCase("Video")) {
+
+                        urls = contents.getContentURL();
+
+
+                        if (urls != null && !urls.isEmpty()) {
+
+                            mMyTask = new DownloadTasks()
+                                    .execute(stringToURL(
+                                            "https://img.youtube.com/vi/"+urls+"/0.jpg"
+                                    ));
+
+                        }
+
+                    }else{
+
+                        mMyTask = new DownloadTasks()
+                                .execute(stringToURL(
+                                        ""+contents.getContentImage().get(0).getImages()
+                                ));
+                    }
+
+                    //shareApplication();
+                }
+            });
+
+            mComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent comments = new Intent(ContentDetailScreen.this, CommentsScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",contents);
+
+                    comments.putExtras(bundle);
+                    startActivity(comments);
+                }
+            });
+
+
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -207,6 +455,75 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 
                 }
+
+                if(contents.getCommentsList()!=null&&contents.getCommentsList().size()!=0){
+
+                    mCommentsCount.setText(""+contents.getCommentsList().size());
+                    CommentsListAdapter adapter = new CommentsListAdapter(ContentDetailScreen.this,contents.getCommentsList());
+                    mCommentsList.setAdapter(adapter);
+
+                }else{
+                    mNocomments.setVisibility(View.VISIBLE);
+                }
+
+                if(contents.getLikes()!=null&&contents.getLikes().size()!=0){
+
+                    ArrayList<Likes> liked = new ArrayList<>();
+                    ArrayList<Likes> disliked = new ArrayList<>();
+
+                    boolean profileLike = false;
+                    boolean profileDislike = false;
+
+                    for (Likes likes:contents.getLikes()) {
+
+                        if(likes.isLiked()){
+                            liked.add(likes);
+
+                            if(profileId!=0){
+                                if(likes.getProfileId()==profileId){
+                                    profileLike = true;
+                                    mLikedId.setText(""+likes.getLikeId());
+                                }
+                            }
+
+
+                        }else{
+                            disliked.add(likes);
+
+                            if(profileId!=0){
+                                if(likes.getProfileId()==profileId){
+                                    profileDislike = true;
+                                    mDislikedId.setText(""+likes.getLikeId());
+                                }
+                            }
+
+                        }
+
+                    }
+
+
+                    if(liked!=null&&liked.size()!=0){
+
+                        mLikesCount.setText(""+liked.size());
+
+                    }
+
+                    if(disliked!=null&&disliked.size()!=0){
+
+                        mDislikesCount.setText(""+disliked.size());
+                    }
+
+                    if(profileLike){
+
+                        mLike.setImageResource(R.drawable.liked_icon);
+                    }
+
+                    if(profileDislike){
+
+                        mDislike.setImageResource(R.drawable.unliked_icons);
+                    }
+                }
+
 
                 if(profileId!=0){
 
@@ -691,10 +1008,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
     private void profileSubScribed(final SubscribedGoals sg) {
 
-        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
+
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -706,10 +1020,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     public void onResponse(Call<SubscribedGoals> call, Response<SubscribedGoals> response) {
 
                         System.out.println(response.code());
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+
 
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
@@ -727,10 +1038,6 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onFailure(Call<SubscribedGoals> call, Throwable t) {
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
@@ -739,5 +1046,617 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             }
         });
     }
+
+    private void postLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
+
+        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
+        dialog.setMessage("Loading..");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                LikeAPI mapApi = Util.getClient().create(LikeAPI.class);
+                Call<Likes> response = mapApi.postLikes(likes);
+                response.enqueue(new Callback<Likes>() {
+                    @Override
+                    public void onResponse(Call<Likes> call, Response<Likes> response) {
+
+                        System.out.println(response.code());
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+                            like.setImageResource(R.drawable.liked_icon);
+                            dislike.setImageResource(R.drawable.unlike_icons);
+                            likedId.setText(""+response.body().getLikeId());
+                            dislikeId.setText("");
+                            String likeText = likeCount.getText().toString();
+                            if(likeText!=null&&!likeText.isEmpty()){
+
+                                int count = Integer.parseInt(likeText);
+                                likeCount.setText(""+(count+1));
+                            }
+
+
+                        }
+                        else
+                        {
+                            if(dialog != null)
+                            {
+                                dialog.dismiss();
+                            }
+                            like.setEnabled(false);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Likes> call, Throwable t) {
+
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                        like.setEnabled(true);
+
+                    }
+                });
+            }
+        });
+    }
+
+    private void updateLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
+
+        likes.setLikeId(dislikedId);
+
+        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
+        dialog.setMessage("Loading..");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                LikeAPI mapApi = Util.getClient().create(LikeAPI.class);
+                Call<Likes> response = mapApi.updateLikes(dislikedId,likes);
+                response.enqueue(new Callback<Likes>() {
+                    @Override
+                    public void onResponse(Call<Likes> call, Response<Likes> response) {
+
+                        System.out.println(response.code());
+
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+                            like.setImageResource(R.drawable.liked_icon);
+                            dislike.setImageResource(R.drawable.unlike_icons);
+                            likedId.setText(""+dislikedId);
+                            dislikeId.setText("");
+                            String likeText = likeCount.getText().toString();
+                            if(likeText!=null&&!likeText.isEmpty()){
+
+                                int count = Integer.parseInt(likeText);
+                                likeCount.setText(""+(count+1));
+                            }
+                            String dislikeText = dislikeCount.getText().toString();
+                            if(dislikeText!=null&&!dislikeText.isEmpty()){
+
+                                int count = Integer.parseInt(dislikeText);
+                                dislikeCount.setText(""+(count-1));
+                            }
+
+                        }
+                        else
+                        {
+                            if(dialog != null)
+                            {
+                                dialog.dismiss();
+                            }
+                            like.setEnabled(false);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Likes> call, Throwable t) {
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+
+                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                        like.setEnabled(true);
+
+                    }
+                });
+            }
+        });
+    }
+
+    private void updatedisLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
+
+        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
+        dialog.setMessage("Loading..");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        likes.setLikeId(dislikedId);
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                LikeAPI mapApi = Util.getClient().create(LikeAPI.class);
+                Call<Likes> response = mapApi.updateLikes(dislikedId,likes);
+                response.enqueue(new Callback<Likes>() {
+                    @Override
+                    public void onResponse(Call<Likes> call, Response<Likes> response) {
+
+                        System.out.println(response.code());
+
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+                            like.setImageResource(R.drawable.unliked_icons);
+                            dislike.setImageResource(R.drawable.non_like);
+                            likedId.setText(""+dislikedId);
+                            dislikeId.setText("");
+                            String likeText = likeCount.getText().toString();
+                            if(likeText!=null&&!likeText.isEmpty()){
+
+                                int count = Integer.parseInt(likeText);
+                                likeCount.setText(""+(count+1));
+                            }
+                            String dislikeText = dislikeCount.getText().toString();
+                            if(dislikeText!=null&&!dislikeText.isEmpty()){
+
+                                int count = Integer.parseInt(dislikeText);
+                                dislikeCount.setText(""+(count-1));
+                            }
+
+                        }
+                        else
+                        {
+                            like.setEnabled(false);
+                            if(dialog != null)
+                            {
+                                dialog.dismiss();
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Likes> call, Throwable t) {
+
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                        like.setEnabled(true);
+
+                    }
+                });
+            }
+        });
+    }
+
+
+    private void postDislike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
+
+        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
+        dialog.setMessage("Loading..");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                LikeAPI mapApi = Util.getClient().create(LikeAPI.class);
+                Call<Likes> response = mapApi.postLikes(likes);
+                response.enqueue(new Callback<Likes>() {
+                    @Override
+                    public void onResponse(Call<Likes> call, Response<Likes> response) {
+
+                        System.out.println(response.code());
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+                            if(dialog != null)
+                            {
+                                dialog.dismiss();
+                            }
+                            dislike.setImageResource(R.drawable.unliked_icons);
+                            like.setImageResource(R.drawable.non_like);
+
+                            dislikeId.setText(""+response.body().getLikeId());
+                            likedId.setText("");
+                            String likeText = dislikeCount.getText().toString();
+                            if(likeText!=null&&!likeText.isEmpty()){
+
+                                int count = Integer.parseInt(likeText);
+                                dislikeCount.setText(""+(count+1));
+                            }
+
+
+                        }
+                        else
+                        {
+                            if(dialog != null)
+                            {
+                                dialog.dismiss();
+                            }
+                            dislike.setEnabled(false);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Likes> call, Throwable t) {
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+
+                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                        like.setEnabled(true);
+
+                    }
+                });
+            }
+        });
+    }
+
+
+    private class DownloadTask extends AsyncTask<URL,Void,Bitmap> {
+        // Before the tasks execution
+        protected void onPreExecute(){
+            // Display the progress dialog on async task start
+            //mProgressDialog.show();
+            //Toast.makeText(context, "Downloading image...", Toast.LENGTH_SHORT).show();
+        }
+
+        // Do the task in background/non UI thread
+        protected Bitmap doInBackground(URL...urls){
+            URL url = urls[0];
+            HttpURLConnection connection = null;
+
+            try{
+                // Initialize a new http url connection
+                connection = (HttpURLConnection) url.openConnection();
+
+                // Connect the http url connection
+                connection.connect();
+
+                // Get the input stream from http url connection
+                InputStream inputStream = connection.getInputStream();
+
+                /*
+                    BufferedInputStream
+                        A BufferedInputStream adds functionality to another input stream-namely,
+                        the ability to buffer the input and to support the mark and reset methods.
+                */
+                /*
+                    BufferedInputStream(InputStream in)
+                        Creates a BufferedInputStream and saves its argument,
+                        the input stream in, for later use.
+                */
+                // Initialize a new BufferedInputStream from InputStream
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+
+                /*
+                    decodeStream
+                        Bitmap decodeStream (InputStream is)
+                            Decode an input stream into a bitmap. If the input stream is null, or
+                            cannot be used to decode a bitmap, the function returns null. The stream's
+                            position will be where ever it was after the encoded data was read.
+
+                        Parameters
+                            is InputStream : The input stream that holds the raw data
+                                              to be decoded into a bitmap.
+                        Returns
+                            Bitmap : The decoded bitmap, or null if the image data could not be decoded.
+                */
+                // Convert BufferedInputStream to Bitmap object
+                Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
+
+                // Return the downloaded bitmap
+                return bmp;
+
+            }catch(IOException e){
+                e.printStackTrace();
+            }finally{
+                // Disconnect the http url connection
+                connection.disconnect();
+            }
+            return null;
+        }
+
+        // When all async task done
+        protected void onPostExecute(Bitmap result){
+            // Hide the progress dialog
+            // mProgressDialog.dismiss();
+
+            if(result!=null){
+                // Display the downloaded image into ImageView
+                //mImageView.setImageBitmap(result);
+
+                // Save bitmap to internal storage
+
+                // Set the ImageView image from internal storage
+                //mImageViewInternal.setImageURI(imageInternalUri);
+
+                try{
+
+
+
+                    File sd = Environment.getExternalStorageDirectory();
+                    String fileName = fileNames+ ".png";
+
+                    File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
+                    //create directory if not exist
+                    if (!directory.exists() && !directory.isDirectory()) {
+                        directory.mkdirs();
+                    }
+
+
+                    File file = new File(directory, fileName);
+
+                    //if(file.exists())
+
+                    Intent shareIntent;
+
+
+                    OutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        out.flush();
+                        out.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    fileName=file.getPath();
+
+                    Uri bmpUri = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        bmpUri = FileProvider.getUriForFile(ContentDetailScreen.this, "tv.merabihar.app.merabihar.fileprovider", file);
+                    }else{
+                        bmpUri = Uri.parse("file://"+fileName);
+                    }
+                    // Uri bmpUri = Uri.parse("file://"+path);
+                    shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                    shareIntent.setPackage("com.whatsapp");
+                    /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
+                    sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
+                    shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                    shareIntent.setType("image/png");
+                    try{
+
+                        startActivity(shareIntent);
+
+                    }catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(ContentDetailScreen.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+                    }
+                    //context.startActivity(Intent.createChooser(shareIntent,"Share with"));
+
+                }catch (Exception we)
+                {
+                    we.printStackTrace();
+                    Toast.makeText(ContentDetailScreen.this, "Unable to send,Check Permission", Toast.LENGTH_SHORT).show();
+                }
+
+            }else {
+                // Notify user that an error occurred while downloading image
+                //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private class DownloadTasks extends AsyncTask<URL,Void,Bitmap> {
+        // Before the tasks execution
+        protected void onPreExecute(){
+            // Display the progress dialog on async task start
+            //mProgressDialog.show();
+            //Toast.makeText(context, "Downloading image...", Toast.LENGTH_SHORT).show();
+        }
+
+        // Do the task in background/non UI thread
+        protected Bitmap doInBackground(URL...urls){
+            URL url = urls[0];
+            HttpURLConnection connection = null;
+
+            try{
+                // Initialize a new http url connection
+                connection = (HttpURLConnection) url.openConnection();
+
+                // Connect the http url connection
+                connection.connect();
+
+                // Get the input stream from http url connection
+                InputStream inputStream = connection.getInputStream();
+
+                /*
+                    BufferedInputStream
+                        A BufferedInputStream adds functionality to another input stream-namely,
+                        the ability to buffer the input and to support the mark and reset methods.
+                */
+                /*
+                    BufferedInputStream(InputStream in)
+                        Creates a BufferedInputStream and saves its argument,
+                        the input stream in, for later use.
+                */
+                // Initialize a new BufferedInputStream from InputStream
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+
+                /*
+                    decodeStream
+                        Bitmap decodeStream (InputStream is)
+                            Decode an input stream into a bitmap. If the input stream is null, or
+                            cannot be used to decode a bitmap, the function returns null. The stream's
+                            position will be where ever it was after the encoded data was read.
+
+                        Parameters
+                            is InputStream : The input stream that holds the raw data
+                                              to be decoded into a bitmap.
+                        Returns
+                            Bitmap : The decoded bitmap, or null if the image data could not be decoded.
+                */
+                // Convert BufferedInputStream to Bitmap object
+                Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
+
+                // Return the downloaded bitmap
+                return bmp;
+
+            }catch(IOException e){
+                e.printStackTrace();
+            }finally{
+                // Disconnect the http url connection
+                connection.disconnect();
+            }
+            return null;
+        }
+
+        // When all async task done
+        protected void onPostExecute(Bitmap result){
+            // Hide the progress dialog
+            // mProgressDialog.dismiss();
+
+            if(result!=null){
+                // Display the downloaded image into ImageView
+                //mImageView.setImageBitmap(result);
+
+                // Save bitmap to internal storage
+
+                // Set the ImageView image from internal storage
+                //mImageViewInternal.setImageURI(imageInternalUri);
+
+                try{
+
+
+
+                    File sd = Environment.getExternalStorageDirectory();
+                    String fileName = fileNames+ ".png";
+
+                    File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
+                    //create directory if not exist
+                    if (!directory.exists() && !directory.isDirectory()) {
+                        directory.mkdirs();
+                    }
+
+
+                    File file = new File(directory, fileName);
+
+                    //if(file.exists())
+
+                    Intent shareIntent;
+
+
+                    OutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        out.flush();
+                        out.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    fileName=file.getPath();
+
+                    Uri bmpUri = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        bmpUri = FileProvider.getUriForFile(ContentDetailScreen.this, "tv.merabihar.app.merabihar.fileprovider", file);
+                    }else{
+                        bmpUri = Uri.parse("file://"+fileName);
+                    }
+                    // Uri bmpUri = Uri.parse("file://"+path);
+                    shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+
+                    /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
+                    sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
+                    shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                    shareIntent.setType("image/png");
+                   /* try{
+
+                        context.startActivity(shareIntent);
+
+                    }catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(context, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+                    }*/
+                    startActivity(Intent.createChooser(shareIntent,"Share with"));
+
+                }catch (Exception we)
+                {
+                    we.printStackTrace();
+                    Toast.makeText(ContentDetailScreen.this, "Unable to send,Check Permission", Toast.LENGTH_SHORT).show();
+                }
+
+            }else {
+                // Notify user that an error occurred while downloading image
+                //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    // Custom method to convert string to url
+    protected URL stringToURL(String urlString){
+        try{
+            URL url = new URL(urlString);
+            return url;
+        }catch(MalformedURLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Custom method to save a bitmap into internal storage
+    public Bitmap mark(Bitmap src) {
+
+        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.app_logo);
+        int w = src.getWidth();
+        int h = src.getHeight();
+        int pw=w-w;
+        int ph=h-h;
+        int nw = (w * 10)/100;
+        int nh = (h * 10)/100;
+        Bitmap result = Bitmap.createBitmap(w, h, icon.getConfig());
+        Canvas canvas = new Canvas(result);
+        Bitmap resized = Bitmap.createScaledBitmap(icon, 25, 25, true);
+
+        canvas.drawBitmap(src, 0, 0, null);
+        Paint paint = new Paint();
+
+        paint.setTextSize(30);
+        paint.setAntiAlias(true);
+        paint.setUnderlineText(false);
+        canvas.drawBitmap(resized,pw,ph,paint);
+        return result;
+    }
+
 
 }

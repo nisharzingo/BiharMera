@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="tv.merabihar.app.merabihar">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,7 +11,10 @@
     <uses-permission android:name="com.example.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.location.gps" />
@@ -33,11 +37,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemes">
         <activity android:name=".UI.Activity.SplashScreen">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".UI.Activity.SlideOptionScreen" />
         <activity
@@ -74,6 +80,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".UI.Activity.PrivacyPolicyScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UI.Activity.PickInterestsScreenForProfile"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".UI.MainTabHostScreens.TabVideoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -90,15 +104,21 @@
         <activity
             android:name=".UI.Activity.CategoryContentList"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UI.Activity.SettingScreen" />
+
+        <activity android:name=".UI.Activity.SettingScreen"></activity>
         <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign" />
         <activity
             android:name=".UI.Activity.FollowOptions.FollowOptionsActivity"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".UI.MainTabHostScreens.PostContent.PostContentScreen"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UI.MainTabHostScreens.PostContent.PostVideoYoutubeContent"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".UI.Activity.CommentsScreen"
             android:theme="@style/AppTheme" />
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="@string/file_provider_authority"
@@ -111,14 +131,18 @@
 
         <activity
             android:name=".UI.Activity.Influencer.InfluencerProgramViewScreen"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity android:name=".UI.Activity.Influencer.InviteScreen" />
         <activity android:name=".UI.Activity.Influencer.InviteFriendsScreen" />
         <activity android:name=".UI.Activity.FriendList.FriendListScreen" />
-        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen" />
-        <activity android:name=".UI.Activity.Influencer.Income" />
+        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen"></activity>
+        <activity android:name=".UI.Activity.Influencer.Income"></activity>
         <activity android:name=".UI.YoutubePlayList.YouTubeListScreen" />
-        <activity android:name=".UI.MainTabHostScreens.VideoCategoryScreens"></activity>
+        <activity android:name=".UI.MainTabHostScreens.VideoCategoryScreens" />
+        <activity android:name=".UI.Activity.ContentListScreen">
+        </activity>
+        <activity android:name=".UI.MainTabHostScreens.TabHomeHostScreen"></activity>
+
         <activity android:name=".UI.MainTabHostScreens.TabPostMediaActivity">
         </activity>
     </application>

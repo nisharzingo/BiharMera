@@ -41,7 +41,8 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 public class ForFollowersFragment extends Fragment {
 
     SwipeRefreshLayout pullToRefresh;
-    RecyclerView mFollowerContent,mFollowingContent,mInterestContent,mTrendingContents,mNonFollowers;
+    RecyclerView mFollowerContent,mNonFollowers,mTrendingContents;
+    //,mFollowingContent,mInterestContent,mTrendingContents,mNonFollowers
     int profileId = 0;
 
     ContentRecyclerAdapter adapter;
@@ -84,7 +85,15 @@ public class ForFollowersFragment extends Fragment {
             mFollowerContent.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             mFollowerContent.setNestedScrollingEnabled(false);
 
-            mFollowingContent = (RecyclerView)  view.findViewById(R.id.all_following_contents);
+            mNonFollowers = (RecyclerView) view.findViewById(R.id.people_non_follow);
+            mNonFollowers.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+            mNonFollowers.setNestedScrollingEnabled(false);
+
+            mTrendingContents = (RecyclerView) view.findViewById(R.id.trending_contents);
+            mTrendingContents.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            mTrendingContents.setNestedScrollingEnabled(false);
+
+           /* mFollowingContent = (RecyclerView)  view.findViewById(R.id.all_following_contents);
             mFollowingContent.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             mFollowingContent.setNestedScrollingEnabled(false);
 
@@ -92,15 +101,11 @@ public class ForFollowersFragment extends Fragment {
             mInterestContent.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             mInterestContent.setNestedScrollingEnabled(false);
 
-            mTrendingContents = (RecyclerView) view.findViewById(R.id.trending_contents);
-            mTrendingContents.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-            mTrendingContents.setNestedScrollingEnabled(false);
-
-            mNonFollowers = (RecyclerView) view.findViewById(R.id.people_non_follow);
-            mNonFollowers.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-            mNonFollowers.setNestedScrollingEnabled(false);
 
 
+
+
+*/
             profileId = PreferenceHandler.getInstance(getActivity()).getUserId();
 
 
@@ -117,8 +122,8 @@ public class ForFollowersFragment extends Fragment {
 
 
                         mFollowerContent.removeAllViews();
-                        mFollowingContent.removeAllViews();
-                        mInterestContent.removeAllViews();
+                       /* mFollowingContent.removeAllViews();
+                        mInterestContent.removeAllViews();*/
 
                         Thread follower = new Thread(){
 
@@ -140,6 +145,30 @@ public class ForFollowersFragment extends Fragment {
                     pullToRefresh.setRefreshing(false);
                 }
             });
+
+
+            if(profileId!=0){
+
+
+
+                mFollowerContent.removeAllViews();
+                       /* mFollowingContent.removeAllViews();
+                        mInterestContent.removeAllViews();*/
+
+                Thread follower = new Thread(){
+
+                    public void run(){
+                        getFollowingByProfileId(profileId);
+                    }
+                };
+
+
+                follower.start();
+
+
+            }else{
+
+            }
 
             return  view;
         }catch (Exception e){
@@ -199,27 +228,41 @@ public class ForFollowersFragment extends Fragment {
                                     mFollowerContent.setAdapter(adapter);
                                     adapter.addAll(followingContents);
 
-                                    getFollowerByProfileId(profileId);
+                                   // getFollowerByProfileId(profileId);
 
 
 
 
                                 }else{
-                                    getFollowerByProfileId(profileId);
+                                    //getFollowerByProfileId(profileId);
+
+                                    if(value){
+
+                                    }else{
+                                        getTrendingContent(id);
+                                    }
                                 }
 
 
                             }
                             else
                             {
-                                getFollowerByProfileId(profileId);
+                                if(value){
+
+                                }else{
+                                    getTrendingContent(id);
+                                }
 
                             }
                         }
                         else
                         {
 
-                            getFollowerByProfileId(profileId);
+                            if(value){
+
+                            }else{
+                                getTrendingContent(id);
+                            }
                         }
 //                callGetStartEnd();
                     }
@@ -228,7 +271,11 @@ public class ForFollowersFragment extends Fragment {
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
 
-                        getFollowerByProfileId(profileId);
+                        if(value){
+
+                        }else{
+                            getTrendingContent(id);
+                        }
 
                         Log.e("TAG", t.toString());
                     }
@@ -237,7 +284,7 @@ public class ForFollowersFragment extends Fragment {
         });
     }
 
-    private void getFollowerByProfileId(final int id){
+   /* private void getFollowerByProfileId(final int id){
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -285,7 +332,7 @@ public class ForFollowersFragment extends Fragment {
                                     Collections.shuffle(followingContents);
                                     value = true;
                                     adapter = new ContentRecyclerAdapter(getActivity());
-                                    mFollowingContent.setAdapter(adapter);
+                                   // mFollowingContent.setAdapter(adapter);
                                     adapter.addAll(followingContents);
 
                                     getContentsofInterest(profileId);
@@ -318,9 +365,9 @@ public class ForFollowersFragment extends Fragment {
                 });
             }
         });
-    }
+    }*/
 
-    public void getContentsofInterest(final int id)
+  /*  public void getContentsofInterest(final int id)
     {
 
 
@@ -350,7 +397,7 @@ public class ForFollowersFragment extends Fragment {
                                 Collections.shuffle(contentsInterestList);
                                 value = true;
                                 adapter = new ContentRecyclerAdapter(getActivity());
-                                mInterestContent.setAdapter(adapter);
+                               // mInterestContent.setAdapter(adapter);
                                 adapter.addAll(contentsInterestList);
 
 
@@ -398,7 +445,7 @@ public class ForFollowersFragment extends Fragment {
 
         });
 
-    }
+    }*/
 
     public void getTrendingContent(final int id)
     {
@@ -423,8 +470,7 @@ public class ForFollowersFragment extends Fragment {
                         {
 
                             mFollowerContent.setVisibility(View.GONE);
-                            mFollowingContent.setVisibility(View.GONE);
-                            mInterestContent.setVisibility(View.GONE);
+
                             if(response.body().size()!=0){
 
                                 ContentRecyclerHorizontal adapters = new ContentRecyclerHorizontal(getActivity(),response.body());
@@ -519,7 +565,7 @@ public class ForFollowersFragment extends Fragment {
         });
     }
 
-    @Override
+  /*  @Override
     public void setUserVisibleHint(boolean isFragmentVisible_) {
         super.setUserVisibleHint(true);
 
@@ -550,7 +596,7 @@ public class ForFollowersFragment extends Fragment {
                 _hasLoadedOnce = true;
             }
         }
-    }
+    }*/
 
 
 }

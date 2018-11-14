@@ -83,8 +83,12 @@
                 <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:text="Follow"
+                    android:layout_marginRight="20dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:id="@+id/follow_profile"
                     android:textColor="#dd3e3e"/>
 

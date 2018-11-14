@@ -269,14 +269,16 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
                                     MultiContentImageAdapter blogAdapter = new MultiContentImageAdapter(TabVideoNewDesign.this,contentImageList);//,pagerModelArrayList);
                                     mImagesList.setAdapter(blogAdapter);
+//                                    mImagesList.getChildAt(0).requestFocus();
                                     //setListViewHeightBasedOnChildren(mImagesList);
-                                    mTrendingInterest.requestFocus();
+
                                     //mImagesList.smoothScrollToPosition(0);
 
                                 }
 
                                 ContentImageAdapter blogAdapters = new ContentImageAdapter(TabVideoNewDesign.this,response.body());//,pagerModelArrayList);
                                 mTrendingInterest.setAdapter(blogAdapters);
+                                mTrendingInterest.requestFocus();
 
 
                             }else{
@@ -334,4 +336,23 @@ public class TabVideoNewDesign extends AppCompatActivity {
         //mImagesList.getChildAt(0).requestFocus();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goBack();
+    }
+
+    private void goBack()
+    {
+        Intent intent = null;
+
+        intent = new Intent(TabVideoNewDesign.this,TabMainActivity.class);
+        //intent.putExtra("TABNAME",3);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        TabVideoNewDesign.this.finish();
+    }
 }

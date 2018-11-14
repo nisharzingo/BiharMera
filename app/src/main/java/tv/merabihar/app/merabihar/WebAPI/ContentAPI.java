@@ -40,6 +40,9 @@ public interface ContentAPI {
     @GET("Contents/GetContentByProfileId/{ProfileId}")
     Call<ArrayList<Contents>> getContentByProfileId(@Path("ProfileId") int id);
 
+    @GET("Contents/GetContentByCityId/{CityId}")
+    Call<ArrayList<Contents>> getContentByCityId(@Path("CityId") int id);
+
     @GET("Pagination/GetContentByCityIdAndContentType/{CityId}/{ContentType}")
     Call<ArrayList<Contents>> getContentByVideoAndCity(@Path("CityId") int id,@Path("ContentType") String type, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 

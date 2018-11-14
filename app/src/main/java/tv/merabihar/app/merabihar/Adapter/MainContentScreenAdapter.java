@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.FollowFragments;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForFollowersFragment;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForYouFragment;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForYouNewFragment;
 
 /**
  * Created by ZingoHotels Tech on 31-10-2018.
@@ -32,7 +33,7 @@ public class MainContentScreenAdapter  extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                ForYouFragment people = new ForYouFragment();
+                ForYouNewFragment people = new ForYouNewFragment();
                 return people;
 
             case 1:

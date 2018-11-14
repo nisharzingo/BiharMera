@@ -23,25 +23,18 @@ public abstract class PageScrollListener extends RecyclerView.OnScrollListener {
    /* @Override
     public void onScrollStateChanged(RecyclerView recyclerView,int newState) {
         super.onScrollStateChanged(recyclerView, newState);
-
-
-
         if(!isLoading() && !isLastPage())
         {
-
             if (!recyclerView.canScrollHorizontally(1) ) {
                // Toast.makeText(ChatDetailsActivity.this,"endOfScroll",Toast.LENGTH_LONG).show();
                 loadMoreItems();
-
             }
-
             loadMoreItems();
         }
         else
         {
             Log.d(TAG, "FALSE: ");
         }
-
     }*/
 
     @Override

@@ -101,12 +101,13 @@
                     android:text="loading"
                     android:textColor="#b7c4cb"/>
 
-                <ImageView
+                <ProgressBar
+                    android:id="@+id/loadmore_progress"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/loading"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center"/>
 
 
                 <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular

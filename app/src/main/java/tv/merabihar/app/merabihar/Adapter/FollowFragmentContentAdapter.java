@@ -1,7 +1,9 @@
 package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,15 +17,16 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.ContentImageDetailScreen;
 
 public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFragmentContentAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<Contents> mContentList;
+    ArrayList<ArrayList<Contents>> mContentList;
 
 
 
-    public FollowFragmentContentAdapter(Context context , ArrayList<Contents> mContentList)
+    public FollowFragmentContentAdapter(Context context , ArrayList<ArrayList<Contents>> mContentList)
     {
         this.context = context;
         this.mContentList = mContentList;
@@ -39,7 +42,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
-        Contents content = mContentList.get(position);
+        final ArrayList<Contents> content = mContentList.get(position);
+
+
 
         SimpleDraweeView iv1 = holder.iv1 ;
         SimpleDraweeView iv2 = holder.iv2 ;
@@ -52,33 +57,201 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         SimpleDraweeView iv9 = holder.iv9 ;
 
 
+        if(content!=null&&content.size()!=0&&content.size()==9){
+
+
+            if(content.get(0).getContentImage()!=null&&content.get(0).getContentImage().size()!=0){
+
+                String urlString1 = content.get(0).getContentImage().get(0).getImages();
+
+                if(urlString1!=null){
+                    iv1.setImageURI(Uri.parse(urlString1));
+                }
+
+            }
+
+            if(content.get(1).getContentImage()!=null&&content.get(1).getContentImage().size()!=0){
+
+                String urlString1 = content.get(1).getContentImage().get(0).getImages();
+
+                if(urlString1!=null){
+                    iv2.setImageURI(Uri.parse(urlString1));
+                }
+
+            }
+
+            if(content.get(2).getContentImage()!=null&&content.get(2).getContentImage().size()!=0){
+
+                String urlString1 = content.get(2).getContentImage().get(0).getImages();
+
+                if(urlString1!=null){
+                    iv3.setImageURI(Uri.parse(urlString1));
+                }
+
+            }
+
+            if(content.get(3).getContentImage()!=null&&content.get(3).getContentImage().size()!=0){
+
+                String urlString1 = content.get(3).getContentImage().get(0).getImages();
+
+                if(urlString1!=null){
+                    iv4.setImageURI(Uri.parse(urlString1));
+                }
+
+            }
+
+            if(content.get(4).getContentImage()!=null&&content.get(4).getContentImage().size()!=0){
+
+                String urlString1 = content.get(4).getContentImage().get(0).getImages();
+
+                if(urlString1!=null){
+                    iv5.setImageURI(Uri.parse(urlString1));
+                }
+
+            }
+
+            if(content.get(5).getContentImage()!=null&&content.get(5).getContentImage().size()!=0){
+
+                String urlString1 = content.get(5).getContentImage().get(0).getImages();
+
+                if(urlString1!=null){
+                    iv6.setImageURI(Uri.parse(urlString1));
+                }
+
+            }
+
+            if(content.get(6).getContentImage()!=null&&content.get(6).getContentImage().size()!=0){
+
+                String urlString1 = content.get(6).getContentImage().get(0).getImages();
+
+                if(urlString1!=null){
+                    iv7.setImageURI(Uri.parse(urlString1));
+                }
+
+            }
+
+            if(content.get(7).getContentImage()!=null&&content.get(7).getContentImage().size()!=0){
+
+                String urlString1 = content.get(7).getContentImage().get(0).getImages();
+
+                if(urlString1!=null){
+                    iv8.setImageURI(Uri.parse(urlString1));
+                }
+
+            }
+
+            if(content.get(8).getContentImage()!=null&&content.get(8).getContentImage().size()!=0){
+
+                String urlString1 = content.get(8).getContentImage().get(0).getImages();
+
+                if(urlString1!=null){
+                    iv9.setImageURI(Uri.parse(urlString1));
+                }
+
+            }
+
+
+
+
+        }
         // load image from api
-        String urlString1 = "https://mykidslickthebowl.com/wp-content/uploads/2017/11/welcome-to-my-kids-lick-the-bowl-1-of-2017-1-720x722.jpg";
-        String urlString2 = "https://expatliving.hk/wp-content/uploads/2017/11/Kids-clothes-Hong-Kong-seed.jpg";
-        String urlString3 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyfjKao_dfG97UuqYvkwsPwfilQSbWW2wBTCxpDM2_aj3_-KcT";
-        String urlString4 = "https://www.sciencenews.org/sites/default/files/2018/09/main/articles/092618_LS_screen-time_feat.jpg";
-        String urlString5 = "https://mykidslickthebowl.com/wp-content/uploads/2017/11/welcome-to-my-kids-lick-the-bowl-1-of-2017-1-720x722.jpg";
-        String urlString6 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyfjKao_dfG97UuqYvkwsPwfilQSbWW2wBTCxpDM2_aj3_-KcT";
-        String urlString7 = "https://expatliving.hk/wp-content/uploads/2017/11/Kids-clothes-Hong-Kong-seed.jpg";
-        String urlString8 = "https://www.sciencenews.org/sites/default/files/2018/09/main/articles/092618_LS_screen-time_feat.jpg";
-        String urlString9 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyfjKao_dfG97UuqYvkwsPwfilQSbWW2wBTCxpDM2_aj3_-KcT";
-
-
-        iv1.setImageURI(Uri.parse(urlString1));
-        iv2.setImageURI(Uri.parse(urlString2));
-        iv3.setImageURI(Uri.parse(urlString3));
-        iv4.setImageURI(Uri.parse(urlString4));
-        iv5.setImageURI(Uri.parse(urlString5));
-        iv6.setImageURI(Uri.parse(urlString6));
-        iv7.setImageURI(Uri.parse(urlString7));
-        iv8.setImageURI(Uri.parse(urlString8));
-        iv9.setImageURI(Uri.parse(urlString9));
 
         /*When clicked on the content image*/
         iv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Contents",content.get(0));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        iv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Contents",content.get(1));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        iv3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Contents",content.get(2));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        iv4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Contents",content.get(3));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        iv5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Contents",content.get(4));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        iv6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Contents",content.get(5));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        iv7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Contents",content.get(6));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        iv8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Contents",content.get(7));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+        iv9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Contents",content.get(8));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
     }

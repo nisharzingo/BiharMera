@@ -30,6 +30,8 @@ public class InviteFriendsScreen extends AppCompatActivity {
     TextView mReferalCode;
     LinearLayout mWhatsapp,mFaceBook,mSms,mMore;
 
+    static  String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n\n http://bit.ly/2JXcOnw";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +80,7 @@ public class InviteFriendsScreen extends AppCompatActivity {
                     Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
                     whatsappIntent.setType("text/plain");
                     whatsappIntent.setPackage("com.whatsapp");
-                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "Refer your friend");
+                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
                     try {
                         Objects.requireNonNull(InviteFriendsScreen.this).startActivity(whatsappIntent);
                     } catch (android.content.ActivityNotFoundException ex) {
@@ -92,7 +94,7 @@ public class InviteFriendsScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    String textBody = "Refer friend";
+                    String textBody = shareContent;
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/plain");
                     intent.putExtra(Intent.EXTRA_TEXT,!TextUtils.isEmpty(textBody) ? textBody : "");
@@ -124,7 +126,7 @@ public class InviteFriendsScreen extends AppCompatActivity {
                     Intent smsIntent = new Intent(android.content.Intent.ACTION_VIEW);
                     smsIntent.setType("vnd.android-dir/mms-sms");
 
-                    smsIntent.putExtra("sms_body", "Refer your friend");
+                    smsIntent.putExtra("sms_body", shareContent);
                     if (smsIntent.resolveActivity(getPackageManager()) != null) {
                         startActivity(smsIntent);
                     } else {
@@ -139,7 +141,7 @@ public class InviteFriendsScreen extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Refer Friend");
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
                     sendIntent.setType("text/plain");
                     startActivity(Intent.createChooser(sendIntent, "Send to"));
                 }

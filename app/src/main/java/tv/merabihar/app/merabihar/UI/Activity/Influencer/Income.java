@@ -20,6 +20,9 @@ public class Income extends AppCompatActivity {
     Button  withDrawBtn, earnMoreBtn, shareBtn;
     TextView coinTxt, rupeesTxt ;
 
+    static String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n\n http://bit.ly/2JXcOnw";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +76,7 @@ public class Income extends AppCompatActivity {
             public void onClick(View v) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "Refer Friend");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, "Send to"));
             }
