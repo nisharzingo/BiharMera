@@ -29,13 +29,23 @@ public class TabPostMediaActivity extends AppCompatActivity {
     LinearLayout mGallery,mYoutube;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        try{
+            animateView();
+        }catch (Exception error){
+            error.printStackTrace();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         try{
 
             setContentView(R.layout.activity_tab_story);
-            animateView();
+
 
             mGallery = (LinearLayout)findViewById(R.id.gallery_post);
             mYoutube = (LinearLayout)findViewById(R.id.youtube_url);

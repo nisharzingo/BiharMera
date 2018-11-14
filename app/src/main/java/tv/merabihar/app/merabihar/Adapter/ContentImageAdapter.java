@@ -2,13 +2,18 @@ package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -51,6 +56,7 @@ public class ContentImageAdapter extends RecyclerView.Adapter<ContentImageAdapte
 
     }
 
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
@@ -75,8 +81,9 @@ public class ContentImageAdapter extends RecyclerView.Adapter<ContentImageAdapte
                     if(contents.getContentURL()!=null&&!contents.getContentURL().isEmpty()){
                         String img = "https://img.youtube.com/vi/"+contents.getContentURL()+"/0.jpg";
                         if(img!=null&&!img.isEmpty()){
-                            Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                    error(R.drawable.no_image).into(holder.mContentImage);
+
+                            // crop the youtube image & show
+                            loadCroppedImage(img, holder.mContentImage);
                         }
                     }
 
@@ -161,8 +168,38 @@ public class ContentImageAdapter extends RecyclerView.Adapter<ContentImageAdapte
             mInterestLay = (LinearLayout) itemView.findViewById(R.id.collection_lay);
 
         }
+    }
 
+    // loading the cropped image from youtube
+    private void loadCroppedImage(String urlString, final ImageView imageView) {
+        Picasso.with(context).load(urlString).into(new com.squareup.picasso.Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
+                // Cropping the image
+                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                Glide.with(context)
+                        .load(customBitMap)
+                        .apply(new RequestOptions()
+                                .placeholder(R.drawable.no_image)
+                                .error(R.drawable.no_image))
+                        .into(imageView);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
     }
 
 

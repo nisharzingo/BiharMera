@@ -1,4 +1,4 @@
-<LinearLayout
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:orientation="horizontal"
@@ -13,10 +13,11 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:paddingLeft="5dp"
+            android:paddingTop="15dp"
             android:paddingRight="5dp"
             android:id="@+id/offer_logo"
             android:layout_width="wrap_content"
-            android:src="@drawable/bihar_nature"
+            android:src="@mipmap/ic_launcher_round"
             android:layout_height="wrap_content" />
 
     </com.rey.material.widget.LinearLayout>
@@ -100,6 +101,16 @@
                 android:layout_height="20dp"
                 android:id="@+id/month5_pb_circle"
                 android:src="@drawable/oval"/>
+
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="30dp"
+                app:srcCompat="@drawable/next"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
 
         </com.rey.material.widget.LinearLayout>
 
