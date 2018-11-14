@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.SettingScreen;
+import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 
 public class Income extends AppCompatActivity {
 
@@ -20,7 +21,7 @@ public class Income extends AppCompatActivity {
     Button  withDrawBtn, earnMoreBtn, shareBtn;
     TextView coinTxt, rupeesTxt ;
 
-    static String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n\n http://bit.ly/2JXcOnw";
+    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+ PreferenceHandler.getInstance(Income.this).getUserId()+"\n http://bit.ly/2JXcOnw";
 
 
     @Override

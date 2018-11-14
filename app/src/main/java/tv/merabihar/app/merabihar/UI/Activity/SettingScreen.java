@@ -65,7 +65,7 @@ public class SettingScreen extends AppCompatActivity {
 
     UserProfile profiles;
 
-    static String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n\n http://bit.ly/2JXcOnw";
+    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId()+"\n http://bit.ly/2JXcOnw";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,7 +246,8 @@ public class SettingScreen extends AppCompatActivity {
 
                             mProfileName.setText(""+profile.getFullName());
                             String ref = "MBR"+profile.getProfileId();
-                            String referCodeText = Base64.encodeToString(ref.getBytes(), Base64.DEFAULT);
+                            String referCodeText = ref;
+                            //String referCodeText = Base64.encodeToString(ref.getBytes(), Base64.DEFAULT);
                             PreferenceHandler.getInstance(SettingScreen.this).setReferalcode(ref);
                             if(profile.getReferralCodeToUseForOtherProfile()!=null){
 
@@ -260,7 +261,8 @@ public class SettingScreen extends AppCompatActivity {
                             }else{
 
                                 ref = "MBR"+profile.getProfileId();
-                                referCodeText = Base64.encodeToString(ref.getBytes(), Base64.DEFAULT);
+                                referCodeText = ref;
+                                //referCodeText = Base64.encodeToString(ref.getBytes(), Base64.DEFAULT);
                                 mReferalCode.setText(""+referCodeText);
                             }
 
@@ -611,7 +613,7 @@ public class SettingScreen extends AppCompatActivity {
             if(referCodeProfile==null||referCodeProfile.isEmpty()||!referCodeProfile.equals(mReferalCode.getText().toString())){
 
                 String converted = Base64.encodeToString(mReferalCode.getText().toString().getBytes(), Base64.DEFAULT);
-                System.out.println(" Base 64 "+converted);
+
                 profiles.setReferralCodeToUseForOtherProfile(referCodeProfile);
                 update = true;
 

@@ -34,7 +34,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <com.alexzh.circleimageview.CircleImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_photo"
                     android:layout_width="100px"
                     android:layout_height="100px"
@@ -66,13 +66,13 @@
                     <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
                         android:id="@+id/duration"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text=""
                         android:drawablePadding="2dp"
                         android:textColor="@color/listsub1"
-                        android:textSize="14dp"
+                        android:textSize="12dp"
                         android:layout_gravity="center"
                         />
                 </LinearLayout>
@@ -95,10 +95,10 @@
                 <ImageView
                     android:id="@+id/more_icons"
                     android:layout_width="50px"
-                    android:layout_height="50px"
+                    android:layout_height="40px"
                     android:layout_gravity="center"
                     android:src="@drawable/more"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
 
                     />
 
@@ -107,8 +107,8 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginTop="5dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="2dp"
                 android:id="@+id/content_detail"
                 >
 
@@ -117,9 +117,9 @@
                     android:id="@+id/content_image"
                     android:layout_width="match_parent"
 
-                    android:layout_height="250dp"
+                    android:layout_height="200dp"
                     android:src="@drawable/no_image"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     app:riv_corner_radius="3dip"
                     app:riv_oval="false" />
 
@@ -139,9 +139,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:padding="10dp"
-                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -157,8 +157,8 @@
 
                 <ImageView
                     android:id="@+id/whatsapp_share"
-                    android:layout_width="50px"
-                    android:layout_height="50px"
+                    android:layout_width="40px"
+                    android:layout_height="40px"
                     android:layout_gravity="center"
                     android:src="@drawable/whatsapp_icons"
                     android:scaleType="centerCrop"
@@ -181,8 +181,8 @@
 
                     <ImageView
                         android:id="@+id/likes_image"
-                        android:layout_width="50px"
-                        android:layout_height="50px"
+                        android:layout_width="40px"
+                        android:layout_height="40px"
                         android:layout_gravity="center"
                         android:src="@drawable/non_like"
                         android:scaleType="centerCrop"
@@ -195,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:gravity="center"
-                        android:drawablePadding="2dp"
+
                         android:textColor="@color/black"
                         android:textSize="12dp"
                         android:layout_gravity="center"
@@ -207,7 +207,7 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:gravity="center"
-                        android:drawablePadding="2dp"
+
                         android:textColor="@color/black"
                         android:textSize="12dp"
                         android:layout_gravity="center"
@@ -242,7 +242,6 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:gravity="center"
-                        android:drawablePadding="2dp"
 
                         android:textColor="@color/black"
                         android:textSize="12dp"
@@ -254,7 +253,6 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:gravity="center"
-                        android:drawablePadding="2dp"
                         android:textColor="@color/black"
                         android:textSize="12dp"
                         android:layout_gravity="center"
@@ -272,8 +270,8 @@
 
                     <ImageView
                         android:id="@+id/comments_image"
-                        android:layout_width="50px"
-                        android:layout_height="50px"
+                        android:layout_width="40px"
+                        android:layout_height="40px"
                         android:layout_gravity="center"
                         android:src="@drawable/comments_iconed"
                         android:scaleType="centerCrop"
@@ -286,7 +284,6 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:gravity="center"
-                        android:drawablePadding="2dp"
                         android:textColor="@color/black"
                         android:textSize="12dp"
                         android:layout_gravity="center"
@@ -326,8 +323,8 @@
 
                     <ImageView
                         android:id="@+id/share_image"
-                        android:layout_width="50px"
-                        android:layout_height="50px"
+                        android:layout_width="40px"
+                        android:layout_height="40px"
                         android:layout_gravity="center"
                         android:src="@drawable/share_icons"
                         android:scaleType="centerCrop"
@@ -342,9 +339,9 @@
 
 
             <LinearLayout
-                android:layout_marginTop="12dp"
+
                 android:layout_width="match_parent"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -362,7 +359,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
                         android:textColor="@color/black"
-                        android:lineSpacingExtra="3dp"
+
                         />
 
                     <tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold
@@ -371,7 +368,7 @@
                         android:textSize="14sp"
                         android:visibility="gone"
                         android:id="@+id/content_tags"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="5dp"
                         android:textColor="@color/colorPrimary"/>
 
 
@@ -379,12 +376,12 @@
                         android:id="@+id/content_desc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="13dp"
-                        android:maxLines="2"
+
+                        android:maxLines="1"
                         android:ellipsize="end"
                         android:textSize="16dp"
                         android:textColor="@color/listsub1"
-                        android:lineSpacingExtra="3dp"
+
                         />
 
                     <LinearLayout

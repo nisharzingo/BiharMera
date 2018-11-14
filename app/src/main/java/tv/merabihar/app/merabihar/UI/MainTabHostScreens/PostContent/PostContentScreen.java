@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -72,6 +73,7 @@ public class PostContentScreen extends AppCompatActivity {
     CustomGridView customGridView;
     CustomAutoComplete mTags;
     Button mSave;
+    ImageView back;
 
     SubCategories activity;
     SubCategoryListAdapter adapter;
@@ -97,11 +99,12 @@ public class PostContentScreen extends AppCompatActivity {
 
             setContentView(R.layout.activity_post_content_screen);
 
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+           /* getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
-            setTitle("New Story");
+            setTitle("New Story");*/
 
             mTitle = (EditText) findViewById(R.id.blog_title);
+            back = (ImageView) findViewById(R.id.back);
             mShort = (EditText) findViewById(R.id.short_desc_blog);
             mLong = (EditText) findViewById(R.id.long_desc_blog);
             mBlogImages = (LinearLayout) findViewById(R.id.blog_images);
@@ -115,6 +118,14 @@ public class PostContentScreen extends AppCompatActivity {
             getActivities();
             getInterest();
             initerestId = new ArrayList<>();
+
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    PostContentScreen.this.finish();
+                }
+            });
 
             mTags.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -137,13 +148,15 @@ public class PostContentScreen extends AppCompatActivity {
             });
 
 
-            mUploadImages.setOnClickListener(new View.OnClickListener() {
+           /* mUploadImages.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     selectImage();
                 }
-            });
+            });*/
+
+            gotoGallery();
 
             mSave.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -268,6 +281,8 @@ public class PostContentScreen extends AppCompatActivity {
                     selectedImageList.add(all_path[i]);
 
                 }
+            }else{
+                gotoGallery();
             }
             //selectedImageList = all_path;
             mBlogImages.removeAllViews();
@@ -390,16 +405,19 @@ public class PostContentScreen extends AppCompatActivity {
         String longDesc = mLong.getText().toString();
         String tags = mTags.getText().toString();
 
+
         System.out.println(" Tags id = "+tags);
         System.out.println(" Tags id = "+interestList.contains(tags));
 
 
-        if(title==null||title.isEmpty()){
+       /* if(title==null||title.isEmpty()){
             Toast.makeText(PostContentScreen.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
-        }/*else if(shortDesc==null||shortDesc.isEmpty()){
+        }*//*else if(shortDesc==null||shortDesc.isEmpty()){
             Toast.makeText(PostContentScreen.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
-        }*/else if(longDesc==null||longDesc.isEmpty()){
+        }*/if(longDesc==null||longDesc.isEmpty()){
             Toast.makeText(PostContentScreen.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
+        }else if(tags==null||tags.isEmpty()){
+            Toast.makeText(PostContentScreen.this, "Tag should not be Empty", Toast.LENGTH_SHORT).show();
         }else{
 
             try
@@ -684,7 +702,7 @@ public class PostContentScreen extends AppCompatActivity {
                 SimpleDateFormat sdf  = new SimpleDateFormat("MM/dd/yyyy");
 
                 Contents blogs = new Contents();
-                blogs.setTitle(mTitle.getText().toString());
+                blogs.setTitle("");
                 blogs.setDescription(mLong.getText().toString());
                 blogs.setContentType("Image");
                 blogs.setContentURL(blogImagesArrayList.get(0).getImages());
@@ -784,7 +802,7 @@ public class PostContentScreen extends AppCompatActivity {
                             emailModel.setFromEmail("merabihar.tv@gmail.com");
                             postEmail(emailModel);*/
 
-                            Toast.makeText(PostContentScreen.this,"Blog created Successfull",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PostContentScreen.this,"Story created Successfull",Toast.LENGTH_SHORT).show();
                             success();
                         }
                         else
@@ -937,7 +955,7 @@ public class PostContentScreen extends AppCompatActivity {
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
-                            Toast.makeText(PostContentScreen.this,"Blog created Successfull",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PostContentScreen.this,"Story created Successfull",Toast.LENGTH_SHORT).show();
                             success();
                         }
                         else
@@ -987,7 +1005,7 @@ public class PostContentScreen extends AppCompatActivity {
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
-                            Toast.makeText(PostContentScreen.this,"Blog created Successfull",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PostContentScreen.this,"Story created Successfull",Toast.LENGTH_SHORT).show();
                             success();
                         }
                         else
@@ -1040,7 +1058,7 @@ public class PostContentScreen extends AppCompatActivity {
                                     interestList.add("#"+tlist.get(i).getInterestName());
                                 }
                                 AutocompleteCustomArrayAdapter autocompleteCustomArrayAdapter =
-                                        new AutocompleteCustomArrayAdapter(PostContentScreen.this,R.layout.interest_row,tlist);
+                                        new AutocompleteCustomArrayAdapter(PostContentScreen.this,R.layout.interest_row,tlist,"ImageScreen");
                                 mTags.setThreshold(1);
                                 mTags.setAdapter(autocompleteCustomArrayAdapter);
                             }

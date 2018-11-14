@@ -30,7 +30,7 @@ public class InviteFriendsScreen extends AppCompatActivity {
     TextView mReferalCode;
     LinearLayout mWhatsapp,mFaceBook,mSms,mMore;
 
-    static  String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n\n http://bit.ly/2JXcOnw";
+    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(InviteFriendsScreen.this).getUserId()+"\n http://bit.ly/2JXcOnw";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,8 @@ public class InviteFriendsScreen extends AppCompatActivity {
 
             if(profileId!=0){
                 String ref = "MBR"+profileId;
-                String referCodeText = Base64.encodeToString(ref.getBytes(), Base64.DEFAULT);
+                String referCodeText = ref;
+             //   String referCodeText = Base64.encodeToString(ref.getBytes(), Base64.DEFAULT);
                 mReferalCode.setText(""+referCodeText);
             }
 
@@ -112,8 +113,8 @@ public class InviteFriendsScreen extends AppCompatActivity {
                         }
                     }
                     if (!facebookAppFound) {
-                        String sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=" + "https://play.google.com/store/apps/details?id=app.zingo.bihartourismguide";
-                        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl));
+//                        String sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=" + "https://play.google.com/store/apps/details?id=app.zingo.bihartourismguide";
+//                        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl));
                     }
                     startActivity(intent);
                 }

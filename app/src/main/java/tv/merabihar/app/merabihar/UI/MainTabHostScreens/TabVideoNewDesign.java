@@ -24,8 +24,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.CategoryGridAdapter;
 import tv.merabihar.app.merabihar.Adapter.ContentImageAdapter;
+import tv.merabihar.app.merabihar.Adapter.FollowFragmentContentAdapter;
 import tv.merabihar.app.merabihar.Adapter.MultiContentImageAdapter;
 import tv.merabihar.app.merabihar.Adapter.TrendingIntrestAdapter;
+import tv.merabihar.app.merabihar.Adapter.VideoFragmentAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold;
 import tv.merabihar.app.merabihar.CustomViews.CustomGridView;
 import tv.merabihar.app.merabihar.Model.Category;
@@ -55,7 +57,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
     ProgressBar progressBar;
 
     private static final String FRAGMENT_TAG = VideoYoutubeFragment.class.getSimpleName();
-
+    LinearLayoutManager verticalLinearLayoutManager;
 
 
 
@@ -64,20 +66,24 @@ public class TabVideoNewDesign extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         try{
+
+            //Fresco.initialize(this);
             setContentView(R.layout.activity_tab_video_new_design);
 
             mCategoryLayout = (LinearLayout) findViewById(R.id.category_layout);
+            mCategoryLayout.setVisibility(View.GONE);
             mTrendingInterest = (RecyclerView)findViewById(R.id.trending_videoes);
             mCategories = (CustomGridView) findViewById(R.id.category_grid_view);
 
             mImagesList = (RecyclerView) findViewById(R.id.image_list);
-            mImagesList.setLayoutManager(new LinearLayoutManager(TabVideoNewDesign.this, LinearLayoutManager.VERTICAL, false));
+            verticalLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            //mImagesList.setLayoutManager(new LinearLayoutManager(TabVideoNewDesign.this, LinearLayoutManager.VERTICAL, false));
             mImagesList.setNestedScrollingEnabled(false);
 
             progressBar = (ProgressBar) findViewById(R.id.progressBar_content);
             mTrendingInterest.setLayoutManager(new LinearLayoutManager(TabVideoNewDesign.this, LinearLayoutManager.HORIZONTAL, false));
             mTrendingInterest.setNestedScrollingEnabled(false);
-            Fresco.initialize(this);
+
 
 
 
@@ -94,7 +100,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
             };
 
 
-            category.start();
+            //category.start();
             video.start();
 
 
@@ -216,7 +222,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
     }
 
-    public void loadFirstSetOfContents()
+    public void loadFirstSetOfContent()
     {
 
 
@@ -314,6 +320,110 @@ public class TabVideoNewDesign extends AppCompatActivity {
         });
 
     }
+    public void loadFirstSetOfContents()
+    {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final ContentAPI categoryAPI = Util.getClient().create(ContentAPI.class);
+                Call<ArrayList<Contents>> getCat = categoryAPI.getContentByCityId(Constants.CITY_ID);
+                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                getCat.enqueue(new Callback<ArrayList<Contents>>() {
+
+                    @Override
+                    public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
+
+                        progressBar.setVisibility(View.GONE);
+                        System.out.println("Content inside"+response.code());
+                        if(response.code() == 200 && response.body()!= null)
+                        {
+                            System.out.println("Content inside"+response.body().size());
+
+
+                            ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                            ArrayList<Contents> contents = new ArrayList<>();
+                            ArrayList<Contents> contentss = new ArrayList<>();
+                            if( response.body().size()!= 0){
+
+                                System.out.println("Content inside");
+
+                                int count = 0;
+
+                                for (Contents  content:response.body()) {
+
+
+                                    if(content.getContentType().equalsIgnoreCase("Video")){
+                                        contents.add(content);
+                                        contentss.add(content);
+                                        count = count+1;
+                                        if(count==9){
+                                            contentList.add(contents);
+                                            count=0;
+                                            contents = new ArrayList<>();
+                                        }
+                                    }
+
+
+
+                                }
+
+                                if(contentList!=null&&contentList.size()!=0){
+                                    VideoFragmentAdapter followFragmentContentAdapter = new VideoFragmentAdapter(TabVideoNewDesign.this, contentList);
+                                    mImagesList.setLayoutManager(verticalLinearLayoutManager);
+                                    mImagesList.setHasFixedSize(true);
+                                    mImagesList.setAdapter(followFragmentContentAdapter);
+
+
+
+                                }else{
+                                    Toast.makeText(TabVideoNewDesign.this, "No Contents", Toast.LENGTH_SHORT).show();
+                                }
+
+                                if(contentss!=null&&contentss.size()!=0){
+
+                                    System.out.println("Content size "+contentss.size());
+
+                                    ContentImageAdapter blogAdapters = new ContentImageAdapter(TabVideoNewDesign.this,response.body());//,pagerModelArrayList);
+                                    mTrendingInterest.setAdapter(blogAdapters);
+                                    mTrendingInterest.requestFocus();
+
+                                }else{
+                                    Toast.makeText(TabVideoNewDesign.this, "No Contents", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }else{
+                                progressBar.setVisibility(View.GONE);
+                            }
+
+
+
+                        }else{
+                            progressBar.setVisibility(View.GONE);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
+
+                        progressBar.setVisibility(View.GONE);
+
+                        Toast.makeText(TabVideoNewDesign.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //System.out.println(TAG+" thread started");
+
+            }
+
+        });
+
+    }
 
     public  void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -355,4 +465,6 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
         TabVideoNewDesign.this.finish();
     }
+
+
 }

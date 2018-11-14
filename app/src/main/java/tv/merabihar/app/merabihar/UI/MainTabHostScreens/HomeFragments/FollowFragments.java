@@ -67,12 +67,16 @@ public class FollowFragments extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
+        Fresco.initialize(getActivity());
         mFragmentView =  inflater.inflate(R.layout.fragment_follow_fragments, container, false);
 
-        Fresco.initialize(getActivity());
+
 
         categoryRecyclerView = mFragmentView.findViewById(R.id.follow_frag_categories_recycler_view);
         contentRecyclerView = mFragmentView.findViewById(R.id.follow_frag_content_recycler_view);
+
+        categoryRecyclerView.setNestedScrollingEnabled(false);
+        contentRecyclerView.setNestedScrollingEnabled(false);
 
         horizontalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         verticalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);

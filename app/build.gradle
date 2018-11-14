@@ -14,8 +14,8 @@ android {
         applicationId "tv.merabihar.app.merabihar"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -65,6 +65,9 @@ dependencies {
 
     // custom loader
     compile 'com.tuyenmonkey:mkloader:1.4.0'
+
+    compile "im.ene.toro3:toro:3.0.0-beta1"
+    compile "com.google.android.exoplayer:exoplayer:r2.4.3"
 
     //round image
     implementation 'de.hdodenhof:circleimageview:2.1.0'

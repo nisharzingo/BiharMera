@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,8 @@ import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
 
 
 public class ForYouNewFragment extends Fragment {
+
+    SwipeRefreshLayout pullToRefresh;
 
     private static RecyclerView mtopBlogs;
     ProgressBar progressBar;
@@ -80,7 +83,7 @@ public class ForYouNewFragment extends Fragment {
 
             mtopBlogs = (RecyclerView) view.findViewById(R.id.top_blogs_viewpager);
             progressBar = (ProgressBar) view.findViewById(R.id.blog_progress);
-
+            pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
 
             linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
             mtopBlogs.setLayoutManager(linearLayoutManager);
@@ -120,7 +123,18 @@ public class ForYouNewFragment extends Fragment {
             //getBlogs();
 
             loadFirstSetOfBlogs();
+            pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                int Refreshcounter = 1; //Counting how many times user have refreshed the layout
 
+                @Override
+                public void onRefresh() {
+
+                    loadFirstSetOfBlogs();
+
+
+                    pullToRefresh.setRefreshing(false);
+                }
+            });
 
             return view;
 

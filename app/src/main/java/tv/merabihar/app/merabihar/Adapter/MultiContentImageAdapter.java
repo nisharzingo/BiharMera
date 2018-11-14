@@ -2,6 +2,8 @@ package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -59,17 +63,23 @@ public class MultiContentImageAdapter  extends RecyclerView.Adapter<MultiContent
             Picasso.with(context).load(mLists.get(pos).get(0)).placeholder(R.drawable.no_image).
                     error(R.drawable.no_image).into(holder.one);
 
+            loadCroppedImage(mLists.get(pos).get(0),holder.one);
+
             Picasso.with(context).load(mLists.get(pos).get(1)).placeholder(R.drawable.no_image).
                     error(R.drawable.no_image).into(holder.two);
+            loadCroppedImage(mLists.get(pos).get(1),holder.two);
 
             Picasso.with(context).load(mLists.get(pos).get(2)).placeholder(R.drawable.no_image).
                     error(R.drawable.no_image).into(holder.three);
+            loadCroppedImage(mLists.get(pos).get(2),holder.three);
 
             Picasso.with(context).load(mLists.get(pos).get(3)).placeholder(R.drawable.no_image).
                     error(R.drawable.no_image).into(holder.four);
+            loadCroppedImage(mLists.get(pos).get(3),holder.four);
 
             Picasso.with(context).load(mLists.get(pos).get(4)).placeholder(R.drawable.no_image).
                     error(R.drawable.no_image).into(holder.five);
+            loadCroppedImage(mLists.get(pos).get(4),holder.five);
         }
 
         holder.one.setOnClickListener(new View.OnClickListener() {
@@ -164,4 +174,37 @@ public class MultiContentImageAdapter  extends RecyclerView.Adapter<MultiContent
 
         }
     }
+
+    private void loadCroppedImage(String urlString, final ImageView imageView) {
+        Picasso.with(context).load(urlString).into(new com.squareup.picasso.Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                // Cropping the image
+                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                Glide.with(context)
+                        .load(customBitMap)
+                        .apply(new RequestOptions()
+                                .placeholder(R.drawable.no_image)
+                                .error(R.drawable.no_image))
+                        .into(imageView);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+    }
+
+
 }

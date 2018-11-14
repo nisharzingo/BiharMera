@@ -13,9 +13,64 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/appBarLayout"
+            android:background="#FFFFFF"
+            >
+
+            <android.support.v7.widget.Toolbar
+                android:id="@id/toolbar"
+
+                android:fitsSystemWindows="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?android:actionBarSize"
+                app:contentInsetStartWithNavigation="0.0dip"
+                app:layout_scrollFlags="enterAlways|scroll|snap"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/back"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="3dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/left_arrow"/>
+                   <!-- <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:gravity="end"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/create_blogs"
+                        android:textStyle="bold"
+                        android:layout_marginTop="5dp"
+                        android:text="Post"
+                        android:textColor="@color/colorPrimary"
+                        />-->
+
+                </LinearLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <android.support.v7.widget.AppCompatTextView
@@ -62,12 +117,12 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_large_margin"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10.0dip"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
-                android:layout_marginRight="@dimen/activity_large_margin"
+                android:layout_marginRight="10dp"
                 android:text="Short Description"/>
 
             <EditText
@@ -102,12 +157,13 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_large_margin"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10.0dip"
                 android:textSize="18dp"
+                android:visibility="gone"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
-                android:layout_marginRight="@dimen/activity_large_margin"
+                android:layout_marginRight="10dp"
                 android:text="Story"/>
 
             <EditText
@@ -118,14 +174,14 @@
                 android:layout_gravity="start"
                 android:gravity="start"
                 android:padding="3dp"
-                android:hint="Write your story..."
+                android:hint="Say something..."
                 android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:overScrollMode="always"
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
                 android:keepScreenOn="true"
-                android:layout_marginLeft="@dimen/activity_large_margin"
-                android:layout_marginRight="@dimen/activity_large_margin"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:lines="8"
                 android:background="@drawable/rect_grayoutline1"
 
@@ -141,12 +197,12 @@
 
             <android.support.v7.widget.AppCompatTextView                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_large_margin"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10.0dip"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
-                android:layout_marginRight="@dimen/activity_large_margin"
+                android:layout_marginRight="10dp"
                 android:text="Youtube Video URL"/>
 
             <tv.merabihar.app.merabihar.CustomViews.CustomAutoComplete
@@ -163,8 +219,8 @@
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
                 android:keepScreenOn="true"
-                android:layout_marginLeft="@dimen/activity_large_margin"
-                android:layout_marginRight="@dimen/activity_large_margin"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:lines="1"
                 android:background="@drawable/rect_grayoutline1"
                 android:maxLines="1"
@@ -181,7 +237,7 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_large_margin"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10.0dip"
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -203,8 +259,8 @@
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
                 android:keepScreenOn="true"
-                android:layout_marginLeft="@dimen/activity_large_margin"
-                android:layout_marginRight="@dimen/activity_large_margin"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:lines="1"
                 android:background="@drawable/rect_grayoutline1"
                 android:maxLines="1"
@@ -222,7 +278,7 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_large_margin"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10.0dip"
                 android:textSize="18dp"
                 android:textStyle="bold"

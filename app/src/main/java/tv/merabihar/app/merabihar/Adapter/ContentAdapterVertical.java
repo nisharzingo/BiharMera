@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -33,6 +34,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.commit451.youtubeextractor.YouTubeExtractionResult;
 import com.commit451.youtubeextractor.YouTubeExtractor;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -110,7 +113,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
 
     String url,fileNames;
     boolean isFirstTimePressed = false;
-    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n\n http://bit.ly/2JXcOnw";
+    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(context).getUserId()+"\n http://bit.ly/2JXcOnw";
 
     OnBottomReachedListener onBottomReachedListener;
 
@@ -275,7 +278,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
                                     holder.mMoreLine.setVisibility(View.GONE);
                                     holder.mMoreExtnd.setVisibility(View.GONE);
                                     holder.mMore.setVisibility(View.VISIBLE);
-                                    holder.mContentDesc.setMaxLines(2);
+                                    holder.mContentDesc.setMaxLines(1);
 
                                 }
                             });
@@ -399,6 +402,35 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
                                     if(img!=null&&!img.isEmpty()){
                                         Picasso.with(context).load(img).placeholder(R.drawable.no_image).
                                                 error(R.drawable.no_image).into(holder.mContentPic);
+
+                                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                                            @Override
+                                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                                // Cropping the image
+                                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                                Glide.with(context)
+                                                        .load(customBitMap)
+                                                        .apply(new RequestOptions()
+                                                                .placeholder(R.drawable.no_image)
+                                                                .error(R.drawable.no_image))
+                                                        .into(holder.mContentPic);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                                            }
+
+                                            @Override
+                                            public void onBitmapFailed(Drawable errorDrawable) {
+                                                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                                            }
+
+                                            @Override
+                                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                            }
+                                        });
                                     }else{
                                         holder.mContentPic.setImageResource(R.drawable.no_image);
                                     }
@@ -422,6 +454,8 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
                                     if(img!=null&&!img.isEmpty()){
                                         Picasso.with(context).load(img).placeholder(R.drawable.no_image).
                                                 error(R.drawable.no_image).into(holder.mContentPic);
+
+
                                     }else{
                                         holder.mContentPic.setImageResource(R.drawable.no_image);
                                     }
@@ -903,7 +937,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
 
     public class BlogViewHolder extends RecyclerView.ViewHolder {
 
-        com.alexzh.circleimageview.CircleImageView mProfilePhoto;
+        CircleImageView mProfilePhoto;
         MyTextView_Lato_Regular mProfileName,mDuration,mFollow,mContentTitle,mContentDesc
                 ,mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId;
         TextViewSFProDisplaySemibold mTags;
@@ -920,7 +954,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
         public BlogViewHolder(View view) {
             super(view);
 
-            mProfilePhoto = (com.alexzh.circleimageview.CircleImageView) view.findViewById(R.id.profile_photo);
+            mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
             mProfileName = (MyTextView_Lato_Regular) view.findViewById(R.id.profile_name);
             mDuration = (MyTextView_Lato_Regular) view.findViewById(R.id.duration);
             mFollow = (MyTextView_Lato_Regular) view.findViewById(R.id.follow_profile);
@@ -1023,7 +1057,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
     }
 
 
-    public void getProfile(final int id,final com.alexzh.circleimageview.CircleImageView cv){
+    public void getProfile(final int id,final CircleImageView cv){
 
         new ThreadExecuter().execute(new Runnable() {
             @Override

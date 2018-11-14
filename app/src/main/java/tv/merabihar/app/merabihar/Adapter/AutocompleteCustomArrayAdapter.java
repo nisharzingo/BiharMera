@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import tv.merabihar.app.merabihar.Model.Interest;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.PostContent.PostContentScreen;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.PostContent.PostVideoYoutubeContent;
 
 /**
  * Created by ZingoHotels Tech on 02-11-2018.
@@ -26,7 +27,7 @@ public class AutocompleteCustomArrayAdapter  extends ArrayAdapter<Interest> {
     String activity;
     ArrayList<Interest> data = null;
 
-    public AutocompleteCustomArrayAdapter(Context mContext, int layoutResourceId, ArrayList<Interest> data) {
+    public AutocompleteCustomArrayAdapter(Context mContext, int layoutResourceId, ArrayList<Interest> data,String activity) {
 
         super(mContext, layoutResourceId, data);
 
@@ -49,8 +50,14 @@ public class AutocompleteCustomArrayAdapter  extends ArrayAdapter<Interest> {
              */
             if(convertView==null){
 
-                LayoutInflater inflater = ((PostContentScreen) mContext).getLayoutInflater();
-                convertView = inflater.inflate(layoutResourceId, parent, false);
+                if(activity.equalsIgnoreCase("ImageScreen")){
+                    LayoutInflater inflater = ((PostContentScreen) mContext).getLayoutInflater();
+                    convertView = inflater.inflate(layoutResourceId, parent, false);
+                }else{
+                    LayoutInflater inflater = ((PostVideoYoutubeContent) mContext).getLayoutInflater();
+                    convertView = inflater.inflate(layoutResourceId, parent, false);
+                }
+
 
             }
 

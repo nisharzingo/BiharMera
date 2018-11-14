@@ -14,10 +14,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
 import tv.merabihar.app.merabihar.Adapter.ImagePorifleContentAdapter;
 import tv.merabihar.app.merabihar.Adapter.ProfileListAdapter;
@@ -36,6 +39,7 @@ import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.FollowOptions.FollowOptionsActivity;
 import tv.merabihar.app.merabihar.UI.Activity.SettingScreen;
+import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
@@ -54,6 +58,19 @@ public class TabAccountActivity extends AppCompatActivity {
     //ListView mPostsList;
     ProgressBar progressBar;
 
+    LinearLayout applinear,linearlinear;
+    ImageView app,linear;
+    ImagePorifleContentAdapter adapters;
+    ContentAdapterVertical adapter;
+
+    private static final int PAGE_START = 1;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int TOTAL_PAGES ;
+    private int currentPage = PAGE_START;
+
+    private String TAG="BlogList";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +82,7 @@ public class TabAccountActivity extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
             setContentView(R.layout.activity_tab_account);
-
+            Fresco.initialize(this);
             mSettings = (ImageView)findViewById(R.id.settings);
             mFollow = (ImageView)findViewById(R.id.follow_peopls);
             mProfilePhoto = (CircleImageView)findViewById(R.id.profile_photo);
@@ -79,7 +96,65 @@ public class TabAccountActivity extends AppCompatActivity {
             mPostsList = (RecyclerView)findViewById(R.id.listviews);
             progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
-            mFollowingPeoples.setLayoutManager(new LinearLayoutManager(TabAccountActivity.this, LinearLayoutManager.HORIZONTAL, false));
+            applinear = findViewById(R.id.applinear);
+            linearlinear = findViewById(R.id.linearlinear);
+
+            app = findViewById(R.id.apptool);
+            linear = findViewById(R.id.lineartool);
+
+           final int profileId = PreferenceHandler.getInstance(TabAccountActivity.this).getUserId();
+            applinear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    app.setImageResource(R.drawable.ic_apps_blue);
+                    linear.setImageResource(R.drawable.ic_linear_grey);
+                    mPostsList.setAdapter(null);
+                    mFollowingPeoples.setAdapter(null);
+                    mPostsList.setVisibility(View.VISIBLE);
+                    mFollowingPeoples.setVisibility(View.GONE);
+                    if(profileId!=0){
+
+
+                        getProfileContent(profileId);
+
+
+
+                    }else{
+
+                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+            linearlinear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    app.setImageResource(R.drawable.ic_apps_grey);
+                    linear.setImageResource(R.drawable.ic_linear_blue);
+                    mPostsList.setAdapter(null);
+                    mFollowingPeoples.setAdapter(null);
+                    mPostsList.setVisibility(View.GONE);
+                    mFollowingPeoples.setVisibility(View.VISIBLE);
+                    if(profileId!=0){
+                        adapter = new ContentAdapterVertical(TabAccountActivity.this);
+                        mFollowingPeoples.setAdapter(adapter);
+
+                        loadFirstSetOfBlogs(profileId);
+
+
+
+                    }else{
+
+                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                }
+            });
+
+            mFollowingPeoples.setLayoutManager(new LinearLayoutManager(TabAccountActivity.this, LinearLayoutManager.VERTICAL, false));
             mFollowingPeoples.setNestedScrollingEnabled(false);
 
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(TabAccountActivity.this, 3);
@@ -87,14 +162,13 @@ public class TabAccountActivity extends AppCompatActivity {
             mPostsList.setItemAnimator(new DefaultItemAnimator());
 
 
-            int profileId = PreferenceHandler.getInstance(TabAccountActivity.this).getUserId();
+
             //int profileId = 49;
             if(profileId!=0){
 
                 getProfile(profileId);
                 getProfileContent(profileId);
-                getFollowingByProfileId(profileId);
-                getFollowersByProfileId(profileId);
+
 
 
             }else{
@@ -118,6 +192,25 @@ public class TabAccountActivity extends AppCompatActivity {
 
                     Intent follow = new Intent(TabAccountActivity.this, SettingScreen.class);
                     startActivity(follow);
+                }
+            });
+
+
+            mProfilePhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(profileId!=0){
+
+
+
+
+
+                    }else{
+
+                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
+
+                    }
+
                 }
             });
 
@@ -403,7 +496,7 @@ public class TabAccountActivity extends AppCompatActivity {
                             if(response.body().size()!=0){
 
                                 mPosts.setText(""+response.body().size());
-                                ImagePorifleContentAdapter adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,response.body());
+                                adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,response.body());
                                 mPostsList.setAdapter(adapters);
                             }
 
@@ -449,6 +542,82 @@ public class TabAccountActivity extends AppCompatActivity {
         startActivity(intent);
 
         TabAccountActivity.this.finish();
+    }
+
+    public void loadFirstSetOfBlogs(final int id) {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
+
+                Call<ArrayList<Contents>> getAllBookings = bookingApi.
+                        getContentByProfileId(id);
+
+                getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
+
+
+                        try{
+                            if(response.code() == 200 && response.body()!= null)
+                            {
+                                if(response.body().size() != 0) {
+                                    Log.d(TAG, "loadFirstPage: "+response.message());
+                                    ArrayList<Contents> approvedBlogs = response.body();
+
+                                    if(approvedBlogs!=null&&approvedBlogs.size()!=0){
+                                        loadFirstPage(approvedBlogs);
+                                    }else{
+                                        isLoading = true;
+
+                                        currentPage = currentPage+1;
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    adapter.removeLoadingFooter();
+                                    isLastPage = true;
+                                    isLoading = true;
+                                    progressBar.setVisibility(View.GONE);
+                                }
+
+                            }
+                            else
+                            {
+
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
+                    }
+                });
+
+                //WebService.getAllBookings(PreferenceHandler.getInstance(getActivity()).getHotelID());
+            }
+        });
+
+    }
+
+    private void loadFirstPage(ArrayList<Contents> list) {
+
+        //Collections.reverse(list);
+        progressBar.setVisibility(View.GONE);
+        adapter.addAll(list);
+
+        if (list != null && list.size() !=0)
+            adapter.addLoadingFooter();
+        else
+            isLastPage = true;
+
     }
 
 }

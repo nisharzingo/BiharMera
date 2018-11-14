@@ -1,10 +1,16 @@
-<FrameLayout
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/pullToRefresh"
     tools:context="tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForYouNewFragment">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -19,4 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
-</FrameLayout>
+    </FrameLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>

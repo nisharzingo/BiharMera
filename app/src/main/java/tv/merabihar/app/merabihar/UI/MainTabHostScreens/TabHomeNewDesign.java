@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import tv.merabihar.app.merabihar.Adapter.MainContentScreenAdapter;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.VideoPlayerScreen;
@@ -29,6 +31,7 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try{
+
 
             setContentView(R.layout.activity_tab_home_new_design);
 

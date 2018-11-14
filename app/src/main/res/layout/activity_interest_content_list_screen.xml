@@ -23,7 +23,7 @@
             android:id="@+id/interest_list"
             android:scrollbars="none"
             android:nestedScrollingEnabled="false"
-            android:layout_margin="10dp"
+
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             />
 

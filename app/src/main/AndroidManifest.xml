@@ -38,6 +38,7 @@
         <activity android:name=".UI.Activity.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -88,6 +89,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".UI.Activity.InterestContentListScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".UI.MainTabHostScreens.TabAccountActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -107,14 +112,13 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".UI.MainTabHostScreens.PostContent.PostContentScreen"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UI.MainTabHostScreens.PostContent.PostVideoYoutubeContent"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar"  />
         <activity
             android:name=".UI.Activity.CommentsScreen"
             android:theme="@style/AppTheme" />
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="@string/file_provider_authority"
@@ -127,12 +131,12 @@
 
         <activity
             android:name=".UI.Activity.Influencer.InfluencerProgramViewScreen"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity android:name=".UI.Activity.Influencer.InviteScreen" />
         <activity android:name=".UI.Activity.Influencer.InviteFriendsScreen" />
         <activity android:name=".UI.Activity.FriendList.FriendListScreen" />
-        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen" />
-        <activity android:name=".UI.Activity.Influencer.Income" />
+        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen"></activity>
+        <activity android:name=".UI.Activity.Influencer.Income"></activity>
         <activity android:name=".UI.YoutubePlayList.YouTubeListScreen" />
         <activity android:name=".UI.MainTabHostScreens.VideoCategoryScreens" />
         <activity android:name=".UI.Activity.ContentListScreen" />
@@ -141,8 +145,13 @@
         <activity android:name=".UI.Activity.Influencer.WithdrawMoney" >
 
         </activity>
-        <activity android:name=".UI.MainTabHostScreens.TabSearchActivity2" />
+
         <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign2"/>
+
+        <activity android:name=".UI.MainTabHostScreens.TabSearchActivity2"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

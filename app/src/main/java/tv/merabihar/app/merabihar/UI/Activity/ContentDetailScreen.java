@@ -96,7 +96,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     int profileId = 0;
 
     String fileNames;
-    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n\n http://bit.ly/2JXcOnw";
+    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId()+"\n http://bit.ly/2JXcOnw";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

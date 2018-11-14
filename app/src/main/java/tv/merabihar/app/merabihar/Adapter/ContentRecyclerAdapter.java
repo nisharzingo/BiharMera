@@ -36,7 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alexzh.circleimageview.CircleImageView;
+
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -59,6 +59,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -109,7 +110,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
 
     String url,fileNames;
     boolean isFirstTimePressed = false;
-    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n\n http://bit.ly/2JXcOnw";
+    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(context).getUserId()+"\n http://bit.ly/2JXcOnw";
 
     OnBottomReachedListener onBottomReachedListener;
 

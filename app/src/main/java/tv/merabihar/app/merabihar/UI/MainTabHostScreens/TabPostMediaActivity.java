@@ -45,7 +45,7 @@ public class TabPostMediaActivity extends AppCompatActivity {
         try{
 
             setContentView(R.layout.activity_tab_story);
-
+            Fresco.initialize(this);
 
             mGallery = (LinearLayout)findViewById(R.id.gallery_post);
             mYoutube = (LinearLayout)findViewById(R.id.youtube_url);

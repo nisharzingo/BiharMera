@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -50,6 +52,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
     CustomGridView customGridView;
     CustomAutoComplete mTags;
     Button mSave;
+    ImageView back;
 
     SubCategories activity;
     SubCategoryListAdapter adapter;
@@ -74,11 +77,12 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
 
             setContentView(R.layout.activity_post_video_youtube_content);
 
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+           /* getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
-            setTitle("New Story");
+            setTitle("New Story");*/
 
             mTitle = (EditText) findViewById(R.id.blog_title);
+            back = (ImageView) findViewById(R.id.back);
             mShort = (EditText) findViewById(R.id.short_desc_blog);
             mLong = (EditText) findViewById(R.id.long_desc_blog);
             mURL = (EditText) findViewById(R.id.youtube_url);
@@ -92,15 +96,29 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
             getInterest();
             initerestId = new ArrayList<>();
 
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    PostVideoYoutubeContent.this.finish();
+                }
+            });
+
+
             mTags.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                    mTags.setText("#"+tlist.get(position).getInterestName());
+                    try{
+                        mTags.setText("#"+tlist.get(position).getInterestName());
 
-                    // initerestId.add(tlist.get(position).getZingoInterestId());
-                    initerestIds = tlist.get(position).getZingoInterestId();
+                        // initerestId.add(tlist.get(position).getZingoInterestId());
+                        initerestIds = tlist.get(position).getZingoInterestId();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             });
 
@@ -240,12 +258,14 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
         System.out.println(" Tags id = "+interestList.contains(tags));
 
 
-        if(title==null||title.isEmpty()){
+        /*if(title==null||title.isEmpty()){
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
-        }else if(url==null||url.isEmpty()){
+        }else*/ if(url==null||url.isEmpty()){
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
         }else if(longDesc==null||longDesc.isEmpty()){
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
+        }else if(tags==null||tags.isEmpty()){
+            Toast.makeText(PostVideoYoutubeContent.this, "Tags Should not be Empty", Toast.LENGTH_SHORT).show();
         }else{
 
             try
@@ -254,7 +274,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                 SimpleDateFormat sdf  = new SimpleDateFormat("MM/dd/yyyy");
 
                 Contents blogs = new Contents();
-                blogs.setTitle(mTitle.getText().toString());
+                blogs.setTitle("");
                 blogs.setDescription(mLong.getText().toString());
                 blogs.setContentType("Video");
                 blogs.setContentURL(extractYTId(mURL.getText().toString()));
@@ -567,7 +587,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                                     interestList.add("#"+tlist.get(i).getInterestName());
                                 }
                                 AutocompleteCustomArrayAdapter autocompleteCustomArrayAdapter =
-                                        new AutocompleteCustomArrayAdapter(PostVideoYoutubeContent.this,R.layout.interest_row,tlist);
+                                        new AutocompleteCustomArrayAdapter(PostVideoYoutubeContent.this,R.layout.interest_row,tlist,"Video");
                                 mTags.setThreshold(1);
                                 mTags.setAdapter(autocompleteCustomArrayAdapter);
                             }

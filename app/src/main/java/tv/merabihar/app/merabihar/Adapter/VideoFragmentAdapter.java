@@ -2,6 +2,8 @@ package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,16 +12,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.ContentDetailScreen;
 import tv.merabihar.app.merabihar.UI.Activity.ContentImageDetailScreen;
 
-public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFragmentContentAdapter.MyViewHolder> {
+/**
+ * Created by ZingoHotels Tech on 14-11-2018.
+ */
+
+public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdapter.MyViewHolder> {
 
     Context context;
     ArrayList<ArrayList<Contents>> mContentList;
@@ -27,7 +37,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
 
 
-    public FollowFragmentContentAdapter(Context context , ArrayList<ArrayList<Contents>> mContentList)
+    public VideoFragmentAdapter(Context context , ArrayList<ArrayList<Contents>> mContentList)
     {
         this.context = context;
         this.mContentList = mContentList;
@@ -66,94 +76,67 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         if(content!=null&&content.size()!=0&&content.size()==9){
 
 
-            if(content.get(0).getContentImage()!=null&&content.get(0).getContentImage().size()!=0){
+            String urlString1 = "https://img.youtube.com/vi/"+content.get(0).getContentURL()+"/0.jpg";
 
-                String urlString1 = content.get(0).getContentImage().get(0).getImages();
-
-                if(urlString1!=null){
-                    iv1.setImageURI(Uri.parse(urlString1));
-                }
-
+            if(urlString1!=null){
+                loadCroppedImage(urlString1,iv1);
+                //iv1.setImageURI(Uri.parse(urlString1));
             }
 
-            if(content.get(1).getContentImage()!=null&&content.get(1).getContentImage().size()!=0){
+            String urlString2 = "https://img.youtube.com/vi/"+content.get(1).getContentURL()+"/0.jpg";
 
-                String urlString1 = content.get(1).getContentImage().get(0).getImages();
-
-                if(urlString1!=null){
-                    iv2.setImageURI(Uri.parse(urlString1));
-                }
-
+            if(urlString2!=null){
+                loadCroppedImage(urlString2,iv2);
+               // iv2.setImageURI(Uri.parse(urlString2));
             }
 
-            if(content.get(2).getContentImage()!=null&&content.get(2).getContentImage().size()!=0){
+            String urlString3 = "https://img.youtube.com/vi/"+content.get(2).getContentURL()+"/0.jpg";
 
-                String urlString1 = content.get(2).getContentImage().get(0).getImages();
-
-                if(urlString1!=null){
-                    iv3.setImageURI(Uri.parse(urlString1));
-                }
-
+            if(urlString3!=null){
+                loadCroppedImage(urlString3,iv3);
+                //iv3.setImageURI(Uri.parse(urlString3));
             }
 
-            if(content.get(3).getContentImage()!=null&&content.get(3).getContentImage().size()!=0){
+            String urlString4 = "https://img.youtube.com/vi/"+content.get(3).getContentURL()+"/0.jpg";
 
-                String urlString1 = content.get(3).getContentImage().get(0).getImages();
-
-                if(urlString1!=null){
-                    iv4.setImageURI(Uri.parse(urlString1));
-                }
-
+            if(urlString4!=null){
+                loadCroppedImage(urlString4,iv4);
+                //iv4.setImageURI(Uri.parse(urlString4));
             }
 
-            if(content.get(4).getContentImage()!=null&&content.get(4).getContentImage().size()!=0){
+            String urlString5 = "https://img.youtube.com/vi/"+content.get(4).getContentURL()+"/0.jpg";
 
-                String urlString1 = content.get(4).getContentImage().get(0).getImages();
-
-                if(urlString1!=null){
-                    iv5.setImageURI(Uri.parse(urlString1));
-                }
-
+            if(urlString5!=null){
+                loadCroppedImage(urlString5,iv5);
+                //iv5.setImageURI(Uri.parse(urlString5));
             }
 
-            if(content.get(5).getContentImage()!=null&&content.get(5).getContentImage().size()!=0){
+            String urlString6 = "https://img.youtube.com/vi/"+content.get(5).getContentURL()+"/0.jpg";
 
-                String urlString1 = content.get(5).getContentImage().get(0).getImages();
-
-                if(urlString1!=null){
-                    iv6.setImageURI(Uri.parse(urlString1));
-                }
-
+            if(urlString6!=null){
+                loadCroppedImage(urlString6,iv6);
+                //iv6.setImageURI(Uri.parse(urlString6));
             }
 
-            if(content.get(6).getContentImage()!=null&&content.get(6).getContentImage().size()!=0){
+            String urlString7 = "https://img.youtube.com/vi/"+content.get(6).getContentURL()+"/0.jpg";
 
-                String urlString1 = content.get(6).getContentImage().get(0).getImages();
-
-                if(urlString1!=null){
-                    iv7.setImageURI(Uri.parse(urlString1));
-                }
-
+            if(urlString7!=null){
+                loadCroppedImage(urlString7,iv7);
+                //iv7.setImageURI(Uri.parse(urlString7));
             }
 
-            if(content.get(7).getContentImage()!=null&&content.get(7).getContentImage().size()!=0){
+            String urlString8 = "https://img.youtube.com/vi/"+content.get(7).getContentURL()+"/0.jpg";
 
-                String urlString1 = content.get(7).getContentImage().get(0).getImages();
-
-                if(urlString1!=null){
-                    iv8.setImageURI(Uri.parse(urlString1));
-                }
-
+            if(urlString8!=null){
+                loadCroppedImage(urlString8,iv8);
+                //iv8.setImageURI(Uri.parse(urlString8));
             }
 
-            if(content.get(8).getContentImage()!=null&&content.get(8).getContentImage().size()!=0){
+            String urlString9 = "https://img.youtube.com/vi/"+content.get(8).getContentURL()+"/0.jpg";
 
-                String urlString1 = content.get(8).getContentImage().get(0).getImages();
-
-                if(urlString1!=null){
-                    iv9.setImageURI(Uri.parse(urlString1));
-                }
-
+            if(urlString9!=null){
+                loadCroppedImage(urlString9,iv9);
+                //iv9.setImageURI(Uri.parse(urlString9));
             }
 
 
@@ -166,7 +149,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         iv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Intent intent = new Intent(context, ContentDetailScreen.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Contents",content.get(0));
                 intent.putExtras(bundle);
@@ -177,7 +160,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         iv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Intent intent = new Intent(context, ContentDetailScreen.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Contents",content.get(1));
                 intent.putExtras(bundle);
@@ -188,7 +171,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         iv3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Intent intent = new Intent(context, ContentDetailScreen.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Contents",content.get(2));
                 intent.putExtras(bundle);
@@ -199,7 +182,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         iv4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Intent intent = new Intent(context, ContentDetailScreen.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Contents",content.get(3));
                 intent.putExtras(bundle);
@@ -210,7 +193,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         iv5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Intent intent = new Intent(context, ContentDetailScreen.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Contents",content.get(4));
                 intent.putExtras(bundle);
@@ -221,7 +204,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         iv6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Intent intent = new Intent(context, ContentDetailScreen.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Contents",content.get(5));
                 intent.putExtras(bundle);
@@ -232,7 +215,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         iv7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Intent intent = new Intent(context, ContentDetailScreen.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Contents",content.get(6));
                 intent.putExtras(bundle);
@@ -243,7 +226,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         iv8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Intent intent = new Intent(context, ContentDetailScreen.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Contents",content.get(7));
                 intent.putExtras(bundle);
@@ -253,7 +236,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         iv9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                Intent intent = new Intent(context, ContentDetailScreen.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Contents",content.get(8));
                 intent.putExtras(bundle);
@@ -285,6 +268,38 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
             iv9 = itemView.findViewById(R.id.follow_frag_img_view9);
         }
 
+    }
+
+
+    private void loadCroppedImage(String urlString, final ImageView imageView) {
+        Picasso.with(context).load(urlString).into(new com.squareup.picasso.Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                // Cropping the image
+                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                Glide.with(context)
+                        .load(customBitMap)
+                        .apply(new RequestOptions()
+                                .placeholder(R.drawable.no_image)
+                                .error(R.drawable.no_image))
+                        .into(imageView);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
     }
 
 }
