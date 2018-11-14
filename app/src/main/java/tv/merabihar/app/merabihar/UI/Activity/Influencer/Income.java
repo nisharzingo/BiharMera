@@ -44,8 +44,8 @@ public class Income extends AppCompatActivity {
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
                 Intent settingIntent = new Intent(Income.this, SettingScreen.class);
+                settingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(settingIntent);
-                finish();
             }
         });
 

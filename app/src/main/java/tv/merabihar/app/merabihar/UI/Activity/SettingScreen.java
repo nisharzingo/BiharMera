@@ -39,6 +39,7 @@ import tv.merabihar.app.merabihar.UI.Activity.FriendList.FriendListScreen;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.Income;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.InfluencerProgramViewScreen;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.InviteScreen;
+import tv.merabihar.app.merabihar.UI.Activity.Influencer.WithdrawMoney;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabAccountActivity;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
@@ -90,7 +91,6 @@ public class SettingScreen extends AppCompatActivity {
             mBalance = (TextView)findViewById(R.id.balance_value);
             mInvite = (TextView)findViewById(R.id.invite_value);
 
-            withdraw_btn = findViewById(R.id.withdraw_ll_btn);
             balance_btn  = findViewById(R.id.balance_ll_btn);
 
 
@@ -269,6 +269,7 @@ public class SettingScreen extends AppCompatActivity {
 
                             // open income activity
                             openIncomeActivity( String.valueOf(coinsUsed), String.valueOf( (coinsUsed*1.0)/100  ) );
+                            openWithDrawActivity(String.valueOf( (coinsUsed*1.0)/100  ) );
 
                             referCodeProfile = "MBR"+profile.getProfileId();
                             if(profile.getProfilePhoto()!=null){
@@ -670,6 +671,24 @@ public class SettingScreen extends AppCompatActivity {
                 startActivity(incomeIntent);
             }
         });
+    }
+
+
+    private void openWithDrawActivity(final String rupees) {
+
+        withdraw_btn = findViewById(R.id.withdraw_ll_btn);
+
+        withdraw_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent withDrawIntent = new Intent(SettingScreen.this, WithdrawMoney.class);
+                //get data from api
+                withDrawIntent.putExtra("rupees_value", rupees);
+                startActivity(withDrawIntent);
+            }
+        });
+
     }
 
 

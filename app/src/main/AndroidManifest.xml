@@ -38,7 +38,6 @@
         <activity android:name=".UI.Activity.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -139,9 +138,11 @@
         <activity android:name=".UI.Activity.ContentListScreen" />
         <activity android:name=".UI.MainTabHostScreens.TabHomeHostScreen" />
         <activity android:name=".UI.MainTabHostScreens.TabPostMediaActivity" />
-        <activity android:name=".UI.Activity.Influencer.WithdrawMoney" />
+        <activity android:name=".UI.Activity.Influencer.WithdrawMoney" >
+
+        </activity>
         <activity android:name=".UI.MainTabHostScreens.TabSearchActivity2" />
-        <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign2"></activity>
+        <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign2"/>
     </application>
 
 </manifest>
