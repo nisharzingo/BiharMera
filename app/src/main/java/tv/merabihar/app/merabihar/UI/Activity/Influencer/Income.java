@@ -82,6 +82,19 @@ public class Income extends AppCompatActivity {
             }
         });
 
+        earnMoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendIntent = new Intent(Income.this, InfluencerProgramViewScreen.class);
+                startActivity(sendIntent);
+                Income.this.finish();
+
+            }
+        });
+
+
+
+
     }
 
     private void isWithDrawPossible(String totalRupees) {
