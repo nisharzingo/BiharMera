@@ -134,9 +134,6 @@ public class TabPostMediaActivity extends AppCompatActivity {
 
     }
 
-
-
-
     private void animateView() {
 
         LinearLayout gal_ll = findViewById(R.id.ll_share_gal);
@@ -144,8 +141,8 @@ public class TabPostMediaActivity extends AppCompatActivity {
         gal_ll.animate().translationXBy(300).setDuration(500);
 
         LinearLayout youtube_ll = findViewById(R.id.youtube_url);
-        youtube_ll.setTranslationX(300);
-        youtube_ll.animate().translationXBy(-300).setDuration(500);
+        youtube_ll.setTranslationX(600);
+        youtube_ll.animate().translationXBy(-600).setDuration(500);
 
         TextView share_something = findViewById(R.id.share_something);
         share_something.setTranslationY(-300);

@@ -5,14 +5,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="tv.merabihar.app.merabihar.UI.Activity.FriendList.DirectFriendFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.RecyclerView
+
+    <LinearLayout
         android:layout_width="match_parent"
+        android:visibility="gone"
+        android:id="@+id/direct_list_container"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:weightSum="5.5"
+            >
+
+            <TextView
+                android:background="#a40849ae"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:textAlignment="center"
+                android:gravity="center_vertical"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:text="Top 50"
+                />
+            <TextView
+                android:background="#a40849ae"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.2"
+                android:textAlignment="center"
+                android:gravity="center_vertical"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:text="Nickname"
+                />
+            <TextView
+                android:background="#a40849ae"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.9"
+                android:textAlignment="center"
+                android:gravity="center_vertical"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:text="Invite"
+                />
+            <TextView
+                android:background="#a40849ae"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.9"
+                android:textAlignment="center"
+                android:gravity="center_vertical"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:text="Earn"
+                />
+
+        </LinearLayout>
+
+        <!-- TODO: Update blank fragment layout -->
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/influnecer_direct_friend_list"
+            android:scrollbars="none"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            />
+
+    </LinearLayout>
+
+
+    <include
+        android:id="@+id/invite_friends_screen_view"
         android:layout_height="match_parent"
-        android:id="@+id/influnecer_direct_friend_list"
-        android:scrollbars="none"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        layout="@layout/activity_invite_friends_screen"
         />
+
+
 
     <ProgressBar
         android:layout_width="80dp"

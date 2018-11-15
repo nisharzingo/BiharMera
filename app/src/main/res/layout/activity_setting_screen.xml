@@ -227,7 +227,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="balance"
+                        android:text="Records"
                         />
                 </com.rey.material.widget.LinearLayout>
 
@@ -335,14 +335,14 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:id="@+id/whatsapp_invite"
                             android:background="@drawable/icons_background">
 
                             <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_gravity="center"
                                 android:scaleType="centerCrop"
@@ -370,14 +370,14 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:id="@+id/facebook_invite"
                             android:background="@drawable/icons_background">
 
                             <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_gravity="center"
                                 android:scaleType="centerCrop"
@@ -403,14 +403,14 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:id="@+id/sms_invite"
                             android:background="@drawable/icons_background">
 
                             <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginTop="3dp"
                                 android:layout_gravity="center"
@@ -439,14 +439,14 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:id="@+id/more_invite"
                             android:background="@drawable/icons_background">
 
                             <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_gravity="center"
                                 android:scaleType="centerCrop"

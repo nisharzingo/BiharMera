@@ -29,6 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import tv.merabihar.app.merabihar.Adapter.NavigationListAdapter;
 import tv.merabihar.app.merabihar.Adapter.ReferalPeopleListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
@@ -65,7 +66,7 @@ public class SettingScreen extends AppCompatActivity {
 
     UserProfile profiles;
 
-    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId()+"\n http://bit.ly/2JXcOnw";
+    String shareContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,8 @@ public class SettingScreen extends AppCompatActivity {
         try{
 
             setContentView(R.layout.activity_setting_screen);
+
+            shareContent = "Hi friends I get 50 coins from Mera Bihar, Install Mera Bihar and use my referral code and get 50 coins immediately.\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId()+"\n http://bit.ly/2JXcOnw";
 
             mProfileName = (MyTextView_Roboto_Regular)findViewById(R.id.profile_name_settings);
             mReferalCode = (MyTextView_Roboto_Regular)findViewById(R.id.profile_referal_code_settings);
@@ -125,10 +128,18 @@ public class SettingScreen extends AppCompatActivity {
                     {
                         ex.printStackTrace();
                     }
-
-
                 }
             });
+
+
+            mProfilePhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SettingScreen.this.finish();
+                }
+            });
+
+
 
             mWhatsapp.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -179,14 +190,21 @@ public class SettingScreen extends AppCompatActivity {
 
                     Intent smsIntent = new Intent(android.content.Intent.ACTION_VIEW);
                     smsIntent.setType("vnd.android-dir/mms-sms");
-
                     smsIntent.putExtra("sms_body", shareContent);
+
                     if (smsIntent.resolveActivity(getPackageManager()) != null) {
                         startActivity(smsIntent);
                     } else {
-                        Log.d("SMS", "Can't resolve app for ACTION_SENDTO Intent");
-                    }
-
+                             Log.d("SMS", "Can't resolve app for ACTION_SENDTO Intent");
+                             try {
+                                Intent smsIntent2 = new Intent(android.content.Intent.ACTION_VIEW);
+                                smsIntent2.putExtra("sms_body", shareContent);
+                                smsIntent2.setData(Uri.parse("sms:"));
+                                startActivity(smsIntent2);
+                             } catch (android.content.ActivityNotFoundException anfe) {
+                                        Log.d("Error SMS" , "Error");
+                                }
+                        }
                 }
             });
 
