@@ -39,7 +39,9 @@ import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.FriendList.FriendListScreen;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.Income;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.InfluencerProgramViewScreen;
+import tv.merabihar.app.merabihar.UI.Activity.Influencer.InviteFriendsScreen;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.InviteScreen;
+import tv.merabihar.app.merabihar.UI.Activity.Influencer.Records;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.WithdrawMoney;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabAccountActivity;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
@@ -55,7 +57,9 @@ public class SettingScreen extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayout mWhatsapp,mFaceBook,mSms,mMore,mInviteScreen;
     TextView mCoins,mBalance,mInvite;
-    LinearLayout withdraw_btn, balance_btn, income_btn;
+    LinearLayout withdraw_btn, records_btn, income_btn;
+    LinearLayout coints_txt_btn, bal_txt_btn, invite_txt_btn;
+
 
     ListView navBarListView;
     String[] title = null;
@@ -94,15 +98,31 @@ public class SettingScreen extends AppCompatActivity {
             mBalance = (TextView)findViewById(R.id.balance_value);
             mInvite = (TextView)findViewById(R.id.invite_value);
 
-            balance_btn  = findViewById(R.id.balance_ll_btn);
+            records_btn  = findViewById(R.id.balance_ll_btn);
+            coints_txt_btn = findViewById(R.id.coins_txt_btn);
+            bal_txt_btn = findViewById(R.id.bal_txt_btn);
+            invite_txt_btn = findViewById(R.id.invite_txt_btn);
 
 
+            records_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent recordsIntent = new Intent(SettingScreen.this, Records.class);
+                    startActivity(recordsIntent);
+                }
+            });
 
+            invite_txt_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent inviteIntent = new Intent(SettingScreen.this, InviteFriendsScreen.class);
+                    startActivity(inviteIntent);
+                }
+            });
 
 
             profileId = PreferenceHandler.getInstance(SettingScreen.this).getUserId();
             if(profileId!=0){
-
                 getProfile(profileId);
 
             }else{
@@ -687,13 +707,40 @@ public class SettingScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent incomeIntent = new Intent(SettingScreen.this, Income.class);
-                //get data from api
-                incomeIntent.putExtra("coins_value", coins);
-                incomeIntent.putExtra("rupees_value", rupees);
-                startActivity(incomeIntent);
+               openIncome(coins, rupees);
             }
         });
+
+        coints_txt_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                openIncome(coins, rupees);
+
+            }
+        });
+
+
+        bal_txt_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                openIncome(coins, rupees);
+
+            }
+        });
+
+
+
+    }
+
+    private void openIncome(String coins, String rupees) {
+        Intent incomeIntent = new Intent(SettingScreen.this, Income.class);
+        //get data from api
+        incomeIntent.putExtra("coins_value", coins);
+        incomeIntent.putExtra("rupees_value", rupees);
+        startActivity(incomeIntent);
+
     }
 
 
@@ -711,7 +758,6 @@ public class SettingScreen extends AppCompatActivity {
                 startActivity(withDrawIntent);
             }
         });
-
     }
 
 
