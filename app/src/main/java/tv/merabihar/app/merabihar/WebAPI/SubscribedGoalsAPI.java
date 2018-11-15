@@ -28,7 +28,6 @@ public interface SubscribedGoalsAPI {
     @PUT("SubscribedGoals/{id}")
     Call<SubscribedGoals> updateSubscribedGoals(@Path("id") int id,@Body SubscribedGoals body);
 
-
     @GET("SubscribedGoals")
     Call<ArrayList<SubscribedGoals>> getSubscribedGoals();
 

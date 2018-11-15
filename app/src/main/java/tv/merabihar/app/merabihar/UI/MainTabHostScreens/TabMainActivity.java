@@ -106,8 +106,8 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             tabStay.setContent(new Intent(this, TabSearchActivity2.class));
             //tabStay.setContent(new Intent(this, RoomViewStayActivity.class));
 
-            labelStory.setText(getResources().getString(R.string.story));
-            imgStory.setImageResource(R.drawable.add);
+            //labelStory.setText(getResources().getString(R.string.story));
+            //imgStory.setImageResource(R.drawable.add);
             tabNotification.setIndicator(tabIndicatorNotification);
             //tabNotification.setContent(new Intent(this, NotificationOptionsActivity.class));
             tabNotification.setContent(new Intent(this, TabPostMediaActivity.class));
@@ -252,9 +252,9 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
         labelSearch.setTypeface(Typeface.DEFAULT);
         imgSearch.setImageResource(R.drawable.search_icons);
 
-        labelStory.setTextColor(Color.parseColor("#000000"));
-        labelStory.setTypeface(Typeface.DEFAULT);
-        imgStory.setImageResource(R.drawable.add);
+        //labelStory.setTextColor(Color.parseColor("#000000"));
+        //labelStory.setTypeface(Typeface.DEFAULT);
+       // imgStory.setImageResource(R.drawable.add);
 
         labelVideo.setTextColor(Color.parseColor("#000000"));
         labelVideo.setTypeface(Typeface.DEFAULT);
@@ -279,9 +279,9 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             labelSearch.setTypeface(null, Typeface.BOLD);
             imgSearch.setImageResource(R.drawable.selected_search_icons);
         } else if (STORY_TAB.equals(tabId)) {
-            labelStory.setTextColor(Color.parseColor("#540CFA"));
-            labelStory.setTypeface(null, Typeface.BOLD);
-            imgStory.setImageResource(R.drawable.add);
+           // labelStory.setTextColor(Color.parseColor("#540CFA"));
+           // labelStory.setTypeface(null, Typeface.BOLD);
+           // imgStory.setImageResource(R.drawable.add);
         } else if (VIDEO_TAB.equals(tabId)) {
             labelVideo.setTextColor(Color.parseColor("#540CFA"));
             labelVideo.setTypeface(null, Typeface.BOLD);

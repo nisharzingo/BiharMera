@@ -95,6 +95,8 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     SubscribedGoals sg;
     int profileId = 0;
 
+    UserProfile currentProfile;
+
     String fileNames;
     String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId()+"\n http://bit.ly/2JXcOnw";
 
@@ -140,6 +142,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             if(bundle!=null){
                 contents = (Contents) bundle.getSerializable("Contents");
             }
+
 
             if(contents!=null){
                 setViewPager();
@@ -656,6 +659,65 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
         });
     }
 
+    public void getProfiles(final int id){
+
+      /*  final ProgressDialog dialog = new ProgressDialog(ActivityDetail.this);
+        dialog.setMessage("Loading Packages");
+        dialog.setCancelable(false);
+        dialog.show();*/
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final ProfileAPI subCategoryAPI = Util.getClient().create(ProfileAPI.class);
+                Call<UserProfile> getProf = subCategoryAPI.getProfileById(id);
+                //Call<ArrayList<Blogs>> getBlog = blogApi.getBlogs();
+
+                getProf.enqueue(new Callback<UserProfile>() {
+                    //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    /*@SuppressLint("NewApi")*/
+                    //System.out.println("thread inside on response");
+                    @Override
+                    public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
+                       /* if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+*/
+                        if (response.code() == 200)
+                        {
+                            System.out.println("Inside api");
+
+                            currentProfile = response.body();
+
+
+
+
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserProfile> call, Throwable t) {
+                       /* if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+*/
+                        //Toast.makeText(.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //System.out.println(TAG+" thread started");
+
+            }
+
+        });
+    }
+
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
                                         boolean wasRestored) {
@@ -933,6 +995,10 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                                 sg.setExtraDescription(""+(54000-(t+value)));
                                 sg.setStatus("Penalty");
+
+                                double amount = currentProfile.getReferralAmount();
+                                double valuea = (t+value)*.20;
+                                currentProfile.setReferralAmount(valuea);
                             }
                         } catch (ParseException e) {
                             e.printStackTrace();

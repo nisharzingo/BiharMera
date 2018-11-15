@@ -1,8 +1,11 @@
 package tv.merabihar.app.merabihar.UI.Activity.Influencer;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -188,6 +191,11 @@ public class InfluencerTargetFragment extends Fragment {
                                         TargetInfluencerAdapter adapter = new TargetInfluencerAdapter(getActivity(),targetDesArrayList);
                                         recyclerView.setAdapter(adapter);
 
+                                    }else{
+                                        /*Toast.makeText(getActivity(), "Target", Toast.LENGTH_SHORT).show();
+                                        Intent frag = new Intent(getActivity(),InfluencerProgramViewScreen.class);
+                                        frag.putExtra("Position",1);
+                                        getActivity().startActivity(frag);*/
                                     }
 
                                 }else{

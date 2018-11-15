@@ -34,6 +34,7 @@ import tv.merabihar.app.merabihar.Adapter.NavigationListAdapter;
 import tv.merabihar.app.merabihar.Adapter.ReferalPeopleListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.Model.NavBarItems;
+import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.FriendList.FriendListScreen;
@@ -49,6 +50,7 @@ import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
+import tv.merabihar.app.merabihar.WebAPI.SubscribedGoalsAPI;
 
 public class SettingScreen extends AppCompatActivity {
 
@@ -327,12 +329,9 @@ public class SettingScreen extends AppCompatActivity {
 
                             referalCode = PreferenceHandler.getInstance(SettingScreen.this).getReferalcode();
 
-                            if(referalCode!=null&&!referalCode.isEmpty()){
-                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
-                            }else{
-                                referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
-                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
-                            }
+                            getGoalsByProfileId(profile.getProfileId(),profile);
+
+
 
 
                         }
@@ -759,6 +758,98 @@ public class SettingScreen extends AppCompatActivity {
             }
         });
     }
+    public void getGoalsByProfileId(final int id,final UserProfile profile)
+    {
 
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final SubscribedGoalsAPI categoryAPI = Util.getClient().create(SubscribedGoalsAPI.class);
+                Call<ArrayList<SubscribedGoals>> getCat = categoryAPI.getSubscribedGoalsByProfileIdAndGoal(id,3);
+                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                getCat.enqueue(new Callback<ArrayList<SubscribedGoals>>() {
+
+                    @Override
+                    public void onResponse(Call<ArrayList<SubscribedGoals>> call, Response<ArrayList<SubscribedGoals>> response) {
+
+
+
+                        if(response.code() == 200 && response.body()!= null)
+                        {
+
+                            if(response.body().size()!=0){
+
+                                SubscribedGoals sg = response.body().get(0);
+
+                                if(sg!=null){
+
+                                        double amount = profiles.getReferralAmount();
+                                        double valuea = (Double.parseDouble(sg.getRewardsEarned()))*.20;
+
+                                    if(referalCode!=null&&!referalCode.isEmpty()){
+                                        getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                    }else{
+                                        referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                        getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                    }
+
+                                }else{
+                                    if(referalCode!=null&&!referalCode.isEmpty()){
+                                        getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                    }else{
+                                        referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                        getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                    }
+                                }
+
+
+                            }else{
+                                if(referalCode!=null&&!referalCode.isEmpty()){
+                                    getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                }else{
+                                    referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                    getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                }
+                            }
+
+
+                        }else{
+
+                            if(referalCode!=null&&!referalCode.isEmpty()){
+                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                            }else{
+                                referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
+
+
+                        if(referalCode!=null&&!referalCode.isEmpty()){
+                            getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                        }else{
+                            referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                            getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                        }
+
+                        Toast.makeText(SettingScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //System.out.println(TAG+" thread started");
+
+            }
+
+        });
+
+    }
 
 }

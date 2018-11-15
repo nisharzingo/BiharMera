@@ -23,6 +23,8 @@ public class InfluencerProgramViewScreen extends AppCompatActivity implements Ta
     TabLayout tabLayout;
     ViewPager viewPager;
 
+    //int positionFragment = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +81,12 @@ public class InfluencerProgramViewScreen extends AppCompatActivity implements Ta
                 }
             });
 
+           /* Bundle bundle = getIntent().getExtras();
+            if(bundle!=null){
+                positionFragment = bundle.getInt("Position");
+
+            }*/
+
             InfluencerOptionAdapter adapter = new InfluencerOptionAdapter(getSupportFragmentManager());
 
             //Adding adapter to pager
@@ -100,6 +108,7 @@ public class InfluencerProgramViewScreen extends AppCompatActivity implements Ta
     public void onTabSelected(TabLayout.Tab tab) {
 
         viewPager.setCurrentItem(tab.getPosition());
+
     }
 
     @Override

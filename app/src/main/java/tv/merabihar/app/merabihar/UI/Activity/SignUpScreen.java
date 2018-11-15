@@ -45,6 +45,9 @@ public class SignUpScreen extends AppCompatActivity {
     RadioButton mMale,mFemale,mOther;
     CheckBox mTerms;
 
+    boolean refered = false;
+    int referedProfileId=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -377,6 +380,9 @@ public class SignUpScreen extends AppCompatActivity {
                             if(responseProfile != null )
                             {
 
+                                refered = true;
+                                referedProfileId = responseProfile.getProfileId();
+
                                 String referUsed = responseProfile.getReferralCodeUsed();
                                 String referParent = responseProfile.getReferralCodeOfParents();
                                 String referSuper = responseProfile.getReferralCodeOfSuperParents();
@@ -672,6 +678,8 @@ public class SignUpScreen extends AppCompatActivity {
                                         mFbLoginManager.logOut();
                                     }
                                 }*/
+
+
 
 
                                 Toast.makeText(SignUpScreen.this,"Profile created Successfull",Toast.LENGTH_SHORT).show();

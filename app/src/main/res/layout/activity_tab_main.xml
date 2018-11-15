@@ -6,6 +6,10 @@
     android:id="@android:id/tabhost"
     android:layout_height="match_parent"
     tools:context=".UI.MainTabHostScreens.TabMainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,13 +21,27 @@
             android:layout_weight="1"
             android:id="@android:id/tabcontent"
             android:layout_marginBottom="2dp"></FrameLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_grey" />
-        <TabWidget
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@android:id/tabs"></TabWidget>
+
+
+
+
+            <TabWidget
+                android:layout_below="@+id/add_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@android:id/tabs"></TabWidget>
+
+
+
     </LinearLayout>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|center"
+            android:id="@+id/add_post"
+            android:layout_marginBottom="15dp"
+            android:src="@drawable/pencil"/>
+
+    </FrameLayout>
 </TabHost>
