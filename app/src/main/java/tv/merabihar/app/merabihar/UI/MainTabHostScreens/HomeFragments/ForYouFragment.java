@@ -21,7 +21,8 @@ import java.util.Collections;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tv.merabihar.app.merabihar.Adapter.ContentRecyclerAdapter;
+import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
+
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
 import tv.merabihar.app.merabihar.CustomInterface.OnBottomReachedListener;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
@@ -45,7 +46,7 @@ public class ForYouFragment extends Fragment {
     ArrayList<CategoryAndContentList> categoryAndContentList;
     ArrayList<Contents> contentsList;
 
-    ContentRecyclerAdapter adapter;
+    ContentAdapterVertical adapter;
     LinearLayoutManager linearLayoutManager;
 
     private static final int PAGE_START =1;
@@ -87,7 +88,7 @@ public class ForYouFragment extends Fragment {
             progressBar = (LinearLayout) view.findViewById(R.id.progress_loding);
             mCategoryContents = (RecyclerView) view.findViewById(R.id.all_contents);
 
-            adapter = new ContentRecyclerAdapter(getActivity());
+            adapter = new ContentAdapterVertical(getActivity());
 
             linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
             mCategoryContents.setLayoutManager(linearLayoutManager);

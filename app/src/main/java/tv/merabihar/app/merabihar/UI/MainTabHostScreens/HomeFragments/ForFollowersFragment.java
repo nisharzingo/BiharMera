@@ -20,7 +20,8 @@ import java.util.Collections;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tv.merabihar.app.merabihar.Adapter.ContentRecyclerAdapter;
+import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
+
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
 import tv.merabihar.app.merabihar.Adapter.NonFollowersAdapter;
 import tv.merabihar.app.merabihar.Adapter.ProfileListAdapter;
@@ -45,7 +46,7 @@ public class ForFollowersFragment extends Fragment {
     //,mFollowingContent,mInterestContent,mTrendingContents,mNonFollowers
     int profileId = 0;
 
-    ContentRecyclerAdapter adapter;
+    ContentAdapterVertical adapter;
     boolean value = false;
 
     private boolean _hasLoadedOnce = false;
@@ -224,7 +225,7 @@ public class ForFollowersFragment extends Fragment {
                                 if(followingContents!=null&& followingContents.size()!=0){
                                     Collections.shuffle(followingContents);
                                     value = true;
-                                    adapter = new ContentRecyclerAdapter(getActivity());
+                                    adapter = new ContentAdapterVertical(getActivity());
                                     mFollowerContent.setAdapter(adapter);
                                     adapter.addAll(followingContents);
 

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:fitsSystemWindows="true"
+    tools:context="tv.merabihar.app.merabihar.UI.Activity.PhoneNumberVerficationActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none"
+
+
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="20dp"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:orientation="vertical"
+
+                >
+
+                <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
+                    android:id="@+id/left_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50dp"
+                    android:alpha="50"
+                    android:gravity="center"
+                    android:text="Enter your Mobile Number "
+                    android:textColor="@color/text_grey"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp">
+
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/ccp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="10.0dip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ccpDialog_keyboardAutoPopup="false"
+                        app:ccp_defaultNameCode="IN"/>
+
+                    <EditText
+                        android:id="@+id/mobile_number"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:inputType="number"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/text_line_background"
+                        android:hint="Mobile Number"
+
+                        android:singleLine="true"
+                        android:textColor="#000000"
+                        android:textColorHint="#afaeae"
+                         />
+
+
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/otp_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:paddingRight="30dp">
+
+                    <EditText
+                        android:id="@+id/otp_text"
+                        android:layout_width="150dp"
+                        android:layout_margin="15dp"
+                        android:layout_height="35dp"
+                        android:inputType="textPassword"
+                        android:background="@drawable/text_line_background"
+                        android:hint="OTP"
+                        android:gravity="center"
+                        android:textSize="20dp"
+                        android:singleLine="true"
+                        android:textColor="#000000"
+                        android:textColorHint="#afaeae"
+                         />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/next"
+                        >
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/circle"
+                            android:tint="@color/colorPrimary"/>
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/whitearrow"/>
+                    </FrameLayout>
+                </LinearLayout>
+
+
+                <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
+                    android:id="@+id/resend_otp"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:visibility="gone"
+                    android:text="Resend OTP"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:textSize="14dp"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    />
+
+
+                <tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold
+                    android:id="@+id/send_otp"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/signup_ract"
+                    android:gravity="center"
+                    android:text="Next"
+                    android:textSize="22dp"
+                    android:textColor="#ffffff"
+                     />
+
+
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

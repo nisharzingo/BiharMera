@@ -309,6 +309,9 @@ public class SettingScreen extends AppCompatActivity {
 
                             if(referalCode!=null&&!referalCode.isEmpty()){
                                 getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                            }else{
+                                referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
                             }
 
 

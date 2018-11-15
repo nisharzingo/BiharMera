@@ -26,6 +26,9 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
     ImageView mVideo;
     boolean isFirstTimePressed = false;
 
+    public static final String PROGRESS_UPDATE = "progress_update";
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

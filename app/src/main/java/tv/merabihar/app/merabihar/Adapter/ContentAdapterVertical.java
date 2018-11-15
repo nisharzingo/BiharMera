@@ -1,5 +1,7 @@
 package tv.merabihar.app.merabihar.Adapter;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
@@ -7,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,6 +22,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -80,6 +86,7 @@ import tv.merabihar.app.merabihar.Model.Likes;
 import tv.merabihar.app.merabihar.Model.ProfileFollowMapping;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Service.BackgroundNotificationService;
 import tv.merabihar.app.merabihar.UI.Activity.CommentsScreen;
 import tv.merabihar.app.merabihar.UI.Activity.ContentDetailScreen;
 import tv.merabihar.app.merabihar.UI.Activity.ContentImageDetailScreen;
@@ -97,7 +104,7 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
  * Created by ZingoHotels Tech on 13-11-2018.
  */
 
-public class ContentAdapterVertical  extends RecyclerView.Adapter  {
+public class ContentAdapterVertical  extends RecyclerView.Adapter  implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int ITEM = 0;
     private static final int LOADING = 1;
@@ -847,6 +854,42 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
                                     shareApplication();
                                 }
                             });
+
+                            holder.mDownLoad.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    fileNames = contents.getContentId()+""+contents.getProfileId();
+
+                                    AsyncTask mMyTask;
+                                    if(contents.getContentType().equalsIgnoreCase("Video")) {
+
+                                        url = contents.getContentURL();
+
+
+                                        if (url != null && !url.isEmpty()) {
+
+                                            startImageDownload(url,fileNames);
+
+                                        }
+
+                                    }else{
+
+                                       /* if (checkPermission()) {
+                                            startImageDownload(""+contents.getContentImage().get(0).getImages());
+                                        } else {
+                                            requestPermission();
+                                        }*/
+
+                                        mMyTask = new DownloadImage()
+                                                .execute(stringToURL(
+                                                        ""+contents.getContentImage().get(0).getImages()
+                                                ));
+
+                                    }
+                                }
+                            });
+
                             holder.mShare.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -934,6 +977,11 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
         return mList == null ? 0 : mList.size();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+    }
+
 
     public class BlogViewHolder extends RecyclerView.ViewHolder {
 
@@ -948,7 +996,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
         TextView mMore,mLess,mMoreExtnd,mMoreLine;
 
 
-        ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare;
+        ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare,mDownLoad;
 
 
         public BlogViewHolder(View view) {
@@ -980,6 +1028,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
             mWhatsapp = (ImageView) view.findViewById(R.id.whatsapp_share);
             mShare = (ImageView) view.findViewById(R.id.share_image);
             mMoreShare = (ImageView) view.findViewById(R.id.more_icons);
+            mDownLoad = (ImageView) view.findViewById(R.id.download_screen);
 
 
 
@@ -1926,6 +1975,107 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
         }
     }
 
+    private class DownloadImage extends AsyncTask<URL,Void,Bitmap> {
+        // Before the tasks execution
+        protected void onPreExecute(){
+            // Display the progress dialog on async task start
+            //mProgressDialog.show();
+            //Toast.makeText(context, "Downloading image...", Toast.LENGTH_SHORT).show();
+        }
+
+        // Do the task in background/non UI thread
+        protected Bitmap doInBackground(URL...urls){
+            URL url = urls[0];
+            HttpURLConnection connection = null;
+
+            try{
+                // Initialize a new http url connection
+                connection = (HttpURLConnection) url.openConnection();
+
+                // Connect the http url connection
+                connection.connect();
+
+                // Get the input stream from http url connection
+                InputStream inputStream = connection.getInputStream();
+
+
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+
+
+                Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
+
+                // Return the downloaded bitmap
+                return bmp;
+
+            }catch(IOException e){
+                e.printStackTrace();
+            }finally{
+                // Disconnect the http url connection
+                connection.disconnect();
+            }
+            return null;
+        }
+
+        // When all async task done
+        protected void onPostExecute(Bitmap result){
+            // Hide the progress dialog
+            // mProgressDialog.dismiss();
+
+            if(result!=null){
+
+
+                try{
+
+
+
+                    File sd = Environment.getExternalStorageDirectory();
+                    String fileName = fileNames+ ".png";
+
+                    File directory = new File(sd.getAbsolutePath()+"/MeraBihar App/Download/Images");
+                    //create directory if not exist
+                    if (!directory.exists() && !directory.isDirectory()) {
+                        directory.mkdirs();
+                    }
+
+
+                    File file = new File(directory, fileName);
+
+                    //if(file.exists())
+
+
+
+
+                    OutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        out.flush();
+                        out.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    fileName=file.getPath();
+
+                    Uri bmpUri = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        bmpUri = FileProvider.getUriForFile(context, "tv.merabihar.app.merabihar.fileprovider", file);
+                    }else{
+                        bmpUri = Uri.parse("file://"+fileName);
+                    }
+
+                    Toast.makeText(context, "Image Downloaded", Toast.LENGTH_SHORT).show();
+
+                }catch (Exception we)
+                {
+                    we.printStackTrace();
+                    Toast.makeText(context, "Unable to send,Check Permission", Toast.LENGTH_SHORT).show();
+                }
+
+            }else {
+            }
+        }
+    }
+
     // Custom method to convert string to url
     protected URL stringToURL(String urlString){
         try{
@@ -1940,7 +2090,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
     // Custom method to save a bitmap into internal storage
     public Bitmap mark(Bitmap src) {
 
-        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.app_logo);
+        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.app_logo_home);
         int w = src.getWidth();
         int h = src.getHeight();
         int pw=w-w;
@@ -2101,7 +2251,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
                                 File sd = Environment.getExternalStorageDirectory();
                                 String fileName = fileNames+ ".mp4";
 
-                                File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/Video/");
+                                File directory = new File(sd.getAbsolutePath()+"/MeraBihar App/Download/Video/");
                                 //create directory if not exist
                                 if (!directory.exists() && !directory.isDirectory()) {
                                     directory.mkdirs();
@@ -2110,7 +2260,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
 
                                 File file = new File(directory, fileName);
                                 System.out.println("Download url "+downloadUrl);
-                                new DownloadTaskVideo(context, fileNames, downloadUrl);
+                                new DownloadTaskVideo( fileNames, downloadUrl);
 
 
                                 break;
@@ -2158,6 +2308,26 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  {
         }
     }
 
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
 
+    private void startImageDownload(final String url,final String fileNames) {
+
+
+        Intent intent = new Intent(context, BackgroundNotificationService.class);
+        intent.putExtra("Url",url);
+        intent.putExtra("File",fileNames);
+        context.startService(intent);
+
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+    }
 
 }

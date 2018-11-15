@@ -316,12 +316,14 @@ public class SignUpScreen extends AppCompatActivity {
                     profiles.setReferralCodeUsed(referal);
                     profiles.setReferralAmount(50.0);
                     profiles.setReferralAmountForOtherProfile(0.5);
-                    checkUserByReferalCode(profiles,"Normal",referal);
+                    String mbr = referal.replace("MBR","");
+                    checkUserByReferalCode(profiles,"Normal",mbr);
                 }else{
                     profiles.setReferralCodeUsed(stringFromBase);
                     profiles.setReferralAmount(50.0);
                     profiles.setReferralAmountForOtherProfile(0.5);
-                    checkUserByReferalCode(profiles,"Normal",stringFromBase);
+                    String mbr = stringFromBase.replace("MBR","");
+                    checkUserByReferalCode(profiles,"Normal",mbr);
                 }
 
 
@@ -361,23 +363,23 @@ public class SignUpScreen extends AppCompatActivity {
                 ProfileAPI apiService =
                         Util.getClient().create(ProfileAPI.class);
 
-                Call<ArrayList<UserProfile>> call = apiService.getUserByReferalId(i);
+                Call<UserProfile> call = apiService.getProfileById(Integer.parseInt(i));
 
-                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                call.enqueue(new Callback<UserProfile>() {
                     @Override
-                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+                    public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
 //                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
                         int statusCode = response.code();
 
                         if(statusCode == 200 || statusCode == 204)
                         {
-                            ArrayList<UserProfile> responseProfile = response.body();
-                            if(responseProfile != null && responseProfile.size()!=0)
+                            UserProfile responseProfile = response.body();
+                            if(responseProfile != null )
                             {
 
-                                String referUsed = responseProfile.get(0).getReferralCodeUsed();
-                                String referParent = responseProfile.get(0).getReferralCodeOfParents();
-                                String referSuper = responseProfile.get(0).getReferralCodeOfSuperParents();
+                                String referUsed = responseProfile.getReferralCodeUsed();
+                                String referParent = responseProfile.getReferralCodeOfParents();
+                                String referSuper = responseProfile.getReferralCodeOfSuperParents();
 
                                 if(referUsed!=null&&!referUsed.isEmpty()){
 
@@ -421,7 +423,7 @@ public class SignUpScreen extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+                    public void onFailure(Call<UserProfile> call, Throwable t) {
 
                         Log.e("TAG", t.toString());
                     }

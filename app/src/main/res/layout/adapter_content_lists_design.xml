@@ -310,6 +310,17 @@
 
                     >
 
+                    <ImageView
+                        android:id="@+id/download_screen"
+                        android:layout_width="40px"
+                        android:layout_height="40px"
+                        android:layout_gravity="center"
+                        android:src="@drawable/download"
+                        android:scaleType="centerCrop"
+
+                        />
+
+
                 </LinearLayout>
 
                 <LinearLayout

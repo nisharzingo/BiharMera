@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tv.merabihar.app.merabihar.Adapter.ContentRecyclerAdapter;
+import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.Contents;
@@ -34,7 +34,7 @@ public class InterestContentListScreen extends AppCompatActivity {
     ArrayList<Contents> categoryContents;
     Interest category;
 
-    ContentRecyclerAdapter adapter;
+    ContentAdapterVertical adapter;
     LinearLayoutManager linearLayoutManager;
 
     private static final int PAGE_START =1;
@@ -60,7 +60,7 @@ public class InterestContentListScreen extends AppCompatActivity {
             mInterestList = (RecyclerView)findViewById(R.id.interest_list);
             progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-            adapter = new ContentRecyclerAdapter(InterestContentListScreen.this);
+            adapter = new ContentAdapterVertical(InterestContentListScreen.this);
 
             linearLayoutManager = new LinearLayoutManager(InterestContentListScreen.this,LinearLayoutManager.VERTICAL,false);
             mInterestList.setLayoutManager(linearLayoutManager);

@@ -30,7 +30,7 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 
 public class LoginScreen extends AppCompatActivity {
 
-    TextView mLoginAccount;
+    TextView mLoginAccount,mFPwd;
     EditText mUserName,mPassword;
     LinearLayout mSignUpScreen;
 
@@ -43,6 +43,7 @@ public class LoginScreen extends AppCompatActivity {
             setContentView(R.layout.activity_login_screen);
 
             mLoginAccount = (TextView)findViewById(R.id.loginAccount);
+            mFPwd = (TextView)findViewById(R.id.forgot_pwd);
             mUserName = (EditText)findViewById(R.id.user_name);
             mPassword = (EditText)findViewById(R.id.pwd);
             mSignUpScreen = (LinearLayout)findViewById(R.id.sign_up_screen);
@@ -61,6 +62,15 @@ public class LoginScreen extends AppCompatActivity {
 
                     Intent create = new Intent(LoginScreen.this,SignUpScreen.class);
                     startActivity(create);
+                }
+            });
+
+            mFPwd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent create = new Intent(LoginScreen.this,PhoneNumberVerficationActivity.class);
+                    startActivity(create);
+
                 }
             });
 

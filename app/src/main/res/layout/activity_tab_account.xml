@@ -282,7 +282,7 @@
                     android:layout_marginBottom="60dp"
                     android:layout_marginTop="13dp">
 
-                    <include layout="@layout/middle_bar"/>
+                    <include layout="@layout/middle_bar" />
 
                     <!--Recycler can be used-->
 

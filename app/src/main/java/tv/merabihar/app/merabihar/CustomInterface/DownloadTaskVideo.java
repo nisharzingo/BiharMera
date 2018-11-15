@@ -28,7 +28,7 @@ public class DownloadTaskVideo {
 
     private String downloadUrl = "", downloadFileName = "";
 
-    public DownloadTaskVideo(Context context, String fileName,String downloadUrl) {
+    public DownloadTaskVideo(String fileName,String downloadUrl) {
         this.context = context;
         this.fileName = fileName;
 
@@ -50,6 +50,7 @@ public class DownloadTaskVideo {
         protected void onPreExecute() {
             super.onPreExecute();
            //Set Button Text when download started
+            Toast.makeText(context, "Downloading..", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -57,6 +58,7 @@ public class DownloadTaskVideo {
             try {
                 if (outputFile != null) {
                    ;//If Download completed then change button text
+                    Toast.makeText(context, "Download Completed", Toast.LENGTH_SHORT).show();
                 } else {
 
                     new Handler().postDelayed(new Runnable() {
@@ -108,7 +110,7 @@ public class DownloadTaskVideo {
                 File sd = Environment.getExternalStorageDirectory();
                 //String fileName = fileNames+ ".mp4";
 
-                apkStorage = new File(sd.getAbsolutePath()+"/Mera Bihar App/Video/");
+                apkStorage = new File(sd.getAbsolutePath()+"/MeraBihar App/Download/Video/");
 
                 //If File is not present create directory
                 if (!apkStorage.exists()) {

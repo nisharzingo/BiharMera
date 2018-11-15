@@ -45,6 +45,8 @@ public interface ProfileAPI {
     @GET("Profiles/GetProfileByAuthId/{AuthId}")
     Call<ArrayList<UserProfile>> getUserByAuthId(@Path("AuthId") String id);
 
+
+
     @GET("Profiles/GetAllProfileByReferralCodeToUseForOtherProfile/{ReferralCodeToUseForOtherProfile}")
     Call<ArrayList<UserProfile>> getUserByReferalId(@Path("ReferralCodeToUseForOtherProfile") String id);
 

@@ -16,8 +16,6 @@ import java.util.Vector;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tv.merabihar.app.merabihar.Adapter.ContentRecyclerAdapter;
-import tv.merabihar.app.merabihar.Adapter.ImagePorifleContentAdapter;
 import tv.merabihar.app.merabihar.Adapter.VideoAdapter;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
 import tv.merabihar.app.merabihar.Model.Contents;

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
 import tv.merabihar.app.merabihar.Adapter.SlideAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
@@ -15,7 +16,7 @@ import tv.merabihar.app.merabihar.R;
 public class SlideOptionScreen extends AppCompatActivity {
 
     private ViewPager viewPager;
-    private ImageView mAppLogo;
+    private CircleImageView mAppLogo;
     private SlideAdapter a;
     private CircleIndicator indicator;
 
@@ -30,7 +31,7 @@ public class SlideOptionScreen extends AppCompatActivity {
             setContentView(R.layout.activity_slide_option_screen);
 
             viewPager = (ViewPager)findViewById(R.id.view_pager_slide);
-            mAppLogo = (ImageView) findViewById(R.id.app_logos);
+            mAppLogo = (CircleImageView) findViewById(R.id.app_logos);
             indicator = (CircleIndicator)findViewById(R.id.indicator);
             mSignUp = (MyTextView_Roboto_Regular)findViewById(R.id.signUp);
             mLogin = (MyTextView_Roboto_Regular)findViewById(R.id.login);
@@ -65,8 +66,7 @@ public class SlideOptionScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    Intent signUp = new Intent(SlideOptionScreen.this,ContentImageDetailScreen.class);
-                    startActivity(signUp);
+
 
                 }
             });

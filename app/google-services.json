@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "315573115950",
+    "firebase_url": "https://bihar-11f2d.firebaseio.com",
+    "project_id": "bihar-11f2d",
+    "storage_bucket": "bihar-11f2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315573115950:android:6562c3899706af52",
+        "android_client_info": {
+          "package_name": "tv.merabihar.app.merabihar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315573115950-lrq9ebofptjo5bm4ne181u6aq8htsvp6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tv.merabihar.app.merabihar",
+            "certificate_hash": "1f1380323348bc3b4e74e259dc5ff18fbfbb28bc"
+          }
+        },
+        {
+          "client_id": "315573115950-7v4vhtoe32hj3o6lh5337b6iu04khgc7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqiYYOTzf5XAN0mtfI1JqPilCQVwORkKo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315573115950-7v4vhtoe32hj3o6lh5337b6iu04khgc7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

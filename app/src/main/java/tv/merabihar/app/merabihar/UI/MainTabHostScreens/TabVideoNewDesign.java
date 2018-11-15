@@ -387,7 +387,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
                                     System.out.println("Content size "+contentss.size());
 
-                                    ContentImageAdapter blogAdapters = new ContentImageAdapter(TabVideoNewDesign.this,response.body());//,pagerModelArrayList);
+                                    ContentImageAdapter blogAdapters = new ContentImageAdapter(TabVideoNewDesign.this,contentss);//,pagerModelArrayList);
                                     mTrendingInterest.setAdapter(blogAdapters);
                                     mTrendingInterest.requestFocus();
 

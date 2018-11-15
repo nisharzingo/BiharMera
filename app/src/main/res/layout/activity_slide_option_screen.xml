@@ -10,14 +10,15 @@
     tools:context=".UI.Activity.SlideOptionScreen">
 
 
-
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/app_logos"
-        android:src="@drawable/app_logo"
+        android:src="@drawable/app_logo_home"
         android:layout_gravity="center"
         android:layout_marginTop="150dp"/>
+
+
 
     <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
         android:layout_width="match_parent"
