@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tv.merabihar.app.merabihar.Adapter.CategoryGridAdapter;
 import tv.merabihar.app.merabihar.Adapter.FollowFragmentCategoriesAdapter;
 import tv.merabihar.app.merabihar.Adapter.FollowFragmentContentAdapter;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;

@@ -186,7 +186,7 @@ public class InfluencerTargetFragment extends Fragment {
 
                             if(goals.size()!=0){
 
-                                if(ids!=null&&ids.size()!=0){
+                                /*if(ids!=null&&ids.size()!=0){
                                     for(int i=0;i<goals.size();i++){
 
                                         boolean value = true;
@@ -211,17 +211,19 @@ public class InfluencerTargetFragment extends Fragment {
                                         recyclerView.setAdapter(adapter);
 
                                     }else{
-                                        /*Toast.makeText(getActivity(), "Target", Toast.LENGTH_SHORT).show();
+                                        *//*Toast.makeText(getActivity(), "Target", Toast.LENGTH_SHORT).show();
                                         Intent frag = new Intent(getActivity(),InfluencerProgramViewScreen.class);
                                         frag.putExtra("Position",1);
-                                        getActivity().startActivity(frag);*/
+                                        getActivity().startActivity(frag);*//*
                                     }
 
                                 }else{
                                     TargetInfluencerAdapter adapter = new TargetInfluencerAdapter(getActivity(),response.body());
                                     recyclerView.setAdapter(adapter);
-                                }
+                                }*/
 
+                                TargetInfluencerAdapter adapter = new TargetInfluencerAdapter(getActivity(),response.body(),ids);
+                                recyclerView.setAdapter(adapter);
 
                             }
 

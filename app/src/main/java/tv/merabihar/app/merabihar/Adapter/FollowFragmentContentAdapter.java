@@ -2,21 +2,30 @@ package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.ContentDetailScreen;
 import tv.merabihar.app.merabihar.UI.Activity.ContentImageDetailScreen;
 
 public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFragmentContentAdapter.MyViewHolder> {
@@ -45,11 +54,20 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
         final ArrayList<Contents> content = mContentList.get(position);
 
-
+       /* FrameLayout.LayoutParams paramsMsg = new FrameLayout.
+                LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.START);*/
         if(position%2==0){
-            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        }else{
             view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+
+        }else{
+
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            //((FrameLayout.LayoutParams)holder.ivp1.getLayoutParams()).setGravity(int)
+            //paramsMsg.gravity = Gravity.START;
+
+
+
         }
 
         SimpleDraweeView iv1 = holder.iv1 ;
@@ -66,95 +84,510 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         if(content!=null&&content.size()!=0&&content.size()==9){
 
 
-            if(content.get(0).getContentImage()!=null&&content.get(0).getContentImage().size()!=0){
+            if(content.get(0).getContentType().equalsIgnoreCase("Video")){
 
-                String urlString1 = content.get(0).getContentImage().get(0).getImages();
+                holder.ivp1.setVisibility(View.VISIBLE);
 
-                if(urlString1!=null){
-                    iv1.setImageURI(Uri.parse(urlString1));
+                if(content.get(0).getContentURL()!=null&&!content.get(0).getContentURL().isEmpty()){
+                    String img = "https://img.youtube.com/vi/"+content.get(0).getContentURL()+"/0.jpg";
+                    if(img!=null&&!img.isEmpty()){
+                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(iv1);
+
+                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                // Cropping the image
+                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                Glide.with(context)
+                                        .load(customBitMap)
+                                        .apply(new RequestOptions()
+                                                .placeholder(R.drawable.no_image)
+                                                .error(R.drawable.no_image))
+                                        .into(holder.iv1);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+                    }else{
+                        holder.iv1.setImageResource(R.drawable.no_image);
+                    }
                 }
 
+            }else{
+                if(content.get(0).getContentImage()!=null&&content.get(0).getContentImage().size()!=0){
+
+                    String urlString1 = content.get(0).getContentImage().get(0).getImages();
+
+                    if(urlString1!=null){
+                        iv1.setImageURI(Uri.parse(urlString1));
+                    }
+
+                }
             }
 
-            if(content.get(1).getContentImage()!=null&&content.get(1).getContentImage().size()!=0){
 
-                String urlString1 = content.get(1).getContentImage().get(0).getImages();
+            if(content.get(1).getContentType().equalsIgnoreCase("Video")){
 
-                if(urlString1!=null){
-                    iv2.setImageURI(Uri.parse(urlString1));
+                holder.ivp2.setVisibility(View.VISIBLE);
+
+                if(content.get(1).getContentURL()!=null&&!content.get(1).getContentURL().isEmpty()){
+                    String img = "https://img.youtube.com/vi/"+content.get(1).getContentURL()+"/0.jpg";
+                    if(img!=null&&!img.isEmpty()){
+                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv2);
+
+                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                // Cropping the image
+                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                Glide.with(context)
+                                        .load(customBitMap)
+                                        .apply(new RequestOptions()
+                                                .placeholder(R.drawable.no_image)
+                                                .error(R.drawable.no_image))
+                                        .into(holder.iv2);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+                    }else{
+                        holder.iv2.setImageResource(R.drawable.no_image);
+                    }
                 }
 
+            }else{
+                if(content.get(1).getContentImage()!=null&&content.get(1).getContentImage().size()!=0){
+
+                    String urlString1 = content.get(1).getContentImage().get(0).getImages();
+
+                    if(urlString1!=null){
+                        iv2.setImageURI(Uri.parse(urlString1));
+                    }
+
+                }
             }
 
-            if(content.get(2).getContentImage()!=null&&content.get(2).getContentImage().size()!=0){
 
-                String urlString1 = content.get(2).getContentImage().get(0).getImages();
+            if(content.get(2).getContentType().equalsIgnoreCase("Video")){
 
-                if(urlString1!=null){
-                    iv3.setImageURI(Uri.parse(urlString1));
+                holder.ivp3.setVisibility(View.VISIBLE);
+
+                if(content.get(2).getContentURL()!=null&&!content.get(2).getContentURL().isEmpty()){
+                    String img = "https://img.youtube.com/vi/"+content.get(2).getContentURL()+"/0.jpg";
+                    if(img!=null&&!img.isEmpty()){
+                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv3);
+
+                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                // Cropping the image
+                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                Glide.with(context)
+                                        .load(customBitMap)
+                                        .apply(new RequestOptions()
+                                                .placeholder(R.drawable.no_image)
+                                                .error(R.drawable.no_image))
+                                        .into(holder.iv3);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+                    }else{
+                        holder.iv3.setImageResource(R.drawable.no_image);
+                    }
                 }
 
+            }else{
+                if(content.get(2).getContentImage()!=null&&content.get(2).getContentImage().size()!=0){
+
+                    String urlString1 = content.get(2).getContentImage().get(0).getImages();
+
+                    if(urlString1!=null){
+                        iv3.setImageURI(Uri.parse(urlString1));
+                    }
+
+                }
             }
 
-            if(content.get(3).getContentImage()!=null&&content.get(3).getContentImage().size()!=0){
 
-                String urlString1 = content.get(3).getContentImage().get(0).getImages();
+            if(content.get(3).getContentType().equalsIgnoreCase("Video")){
 
-                if(urlString1!=null){
-                    iv4.setImageURI(Uri.parse(urlString1));
+                holder.ivp4.setVisibility(View.VISIBLE);
+
+                if(content.get(3).getContentURL()!=null&&!content.get(3).getContentURL().isEmpty()){
+                    String img = "https://img.youtube.com/vi/"+content.get(3).getContentURL()+"/0.jpg";
+                    if(img!=null&&!img.isEmpty()){
+                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv4);
+
+                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                // Cropping the image
+                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                Glide.with(context)
+                                        .load(customBitMap)
+                                        .apply(new RequestOptions()
+                                                .placeholder(R.drawable.no_image)
+                                                .error(R.drawable.no_image))
+                                        .into(holder.iv4);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+                    }else{
+                        holder.iv4.setImageResource(R.drawable.no_image);
+                    }
                 }
 
+            }else{
+                if(content.get(3).getContentImage()!=null&&content.get(3).getContentImage().size()!=0){
+
+                    String urlString1 = content.get(3).getContentImage().get(0).getImages();
+
+                    if(urlString1!=null){
+                        iv4.setImageURI(Uri.parse(urlString1));
+                    }
+
+                }
             }
 
-            if(content.get(4).getContentImage()!=null&&content.get(4).getContentImage().size()!=0){
 
-                String urlString1 = content.get(4).getContentImage().get(0).getImages();
+            if(content.get(4).getContentType().equalsIgnoreCase("Video")){
 
-                if(urlString1!=null){
-                    iv5.setImageURI(Uri.parse(urlString1));
+                holder.ivp5.setVisibility(View.VISIBLE);
+
+                if(content.get(4).getContentURL()!=null&&!content.get(4).getContentURL().isEmpty()){
+                    String img = "https://img.youtube.com/vi/"+content.get(4).getContentURL()+"/0.jpg";
+                    if(img!=null&&!img.isEmpty()){
+                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv5);
+
+                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                // Cropping the image
+                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                Glide.with(context)
+                                        .load(customBitMap)
+                                        .apply(new RequestOptions()
+                                                .placeholder(R.drawable.no_image)
+                                                .error(R.drawable.no_image))
+                                        .into(holder.iv5);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+                    }else{
+                        holder.iv5.setImageResource(R.drawable.no_image);
+                    }
                 }
 
+            }else{
+                if(content.get(4).getContentImage()!=null&&content.get(4).getContentImage().size()!=0){
+
+                    String urlString1 = content.get(4).getContentImage().get(0).getImages();
+
+                    if(urlString1!=null){
+                        iv5.setImageURI(Uri.parse(urlString1));
+                    }
+
+                }
             }
 
-            if(content.get(5).getContentImage()!=null&&content.get(5).getContentImage().size()!=0){
 
-                String urlString1 = content.get(5).getContentImage().get(0).getImages();
+            if(content.get(5).getContentType().equalsIgnoreCase("Video")){
 
-                if(urlString1!=null){
-                    iv6.setImageURI(Uri.parse(urlString1));
+                holder.ivp6.setVisibility(View.VISIBLE);
+
+                if(content.get(5).getContentURL()!=null&&!content.get(5).getContentURL().isEmpty()){
+                    String img = "https://img.youtube.com/vi/"+content.get(5).getContentURL()+"/0.jpg";
+                    if(img!=null&&!img.isEmpty()){
+                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv6);
+
+                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                // Cropping the image
+                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                Glide.with(context)
+                                        .load(customBitMap)
+                                        .apply(new RequestOptions()
+                                                .placeholder(R.drawable.no_image)
+                                                .error(R.drawable.no_image))
+                                        .into(holder.iv6);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+                    }else{
+                        holder.iv6.setImageResource(R.drawable.no_image);
+                    }
                 }
 
+            }else{
+                if(content.get(5).getContentImage()!=null&&content.get(5).getContentImage().size()!=0){
+
+                    String urlString1 = content.get(5).getContentImage().get(0).getImages();
+
+                    if(urlString1!=null){
+                        iv6.setImageURI(Uri.parse(urlString1));
+                    }
+
+                }
             }
 
-            if(content.get(6).getContentImage()!=null&&content.get(6).getContentImage().size()!=0){
 
-                String urlString1 = content.get(6).getContentImage().get(0).getImages();
+            if(content.get(6).getContentType().equalsIgnoreCase("Video")){
 
-                if(urlString1!=null){
-                    iv7.setImageURI(Uri.parse(urlString1));
+                holder.ivp7.setVisibility(View.VISIBLE);
+
+                if(content.get(6).getContentURL()!=null&&!content.get(6).getContentURL().isEmpty()){
+                    String img = "https://img.youtube.com/vi/"+content.get(6).getContentURL()+"/0.jpg";
+                    if(img!=null&&!img.isEmpty()){
+                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv7);
+
+                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                // Cropping the image
+                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                Glide.with(context)
+                                        .load(customBitMap)
+                                        .apply(new RequestOptions()
+                                                .placeholder(R.drawable.no_image)
+                                                .error(R.drawable.no_image))
+                                        .into(holder.iv7);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+                    }else{
+                        holder.iv7.setImageResource(R.drawable.no_image);
+                    }
                 }
 
+            }else{
+                if(content.get(6).getContentImage()!=null&&content.get(6).getContentImage().size()!=0){
+
+                    String urlString1 = content.get(6).getContentImage().get(0).getImages();
+
+                    if(urlString1!=null){
+                        iv7.setImageURI(Uri.parse(urlString1));
+                    }
+
+                }
             }
 
-            if(content.get(7).getContentImage()!=null&&content.get(7).getContentImage().size()!=0){
 
-                String urlString1 = content.get(7).getContentImage().get(0).getImages();
+            if(content.get(7).getContentType().equalsIgnoreCase("Video")){
 
-                if(urlString1!=null){
-                    iv8.setImageURI(Uri.parse(urlString1));
+                holder.ivp8.setVisibility(View.VISIBLE);
+
+                if(content.get(7).getContentURL()!=null&&!content.get(7).getContentURL().isEmpty()){
+                    String img = "https://img.youtube.com/vi/"+content.get(7).getContentURL()+"/0.jpg";
+                    if(img!=null&&!img.isEmpty()){
+                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv8);
+
+                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                // Cropping the image
+                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                Glide.with(context)
+                                        .load(customBitMap)
+                                        .apply(new RequestOptions()
+                                                .placeholder(R.drawable.no_image)
+                                                .error(R.drawable.no_image))
+                                        .into(holder.iv8);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+                    }else{
+                        holder.iv8.setImageResource(R.drawable.no_image);
+                    }
                 }
 
+            }else{
+                if(content.get(7).getContentImage()!=null&&content.get(7).getContentImage().size()!=0){
+
+                    String urlString1 = content.get(7).getContentImage().get(0).getImages();
+
+                    if(urlString1!=null){
+                        iv8.setImageURI(Uri.parse(urlString1));
+                    }
+
+                }
             }
 
-            if(content.get(8).getContentImage()!=null&&content.get(8).getContentImage().size()!=0){
 
-                String urlString1 = content.get(8).getContentImage().get(0).getImages();
+            if(content.get(8).getContentType().equalsIgnoreCase("Video")){
 
-                if(urlString1!=null){
-                    iv9.setImageURI(Uri.parse(urlString1));
+                holder.ivp9.setVisibility(View.VISIBLE);
+
+                if(content.get(8).getContentURL()!=null&&!content.get(8).getContentURL().isEmpty()){
+                    String img = "https://img.youtube.com/vi/"+content.get(8).getContentURL()+"/0.jpg";
+                    if(img!=null&&!img.isEmpty()){
+                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv9);
+
+                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                // Cropping the image
+                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                Glide.with(context)
+                                        .load(customBitMap)
+                                        .apply(new RequestOptions()
+                                                .placeholder(R.drawable.no_image)
+                                                .error(R.drawable.no_image))
+                                        .into(holder.iv9);
+
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                // Log.e("Cropping Failed", errorDrawable.toString());
+//                mCustomLoader.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+                    }else{
+                        holder.iv9.setImageResource(R.drawable.no_image);
+                    }
                 }
 
+            }else{
+
+                if(content.get(8).getContentImage()!=null&&content.get(8).getContentImage().size()!=0){
+
+                    String urlString1 = content.get(8).getContentImage().get(0).getImages();
+
+                    if(urlString1!=null){
+                        iv9.setImageURI(Uri.parse(urlString1));
+                    }
+
+                }
             }
+
 
 
 
@@ -166,98 +599,188 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         iv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Contents",content.get(0));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+
+                if(content.get(0).getContentType().equalsIgnoreCase("Video")){
+                    Intent intent = new Intent(context, ContentDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(0));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(0));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+
             }
         });
 
         iv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Contents",content.get(1));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+
+                if(content.get(1).getContentType().equalsIgnoreCase("Video")){
+                    Intent intent = new Intent(context, ContentDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(1));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(1));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+
             }
         });
 
         iv3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Contents",content.get(2));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+
+                if(content.get(2).getContentType().equalsIgnoreCase("Video")){
+                    Intent intent = new Intent(context, ContentDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(2));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(2));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+
             }
         });
 
         iv4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Contents",content.get(3));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                if(content.get(3).getContentType().equalsIgnoreCase("Video")){
+                    Intent intent = new Intent(context, ContentDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(3));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(3));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+
+
             }
         });
 
         iv5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Contents",content.get(4));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+
+                if(content.get(4).getContentType().equalsIgnoreCase("Video")){
+                    Intent intent = new Intent(context, ContentDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(4));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(4));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+
             }
         });
 
         iv6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Contents",content.get(5));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+
+                if(content.get(5).getContentType().equalsIgnoreCase("Video")){
+                    Intent intent = new Intent(context, ContentDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(5));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(5));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+
             }
         });
 
         iv7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Contents",content.get(6));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+
+                if(content.get(6).getContentType().equalsIgnoreCase("Video")){
+                    Intent intent = new Intent(context, ContentDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(6));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(6));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+
             }
         });
 
         iv8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Contents",content.get(7));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+
+                if(content.get(7).getContentType().equalsIgnoreCase("Video")){
+                    Intent intent = new Intent(context, ContentDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(7));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(7));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+
             }
         });
         iv9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ContentImageDetailScreen.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Contents",content.get(8));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                if(content.get(8).getContentType().equalsIgnoreCase("Video")){
+                    Intent intent = new Intent(context, ContentDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(8));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(context, ContentImageDetailScreen.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Contents",content.get(8));
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+
+
             }
         });
     }
@@ -270,7 +793,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        SimpleDraweeView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9 ;
+        SimpleDraweeView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9,ivp1, ivp2, ivp3, ivp4, ivp5, ivp6, ivp7, ivp8, ivp9 ;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -283,6 +806,17 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
             iv7 = itemView.findViewById(R.id.follow_frag_img_view7);
             iv8 = itemView.findViewById(R.id.follow_frag_img_view8);
             iv9 = itemView.findViewById(R.id.follow_frag_img_view9);
+
+            ivp1 = itemView.findViewById(R.id.videoicon1);
+            ivp2 = itemView.findViewById(R.id.videoicon2);
+            ivp3 = itemView.findViewById(R.id.videoicon3);
+            ivp4 = itemView.findViewById(R.id.videoicon4);
+            ivp5 = itemView.findViewById(R.id.videoicon5);
+            ivp6 = itemView.findViewById(R.id.videoicon6);
+            ivp7 = itemView.findViewById(R.id.videoicon7);
+            ivp8 = itemView.findViewById(R.id.videoicon8);
+            ivp9 = itemView.findViewById(R.id.videoicon9);
+
         }
 
     }

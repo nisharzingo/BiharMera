@@ -26,7 +26,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="Check In"
+                    android:text="Video Watched"
                     android:textSize="21sp"
                     android:id="@+id/target_title_name"
                     android:textColor="@color/black"
@@ -42,7 +42,7 @@
 
            <TextView
                android:layout_width="match_parent"
-               android:text="Daily Check in reward"
+               android:text="Daily video watched reward"
                android:layout_marginLeft="15dp"
                android:id="@+id/target_descr_name"
                android:layout_height="0dp"

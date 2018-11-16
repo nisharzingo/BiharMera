@@ -43,6 +43,8 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
 
     String type="";
 
+    TabHost.TabSpec tabHome,tabStay,tabNotification,tabVideo,tabMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +90,11 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             labelAccount = tabIndicatorMenu.findViewById(R.id.tab_label);
             imgAccount = tabIndicatorMenu.findViewById(R.id.tab_image);
 
-            TabHost.TabSpec tabHome = tabHost.newTabSpec(HOME_TAB);
-            TabHost.TabSpec tabStay= tabHost.newTabSpec(SEARCH_TAB);
-            TabHost.TabSpec tabNotification = tabHost.newTabSpec(STORY_TAB);
-            TabHost.TabSpec tabVideo = tabHost.newTabSpec(VIDEO_TAB);
-            TabHost.TabSpec tabMenu = tabHost.newTabSpec(ACCOUNT_TAB);
+             tabHome = tabHost.newTabSpec(HOME_TAB);
+             tabStay= tabHost.newTabSpec(SEARCH_TAB);
+             tabNotification = tabHost.newTabSpec(STORY_TAB);
+            tabVideo = tabHost.newTabSpec(VIDEO_TAB);
+            tabMenu = tabHost.newTabSpec(ACCOUNT_TAB);
 /*9C9C9C*/
             labelHome.setText(getResources().getString(R.string.home));
             imgHome.setImageResource(R.drawable.home_icon);
@@ -240,6 +242,25 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int page = getIntent().getIntExtra("ARG_PAGE", defaultValue);
+
+
+
+        int pageno = getIntent().getIntExtra("TABNAME",0);
+        if(pageno != 0)
+        {
+            tabHost.setCurrentTab(pageno-1);
+        }
+        else
+        {
+            tabHost.setCurrentTab(page);
+        }
+    }
 
     @Override
     public void onTabChanged(String tabId) {

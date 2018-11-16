@@ -200,7 +200,7 @@ public class TabSearchActivity2 extends AppCompatActivity {
                                 for (Contents  content:response.body()) {
 
 
-                                    if(content.getContentType().equalsIgnoreCase("Image")){
+                                    //if(content.getContentType().equalsIgnoreCase("Image")){
                                         contents.add(content);
                                         count = count+1;
                                         if(count==9){
@@ -208,7 +208,7 @@ public class TabSearchActivity2 extends AppCompatActivity {
                                             count=0;
                                             contents = new ArrayList<>();
                                         }
-                                    }
+                                   // }
 
 
 

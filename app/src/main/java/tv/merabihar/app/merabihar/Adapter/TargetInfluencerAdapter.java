@@ -41,10 +41,12 @@ import tv.merabihar.app.merabihar.WebAPI.SubscribedGoalsAPI;
 public class TargetInfluencerAdapter extends RecyclerView.Adapter<TargetInfluencerAdapter.ViewHolder> {
     private Context context;
     private ArrayList<Goals> list;
-    public TargetInfluencerAdapter(Context context,ArrayList<Goals> list) {
+    private ArrayList<Integer> ids;
+    public TargetInfluencerAdapter(Context context,ArrayList<Goals> list,ArrayList<Integer> ids) {
 
         this.context = context;
         this.list = list;
+        this.ids = ids;
 
     }
 
@@ -74,63 +76,83 @@ public class TargetInfluencerAdapter extends RecyclerView.Adapter<TargetInfluenc
             holder.mTitle.setText(""+targetDes.getGoalName());
             holder.mDesc.setText(""+targetDes.getDescription());
 
-            holder.mActivateOffer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            if(ids!=null&&ids.size()!=0){
+                boolean value = false;
+                for(int j=0;j<ids.size();j++){
+
+                    if(ids.get(j)==targetDes.getGoalId()){
+
+                        value = true;
+                    }
+
+                }
+
+                if(value){
+                    holder.mActivateOffer.setText("Activated");
+                    holder.mActivateOffer.setEnabled(false);
+                }
+
+            }else{
+                holder.mActivateOffer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
 
-                    SubscribedGoals sg = new SubscribedGoals();
-                    sg.setGoalId(targetDes.getGoalId());
-                    sg.setStatus("Activated");
-                    sg.setProfileId(PreferenceHandler.getInstance(context).getUserId());
+                        SubscribedGoals sg = new SubscribedGoals();
+                        sg.setGoalId(targetDes.getGoalId());
+                        sg.setStatus("Activated");
+                        sg.setProfileId(PreferenceHandler.getInstance(context).getUserId());
 
-                    if(targetDes.getGoalId()==1){
+                        if(targetDes.getGoalId()==1){
 
-                        sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                            sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
-                        Calendar c = Calendar.getInstance();
-                        c.setTime(new Date()); // Now use today date.
-                        c.add(Calendar.DATE, 150); // Adding 5 days
-                        sg.setEndDate(new SimpleDateFormat("MM/dd/yyyy").format(c.getTime()));
-                        sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
-                        sg.setExtraDescription("0");
-                        sg.setRewardsEarned("0");
-                        profileSubScribed(sg,holder.mActivateOffer);
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(new Date()); // Now use today date.
+                            c.add(Calendar.DATE, 150); // Adding 5 days
+                            sg.setEndDate(new SimpleDateFormat("MM/dd/yyyy").format(c.getTime()));
+                            sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                            sg.setExtraDescription("0");
+                            sg.setRewardsEarned("0");
+                            profileSubScribed(sg,holder.mActivateOffer);
 
-                    }else if(targetDes.getGoalId()==3){
+                        }else if(targetDes.getGoalId()==3){
 
-                        sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                            sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
-                        Calendar c = Calendar.getInstance();
-                        c.setTime(new Date()); // Now use today date.
-                        c.add(Calendar.DATE, 7); // Adding 5 days
-                        sg.setEndDate(new SimpleDateFormat("MM/dd/yyyy").format(c.getTime()));
-                        sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
-                        sg.setExtraDescription("0");
-                        sg.setRewardsEarned("0");
-                        profileSubScribed(sg,holder.mActivateOffer);
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(new Date()); // Now use today date.
+                            c.add(Calendar.DATE, 7); // Adding 5 days
+                            sg.setEndDate(new SimpleDateFormat("MM/dd/yyyy").format(c.getTime()));
+                            sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                            sg.setExtraDescription("0");
+                            sg.setRewardsEarned("0");
+                            profileSubScribed(sg,holder.mActivateOffer);
 
-                    }else if(targetDes.getGoalId()==2){
+                        }else if(targetDes.getGoalId()==2){
 
-                        sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                            sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
-                        Calendar c = Calendar.getInstance();
-                        c.setTime(new Date()); // Now use today date.
-                        c.add(Calendar.DATE, 7); // Adding 5 days
-                        sg.setEndDate(new SimpleDateFormat("MM/dd/yyyy").format(c.getTime()));
-                        sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
-                        sg.setExtraDescription("0");
-                        sg.setRewardsEarned("0");
-                        profileSubScribed(sg,holder.mActivateOffer);
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(new Date()); // Now use today date.
+                            c.add(Calendar.DATE, 7); // Adding 5 days
+                            sg.setEndDate(new SimpleDateFormat("MM/dd/yyyy").format(c.getTime()));
+                            sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                            sg.setExtraDescription("0");
+                            sg.setRewardsEarned("0");
+                            profileSubScribed(sg,holder.mActivateOffer);
+
+
+                        }
+
+
 
 
                     }
+                });
+            }
 
 
-
-
-                }
-            });
 
         }
     }

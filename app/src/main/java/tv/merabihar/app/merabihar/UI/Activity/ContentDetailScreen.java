@@ -64,6 +64,8 @@ import tv.merabihar.app.merabihar.Model.ProfileFollowMapping;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Service.BackgroundNotificationService;
+import tv.merabihar.app.merabihar.Service.VideoWatchedService;
 import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
@@ -96,7 +98,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     int mappingId=0;
     long videoTime = 0;
     SubscribedGoals sg;
-    int profileId = 0;
+    int profileId = 0,youtubeWatcheTime=0;
 
     UserProfile currentProfile;
 
@@ -1013,6 +1015,12 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
         data.putExtra("tiempo",t );
         System.out.println("Value youtube "+t);
         setResult(0, data);
+        youtubeWatcheTime = t;
+
+        Intent intent = new Intent(ContentDetailScreen.this, VideoWatchedService.class);
+        intent.putExtra("ProfileId",PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId());
+        intent.putExtra("Time",youtubeWatcheTime);
+        startService(intent);
 
         if(sg!=null){
 
@@ -1762,6 +1770,5 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
         canvas.drawBitmap(resized,pw,ph,paint);
         return result;
     }
-
 
 }

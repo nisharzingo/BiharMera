@@ -69,6 +69,32 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
         if(targetDes!=null){
 
             getGoals(targetDes.getGoalId(),holder.offerTitle);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            String expdate = targetDes.getEndDate();
+            Date past = null;
+
+
+
+            if(expdate.contains("T")){
+
+                String[] tDates = expdate.split("T");
+                try {
+                    past = dateFormat.parse(tDates[0]);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if ( new Date().getTime() > past.getTime()) {
+
+                holder.mOfferExp.setVisibility(View.VISIBLE);
+                holder.exp_offer.setText("Goal Expired");
+                holder.mOnOffer.setVisibility(View.GONE);
+            }else{
+                holder.mOfferExp.setVisibility(View.GONE);
+                holder.mOnOffer.setVisibility(View.VISIBLE);
+            }
 
             holder.mMain.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,6 +140,112 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
                                     holder.mCircleView1.setBackgroundColor(Color.parseColor("#FF0000"));
 
                                 }
+
+                                if (rew[0].equals("2") && Integer.parseInt(rew[1]) >= 300) {
+
+                                    holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                } else if (rew[0].equals("2") && Integer.parseInt(rew[1]) < 300) {
+
+
+                                    holder.mCircle2.setImageResource(R.drawable.oval_cross);
+                                    holder.mCircleView2.setBackgroundColor(Color.parseColor("#FF0000"));
+
+                                }
+
+                                if (rew[0].equals(3) && Integer.parseInt(rew[1]) >= 900) {
+
+                                    holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle3.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                } else if (rew[0].equals("3") && Integer.parseInt(rew[1]) < 900) {
+
+                                    holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle3.setImageResource(R.drawable.oval_cross);
+                                    holder.mCircleView3.setBackgroundColor(Color.parseColor("#FF0000"));
+
+                                }
+
+                                if (rew[0].equals("4") && Integer.parseInt(rew[1]) >= 2700) {
+
+                                    holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle3.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle4.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                } else if (rew[0].equals("4") && Integer.parseInt(rew[1]) < 2700) {
+                                    holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle3.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+
+
+                                    holder.mCircle4.setImageResource(R.drawable.oval_cross);
+                                    holder.mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
+
+                                }
+
+                                if (rew[0].equals("5") && Integer.parseInt(rew[1]) >= 5000) {
+
+                                    holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle3.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle4.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle5.setImageResource(R.drawable.ovel_tick);
+
+
+                                } else if (rew[0].equals("5") && Integer.parseInt(rew[1]) < 5000) {
+
+                                    holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle3.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle4.setImageResource(R.drawable.ovel_tick);
+                                    holder.mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                    holder.mCircle5.setImageResource(R.drawable.oval_cross);
+
+                                }
                             }
                         }
 
@@ -126,6 +258,50 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
             }else if(targetDes.getGoalId()==2){
 
                 holder.activate_offer.setVisibility(View.GONE);
+
+                String endDate = targetDes.getEndDate();
+
+                if(endDate!=null&&!endDate.isEmpty()){
+
+                    if(endDate.contains("T")){
+
+                        String dats[] = endDate.split("T");
+                        try {
+                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dats[0]);
+
+                            if(new Date().getTime()-date.getTime()>0){
+
+
+                            }else{
+                                if(targetDes.getStatus().equalsIgnoreCase("Activated")) {
+
+                                    String rewards = targetDes.getRewardsEarned();
+
+                                    int value = Integer.parseInt(rewards);
+
+                                    if (value <=1) {
+                                        holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+                                    } else if (value <=2) {
+                                        holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+                                    } else if (value <=3) {
+                                        holder.mCircle3.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+                                    } else if (value <=4) {
+                                        holder.mCircle4.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+                                    } else if (value <=5) {
+                                        holder.mCircle5.setImageResource(R.drawable.ovel_tick);
+                                    }
+
+                                }
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
 
             }else if(targetDes.getGoalId()==3){
 
@@ -193,11 +369,12 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView offerTitle, offerDetails;
-        Button activate_offer;
+        Button activate_offer,exp_offer;
         CircleImageView offerLogo;
         LinearLayout mMain;
         ImageView mCircle1,mCircle2,mCircle3,mCircle4,mCircle5;
         View mCircleView1,mCircleView2,mCircleView3,mCircleView4;
+        LinearLayout mOnOffer,mOfferExp;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -208,6 +385,8 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
             mMain = itemView.findViewById(R.id.layout_main);
             offerTitle = itemView.findViewById(R.id.offer_title);
             activate_offer = itemView.findViewById(R.id.activate_offer);
+            exp_offer = itemView.findViewById(R.id.offer_earn);
+
             offerLogo = itemView.findViewById(R.id.offer_logo);
             mCircle1 = itemView.findViewById(R.id.month1_pb_circle);
             mCircle2 = itemView.findViewById(R.id.month2_pb_circle);
@@ -219,6 +398,9 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
             mCircleView2 = itemView.findViewById(R.id.month2_pb_line);
             mCircleView3 = itemView.findViewById(R.id.month3_pb_line);
             mCircleView4 = itemView.findViewById(R.id.month4_pb_line);
+
+            mOnOffer = itemView.findViewById(R.id.on_offer_period);
+            mOfferExp = itemView.findViewById(R.id.on_ex_period);
 
 
 

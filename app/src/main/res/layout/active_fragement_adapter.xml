@@ -25,113 +25,139 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="149dp"
-        android:paddingLeft="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:textStyle="bold"
-            android:id="@+id/offer_title"
-            android:gravity="center_vertical"
-            android:textSize="19sp"
-            android:text=""
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content"
 
-        <com.rey.material.widget.LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/month1_pb_circle"
-                android:src="@drawable/oval"/>
-
-            <View
-                android:layout_width="20dp"
-                android:layout_height="1dp"
-                android:id="@+id/month1_pb_line"
-                android:background="#D9DBE4"
-                />
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/month2_pb_circle"
-                android:src="@drawable/oval"/>
-
-            <View
-                android:layout_width="20dp"
-                android:layout_height="1dp"
-                android:id="@+id/month2_pb_line"
-                android:background="#D9DBE4"
-                />
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/month3_pb_circle"
-                android:src="@drawable/oval"/>
-
-            <View
-                android:layout_width="20dp"
-                android:layout_height="1dp"
-                android:id="@+id/month3_pb_line"
-                android:background="#D9DBE4"
-                />
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/month4_pb"
-                android:src="@drawable/oval"/>
-
-            <View
-                android:layout_width="20dp"
-                android:layout_height="1dp"
-                android:id="@+id/month4_pb_line"
-                android:background="#D9DBE4"
-                />
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/month5_pb_circle"
-                android:src="@drawable/oval"/>
-
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="30dp"
-                app:srcCompat="@drawable/next"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"/>
-
-        </com.rey.material.widget.LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
             android:visibility="gone"
-            android:id="@+id/offer_details"
-            android:gravity="center_vertical"
-            android:text="You are only 5000 points away from earning Rs 120"
-            android:layout_weight="1"/>
+            android:id="@+id/on_ex_period"
+            android:orientation="vertical">
 
-        <Button
-            android:layout_width="150dp"
+            <Button
+                android:id="@+id/offer_earn"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+
+                android:background="@drawable/mediatransperent_ract_black"
+                android:padding="10dp"
+                android:text="Coins Earned"
+                android:textColor="@color/text_grey" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/offer_title"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="10dp"
-            android:textColor="#2ba2c6"
-            android:text="Activate Offer"
-            android:id="@+id/activate_offer"
-            android:background="@drawable/activate_offer_btn"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/on_offer_period"
+            android:orientation="vertical">
+
+            <com.rey.material.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/month1_pb_circle"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/oval" />
+
+                <View
+                    android:id="@+id/month1_pb_line"
+                    android:layout_width="20dp"
+                    android:layout_height="1dp"
+                    android:background="#D9DBE4" />
+
+                <ImageView
+                    android:id="@+id/month2_pb_circle"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/oval" />
+
+                <View
+                    android:id="@+id/month2_pb_line"
+                    android:layout_width="20dp"
+                    android:layout_height="1dp"
+                    android:background="#D9DBE4" />
+
+                <ImageView
+                    android:id="@+id/month3_pb_circle"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/oval" />
+
+                <View
+                    android:id="@+id/month3_pb_line"
+                    android:layout_width="20dp"
+                    android:layout_height="1dp"
+                    android:background="#D9DBE4" />
+
+                <ImageView
+                    android:id="@+id/month4_pb"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/oval" />
+
+                <View
+                    android:id="@+id/month4_pb_line"
+                    android:layout_width="20dp"
+                    android:layout_height="1dp"
+                    android:background="#D9DBE4" />
+
+                <ImageView
+                    android:id="@+id/month5_pb_circle"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/oval" />
+
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/next" />
+
+            </com.rey.material.widget.LinearLayout>
+
+            <TextView
+                android:id="@+id/offer_details"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="You are only 5000 points away from earning Rs 120"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/activate_offer"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+
+                android:background="@drawable/activate_offer_btn"
+                android:padding="10dp"
+                android:text="Activate Offer"
+                android:textColor="#2ba2c6" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <View

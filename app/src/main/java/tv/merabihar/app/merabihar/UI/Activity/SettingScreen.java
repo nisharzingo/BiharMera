@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -471,6 +472,12 @@ public class SettingScreen extends AppCompatActivity {
                 startActivity(influencer);
                 break;
 
+            case "Time Watched":
+
+                Intent tw = new Intent(SettingScreen.this, TimeWatchedScreen.class);
+                startActivity(tw);
+                break;
+
 
             case "Friends List":
                 Intent friend = new Intent(SettingScreen.this, FriendListScreen.class);
@@ -549,7 +556,7 @@ public class SettingScreen extends AppCompatActivity {
                             else
                             {
                                 mCoins.setText(""+(int)coinsValue);
-                                mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
 
                             }
                         }
@@ -557,7 +564,7 @@ public class SettingScreen extends AppCompatActivity {
                         {
 
                             mCoins.setText(""+(int)coinsValue);
-                            mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
+                            mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
 
                         }
 //                callGetStartEnd();
@@ -567,7 +574,7 @@ public class SettingScreen extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
                         mCoins.setText(""+(int)coinsValue);
-                        mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
+                        mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
 
 
                         Log.e("TAG", t.toString());
@@ -617,21 +624,22 @@ public class SettingScreen extends AppCompatActivity {
 
 
                                 mCoins.setText(""+(int)amount);
-                                mBalance.setText("Rs "+((amount*1.0)/100.0));
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                                //mBalance.setText("Rs "+((amount*1.0)/100.0));
 
 
                             }
                             else
                             {
                                 mCoins.setText(""+(int)coinsValue);
-                                mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
 
                             }
                         }
                         else
                         {
                             mCoins.setText(""+(int)coinsValue);
-                            mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
+                            mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
 
                         }
 //                callGetStartEnd();
@@ -641,7 +649,7 @@ public class SettingScreen extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
                         mCoins.setText(""+(int)coinsValue);
-                        mBalance.setText("Rs "+((coinsValue*1.0)/100.0));
+                        mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
 
 
                         Log.e("TAG", t.toString());

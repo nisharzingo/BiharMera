@@ -17,6 +17,7 @@
         android:background="#60030303"
         />
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:weightSum="10"
@@ -47,7 +48,7 @@
                 android:textColor="@color/black"
                 android:gravity="right"
                 android:layout_height="match_parent"
-                android:text="Total Time"
+                android:text=""
                 android:layout_weight="0.5"/>
 
         </LinearLayout>
@@ -74,7 +75,7 @@
                 android:id="@+id/today_watched_time"
                 android:layout_height="match_parent"
                 android:gravity="right"
-                android:text="0 hr 18 min"
+                android:text="0 hr 0 min"
                 android:layout_weight="1"/>
 
         </LinearLayout>
@@ -101,7 +102,7 @@
                 android:layout_height="match_parent"
                 android:gravity="right"
                 android:paddingRight="15dp"
-                android:text="Total Time"
+                android:text="0 hr 0 min"
                 android:layout_weight="1"/>
 
         </LinearLayout>
@@ -128,7 +129,7 @@
                 android:paddingRight="15dp"
                 android:layout_height="match_parent"
                 android:gravity="right"
-                android:text="Total Time"
+                android:text="0 hr 0 min"
                 android:layout_weight="1"/>
 
         </LinearLayout>
@@ -154,7 +155,7 @@
                 android:paddingRight="15dp"
                 android:layout_height="match_parent"
                 android:gravity="right"
-                android:text="Total Time"
+                android:text="0 hr 0 min"
                 android:id="@+id/daily_average_watched_time"
                 android:layout_weight="1"/>
 
@@ -171,13 +172,16 @@
 
             />
 
-
-
-
-
-
-
-
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="17sp"
+            android:paddingRight="15dp"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:id="@+id/watch_history"
+            android:layout_height="wrap_content"
+            android:text="Watch History"
+            android:layout_weight="0.5"/>
 
 
 

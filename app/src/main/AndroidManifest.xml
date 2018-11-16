@@ -132,33 +132,35 @@
 
         <activity
             android:name=".UI.Activity.Influencer.InfluencerProgramViewScreen"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".UI.Activity.Influencer.InviteScreen" />
         <activity android:name=".UI.Activity.Influencer.InviteFriendsScreen" />
         <activity android:name=".UI.Activity.FriendList.FriendListScreen" />
-        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen"></activity>
-        <activity android:name=".UI.Activity.Influencer.Income"></activity>
+        <activity android:name=".UI.Activity.Influencer.InfluencerProgramDetailScreen" />
+        <activity android:name=".UI.Activity.Influencer.Income" />
         <activity android:name=".UI.YoutubePlayList.YouTubeListScreen" />
         <activity android:name=".UI.MainTabHostScreens.VideoCategoryScreens" />
         <activity android:name=".UI.Activity.ContentListScreen" />
         <activity android:name=".UI.MainTabHostScreens.TabHomeHostScreen" />
         <activity android:name=".UI.MainTabHostScreens.TabPostMediaActivity" />
-        <activity android:name=".UI.Activity.Influencer.WithdrawMoney" >
-
-        </activity>
-
-        <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign2"/>
-
-        <activity android:name=".UI.MainTabHostScreens.TabSearchActivity2"
+        <activity android:name=".UI.Activity.Influencer.WithdrawMoney"></activity>
+        <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign2" />
+        <activity
+            android:name=".UI.MainTabHostScreens.TabSearchActivity2"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UI.Activity.Influencer.Records" />
-        <activity android:name=".UI.Activity.TimeWatchedScreen">
-        </activity>
+        <activity android:name=".UI.Activity.TimeWatchedScreen"></activity>
+
         <service android:name=".Service.BackgroundNotificationService" />
+        <service android:name=".Service.VideoWatchedService" />
+
         <activity android:name=".UI.Activity.PhoneNumberVerficationActivity" />
-        <activity android:name=".UI.Activity.ChangePasswordScreen"
-            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".UI.Activity.ChangePasswordScreen"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".UI.Activity.WatchHistroyScreen"
+            android:theme="@style/AppThemes"></activity>
     </application>
 
 </manifest>
