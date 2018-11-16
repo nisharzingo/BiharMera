@@ -16,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.VideoCategoryScreenAdapter;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.CategoryAndContentList;
 import tv.merabihar.app.merabihar.Model.Contents;
@@ -48,7 +49,17 @@ public class VideoCategoryScreens extends AppCompatActivity {
 
         interests = new ArrayList<>();
 
-        getCategoryAndContent();
+
+        if (Util.isNetworkAvailable(VideoCategoryScreens.this)) {
+            getCategoryAndContent();
+        }else{
+
+            SnackbarViewer.showSnackbar(findViewById(R.id.video_cat_screen_rl),"No Internet connection");
+            mProgressBar.setVisibility(View.GONE);
+        }
+
+
+
 
 
 

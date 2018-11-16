@@ -1,75 +1,84 @@
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/pullToRefresh"
-    tools:context="tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForFollowersFragment">
+    android:orientation="vertical"
+    android:id="@+id/frag_follow_main"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v4.widget.NestedScrollView
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:id="@+id/followers_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/pullToRefresh"
+        tools:context="tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForFollowersFragment">
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:id="@+id/followers_content"
+            android:layout_height="match_parent">
 
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/all_followers_contents"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:baselineAligned="false"
-                android:paddingBottom="10dp"
-                android:scrollbars="none"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/all_followers_contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:baselineAligned="false"
+                    android:paddingBottom="10dp"
+                    android:scrollbars="none"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
 
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/all_following_contents"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:paddingBottom="10dp"
-                android:scrollbars="none"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/all_following_contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:paddingBottom="10dp"
+                    android:scrollbars="none"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/all_interest_contents"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:paddingBottom="10dp"
-                android:scrollbars="none"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/all_interest_contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:paddingBottom="10dp"
+                    android:scrollbars="none"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/people_non_follow"
-                android:scrollbars="none"
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/people_non_follow"
+                    android:scrollbars="none"
 
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                />
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    />
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/trending_contents"
-                android:scrollbars="none"
-                android:layout_margin="5dp"
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/trending_contents"
+                    android:scrollbars="none"
+                    android:layout_margin="5dp"
 
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                />
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    />
 
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
-</android.support.v4.widget.SwipeRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>

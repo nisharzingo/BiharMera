@@ -19,6 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.CommentsListAdapter;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Comments;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
@@ -66,9 +67,21 @@ public class CommentsScreen extends AppCompatActivity {
             }
 
 
+
+
             if(contents!=null){
 
-                getContents(contents.getContentId());
+
+
+                if (Util.isNetworkAvailable(CommentsScreen.this)) {
+                    getContents(contents.getContentId());
+
+                }else{
+
+                    SnackbarViewer.showSnackbar(findViewById(R.id.comment_screen_rl),"No Internet connection");
+                    mProgressBar.setVisibility(View.GONE);
+                }
+
             }else{
 
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -85,17 +98,31 @@ public class CommentsScreen extends AppCompatActivity {
                         Toast.makeText(CommentsScreen.this, "Please write your comment", Toast.LENGTH_SHORT).show();
                     }else{
 
-                        Comments commentObj = new Comments();
-                        commentObj.setCommentsDesc(commentDesc);
-                        commentObj.setProfileId(PreferenceHandler.getInstance(CommentsScreen.this).getUserId());
-                        commentObj.setContentId(contents.getContentId());
-                        commentObj.setCreatedBy(PreferenceHandler.getInstance(CommentsScreen.this).getUserFullName());
-                        commentObj.setCreatedDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
-                        commentObj.setUpdateDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
-                        postComment(commentObj);
+                        if (Util.isNetworkAvailable(CommentsScreen.this)) {
+
+                            Comments commentObj = new Comments();
+                            commentObj.setCommentsDesc(commentDesc);
+                            commentObj.setProfileId(PreferenceHandler.getInstance(CommentsScreen.this).getUserId());
+                            commentObj.setContentId(contents.getContentId());
+                            commentObj.setCreatedBy(PreferenceHandler.getInstance(CommentsScreen.this).getUserFullName());
+                            commentObj.setCreatedDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                            commentObj.setUpdateDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                            postComment(commentObj);
+
+                        }else{
+
+                            SnackbarViewer.showSnackbar(findViewById(R.id.comment_screen_rl),"No Internet connection");
+                            mProgressBar.setVisibility(View.GONE);
+                        }
+
+
                     }
                 }
             });
+
+
+
+
 
         }catch (Exception e){
             e.printStackTrace();

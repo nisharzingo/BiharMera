@@ -28,6 +28,7 @@ import tv.merabihar.app.merabihar.Adapter.AutocompleteCustomArrayAdapter;
 import tv.merabihar.app.merabihar.Adapter.SubCategoryListAdapter;
 import tv.merabihar.app.merabihar.CustomViews.CustomAutoComplete;
 import tv.merabihar.app.merabihar.CustomViews.CustomGridView;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.Interest;
 import tv.merabihar.app.merabihar.Model.InterestAndContents;
@@ -92,8 +93,20 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
             customGridView = (CustomGridView) findViewById(R.id.interest_grid_view);
             mTags = (CustomAutoComplete) findViewById(R.id.tagss_blog);
 
-            getActivities();
-            getInterest();
+
+
+            if (Util.isNetworkAvailable(PostVideoYoutubeContent.this)) {
+
+                getActivities();
+                getInterest();
+
+            }else{
+
+                SnackbarViewer.showSnackbar(findViewById(R.id.post_youtube_con_main),"No Internet connection");
+
+            }
+
+
             initerestId = new ArrayList<>();
 
             back.setOnClickListener(new View.OnClickListener() {
@@ -152,18 +165,23 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                         if(activityId!=0){
 
                             System.out.println("URL VIdeo = "+extractYTId(mURL.getText().toString()));
-                            validate();
+
+                            if (Util.isNetworkAvailable(PostVideoYoutubeContent.this)) {
+
+                                validate();
+
+                            }else{
+
+                                SnackbarViewer.showSnackbar(findViewById(R.id.post_youtube_con_main),"No Internet connection");
+                            }
+
                         }else{
 
-                            Toast.makeText(PostVideoYoutubeContent.this, "Please Select atleast one tags", Toast.LENGTH_SHORT).show();
+                            SnackbarViewer.showSnackbar(findViewById(R.id.post_youtube_con_main),"Please select atleast only one tags !");
+
                         }
 
                     }
-
-
-
-
-
 
                 }
             });

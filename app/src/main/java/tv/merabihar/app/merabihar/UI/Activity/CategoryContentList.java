@@ -19,6 +19,7 @@ import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
@@ -79,7 +80,18 @@ public class CategoryContentList extends AppCompatActivity {
 
             if(category!=null){
                 setTitle("Stories in "+category.getCategoriesName());
-                loadFirstSetOfContents(category.getCategoriesId());
+
+
+                if (Util.isNetworkAvailable(CategoryContentList.this)) {
+
+                    loadFirstSetOfContents(category.getCategoriesId());
+
+                }else{
+
+                    SnackbarViewer.showSnackbar(findViewById(R.id.categ_cont_main_fl),"No Internet connection");
+                    progressBar.setVisibility(View.GONE);
+                }
+
 
                 mInterestList.addOnScrollListener(new PageScrollListener(linearLayoutManager) {
 
@@ -88,7 +100,19 @@ public class CategoryContentList extends AppCompatActivity {
                         isLoading = true;
 
                         currentPage = currentPage+1;
-                        loadNextSetOfItems(category.getCategoriesId());
+                        if (Util.isNetworkAvailable(CategoryContentList.this)) {
+
+                            loadNextSetOfItems(category.getCategoriesId());
+
+
+                        }else{
+
+                            SnackbarViewer.showSnackbar(findViewById(R.id.categ_cont_main_fl),"No Internet connection");
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+
+
                     }
 
                     @Override
@@ -110,12 +134,6 @@ public class CategoryContentList extends AppCompatActivity {
 
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
-
-
-
-
-
-
 
         }catch (Exception e){
             e.printStackTrace();
@@ -148,7 +166,17 @@ public class CategoryContentList extends AppCompatActivity {
 
 
                             if( response.body().size()!= 0){
-                                loadFirstPage(response.body());
+
+                                if (Util.isNetworkAvailable(CategoryContentList.this)) {
+                                    loadFirstPage(response.body());
+
+                                }else{
+
+                                    SnackbarViewer.showSnackbar(findViewById(R.id.categ_cont_main_fl),"No Internet connection");
+                                    progressBar.setVisibility(View.GONE);
+                                }
+
+
                             }else{
                                 adapter.removeLoadingFooter();
                                 isLastPage = true;

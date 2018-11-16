@@ -18,6 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.Interest;
@@ -79,7 +80,17 @@ public class InterestContentListScreen extends AppCompatActivity {
 
             if(category!=null){
                 setTitle("Stories in "+category.getInterestName());
-                loadFirstSetOfContents(category.getZingoInterestId());
+
+                if (Util.isNetworkAvailable(InterestContentListScreen.this)) {
+
+                    loadFirstSetOfContents(category.getZingoInterestId());
+
+                }else{
+                    progressBar.setVisibility(View.GONE);
+                    SnackbarViewer.showSnackbar(findViewById(R.id.interest_content_list_main),"No Internet connection");
+                }
+
+
 
                 mInterestList.addOnScrollListener(new PageScrollListener(linearLayoutManager) {
 
@@ -88,7 +99,18 @@ public class InterestContentListScreen extends AppCompatActivity {
                         isLoading = true;
 
                         currentPage = currentPage+1;
-                        loadNextSetOfItems(category.getZingoInterestId());
+
+                        if (Util.isNetworkAvailable(InterestContentListScreen.this)) {
+
+                            loadNextSetOfItems(category.getZingoInterestId());
+
+
+                        }else{
+                            progressBar.setVisibility(View.GONE);
+                            SnackbarViewer.showSnackbar(findViewById(R.id.interest_content_list_main),"No Internet connection");
+                        }
+
+
                     }
 
                     @Override
@@ -110,11 +132,6 @@ public class InterestContentListScreen extends AppCompatActivity {
 
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
-
-
-
-
-
 
 
         }catch (Exception e){

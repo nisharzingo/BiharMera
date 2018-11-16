@@ -7,6 +7,7 @@
     <ImageView
         android:scaleType="fitXY"
         android:layout_width="match_parent"
+        android:src="@drawable/no_image"
         android:id="@+id/cat_content_poster"
         android:layout_height="match_parent" />
 
@@ -15,10 +16,10 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/cat_content_poster"
         android:layout_centerHorizontal="true"
-        android:visibility="invisible"
         android:id="@+id/custom_loader_content"
         android:layout_marginTop="0dp"
-        app:mk_color="#fff" />
+        android:visibility="gone"
+        app:mk_color="@color/colorPrimary" />
 
 
 </RelativeLayout>

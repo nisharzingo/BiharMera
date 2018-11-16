@@ -46,6 +46,7 @@ import tv.merabihar.app.merabihar.Adapter.AutocompleteCustomArrayAdapter;
 import tv.merabihar.app.merabihar.Adapter.SubCategoryListAdapter;
 import tv.merabihar.app.merabihar.CustomViews.CustomAutoComplete;
 import tv.merabihar.app.merabihar.CustomViews.CustomGridView;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.ContentImages;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.Interest;
@@ -115,8 +116,18 @@ public class PostContentScreen extends AppCompatActivity {
             customGridView = (CustomGridView) findViewById(R.id.interest_grid_view);
             mTags = (CustomAutoComplete) findViewById(R.id.tagss_blog);
 
-            getActivities();
-            getInterest();
+
+            if (Util.isNetworkAvailable(PostContentScreen.this)) {
+
+                getActivities();
+                getInterest();
+
+            }else{
+
+                SnackbarViewer.showSnackbar(findViewById(R.id.post_content_main),"No Internet connection");
+            }
+
+
             initerestId = new ArrayList<>();
 
             back.setOnClickListener(new View.OnClickListener() {
@@ -720,8 +731,14 @@ public class PostContentScreen extends AppCompatActivity {
 
                         if(initerestIds!=0){
 
+                            if (Util.isNetworkAvailable(PostContentScreen.this)) {
 
-                            postBlogsWithInterest(blogs);
+                                postBlogsWithInterest(blogs);
+
+                            }else{
+
+                                SnackbarViewer.showSnackbar(findViewById(R.id.post_content_main),"No Internet connection");
+                            }
 
                         }else{
                             ArrayList<Interest> interests = new ArrayList<>();

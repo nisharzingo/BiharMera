@@ -11,7 +11,8 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="130dp"
         app:roundedCornerRadius="10dp"
-        android:src="@drawable/invite_earn"
+        app:placeholderImage="@drawable/no_image"
+        app:placeholderImageScaleType="fitXY"
         android:id="@+id/follow_cate_imageview"
         android:scaleType="fitXY"
         android:alpha="0.8"

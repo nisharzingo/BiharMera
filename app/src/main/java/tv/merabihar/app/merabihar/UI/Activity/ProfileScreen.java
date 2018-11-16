@@ -31,6 +31,7 @@ import tv.merabihar.app.merabihar.Adapter.ListViewAdapter;
 import tv.merabihar.app.merabihar.Adapter.ProfileListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.BeanClass;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
@@ -59,6 +60,15 @@ public class ProfileScreen extends AppCompatActivity {
 
     UserProfile profile;
     int profileId=0,mappingId=0;
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,25 +110,34 @@ public class ProfileScreen extends AppCompatActivity {
                profile = (UserProfile)bundle.getSerializable("Profile");
                profileId = bundle.getInt("ProfileId");
            }
-            if(profile!=null){
 
-               profileId = profile.getProfileId();
-                getProfile(profile.getProfileId());
-                getProfileContent(profile.getProfileId());
-                getFollowingByProfileId(profile.getProfileId());
-                getFollowersByProfileId(profile.getProfileId());
-                getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profile.getProfileId());
+            if (Util.isNetworkAvailable(ProfileScreen.this)) {
+
+                if(profile!=null){
+
+                    profileId = profile.getProfileId();
+                    getProfile(profile.getProfileId());
+                    getProfileContent(profile.getProfileId());
+                    getFollowingByProfileId(profile.getProfileId());
+                    getFollowersByProfileId(profile.getProfileId());
+                    getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profile.getProfileId());
 
 
-            }else if(profileId!=0){
-                getProfile(profileId);
-                getProfileContent(profileId);
-                getFollowingByProfileId(profileId);
-                getFollowersByProfileId(profileId);
-                getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profileId);
+                }else if(profileId!=0){
+                    getProfile(profileId);
+                    getProfileContent(profileId);
+                    getFollowingByProfileId(profileId);
+                    getFollowersByProfileId(profileId);
+                    getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profileId);
+                }else{
+
+                    SnackbarViewer.showSnackbar(findViewById(R.id.activity_profile_main),"Something went wrong");
+                }
+
             }else{
 
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                SnackbarViewer.showSnackbar(findViewById(R.id.activity_profile_main),"No Internet connection");
+                progressBar.setVisibility(View.GONE);
             }
 
 
@@ -126,29 +145,36 @@ public class ProfileScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    String follow = mFollowOption.getText().toString();
+                    if (Util.isNetworkAvailable(ProfileScreen.this)) {
 
-                    if(follow!=null&&!follow.isEmpty()){
+                        String follow = mFollowOption.getText().toString();
 
-                        if(follow.equalsIgnoreCase("Follow")){
+                        if(follow!=null&&!follow.isEmpty()){
 
-                            ProfileFollowMapping pm = new ProfileFollowMapping();
-                            pm.setFollowerId(profileId);
-                            pm.setProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId());
-                            profileFollow(pm);
+                            if(follow.equalsIgnoreCase("Follow")){
 
-                        }else if(follow.equalsIgnoreCase("Unfollow")){
+                                ProfileFollowMapping pm = new ProfileFollowMapping();
+                                pm.setFollowerId(profileId);
+                                pm.setProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId());
+                                profileFollow(pm);
+
+                            }else if(follow.equalsIgnoreCase("Unfollow")){
 
 
-                            if(mappingId!=0){
+                                if(mappingId!=0){
 
-                                deleteFollow(mappingId);
+                                    deleteFollow(mappingId);
 
-                            }else{
-                                Toast.makeText(ProfileScreen.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(ProfileScreen.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
+                    } else{
+                            SnackbarViewer.showSnackbar(findViewById(R.id.activity_profile_main),"Please check your internet connection !");
+
                     }
+
                 }
             });
 
@@ -199,10 +225,6 @@ public class ProfileScreen extends AppCompatActivity {
                                     mProfilePhoto.setImageResource(R.drawable.profile_image);
                                 }
                             }
-
-
-
-
                         }
                     }
 
@@ -252,8 +274,6 @@ public class ProfileScreen extends AppCompatActivity {
                             }
                             else
                             {
-
-
 
                             }
                         }

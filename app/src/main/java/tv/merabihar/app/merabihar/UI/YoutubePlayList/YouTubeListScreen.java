@@ -38,7 +38,6 @@ public class YouTubeListScreen extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
             setContentView(R.layout.activity_you_tube_list_screen);
-            Fresco.initialize(this);
 
             fragment =
                     (YouTubeFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);

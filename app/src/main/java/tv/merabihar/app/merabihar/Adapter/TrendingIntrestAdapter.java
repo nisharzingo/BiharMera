@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.alexzh.circleimageview.CircleImageView;
 import com.bumptech.glide.Glide;
@@ -19,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
+import com.tuyenmonkey.mkloader.MKLoader;
 
 import java.util.ArrayList;
 
@@ -92,6 +94,7 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
                         if(img!=null&&!img.isEmpty()){
                             // crop the image & load
                             loadCroppedImage(img,holder.mContentImage);
+//                            holder.mLoader.setVisibility(View.INVISIBLE);
                         }
                     }
 
@@ -100,8 +103,8 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
 
                 }else{
 
+//                    holder.mLoader.setVisibility(View.INVISIBLE);
 
-                    //holder.mIcon.setVisibility(View.GONE);
                     if(contents.getContentImage() != null && contents.getContentImage().size()!=0)
                     {
 
@@ -110,6 +113,7 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
                         if(img!=null&&!img.isEmpty()){
                             Picasso.with(context).load(img).placeholder(R.drawable.no_image).
                                     error(R.drawable.no_image).into(holder.mContentImage);
+
                         }else{
                             holder.mContentImage.setImageResource(R.drawable.no_image);
                         }
@@ -155,6 +159,8 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
         RoundedImageView mContentImage;
         MyTextView_Lato_Regular mInterestName;
         LinearLayout mInterestLay;
+//        MKLoader mLoader;
+//        ProgressBar mLoader;
 
 
 
@@ -167,9 +173,10 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
             mInterestName = (MyTextView_Lato_Regular) itemView.findViewById(R.id.interest_name);
             mContentImage = (RoundedImageView) itemView.findViewById(R.id.content_image);
             mInterestLay = (LinearLayout) itemView.findViewById(R.id.collection_lay);
+//            mLoader =  (MKLoader) itemView.findViewById(R.id.loader_trending_interests);
+//            mLoader =  (ProgressBar) itemView.findViewById(R.id.loader_trending_interests);
 
         }
-
 
     }
 

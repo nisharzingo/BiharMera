@@ -168,6 +168,11 @@ public class ForYouFragment extends Fragment {
 
                             if( response.body().size()!= 0){
                                 System.out.println("Response Body size = "+response.body().size());
+
+
+
+
+
                                 loadFirstPage(response.body());
                             }else{
                                 adapter.removeLoadingFooter();

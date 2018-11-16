@@ -23,6 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.CategoryAndContentList;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
@@ -36,7 +37,7 @@ import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
 public class ForYouNewFragment extends Fragment {
 
     SwipeRefreshLayout pullToRefresh;
-
+    View view;
     private static RecyclerView mtopBlogs;
     ProgressBar progressBar;
 
@@ -76,7 +77,7 @@ public class ForYouNewFragment extends Fragment {
                              Bundle savedInstanceState) {
         try{
 
-            View view = inflater.inflate(R.layout.fragment_for_you_new, container, false);
+             view = inflater.inflate(R.layout.fragment_for_you_new, container, false);
 
 
             mtopBlogs = (RecyclerView) view.findViewById(R.id.top_blogs_viewpager);
@@ -99,7 +100,15 @@ public class ForYouNewFragment extends Fragment {
                     isLoading = true;
 
                     currentPage = currentPage+1;
-                    loadNextSetOfItems();
+
+
+                    if (Util.isNetworkAvailable(getActivity())) {
+                        loadNextSetOfItems();
+
+                    }else{
+                        SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
+                        progressBar.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override
@@ -120,15 +129,28 @@ public class ForYouNewFragment extends Fragment {
 
             //getBlogs();
 
-            loadFirstSetOfBlogs();
+            if (Util.isNetworkAvailable(getActivity())) {
+
+                loadFirstSetOfBlogs();
+            }else{
+                SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
+                progressBar.setVisibility(View.GONE);
+
+            }
+
             pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 int Refreshcounter = 1; //Counting how many times user have refreshed the layout
 
                 @Override
                 public void onRefresh() {
 
-                    loadFirstSetOfBlogs();
+                    if (Util.isNetworkAvailable(getActivity())) {
 
+                        loadFirstSetOfBlogs();
+                    }else{
+                        progressBar.setVisibility(View.GONE);
+                        SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
+                    }
 
                     pullToRefresh.setRefreshing(false);
                 }

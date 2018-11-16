@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.CategoryFollowingList;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.Util.Constants;
@@ -80,47 +81,58 @@ public class CategoryFollowScreen extends Fragment {
     public void getCategories()
     {
         mProgressBar.setVisibility(View.VISIBLE);
-        new ThreadExecuter().execute(new Runnable() {
-            @Override
-            public void run() {
-                final CategoryApi categoryAPI = Util.getClient().create(CategoryApi.class);
-                //Call<ArrayList<Category>> getCat = categoryAPI.getCategoriesByCityId(Constants.CITY_ID);
-                Call<ArrayList<Category>> getCat = categoryAPI.getCategoriesByCityId(Constants.CITY_ID);
-                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
 
-                getCat.enqueue(new Callback<ArrayList<Category>>() {
+        if (Util.isNetworkAvailable(getActivity())) {
 
-                    @Override
-                    public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
-                        mProgressBar.setVisibility(View.GONE);
+            new ThreadExecuter().execute(new Runnable() {
+                @Override
+                public void run() {
+                    final CategoryApi categoryAPI = Util.getClient().create(CategoryApi.class);
+                    //Call<ArrayList<Category>> getCat = categoryAPI.getCategoriesByCityId(Constants.CITY_ID);
+                    Call<ArrayList<Category>> getCat = categoryAPI.getCategoriesByCityId(Constants.CITY_ID);
+                    //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
 
-                        if(response.code() == 200)
-                        {
-                            categories = response.body();
+                    getCat.enqueue(new Callback<ArrayList<Category>>() {
 
-                            if(categories!=null&&categories.size()!=0){
+                        @Override
+                        public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+                            mProgressBar.setVisibility(View.GONE);
 
-                                CategoryFollowingList adapter = new CategoryFollowingList(getActivity(),categories);
-                                recyclerView.setAdapter(adapter);
+                            if(response.code() == 200)
+                            {
+                                categories = response.body();
+
+                                if(categories!=null&&categories.size()!=0){
+
+                                    CategoryFollowingList adapter = new CategoryFollowingList(getActivity(),categories);
+                                    recyclerView.setAdapter(adapter);
+                                }
+
                             }
-
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
-                        mProgressBar.setVisibility(View.GONE);
+                        @Override
+                        public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+                            mProgressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
 
-                //System.out.println(TAG+" thread started");
+                    //System.out.println(TAG+" thread started");
 
-            }
+                }
+            });
+        }
+        else{
 
-        });
+            SnackbarViewer.showSnackbar(recyclerView,"No Internet Connection found");
+            mProgressBar.setVisibility(View.GONE);
+
+        }
+
+
 
     }
 }

@@ -30,6 +30,7 @@ import tv.merabihar.app.merabihar.Adapter.TrendingIntrestAdapter;
 import tv.merabihar.app.merabihar.Adapter.VideoFragmentAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold;
 import tv.merabihar.app.merabihar.CustomViews.CustomGridView;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.ContentImages;
 import tv.merabihar.app.merabihar.Model.Contents;
@@ -67,7 +68,6 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
         try{
 
-            //Fresco.initialize(this);
             setContentView(R.layout.activity_tab_video_new_design);
 
             mCategoryLayout = (LinearLayout) findViewById(R.id.category_layout);
@@ -100,8 +100,21 @@ public class TabVideoNewDesign extends AppCompatActivity {
             };
 
 
-            //category.start();
-            video.start();
+
+            if (Util.isNetworkAvailable(this)) {
+
+                video.start();
+                //category.start();
+
+            }else{
+
+                SnackbarViewer.showSnackbar(findViewById(R.id.tab_new_design_ll),"No Internet connection");
+                progressBar.setVisibility(View.GONE);
+            }
+
+
+
+
 
 
         mTrendingInterest.requestFocus();

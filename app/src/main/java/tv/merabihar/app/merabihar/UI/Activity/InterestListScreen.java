@@ -14,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.InterestSearchAdapter;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Interest;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.SearchScreens.SearchActivity;
@@ -41,7 +42,14 @@ public class InterestListScreen extends AppCompatActivity {
             mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
 
-            getInterest();
+            if (Util.isNetworkAvailable(InterestListScreen.this)) {
+                getInterest();
+
+            }else{
+
+                SnackbarViewer.showSnackbar(mInterestList,"No Internet connection");
+                mProgressBar.setVisibility(View.GONE);
+            }
 
         }catch(Exception e){
             e.printStackTrace();

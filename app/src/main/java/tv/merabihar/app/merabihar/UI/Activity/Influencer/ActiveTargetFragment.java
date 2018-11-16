@@ -17,6 +17,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ActiveTargetFragmentsAdapter;
 import tv.merabihar.app.merabihar.Adapter.TargetInfluencerAdapter;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.TargetDes;
 import tv.merabihar.app.merabihar.R;
@@ -68,8 +69,12 @@ public class ActiveTargetFragment extends Fragment {
 
             targetDesArrayList = new ArrayList<>();
 
-            getGoalsByProfileId(PreferenceHandler.getInstance(getActivity()).getUserId());
 
+            if (Util.isNetworkAvailable(getActivity())) {
+                getGoalsByProfileId(PreferenceHandler.getInstance(getActivity()).getUserId());
+            }else{
+                SnackbarViewer.showSnackbar(recyclerView,"No Internet connection");
+            }
 
             return view;
 
@@ -101,25 +106,16 @@ public class ActiveTargetFragment extends Fragment {
                         if(response.code() == 200 && targetDesArrayList!= null)
                         {
 
-
                             ActiveTargetFragmentsAdapter adapter = new ActiveTargetFragmentsAdapter(getActivity(),targetDesArrayList);
                             recyclerView.setAdapter(adapter);
 
-
-
-
                         }else{
-
-
 
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
-
-
-
 
                         Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                     }

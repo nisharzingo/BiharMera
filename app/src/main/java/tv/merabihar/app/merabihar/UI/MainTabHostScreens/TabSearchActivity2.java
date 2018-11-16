@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -22,6 +23,7 @@ import tv.merabihar.app.merabihar.Adapter.FollowFragmentContentAdapter;
 import tv.merabihar.app.merabihar.Adapter.TrendingIntrestAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold;
 import tv.merabihar.app.merabihar.CustomViews.CustomGridView;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.InterestContentMapping;
 import tv.merabihar.app.merabihar.R;
@@ -41,7 +43,7 @@ public class TabSearchActivity2 extends AppCompatActivity {
 
 
     TextViewSFProDisplaySemibold mViewTags;
-    ProgressBar progressBar;
+    ProgressBar progressBar, mCategoryProgressBar;
     LinearLayoutManager verticalLinearLayoutManager;
 
 
@@ -59,6 +61,7 @@ public class TabSearchActivity2 extends AppCompatActivity {
         mTrendingInterest = (RecyclerView) findViewById(R.id.trending_tags);
         mViewTags = (TextViewSFProDisplaySemibold) findViewById(R.id.view_tags);
         progressBar = (ProgressBar) findViewById(R.id.progressBar_content);
+        mCategoryProgressBar = (ProgressBar) findViewById(R.id.progressBar_catg);
         mTrendingInterest.setLayoutManager(new LinearLayoutManager(TabSearchActivity2.this, LinearLayoutManager.HORIZONTAL, false));
         mTrendingInterest.setNestedScrollingEnabled(false);
         contentsView.setNestedScrollingEnabled(false);
@@ -76,8 +79,17 @@ public class TabSearchActivity2 extends AppCompatActivity {
             }
         };
 
-        interest.start();
-        contents.start();
+        if (Util.isNetworkAvailable(TabSearchActivity2.this)) {
+            interest.start();
+            contents.start();
+        }
+        else{
+                progressBar.setVisibility(View.GONE);
+            mCategoryProgressBar.setVisibility(View.GONE);
+            SnackbarViewer.showSnackbar(findViewById(R.id.tab_search_activity_ll),"No Internet connection");
+//            Toast.makeText(this, "no connection", Toast.LENGTH_SHORT).show();
+//            Log.e("NO Connection found", "xxxxxxxxxxx");
+        }
 
 
         mSearch.setOnClickListener(new View.OnClickListener() {
@@ -97,10 +109,6 @@ public class TabSearchActivity2 extends AppCompatActivity {
                 startActivity(search);
             }
         });
-
-
-
-
 
     }
 
@@ -161,7 +169,6 @@ public class TabSearchActivity2 extends AppCompatActivity {
     public void loadFirstSetOfContents()
     {
 
-
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
@@ -212,19 +219,22 @@ public class TabSearchActivity2 extends AppCompatActivity {
                                     contentsView.setLayoutManager(verticalLinearLayoutManager);
                                     contentsView.setHasFixedSize(true);
                                     contentsView.setAdapter(followFragmentContentAdapter);
+                                    mCategoryProgressBar.setVisibility(View.INVISIBLE);
 
                                 }else{
+                                    mCategoryProgressBar.setVisibility(View.INVISIBLE);
                                     Toast.makeText(TabSearchActivity2.this, "No Contents", Toast.LENGTH_SHORT).show();
                                 }
 
                             }else{
+                                mCategoryProgressBar.setVisibility(View.INVISIBLE);
 
                             }
 
 
 
                         }else{
-
+                            mCategoryProgressBar.setVisibility(View.INVISIBLE);
 
                         }
                     }
@@ -232,15 +242,12 @@ public class TabSearchActivity2 extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
 
-
-
+                        mCategoryProgressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(TabSearchActivity2.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
-
                 //System.out.println(TAG+" thread started");
-
             }
 
         });

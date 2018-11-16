@@ -21,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
 import tv.merabihar.app.merabihar.Adapter.TargetInfluencerAdapter;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.Goals;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
@@ -73,8 +74,14 @@ public class InfluencerTargetFragment extends Fragment {
             mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
             mProgressBar.setVisibility(View.GONE);
 
+            if (Util.isNetworkAvailable(getActivity())) {
 
-            getGoalsByProfileId(PreferenceHandler.getInstance(getActivity()).getUserId());
+                getGoalsByProfileId(PreferenceHandler.getInstance(getActivity()).getUserId());
+            }else{
+                SnackbarViewer.showSnackbar(recyclerView,"No Internet connection");
+            }
+
+
             return view;
 
         }catch (Exception e){
@@ -113,12 +120,24 @@ public class InfluencerTargetFragment extends Fragment {
 
                             }
 
-                            getGoals(targetDesArrayListId);
+
+                            if (Util.isNetworkAvailable(getActivity())) {
+                                getGoals(targetDesArrayListId);
+
+                            }else{
+                                SnackbarViewer.showSnackbar(recyclerView,"No Internet connection");
+                            }
+
 
 
                         }else{
 
-                            getGoals(targetDesArrayListId);
+                            if (Util.isNetworkAvailable(getActivity())) {
+                                getGoals(targetDesArrayListId);
+
+                            }else{
+                                SnackbarViewer.showSnackbar(recyclerView,"No Internet connection");
+                            }
 
                         }
                     }

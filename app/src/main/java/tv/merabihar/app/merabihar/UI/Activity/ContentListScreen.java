@@ -22,8 +22,10 @@ import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabSearchActivity;
 import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
@@ -75,7 +77,14 @@ public class ContentListScreen extends AppCompatActivity {
                   isLoading = true;
 
                   currentPage = currentPage+1;
-                  loadNextSetOfItems();
+
+                  if (Util.isNetworkAvailable(ContentListScreen.this)) {
+                      loadNextSetOfItems();
+
+                  }else{
+                      SnackbarViewer.showSnackbar(findViewById(R.id.content_list_screen_ll),"No Internet connection");
+                  }
+
               }
 
               @Override
@@ -96,7 +105,19 @@ public class ContentListScreen extends AppCompatActivity {
 
           //getBlogs();
 
-          loadFirstSetOfBlogs();
+
+
+          if (Util.isNetworkAvailable(this)) {
+              loadFirstSetOfBlogs();
+
+          }else{
+
+              SnackbarViewer.showSnackbar(findViewById(R.id.content_list_screen_ll),"No Internet connection");
+              progressBar.setVisibility(View.GONE);
+          }
+
+
+
 
       }catch (Exception e){
           e.printStackTrace();

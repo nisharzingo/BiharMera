@@ -25,6 +25,7 @@ import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
 import tv.merabihar.app.merabihar.Adapter.NonFollowersAdapter;
 import tv.merabihar.app.merabihar.Adapter.ProfileListAdapter;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
@@ -77,7 +78,7 @@ public class ForFollowersFragment extends Fragment {
 
         try{
 
-            View view =  inflater.inflate(R.layout.fragment_for_followers, container, false);
+            final View view =  inflater.inflate(R.layout.fragment_for_followers, container, false);
 
 
             pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
@@ -120,9 +121,7 @@ public class ForFollowersFragment extends Fragment {
                 public void onRefresh() {
                     if(profileId!=0){
 
-
-
-                        mFollowerContent.removeAllViews();
+                  mFollowerContent.removeAllViews();
                        /* mFollowingContent.removeAllViews();
                         mInterestContent.removeAllViews();*/
 
@@ -133,15 +132,16 @@ public class ForFollowersFragment extends Fragment {
                             }
                         };
 
-
-                        follower.start();
+                        if (Util.isNetworkAvailable(getActivity())) {
+                            follower.start();
+                        }else{
+                            SnackbarViewer.showSnackbar(view.findViewById(R.id.frag_follow_main),"No Internet connection");
+                        }
 
 
                     }else{
 
                     }
-
-
 
                     pullToRefresh.setRefreshing(false);
                 }
@@ -164,8 +164,11 @@ public class ForFollowersFragment extends Fragment {
                 };
 
 
-                follower.start();
-
+                if (Util.isNetworkAvailable(getActivity())) {
+                    follower.start();
+                }else{
+                    SnackbarViewer.showSnackbar(view.findViewById(R.id.frag_follow_main),"No Internet connection");
+                }
 
             }else{
 

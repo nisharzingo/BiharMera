@@ -56,6 +56,7 @@ import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
 import tv.merabihar.app.merabihar.Adapter.ImagePorifleContentAdapter;
 import tv.merabihar.app.merabihar.Adapter.ProfileListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
@@ -112,7 +113,6 @@ public class TabAccountActivity extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
             setContentView(R.layout.activity_tab_account);
-            Fresco.initialize(this);
             mSettings = (ImageView)findViewById(R.id.settings);
             mFollow = (ImageView)findViewById(R.id.follow_peopls);
             mProfilePhoto = (CircleImageView)findViewById(R.id.profile_photo);
@@ -133,6 +133,7 @@ public class TabAccountActivity extends AppCompatActivity {
             linear = findViewById(R.id.lineartool);
 
            final int profileId = PreferenceHandler.getInstance(TabAccountActivity.this).getUserId();
+
             applinear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -144,15 +145,19 @@ public class TabAccountActivity extends AppCompatActivity {
                     mFollowingPeoples.setVisibility(View.GONE);
                     if(profileId!=0){
 
+                        if (Util.isNetworkAvailable(TabAccountActivity.this)) {
+                            getProfileContent(profileId);
 
-                        getProfileContent(profileId);
+                        }else{
 
-
+                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
+                            progressBar.setVisibility(View.GONE);
+                        }
 
                     }else{
 
-                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
-
+                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
+//                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -166,17 +171,22 @@ public class TabAccountActivity extends AppCompatActivity {
                     mFollowingPeoples.setAdapter(null);
                     mPostsList.setVisibility(View.GONE);
                     mFollowingPeoples.setVisibility(View.VISIBLE);
+
                     if(profileId!=0){
                         adapter = new ContentAdapterVertical(TabAccountActivity.this);
                         mFollowingPeoples.setAdapter(adapter);
 
-                        loadFirstSetOfBlogs(profileId);
+                        if (Util.isNetworkAvailable(TabAccountActivity.this)) {
+                            loadFirstSetOfBlogs(profileId);
+                        }else{
 
-
+                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
+                        }
 
                     }else{
 
-                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
+                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
 
                     }
 
@@ -196,14 +206,21 @@ public class TabAccountActivity extends AppCompatActivity {
             //int profileId = 49;
             if(profileId!=0){
 
-                getProfile(profileId);
-                getProfileContent(profileId);
+                if (Util.isNetworkAvailable(TabAccountActivity.this)) {
 
+                    getProfile(profileId);
+                    getProfileContent(profileId);
 
+                }else{
+
+                    SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
+                    progressBar.setVisibility(View.GONE);
+                }
 
             }else{
 
-                Toast.makeText(this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
+                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
+
 
             }
 
@@ -237,7 +254,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
                     }else{
 
-                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
+                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
 
                     }
 
@@ -358,8 +375,9 @@ public class TabAccountActivity extends AppCompatActivity {
                         }
                         else
                         {
+                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),response.message());
 
-                            Toast.makeText(TabAccountActivity.this,response.message(),Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(TabAccountActivity.this,response.message(),Toast.LENGTH_SHORT).show();
                         }
 //                callGetStartEnd();
                     }
@@ -418,8 +436,8 @@ public class TabAccountActivity extends AppCompatActivity {
                         }
                         else
                         {
-
-                            Toast.makeText(TabAccountActivity.this,response.message(),Toast.LENGTH_SHORT).show();
+                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),response.message());
+//                            Toast.makeText(TabAccountActivity.this,response.message(),Toast.LENGTH_SHORT).show();
                         }
 //                callGetStartEnd();
                     }
@@ -481,7 +499,8 @@ public class TabAccountActivity extends AppCompatActivity {
                         {
 
                             getFollowerByProfileId(id);
-                            Toast.makeText(TabAccountActivity.this,response.message(),Toast.LENGTH_SHORT).show();
+                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),response.message());
+
                         }
 //                callGetStartEnd();
                     }
@@ -541,7 +560,8 @@ public class TabAccountActivity extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(TabAccountActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),t.getMessage());
+
                     }
                 });
 
@@ -1023,11 +1043,14 @@ public class TabAccountActivity extends AppCompatActivity {
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
-                            Toast.makeText(TabAccountActivity.this,"Profile Image Updated",Toast.LENGTH_SHORT).show();
+
+                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Profile Image Updated");
+//                            Toast.makeText(TabAccountActivity.this,"Profile Image Updated",Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
-                            Toast.makeText(TabAccountActivity.this,response.message(),Toast.LENGTH_SHORT).show();
+                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Error while updating profile picture");
+//                            Toast.makeText(TabAccountActivity.this,response.message(),Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -1037,7 +1060,8 @@ public class TabAccountActivity extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(TabAccountActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(TabAccountActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Error while updating profile picture");
 
                     }
                 });

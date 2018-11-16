@@ -83,9 +83,6 @@
 
                 </LinearLayout>
 
-
-
-
                 <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

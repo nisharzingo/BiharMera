@@ -37,6 +37,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,6 +81,7 @@ import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold;
 import tv.merabihar.app.merabihar.CustomInterface.DownloadTaskVideo;
 import tv.merabihar.app.merabihar.CustomInterface.OnBottomReachedListener;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
 import tv.merabihar.app.merabihar.Model.Likes;
@@ -628,27 +630,29 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 @Override
                                 public void onClick(View view) {
 
-                                    if(profileId!=0){
+                                    if (Util.isNetworkAvailable(context)) {
 
-                                        holder.mLike.setEnabled(false);
-                                        Likes likes = new Likes();
-                                        likes.setContentId(contents.getContentId());
-                                        likes.setProfileId(profileId);
-                                        likes.setLiked(true);
+                                        if(profileId!=0){
 
-                                        if (holder.mDislike.getDrawable().getConstantState() == context.getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
-                                        {
-                                            if(holder.mDislikedId.getText().toString()!=null&&!holder.mDislikedId.getText().toString().isEmpty()){
+                                            holder.mLike.setEnabled(false);
+                                            Likes likes = new Likes();
+                                            likes.setContentId(contents.getContentId());
+                                            likes.setProfileId(profileId);
+                                            likes.setLiked(true);
+
+                                            if (holder.mDislike.getDrawable().getConstantState() == context.getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
+                                            {
+                                                if(holder.mDislikedId.getText().toString()!=null&&!holder.mDislikedId.getText().toString().isEmpty()){
 
 
-                                                updateLike(likes,holder.mLike,holder.mLikesCount,Integer.parseInt(holder.mDislikedId.getText().toString()),holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
+                                                    updateLike(likes,holder.mLike,holder.mLikesCount,Integer.parseInt(holder.mDislikedId.getText().toString()),holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
+                                                }
                                             }
-                                        }
-                                        else
-                                        {
+                                            else
+                                            {
 
-                                            postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
-                                        }
+                                                postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
+                                            }
 
 
 
@@ -658,28 +662,34 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                             postLike(likes,holder.mLike,holder.mLiked,holder.mLikeCount,holder.mLikedId);
                                         }*/
 
-                                    }else {
-                                        new AlertDialog.Builder(context)
-                                                .setMessage("Please login/Signup to Like the Story")
-                                                .setCancelable(false)
-                                                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
+                                        }else {
+                                            new AlertDialog.Builder(context)
+                                                    .setMessage("Please login/Signup to Like the Story")
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
 
-                                                        Intent login = new Intent(context, LoginScreen.class);
-                                                        context.startActivity(login);
+                                                            Intent login = new Intent(context, LoginScreen.class);
+                                                            context.startActivity(login);
 
-                                                    }
-                                                })
-                                                .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        }
+                                                    })
+                                                    .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
 
-                                                        Intent signUp = new Intent(context, SignUpScreen.class);
-                                                        context.startActivity(signUp);
+                                                            Intent signUp = new Intent(context, SignUpScreen.class);
+                                                            context.startActivity(signUp);
 
-                                                    }
-                                                })
-                                                .show();
+                                                        }
+                                                    })
+                                                    .show();
+                                        }
+
+                                    }else{
+
+                                        Toast.makeText(context, "No internet connection !", Toast.LENGTH_SHORT).show();
                                     }
+
                                 }
                             });
 
@@ -687,27 +697,29 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 @Override
                                 public void onClick(View view) {
 
-                                    if(profileId!=0){
+                                    if (Util.isNetworkAvailable(context)) {
 
-                                        holder.mDislike.setEnabled(false);
-                                        Likes likes = new Likes();
-                                        likes.setContentId(contents.getContentId());
-                                        likes.setProfileId(profileId);
-                                        likes.setLiked(false);
+                                        if(profileId!=0){
 
-                                        if (holder.mLike.getDrawable().getConstantState() == context.getResources().getDrawable( R.drawable.liked_icon).getConstantState())
-                                        {
-                                            if(holder.mLikedId.getText().toString()!=null&&!holder.mLikedId.getText().toString().isEmpty()){
+                                            holder.mDislike.setEnabled(false);
+                                            Likes likes = new Likes();
+                                            likes.setContentId(contents.getContentId());
+                                            likes.setProfileId(profileId);
+                                            likes.setLiked(false);
+
+                                            if (holder.mLike.getDrawable().getConstantState() == context.getResources().getDrawable( R.drawable.liked_icon).getConstantState())
+                                            {
+                                                if(holder.mLikedId.getText().toString()!=null&&!holder.mLikedId.getText().toString().isEmpty()){
 
 
-                                                updatedisLike(likes,holder.mDislike,holder.mDislikesCount,Integer.parseInt(holder.mLikedId.getText().toString()),holder.mLike,holder.mLikedId,holder.mLikesCount,holder.mDislikedId);
+                                                    updatedisLike(likes,holder.mDislike,holder.mDislikesCount,Integer.parseInt(holder.mLikedId.getText().toString()),holder.mLike,holder.mLikedId,holder.mLikesCount,holder.mDislikedId);
+                                                }
                                             }
-                                        }
-                                        else
-                                        {
+                                            else
+                                            {
 
-                                            postDislike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
-                                        }
+                                                postDislike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
+                                            }
 
 
 
@@ -717,27 +729,33 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                             postLike(likes,holder.mLike,holder.mLiked,holder.mLikeCount,holder.mLikedId);
                                         }*/
 
-                                    }else {
-                                        new AlertDialog.Builder(context)
-                                                .setMessage("Please login/Signup to Like the Story")
-                                                .setCancelable(false)
-                                                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
+                                        }else {
+                                            new AlertDialog.Builder(context)
+                                                    .setMessage("Please login/Signup to Like the Story")
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
 
-                                                        Intent login = new Intent(context, LoginScreen.class);
-                                                        context.startActivity(login);
+                                                            Intent login = new Intent(context, LoginScreen.class);
+                                                            context.startActivity(login);
 
-                                                    }
-                                                })
-                                                .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        }
+                                                    })
+                                                    .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
 
-                                                        Intent signUp = new Intent(context, SignUpScreen.class);
-                                                        context.startActivity(signUp);
+                                                            Intent signUp = new Intent(context, SignUpScreen.class);
+                                                            context.startActivity(signUp);
 
-                                                    }
-                                                })
-                                                .show();
+                                                        }
+                                                    })
+                                                    .show();
+                                        }
+
+                                    }else{
+
+                                        Toast.makeText(context, "No internet connection !", Toast.LENGTH_SHORT).show();
+
                                     }
                                 }
                             });
@@ -746,42 +764,51 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 @Override
                                 public void onClick(View view) {
 
-                                    if(profileId!=0){
+                                    // check whether internet is available
+//                                    mParentRelativeLayout
+                                    if (Util.isNetworkAvailable(context)) {
 
-                                        if(holder.mFollow.getText().toString().equalsIgnoreCase("Follow")){
-                                            holder.mFollow.setEnabled(false);
-                                            ProfileFollowMapping pm = new ProfileFollowMapping();
-                                            pm.setFollowerId(contents.getProfileId());
-                                            pm.setProfileId(PreferenceHandler.getInstance(context).getUserId());
-                                            profileFollow(pm,holder.mFollow);
+                                        if(profileId!=0){
+
+                                            if(holder.mFollow.getText().toString().equalsIgnoreCase("Follow")){
+                                                holder.mFollow.setEnabled(false);
+                                                ProfileFollowMapping pm = new ProfileFollowMapping();
+                                                pm.setFollowerId(contents.getProfileId());
+                                                pm.setProfileId(PreferenceHandler.getInstance(context).getUserId());
+                                                profileFollow(pm,holder.mFollow);
+                                            }else{
+
+                                                Toast.makeText(context, "Already you followed "+contents.getCreatedBy(), Toast.LENGTH_SHORT).show();
+                                            }
+
                                         }else{
 
-                                            Toast.makeText(context, "Already you followed "+contents.getCreatedBy(), Toast.LENGTH_SHORT).show();
+                                            new AlertDialog.Builder(context)
+                                                    .setMessage("Please login/Signup to Like the Story")
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+
+                                                            Intent login = new Intent(context, LoginScreen.class);
+                                                            context.startActivity(login);
+
+                                                        }
+                                                    })
+                                                    .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+
+                                                            Intent signUp = new Intent(context, SignUpScreen.class);
+                                                            context.startActivity(signUp);
+
+                                                        }
+                                                    })
+                                                    .show();
+
                                         }
 
                                     }else{
 
-                                        new AlertDialog.Builder(context)
-                                                .setMessage("Please login/Signup to Like the Story")
-                                                .setCancelable(false)
-                                                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-
-                                                        Intent login = new Intent(context, LoginScreen.class);
-                                                        context.startActivity(login);
-
-                                                    }
-                                                })
-                                                .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-
-                                                        Intent signUp = new Intent(context, SignUpScreen.class);
-                                                        context.startActivity(signUp);
-
-                                                    }
-                                                })
-                                                .show();
-
+                                        Toast.makeText(context, "No internet connection !", Toast.LENGTH_SHORT).show();
                                     }
 
                                 }
@@ -859,32 +886,35 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 @Override
                                 public void onClick(View view) {
 
-                                    fileNames = contents.getContentId()+""+contents.getProfileId();
+                                    if (Util.isNetworkAvailable(context)) {
 
-                                    AsyncTask mMyTask;
-                                    if(contents.getContentType().equalsIgnoreCase("Video")) {
+                                        fileNames = contents.getContentId()+""+contents.getProfileId();
 
-                                        url = contents.getContentURL();
+                                        AsyncTask mMyTask;
+                                        if(contents.getContentType().equalsIgnoreCase("Video")) {
 
+                                            url = contents.getContentURL();
 
-                                        if (url != null && !url.isEmpty()) {
+                                            if (url != null && !url.isEmpty()) {
+                                                startImageDownload(url,fileNames);
+                                            }
 
-                                            startImageDownload(url,fileNames);
-
-                                        }
-
-                                    }else{
+                                        }else{
 
                                        /* if (checkPermission()) {
                                             startImageDownload(""+contents.getContentImage().get(0).getImages());
                                         } else {
                                             requestPermission();
                                         }*/
+                                            mMyTask = new DownloadImage()
+                                                    .execute(stringToURL(
+                                                            ""+contents.getContentImage().get(0).getImages()
+                                                    ));
+                                        }
 
-                                        mMyTask = new DownloadImage()
-                                                .execute(stringToURL(
-                                                        ""+contents.getContentImage().get(0).getImages()
-                                                ));
+                                    }else{
+
+                                        Toast.makeText(context, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
 
                                     }
                                 }
@@ -994,7 +1024,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         LinearLayout mProfileContent;
         FrameLayout mContentDetail;
         TextView mMore,mLess,mMoreExtnd,mMoreLine;
-
 
         ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare,mDownLoad;
 

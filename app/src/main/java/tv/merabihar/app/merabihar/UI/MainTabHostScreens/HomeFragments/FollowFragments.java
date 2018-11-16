@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -19,14 +20,12 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tv.merabihar.app.merabihar.Adapter.CategoryGridAdapter;
 import tv.merabihar.app.merabihar.Adapter.FollowFragmentCategoriesAdapter;
 import tv.merabihar.app.merabihar.Adapter.FollowFragmentContentAdapter;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
-import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabSearchActivity;
-import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabVideoActivity;
 import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
@@ -39,7 +38,7 @@ import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
 public class FollowFragments extends Fragment {
 
     Context context;
-
+    ProgressBar mContentProgressBar, mCategoryProgressBar;
     ArrayList<Category> categoryList;
 
     View mFragmentView;
@@ -67,13 +66,11 @@ public class FollowFragments extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        Fresco.initialize(getActivity());
         mFragmentView =  inflater.inflate(R.layout.fragment_follow_fragments, container, false);
-
-
-
         categoryRecyclerView = mFragmentView.findViewById(R.id.follow_frag_categories_recycler_view);
         contentRecyclerView = mFragmentView.findViewById(R.id.follow_frag_content_recycler_view);
+        mCategoryProgressBar = mFragmentView.findViewById(R.id.follow_cat_progressbar);
+        mContentProgressBar = mFragmentView.findViewById(R.id.follow_contents_progressbar);
 
         categoryRecyclerView.setNestedScrollingEnabled(false);
         contentRecyclerView.setNestedScrollingEnabled(false);
@@ -81,19 +78,21 @@ public class FollowFragments extends Fragment {
         horizontalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         verticalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
+        if (Util.isNetworkAvailable(getActivity())) {
 
+            getCategories();
+            loadFirstSetOfContents();
 
-        getCategories();
-        loadFirstSetOfContents();
+        }else{
 
+            SnackbarViewer.showSnackbar(mFragmentView.findViewById(R.id.follow_frag_ll_main),"No Internet connection");
+//            Toast.makeText(context, "No internet Connection", Toast.LENGTH_SHORT).show();
+            mContentProgressBar.setVisibility(View.GONE);
+            mCategoryProgressBar.setVisibility(View.GONE);
+        }
 
 
         // content recyclerview will be vertical
-
-        // Dummy for testing
-
-
-
         return mFragmentView;
     }
 
@@ -121,6 +120,8 @@ public class FollowFragments extends Fragment {
                         {
                             dialog.dismiss();
                         }*/
+
+
                         if(response.code() == 200)
                         {
 
@@ -133,14 +134,18 @@ public class FollowFragments extends Fragment {
                                 categoryRecyclerView.setHasFixedSize(true);
                                 categoryRecyclerView.setAdapter(followCategoriesAdapter);
 
+                                mCategoryProgressBar.setVisibility(View.INVISIBLE);
+
 
                             }
                             else
                             {
                                 categoryRecyclerView.setVisibility(View.GONE);
+                                mCategoryProgressBar.setVisibility(View.INVISIBLE);
 
                             }
                         }else{
+                            mCategoryProgressBar.setVisibility(View.INVISIBLE);
                             categoryRecyclerView.setVisibility(View.GONE);
                         }
                     }
@@ -151,6 +156,7 @@ public class FollowFragments extends Fragment {
                         {
                             dialog.dismiss();
                         }*/
+                        mCategoryProgressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                         categoryRecyclerView.setVisibility(View.GONE);
                     }
@@ -167,8 +173,6 @@ public class FollowFragments extends Fragment {
 
     public void loadFirstSetOfContents()
     {
-
-
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
@@ -217,28 +221,28 @@ public class FollowFragments extends Fragment {
                                     contentRecyclerView.setLayoutManager(verticalLinearLayoutManager);
                                     contentRecyclerView.setHasFixedSize(true);
                                     contentRecyclerView.setAdapter(followFragmentContentAdapter);
+                                    mContentProgressBar.setVisibility(View.INVISIBLE);
 
                                 }else{
+                                    mContentProgressBar.setVisibility(View.INVISIBLE);
                                     Toast.makeText(context, "No Contents", Toast.LENGTH_SHORT).show();
                                 }
 
                             }else{
+                                mContentProgressBar.setVisibility(View.INVISIBLE);
 
                             }
 
-
-
                         }else{
 
+                            mContentProgressBar.setVisibility(View.INVISIBLE);
 
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
-
-
-
+                        mContentProgressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });

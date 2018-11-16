@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -25,6 +26,7 @@ import tv.merabihar.app.merabihar.Adapter.ContentRecyclerHorizontal;
 import tv.merabihar.app.merabihar.Adapter.TrendingIntrestAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold;
 import tv.merabihar.app.merabihar.CustomViews.CustomGridView;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.Interest;
@@ -77,8 +79,17 @@ public class TabSearchActivity extends AppCompatActivity {
                 }
             };
 
-            interest.start();
-            category.start();
+            if (Util.isNetworkAvailable(TabSearchActivity.this)) {
+                interest.start();
+                category.start();
+            }
+            else{
+                progressBar.setVisibility(View.GONE);
+                SnackbarViewer.showSnackbar(findViewById(R.id.tab_search_activity_ll),"No Internet connection");
+                Toast.makeText(this, "no connection", Toast.LENGTH_SHORT).show();
+                Log.e("NO Connection found", "xxxxxxxxxxx");
+            }
+
 
             mSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -165,60 +176,65 @@ public class TabSearchActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();*/
 
-        new ThreadExecuter().execute(new Runnable() {
-            @Override
-            public void run() {
 
-                final CategoryApi categoryAPI = Util.getClient().create(CategoryApi.class);
-                Call<ArrayList<Category>> getCat = categoryAPI.getCategoriesByCityId(Constants.CITY_ID);
-                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
 
-                getCat.enqueue(new Callback<ArrayList<Category>>() {
 
-                    @Override
-                    public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+            new ThreadExecuter().execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    final CategoryApi categoryAPI = Util.getClient().create(CategoryApi.class);
+                    Call<ArrayList<Category>> getCat = categoryAPI.getCategoriesByCityId(Constants.CITY_ID);
+                    //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                    getCat.enqueue(new Callback<ArrayList<Category>>() {
+
+                        @Override
+                        public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
                        /* if(dialog != null)
                         {
                             dialog.dismiss();
                         }*/
-                        if(response.code() == 200)
-                        {
-
-                            if(response.body() != null && response.body().size() != 0)
+                            if(response.code() == 200)
                             {
 
-                                CategoryGridAdapter adapter = new CategoryGridAdapter(TabSearchActivity.this,response.body());
-                                mCategories.setAdapter(adapter);
+                                if(response.body() != null && response.body().size() != 0)
+                                {
+
+                                    CategoryGridAdapter adapter = new CategoryGridAdapter(TabSearchActivity.this,response.body());
+                                    mCategories.setAdapter(adapter);
 
 
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
+                                    mCategoryLayout.setVisibility(View.GONE);
+
+                                }
+                            }else{
                                 mCategoryLayout.setVisibility(View.GONE);
-
                             }
-                        }else{
+                        }
+
+                        @Override
+                        public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+                       /* if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }*/
+                            Toast.makeText(TabSearchActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                             mCategoryLayout.setVisibility(View.GONE);
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
-                       /* if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }*/
-                        Toast.makeText(TabSearchActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        mCategoryLayout.setVisibility(View.GONE);
-                    }
-                });
+                    });
 
 
-                //System.out.println(TAG+" thread started");
+                    //System.out.println(TAG+" thread started");
 
-            }
+                }
 
-        });
+            });
+
+
 
     }
 

@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -54,6 +55,7 @@ import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_SF_Pro_Light;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplayRegular;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.ContentImages;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
@@ -81,6 +83,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     CircleImageView mProfilePhoto;
     LinearLayout mProfileContent;
     RecyclerView mCommentsList;
+    RelativeLayout parentRelativeLayout;
 
     MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId;
     ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare;
@@ -127,7 +130,6 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             mDislikesCount = (MyTextView_Lato_Regular) findViewById(R.id.unlikes_count);
             mLikedId = (MyTextView_Lato_Regular) findViewById(R.id.like_id);
             mDislikedId = (MyTextView_Lato_Regular) findViewById(R.id.dislike_id);
-
             mLike = (ImageView) findViewById(R.id.likes_image);
             mDislike = (ImageView) findViewById(R.id.unlikes_image);
             mComment = (ImageView) findViewById(R.id.comments_image);
@@ -149,6 +151,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             }else{
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
+
 
             mback.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,30 +201,36 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                     String follow = mFollow.getText().toString();
 
-                    if(contents!=null){
-                        if(follow!=null&&!follow.isEmpty()){
+                    if (Util.isNetworkAvailable(ContentDetailScreen.this)) {
 
-                            if(follow.equalsIgnoreCase("Follow")){
+                        if(contents!=null){
+                            if(follow!=null&&!follow.isEmpty()){
 
-                                ProfileFollowMapping pm = new ProfileFollowMapping();
-                                pm.setFollowerId(contents.getProfileId());
-                                pm.setProfileId(PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId());
-                                profileFollow(pm);
+                                if(follow.equalsIgnoreCase("Follow")){
 
-                            }else if(follow.equalsIgnoreCase("Unfollow")){
+                                    ProfileFollowMapping pm = new ProfileFollowMapping();
+                                    pm.setFollowerId(contents.getProfileId());
+                                    pm.setProfileId(PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId());
+                                    profileFollow(pm);
+
+                                }else if(follow.equalsIgnoreCase("Unfollow")){
 
 
-                                if(mappingId!=0){
+                                    if(mappingId!=0){
 
-                                    deleteFollow(mappingId);
+                                        deleteFollow(mappingId);
 
-                                }else{
-                                    Toast.makeText(ContentDetailScreen.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Toast.makeText(ContentDetailScreen.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
                         }
-                    }
+                    }else{
 
+                        SnackbarViewer.showSnackbar(parentRelativeLayout,"No Internet connection");
+
+                    }
 
                 }
             });
@@ -231,58 +240,64 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 @Override
                 public void onClick(View view) {
 
-                    if(profileId!=0){
 
-                        mLike.setEnabled(false);
-                        Likes likes = new Likes();
-                        likes.setContentId(contents.getContentId());
-                        likes.setProfileId(profileId);
-                        likes.setLiked(true);
-
-                        if (mDislike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
-                        {
-                            if(mDislikedId.getText().toString()!=null&&!mDislikedId.getText().toString().isEmpty()){
+                    if (Util.isNetworkAvailable(ContentDetailScreen.this)) {
 
 
-                                updateLike(likes,mLike,mLikesCount,Integer.parseInt(mDislikedId.getText().toString()),mDislike,mDislikedId,mDislikesCount,mLikedId);
+                        if(profileId!=0){
+
+                            mLike.setEnabled(false);
+                            Likes likes = new Likes();
+                            likes.setContentId(contents.getContentId());
+                            likes.setProfileId(profileId);
+                            likes.setLiked(true);
+
+                            if (mDislike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
+                            {
+                                if(mDislikedId.getText().toString()!=null&&!mDislikedId.getText().toString().isEmpty()){
+
+
+                                    updateLike(likes,mLike,mLikesCount,Integer.parseInt(mDislikedId.getText().toString()),mDislike,mDislikedId,mDislikesCount,mLikedId);
+                                }
                             }
-                        }
-                        else
-                        {
+                            else
+                            {
 
-                            postLike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
-                        }
-
-
-
+                                postLike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
+                            }
 
                                        /* }else{
 
                                             postLike(likes,holder.mLike,holder.mLiked,holder.mLikeCount,holder.mLikedId);
                                         }*/
 
-                    }else {
-                        new AlertDialog.Builder(ContentDetailScreen.this)
-                                .setMessage("Please login/Signup to Like the Story")
-                                .setCancelable(false)
-                                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                        }else {
+                            new AlertDialog.Builder(ContentDetailScreen.this)
+                                    .setMessage("Please login/Signup to Like the Story")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                        Intent login = new Intent(ContentDetailScreen.this, LoginScreen.class);
-                                        startActivity(login);
+                                            Intent login = new Intent(ContentDetailScreen.this, LoginScreen.class);
+                                            startActivity(login);
 
-                                    }
-                                })
-                                .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    })
+                                    .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                        Intent signUp = new Intent(ContentDetailScreen.this, SignUpScreen.class);
-                                        startActivity(signUp);
+                                            Intent signUp = new Intent(ContentDetailScreen.this, SignUpScreen.class);
+                                            startActivity(signUp);
 
-                                    }
-                                })
-                                .show();
+                                        }
+                                    })
+                                    .show();
+                        }
+
+                    }else{
+                        SnackbarViewer.showSnackbar(parentRelativeLayout,"No Internet connection");
                     }
+
                 }
             });
 
@@ -290,58 +305,69 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 @Override
                 public void onClick(View view) {
 
-                    if(profileId!=0){
 
-                        mDislike.setEnabled(false);
-                        Likes likes = new Likes();
-                        likes.setContentId(contents.getContentId());
-                        likes.setProfileId(profileId);
-                        likes.setLiked(false);
+                    if (Util.isNetworkAvailable(ContentDetailScreen.this)) {
 
-                        if (mLike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.liked_icon).getConstantState())
-                        {
-                            if(mLikedId.getText().toString()!=null&&!mLikedId.getText().toString().isEmpty()){
+                        if(profileId!=0){
+
+                            mDislike.setEnabled(false);
+                            Likes likes = new Likes();
+                            likes.setContentId(contents.getContentId());
+                            likes.setProfileId(profileId);
+                            likes.setLiked(false);
+
+                            if (mLike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.liked_icon).getConstantState())
+                            {
+                                if(mLikedId.getText().toString()!=null&&!mLikedId.getText().toString().isEmpty()){
 
 
-                                updatedisLike(likes,mDislike,mDislikesCount,Integer.parseInt(mLikedId.getText().toString()),mLike,mLikedId,mLikesCount,mDislikedId);
+                                    updatedisLike(likes,mDislike,mDislikesCount,Integer.parseInt(mLikedId.getText().toString()),mLike,mLikedId,mLikesCount,mDislikedId);
+                                }
                             }
-                        }
-                        else
-                        {
+                            else
+                            {
 
-                            postDislike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
-                        }
-
-
-
+                                postDislike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
+                            }
 
                                        /* }else{
 
                                             postLike(likes,holder.mLike,holder.mLiked,holder.mLikeCount,holder.mLikedId);
                                         }*/
 
-                    }else {
-                        new AlertDialog.Builder(ContentDetailScreen.this)
-                                .setMessage("Please login/Signup to Like the Story")
-                                .setCancelable(false)
-                                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                        }else {
+                            new AlertDialog.Builder(ContentDetailScreen.this)
+                                    .setMessage("Please login/Signup to Like the Story")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                        Intent login = new Intent(ContentDetailScreen.this, LoginScreen.class);
-                                        startActivity(login);
+                                            Intent login = new Intent(ContentDetailScreen.this, LoginScreen.class);
+                                            startActivity(login);
 
-                                    }
-                                })
-                                .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    })
+                                    .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                        Intent signUp = new Intent(ContentDetailScreen.this, SignUpScreen.class);
-                                        startActivity(signUp);
+                                            Intent signUp = new Intent(ContentDetailScreen.this, SignUpScreen.class);
+                                            startActivity(signUp);
 
-                                    }
-                                })
-                                .show();
+                                        }
+                                    })
+                                    .show();
+                        }
+
+
+
+                    }else{
+
+                        SnackbarViewer.showSnackbar(parentRelativeLayout,"No Internet connection");
+
                     }
+
+
+
                 }
             });
 
@@ -440,17 +466,30 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             if(contents!=null) {
 
                 String vWatch = "W" + contents.getContentId();
-                getFollowingsByProfileId(profileId,contents.getProfileId());
-                getGoalsByProfileId(profileId);
+
+//                if (Util.isNetworkAvailable(ContentDetailScreen.this)) {
+
+                    getFollowingsByProfileId(profileId,contents.getProfileId());
+                    getGoalsByProfileId(profileId);
+
+                    if (contents.getProfile() == null) {
+                        getProfile(contents.getProfileId());
+
+                    } else {
 
 
-                if (contents.getProfile() == null) {
-                    getProfile(contents.getProfileId());
-
-                } else {
+                    }
 
 
-                }
+//                }else{
+
+//                    SnackbarViewer.showSnackbar(parentRelativeLayout,"No Internet connection");
+
+//                }
+
+
+
+
 
                 if (contents.getSubCategories() == null) {
                    mSubCategory.setText(""+contents.getSubCategories().getSubCategoriesName());

@@ -33,6 +33,7 @@ import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.NavigationListAdapter;
 import tv.merabihar.app.merabihar.Adapter.ReferalPeopleListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.NavBarItems;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.UserProfile;
@@ -125,11 +126,19 @@ public class SettingScreen extends AppCompatActivity {
 
             profileId = PreferenceHandler.getInstance(SettingScreen.this).getUserId();
             if(profileId!=0){
-                getProfile(profileId);
+
+                if (Util.isNetworkAvailable(SettingScreen.this)) {
+                    getProfile(profileId);
+                }else{
+                    SnackbarViewer.showSnackbar(findViewById(R.id.settings_screen_rl),"No Internet connection");
+                    progressBar.setVisibility(View.GONE);
+                }
 
             }else{
+                SnackbarViewer.showSnackbar(findViewById(R.id.settings_screen_rl),"Something went wrong ! ");
+                progressBar.setVisibility(View.GONE);
 
-                Toast.makeText(this, "Something went wrong.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Something went wrong...", Toast.LENGTH_SHORT).show();
             }
 
             navBarListView = findViewById(R.id.settings_list);
@@ -140,11 +149,9 @@ public class SettingScreen extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
                     try
                     {
                         displayViewBasedOnRoles(title[position]);
-
                     }
                     catch (Exception ex)
                     {
@@ -329,7 +336,14 @@ public class SettingScreen extends AppCompatActivity {
 
                             referalCode = PreferenceHandler.getInstance(SettingScreen.this).getReferalcode();
 
-                            getGoalsByProfileId(profile.getProfileId(),profile);
+
+                            if (Util.isNetworkAvailable(SettingScreen.this)) {
+                                getGoalsByProfileId(profile.getProfileId(),profile);
+                            }else{
+                                SnackbarViewer.showSnackbar(findViewById(R.id.settings_screen_rl),"No Internet connection");
+                                progressBar.setVisibility(View.GONE);
+                            }
+
 
 
 
@@ -475,10 +489,7 @@ public class SettingScreen extends AppCompatActivity {
                 log.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(log);
                 finish();
-
                 break;
-
-
         }
     }
 
@@ -508,7 +519,6 @@ public class SettingScreen extends AppCompatActivity {
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
-
 
                 ProfileFollowAPI apiService =
                         Util.getClient().create(ProfileFollowAPI.class);
