@@ -123,17 +123,18 @@ public class IndirectFriendFragment  extends Fragment {
                             if(responseProfile != null && responseProfile.size()!=0 )
                             {
                                 //Collections.shuffle(responseProfile);
+                                System.out.println("Direct profile "+responseProfile.size());
 
-                               getInDirectRefer(code,responseProfile);
+                                getDirectParentRefer(code,responseProfile);
                             }
                             else
                             {
-                                getInDirectRefer(code,null);
+                                getDirectParentRefer(code,null);
                             }
                         }
                         else
                         {
-                            getInDirectRefer(code,null);
+                            getDirectParentRefer(code,null);
                             Toast.makeText(getActivity(),response.message(),Toast.LENGTH_SHORT).show();
                         }
 //                callGetStartEnd();
@@ -144,7 +145,7 @@ public class IndirectFriendFragment  extends Fragment {
                         // Log error here since request failed
 
                         mProgressBar.setVisibility(View.GONE);
-                        getInDirectRefer(code,null);
+                        getDirectParentRefer(code,null);
 
                         Log.e("TAG", t.toString());
                     }
@@ -153,7 +154,77 @@ public class IndirectFriendFragment  extends Fragment {
         });
     }
 
-    private void getInDirectRefer(final String code,final ArrayList<UserProfile> profileArrayList){
+    private void getDirectParentRefer(final String code,final ArrayList<UserProfile> profilesList){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
+                Call<ArrayList<UserProfile>> call = apiService.getInDirectReferedParentProfile(code);
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+//                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
+                        int statusCode = response.code();
+
+                        mProgressBar.setVisibility(View.GONE);
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfile = response.body();
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+                                //Collections.shuffle(responseProfile);
+
+                                System.out.println("Parent profile "+responseProfile.size());
+
+                               /* if(profilesList!=null&&profilesList.size()!=0){
+
+
+                                    responseProfile.removeAll(profilesList);
+
+                                }*/
+
+                                System.out.println("Parent profile "+responseProfile.size());
+
+                                getInDirectRefer(code,responseProfile,profilesList);
+                            }
+                            else
+                            {
+
+                                getInDirectRefer(code,null,profilesList);
+                            }
+                        }
+                        else
+                        {
+                            getInDirectRefer(code,null,profilesList);
+                            Toast.makeText(getActivity(),response.message(),Toast.LENGTH_SHORT).show();
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+                        // Log error here since request failed
+
+                        mProgressBar.setVisibility(View.GONE);
+                        getInDirectRefer(code,null,profilesList);
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
+
+    private void getInDirectRefer(final String code,final ArrayList<UserProfile> profileArrayList,final ArrayList<UserProfile> profileArrayLists){
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -181,13 +252,29 @@ public class IndirectFriendFragment  extends Fragment {
                             if(responseProfile != null && responseProfile.size()!=0 )
                             {
                                 //Collections.shuffle(responseProfile);
+                                System.out.println("Super Parent profile "+responseProfile.size());
 
                                 if(profileArrayList!=null&&profileArrayList.size()!=0){
 
+                                    if(profileArrayLists!=null&&profileArrayLists.size()!=0){
 
-                                    responseProfile.removeAll(profileArrayList);
+
+                                        responseProfile.removeAll(profileArrayLists);
+
+                                    }else {
+                                        responseProfile.removeAll(profileArrayList);
+                                    }
+
+
+
+                            }else if(profileArrayLists!=null&&profileArrayLists.size()!=0){
+
+
+                                    responseProfile.removeAll(profileArrayLists);
 
                                 }
+
+                                System.out.println("Super Parent profile "+responseProfile.size());
 
                                 if(responseProfile!=null&&responseProfile.size()!=0){
 
@@ -197,7 +284,19 @@ public class IndirectFriendFragment  extends Fragment {
 
                                 }else{
 
-                                    showShareActivity();
+                                    if(profileArrayList!=null){
+                                        ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList);
+                                        recyclerView.setAdapter(adapter);
+                                        indirectViewContainer.setVisibility(View.VISIBLE);
+                                    }else if(profileArrayLists!=null){
+                                        ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayLists);
+                                        recyclerView.setAdapter(adapter);
+                                        indirectViewContainer.setVisibility(View.VISIBLE);
+                                    }else{
+                                        showShareActivity();
+                                    }
+
+
 
                                 }
 
@@ -206,7 +305,17 @@ public class IndirectFriendFragment  extends Fragment {
                             }
                             else
                             {
-                                showShareActivity();
+                                if(profileArrayList!=null){
+                                    ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList);
+                                    recyclerView.setAdapter(adapter);
+                                    indirectViewContainer.setVisibility(View.VISIBLE);
+                                }else if(profileArrayLists!=null){
+                                    ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayLists);
+                                    recyclerView.setAdapter(adapter);
+                                    indirectViewContainer.setVisibility(View.VISIBLE);
+                                }else{
+                                    showShareActivity();
+                                }
 
 
                             }
@@ -225,7 +334,17 @@ public class IndirectFriendFragment  extends Fragment {
 
                         mProgressBar.setVisibility(View.GONE);
 
-                        showShareActivity();
+                        if(profileArrayList!=null){
+                            ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList);
+                            recyclerView.setAdapter(adapter);
+                            indirectViewContainer.setVisibility(View.VISIBLE);
+                        }else if(profileArrayLists!=null){
+                            ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayLists);
+                            recyclerView.setAdapter(adapter);
+                            indirectViewContainer.setVisibility(View.VISIBLE);
+                        }else{
+                            showShareActivity();
+                        }
 
                         Log.e("TAG", t.toString());
                     }

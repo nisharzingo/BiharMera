@@ -75,6 +75,7 @@ public class SignUpScreen extends AppCompatActivity {
 
                     if(mTerms.isChecked()){
                         try {
+                            mCreateAccount.setEnabled(false);
                             validate();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -419,6 +420,7 @@ public class SignUpScreen extends AppCompatActivity {
 
                                 mReferalCode.setError("Invalid Referal Code");
                                 mReferalCode.requestFocus();
+                                mCreateAccount.setEnabled(true);
                             }
                         }
                         else
@@ -503,9 +505,11 @@ public class SignUpScreen extends AppCompatActivity {
                                         Toast.makeText(SignUpScreen.this, "Email Already Exists", Toast.LENGTH_SHORT).show();
                                     }else{
                                         mEmail.setError("Email Already Exists");
+                                        mCreateAccount.setEnabled(true);
                                     }
                                 }else{
                                     mEmail.setError("Email Already Exists");
+                                    mCreateAccount.setEnabled(true);
                                 }
 
                             }
@@ -573,11 +577,14 @@ public class SignUpScreen extends AppCompatActivity {
                                 if(type!=null&&!type.isEmpty()){
                                     if(type.equalsIgnoreCase("Google")){
                                         Toast.makeText(SignUpScreen.this, "Mobile number already registered with us", Toast.LENGTH_SHORT).show();
+                                        mCreateAccount.setEnabled(true);
                                     }else{
                                         mMobile.setError("Number Already Exists");
+                                        mCreateAccount.setEnabled(true);
                                     }
                                 }else{
                                     mMobile.setError("Number Already Exists");
+                                    mCreateAccount.setEnabled(true);
                                 }
 
 
@@ -695,6 +702,7 @@ public class SignUpScreen extends AppCompatActivity {
                         }
                         else
                         {
+                            mCreateAccount.setEnabled(true);
                             Toast.makeText(SignUpScreen.this,response.message(),Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -705,6 +713,7 @@ public class SignUpScreen extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
+                        mCreateAccount.setEnabled(true);
                         Toast.makeText(SignUpScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }

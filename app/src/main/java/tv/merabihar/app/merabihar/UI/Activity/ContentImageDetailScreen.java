@@ -134,6 +134,18 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             }
 
             if(contents!=null){
+
+                if(profileId!=0){
+
+                    if(profileId==contents.getProfileId()){
+
+                        mFollow.setVisibility(View.GONE);
+                    }else{
+                        //getFollowingByProfileId(profileId,mFollowLay,blogDataModel.getProfileId());
+
+                    }
+
+                }
                 setViewPager();
             }else{
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();

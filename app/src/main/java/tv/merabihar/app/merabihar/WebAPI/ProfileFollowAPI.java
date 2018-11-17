@@ -58,4 +58,7 @@ public interface ProfileFollowAPI {
     @GET("Profiles/GetAllProfileByReferralCodeOfSuperParents/{ReferralCodeOfSuperParents}")
     Call<ArrayList<UserProfile>> getInDirectReferedProfile(@Path("ReferralCodeOfSuperParents") String id);
 
+    @GET("Profiles/GetAllProfileByReferralCodeOfParents/{ReferralCodeOfParents}")
+    Call<ArrayList<UserProfile>> getInDirectReferedParentProfile(@Path("ReferralCodeOfParents") String id);
+
 }

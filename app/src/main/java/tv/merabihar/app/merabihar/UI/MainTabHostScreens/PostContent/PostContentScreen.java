@@ -7,13 +7,18 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +40,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -55,6 +61,7 @@ import tv.merabihar.app.merabihar.Model.InterestContentMapping;
 import tv.merabihar.app.merabihar.Model.InterestContentResponse;
 import tv.merabihar.app.merabihar.Model.SubCategories;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabAccountActivity;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabMainActivity;
 import tv.merabihar.app.merabihar.Util.Action;
 import tv.merabihar.app.merabihar.Util.Constants;
@@ -92,6 +99,7 @@ public class PostContentScreen extends AppCompatActivity {
     ArrayList<String> selectedImageList;
     ArrayList<String> interestList;
     int childcount = 0,count = 0,imageCount=0;
+    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,8 +271,18 @@ public class PostContentScreen extends AppCompatActivity {
     private void gotoGallery() {
 
         Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
-        startActivityForResult(i, 200);
-    }
+
+        if(isAvailable(PostContentScreen.this,i)){
+            startActivityForResult(i, 200);
+
+
+        }else{
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);//
+            startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+        }
+}
 
 
     @Override
@@ -275,27 +293,54 @@ public class PostContentScreen extends AppCompatActivity {
 
             if(requestCode == REQUEST_GALLERY)
             {
-                onSelectImageFromGalleryResult(data);
+                onSelectImageFromGalleryResult(data,"Multiple");
+            }else if (requestCode == SELECT_FILE){
+
+                onSelectImageFromGalleryResult(data,"Camera");
             }
+
         }
     }
 
-    private void onSelectImageFromGalleryResult(Intent data) {
+    private void onSelectImageFromGalleryResult(Intent data,String type) {
 
         selectedImageList = new ArrayList<>();
 
-        try{
-            String[] all_path = data.getStringArrayExtra("all_path");
-            if(all_path.length!=0){
+        if(type!=null&&type.equalsIgnoreCase("Multiple")){
+            try{
+                String[] all_path = data.getStringArrayExtra("all_path");
+                if(all_path.length!=0){
 
-                for(int i =0;i<all_path.length;i++){
-                    selectedImageList.add(all_path[i]);
+                    for(int i =0;i<all_path.length;i++){
+                        selectedImageList.add(all_path[i]);
 
+                    }
+                }else{
+                    gotoGallery();
                 }
-            }else{
-                gotoGallery();
+                //selectedImageList = all_path;
+                mBlogImages.removeAllViews();
+                for (String s:all_path)
+                {
+                    //System.out.println(s);
+                    File imgFile = new  File(s);
+                    if(imgFile.exists()) {
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        //addView(null,Util.getResizedBitmap(myBitmap,400));
+                        addView(null,Util.getResizedBitmap(myBitmap,700));
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            //selectedImageList = all_path;
+        }else {
+
+            Uri selectedImageUri = data.getData( );
+            String picturePath = getPath( PostContentScreen.this, selectedImageUri );
+            Log.d("Picture Path", picturePath);
+            String[] all_path = {picturePath};
+            selectedImageList.add(all_path[0]);
+
             mBlogImages.removeAllViews();
             for (String s:all_path)
             {
@@ -307,9 +352,9 @@ public class PostContentScreen extends AppCompatActivity {
                     addView(null,Util.getResizedBitmap(myBitmap,700));
                 }
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
+
+
 
 
     }
@@ -1107,6 +1152,32 @@ public class PostContentScreen extends AppCompatActivity {
         Intent intent = new Intent(PostContentScreen.this, TabMainActivity.class);
         startActivity(intent);
         PostContentScreen.this.finish();
+    }
+
+
+    public static boolean isAvailable(Context ctx, Intent intent) {
+        final PackageManager mgr = ctx.getPackageManager();
+        List<ResolveInfo> list =
+                mgr.queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
+
+    public static String getPath(Context context, Uri uri ) {
+        String result = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver( ).query( uri, proj, null, null, null );
+        if(cursor != null){
+            if ( cursor.moveToFirst( ) ) {
+                int column_index = cursor.getColumnIndexOrThrow( proj[0] );
+                result = cursor.getString( column_index );
+            }
+            cursor.close( );
+        }
+        if(result == null) {
+            result = "Not found";
+        }
+        return result;
     }
 
 }

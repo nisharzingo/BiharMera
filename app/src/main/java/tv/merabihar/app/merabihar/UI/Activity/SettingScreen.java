@@ -22,7 +22,10 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -613,7 +616,7 @@ public class SettingScreen extends AppCompatActivity {
                                 //Collections.shuffle(responseProfile);
 
 
-                                mInvite.setText(""+responseProfile.size());
+                                mInvite.setText(""+(responseProfile.size()));
 
                                 int indirectCount = responseProfile.size();
                                 int balance = (indirectCount - directCount);
@@ -631,6 +634,89 @@ public class SettingScreen extends AppCompatActivity {
                             }
                             else
                             {
+
+                                getInDirectParentRefer(code,directCount,coinsValue,rupees);
+                               /* mInvite.setText(""+directCount);
+                                mCoins.setText(""+(int)coinsValue);
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));*/
+
+                            }
+                        }
+                        else
+                        {
+                            getInDirectParentRefer(code,directCount,coinsValue,rupees);
+                               /* mInvite.setText(""+directCount);
+                                mCoins.setText(""+(int)coinsValue);
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));*/
+
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+                        // Log error here since request failed
+                        getInDirectParentRefer(code,directCount,coinsValue,rupees);
+                               /* mInvite.setText(""+directCount);
+                                mCoins.setText(""+(int)coinsValue);
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));*/
+
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
+
+    private void getInDirectParentRefer(final String code,final int directCount,final double coinsValue,final double rupees){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
+                Call<ArrayList<UserProfile>> call = apiService.getInDirectReferedParentProfile(code);
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+//                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
+                        int statusCode = response.code();
+
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfile = response.body();
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+                                //Collections.shuffle(responseProfile);
+
+
+                                mInvite.setText(""+(responseProfile.size()+directCount));
+
+                                int indirectCount = responseProfile.size();
+                                int balance = (indirectCount);
+
+
+                                double amount = (balance * 10)+(directCount*50)+coinsValue;
+
+
+
+                                mCoins.setText(""+(int)amount);
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                                //mBalance.setText("Rs "+((amount*1.0)/100.0));
+
+
+                            }
+                            else
+                            {
+                                mInvite.setText(""+directCount);
                                 mCoins.setText(""+(int)coinsValue);
                                 mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
 
@@ -638,6 +724,7 @@ public class SettingScreen extends AppCompatActivity {
                         }
                         else
                         {
+                            mInvite.setText(""+directCount);
                             mCoins.setText(""+(int)coinsValue);
                             mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
 
@@ -648,6 +735,7 @@ public class SettingScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
+                        mInvite.setText(""+directCount);
                         mCoins.setText(""+(int)coinsValue);
                         mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
 
@@ -804,15 +892,48 @@ public class SettingScreen extends AppCompatActivity {
 
                                 if(sg!=null){
 
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                                    String expdate = sg.getEndDate();
+                                    Date past = null;
+
+
+                                    String duration = null;
+
+                                    if(expdate.contains("T")){
+
+                                        String[] tDates = expdate.split("T");
+                                        try {
+                                            past = dateFormat.parse(tDates[0]);
+                                            duration = duration(tDates[0]);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    if ( new Date().getTime() < past.getTime()) {
+
                                         double amount = profiles.getReferralAmount();
                                         double valuea = (Double.parseDouble(sg.getRewardsEarned()))*.20;
 
-                                    if(referalCode!=null&&!referalCode.isEmpty()){
-                                        getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                        if(referalCode!=null&&!referalCode.isEmpty()){
+                                            getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                        }else{
+                                            referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                            getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                        }
                                     }else{
-                                        referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
-                                        getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                        if(referalCode!=null&&!referalCode.isEmpty()){
+                                            getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                        }else{
+                                            referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                            getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                        }
                                     }
+
+
 
                                 }else{
                                     if(referalCode!=null&&!referalCode.isEmpty()){
@@ -869,5 +990,31 @@ public class SettingScreen extends AppCompatActivity {
         });
 
     }
+    public String duration(String fromm) throws Exception{
+
+        String from = fromm;
+
+
+
+
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date d1 = null;
+        Date d2 = null;
+        try {
+
+            d1 = format1.parse(from);
+
+
+            long diff = d1.getTime()-new Date().getTime();
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+            return  String.valueOf(diffDays);
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 
 }

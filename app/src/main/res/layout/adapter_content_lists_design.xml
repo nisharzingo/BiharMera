@@ -157,8 +157,8 @@
 
                 <ImageView
                     android:id="@+id/whatsapp_share"
-                    android:layout_width="40px"
-                    android:layout_height="40px"
+                    android:layout_width="50px"
+                    android:layout_height="50px"
                     android:layout_gravity="center"
                     android:src="@drawable/whatsapp_icons"
                     android:scaleType="centerCrop"
@@ -181,8 +181,8 @@
 
                     <ImageView
                         android:id="@+id/likes_image"
-                        android:layout_width="40px"
-                        android:layout_height="40px"
+                        android:layout_width="50px"
+                        android:layout_height="50px"
                         android:layout_gravity="center"
                         android:src="@drawable/non_like"
                         android:scaleType="centerCrop"
@@ -227,8 +227,8 @@
 
                     <ImageView
                         android:id="@+id/unlikes_image"
-                        android:layout_width="40px"
-                        android:layout_height="40px"
+                        android:layout_width="50px"
+                        android:layout_height="50px"
                         android:layout_gravity="center"
                         android:layout_marginTop="2dp"
                         android:src="@drawable/unlike_icons"
@@ -270,8 +270,8 @@
 
                     <ImageView
                         android:id="@+id/comments_image"
-                        android:layout_width="40px"
-                        android:layout_height="40px"
+                        android:layout_width="50px"
+                        android:layout_height="50px"
                         android:layout_gravity="center"
                         android:src="@drawable/comments_iconed"
                         android:scaleType="centerCrop"
@@ -312,8 +312,8 @@
 
                     <ImageView
                         android:id="@+id/download_screen"
-                        android:layout_width="40px"
-                        android:layout_height="40px"
+                        android:layout_width="50px"
+                        android:layout_height="50px"
                         android:layout_gravity="center"
                         android:src="@drawable/download"
                         android:scaleType="centerCrop"
@@ -334,8 +334,8 @@
 
                     <ImageView
                         android:id="@+id/share_image"
-                        android:layout_width="40px"
-                        android:layout_height="40px"
+                        android:layout_width="50px"
+                        android:layout_height="50px"
                         android:layout_gravity="center"
                         android:src="@drawable/share_icons"
                         android:scaleType="centerCrop"

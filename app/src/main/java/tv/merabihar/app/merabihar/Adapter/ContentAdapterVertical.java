@@ -1167,6 +1167,8 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 }else{
                                     cv.setImageResource(R.drawable.profile_image);
                                 }
+                            }else{
+                                cv.setImageResource(R.drawable.profile_image);
                             }
 
 
@@ -1830,10 +1832,11 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                     shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                    shareIntent.setPackage("com.whatsapp");
+
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
                     shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                    shareIntent.setPackage("com.whatsapp");
                     shareIntent.setType("image/png");
                     try{
 
@@ -1842,13 +1845,73 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     }catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(context, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
                     }
-                    //context.startActivity(Intent.createChooser(shareIntent,"Share with"));
 
                 }catch (Exception we)
                 {
-                    we.printStackTrace();
-                    Toast.makeText(context, "Unable to send,Check Permission", Toast.LENGTH_SHORT).show();
+                    try{
+
+
+
+                        File sd = Environment.getExternalStorageDirectory();
+                        String fileName = fileNames+ ".png";
+
+                        File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
+                        //create directory if not exist
+                        if (!directory.exists() && !directory.isDirectory()) {
+                            directory.mkdirs();
+                        }
+
+
+                        File file = new File(directory, fileName);
+
+                        //if(file.exists())
+
+                        Intent shareIntent;
+
+
+                        OutputStream out = null;
+                        try {
+                            out = new FileOutputStream(file);
+                            mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                            out.flush();
+                            out.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        fileName=file.getPath();
+
+                        Uri bmpUri = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            bmpUri = FileProvider.getUriForFile(context, "tv.merabihar.app.merabihar.fileprovider", file);
+                        }else{
+                            bmpUri = Uri.parse("file://"+fileName);
+                        }
+                        // Uri bmpUri = Uri.parse("file://"+path);
+                        shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+
+                    /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
+                    sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                        shareIntent.setType("image/png");
+                   /* try{
+
+                        context.startActivity(shareIntent);
+
+                    }catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(context, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+                    }*/
+                        context.startActivity(Intent.createChooser(shareIntent,"Share with"));
+
+                    }catch (Exception wes)
+                    {
+                        wes.printStackTrace();
+                        Toast.makeText(context, ""+we.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
+
+
 
             }else {
                 // Notify user that an error occurred while downloading image

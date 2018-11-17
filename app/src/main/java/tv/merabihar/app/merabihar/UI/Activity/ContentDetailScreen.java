@@ -1047,6 +1047,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
         if(sg!=null){
 
             int value = Integer.parseInt(sg.getRewardsEarned());
+
             sg.setRewardsEarned(""+(t+value));
             if(sg.getStatus().equals("Activated")){
 
@@ -1068,6 +1069,10 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                                 double amount = currentProfile.getReferralAmount();
                                 double valuea = (t+value)*.20;
                                 currentProfile.setReferralAmount(valuea);
+                            }else{
+                                if((t+value)>=54000){
+                                    sg.setStatus("Completed");
+                                }
                             }
                         } catch (ParseException e) {
                             e.printStackTrace();
