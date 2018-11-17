@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -48,6 +49,7 @@ import tv.merabihar.app.merabihar.Adapter.CommentsListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_SF_Pro_Light;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplayRegular;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.ContentImages;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
@@ -74,6 +76,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId;
     ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare;
     RecyclerView mCommentsList;
+    RelativeLayout mParentRelativeLayout;
 
     Contents contents;
 
@@ -106,6 +109,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             mFollow = (MyTextView_Lato_Regular)findViewById(R.id.follow_profile);
             mProfilePhoto = (CircleImageView) findViewById(R.id.profile_photo);
             mProfileContent = (LinearLayout) findViewById(R.id.profile_lay_content);
+            mParentRelativeLayout = (RelativeLayout) findViewById(R.id.content_img_detail_main);
 
             mCommentsCount = (MyTextView_Lato_Regular) findViewById(R.id.comments_count);
             mLikesCount = (MyTextView_Lato_Regular) findViewById(R.id.likes_count);
@@ -194,32 +198,40 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    String follow = mFollow.getText().toString();
 
-                    if(contents!=null){
-                        if(follow!=null&&!follow.isEmpty()){
+                    if(Util.isNetworkAvailable(ContentImageDetailScreen.this)){
 
-                            if(follow.equalsIgnoreCase("Follow")){
+                        String follow = mFollow.getText().toString();
 
-                                ProfileFollowMapping pm = new ProfileFollowMapping();
-                                pm.setFollowerId(contents.getProfileId());
-                                pm.setProfileId(PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId());
-                                profileFollow(pm);
+                        if(contents!=null){
+                            if(follow!=null&&!follow.isEmpty()){
 
-                            }else if(follow.equalsIgnoreCase("Unfollow")){
+                                if(follow.equalsIgnoreCase("Follow")){
+
+                                    ProfileFollowMapping pm = new ProfileFollowMapping();
+                                    pm.setFollowerId(contents.getProfileId());
+                                    pm.setProfileId(PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId());
+                                    profileFollow(pm);
+
+                                }else if(follow.equalsIgnoreCase("Unfollow")){
 
 
-                                if(mappingId!=0){
+                                    if(mappingId!=0){
 
-                                    deleteFollow(mappingId);
+                                        deleteFollow(mappingId);
 
-                                }else{
-                                    Toast.makeText(ContentImageDetailScreen.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        SnackbarViewer.showSnackbar(mParentRelativeLayout,"Something went wrong");
+
+                                    }
                                 }
                             }
                         }
-                    }
 
+                    }else{
+
+                        SnackbarViewer.showSnackbar(mParentRelativeLayout,"No internet connection ");
+                    }
 
                 }
             });
@@ -228,27 +240,28 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    if(profileId!=0){
+                    if(Util.isNetworkAvailable(ContentImageDetailScreen.this)){
+                        if(profileId!=0){
 
-                        mLike.setEnabled(false);
-                        Likes likes = new Likes();
-                        likes.setContentId(contents.getContentId());
-                        likes.setProfileId(profileId);
-                        likes.setLiked(true);
+                            mLike.setEnabled(false);
+                            Likes likes = new Likes();
+                            likes.setContentId(contents.getContentId());
+                            likes.setProfileId(profileId);
+                            likes.setLiked(true);
 
-                        if (mDislike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
-                        {
-                            if(mDislikedId.getText().toString()!=null&&!mDislikedId.getText().toString().isEmpty()){
+                            if (mDislike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
+                            {
+                                if(mDislikedId.getText().toString()!=null&&!mDislikedId.getText().toString().isEmpty()){
 
 
-                                updateLike(likes,mLike,mLikesCount,Integer.parseInt(mDislikedId.getText().toString()),mDislike,mDislikedId,mDislikesCount,mLikedId);
+                                    updateLike(likes,mLike,mLikesCount,Integer.parseInt(mDislikedId.getText().toString()),mDislike,mDislikedId,mDislikesCount,mLikedId);
+                                }
                             }
-                        }
-                        else
-                        {
+                            else
+                            {
 
-                            postLike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
-                        }
+                                postLike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
+                            }
 
 
 
@@ -258,28 +271,35 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                                             postLike(likes,holder.mLike,holder.mLiked,holder.mLikeCount,holder.mLikedId);
                                         }*/
 
-                    }else {
-                        new AlertDialog.Builder(ContentImageDetailScreen.this)
-                                .setMessage("Please login/Signup to Like the Story")
-                                .setCancelable(false)
-                                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                        }else {
+                            new AlertDialog.Builder(ContentImageDetailScreen.this)
+                                    .setMessage("Please login/Signup to Like the Story")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                        Intent login = new Intent(ContentImageDetailScreen.this, LoginScreen.class);
-                                        startActivity(login);
+                                            Intent login = new Intent(ContentImageDetailScreen.this, LoginScreen.class);
+                                            startActivity(login);
 
-                                    }
-                                })
-                                .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    })
+                                    .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                        Intent signUp = new Intent(ContentImageDetailScreen.this, SignUpScreen.class);
-                                        startActivity(signUp);
+                                            Intent signUp = new Intent(ContentImageDetailScreen.this, SignUpScreen.class);
+                                            startActivity(signUp);
 
-                                    }
-                                })
-                                .show();
+                                        }
+                                    })
+                                    .show();
+                        }
+
+                    }else{
+
+                        SnackbarViewer.showSnackbar(mParentRelativeLayout,"No internet connection ");
+
                     }
+
                 }
             });
 
@@ -287,27 +307,30 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    if(profileId!=0){
-
-                        mDislike.setEnabled(false);
-                        Likes likes = new Likes();
-                        likes.setContentId(contents.getContentId());
-                        likes.setProfileId(profileId);
-                        likes.setLiked(false);
-
-                        if (mLike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.liked_icon).getConstantState())
-                        {
-                            if(mLikedId.getText().toString()!=null&&!mLikedId.getText().toString().isEmpty()){
 
 
-                                updatedisLike(likes,mDislike,mDislikesCount,Integer.parseInt(mLikedId.getText().toString()),mLike,mLikedId,mLikesCount,mDislikedId);
+                    if(Util.isNetworkAvailable(ContentImageDetailScreen.this)){
+                        if(profileId!=0){
+
+                            mDislike.setEnabled(false);
+                            Likes likes = new Likes();
+                            likes.setContentId(contents.getContentId());
+                            likes.setProfileId(profileId);
+                            likes.setLiked(false);
+
+                            if (mLike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.liked_icon).getConstantState())
+                            {
+                                if(mLikedId.getText().toString()!=null&&!mLikedId.getText().toString().isEmpty()){
+
+
+                                    updatedisLike(likes,mDislike,mDislikesCount,Integer.parseInt(mLikedId.getText().toString()),mLike,mLikedId,mLikesCount,mDislikedId);
+                                }
                             }
-                        }
-                        else
-                        {
+                            else
+                            {
 
-                            postDislike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
-                        }
+                                postDislike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
+                            }
 
 
 
@@ -317,28 +340,35 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                                             postLike(likes,holder.mLike,holder.mLiked,holder.mLikeCount,holder.mLikedId);
                                         }*/
 
-                    }else {
-                        new AlertDialog.Builder(ContentImageDetailScreen.this)
-                                .setMessage("Please login/Signup to Like the Story")
-                                .setCancelable(false)
-                                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                        }else {
+                            new AlertDialog.Builder(ContentImageDetailScreen.this)
+                                    .setMessage("Please login/Signup to Like the Story")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                        Intent login = new Intent(ContentImageDetailScreen.this, LoginScreen.class);
-                                        startActivity(login);
+                                            Intent login = new Intent(ContentImageDetailScreen.this, LoginScreen.class);
+                                            startActivity(login);
 
-                                    }
-                                })
-                                .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    })
+                                    .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                        Intent signUp = new Intent(ContentImageDetailScreen.this, SignUpScreen.class);
-                                        startActivity(signUp);
+                                            Intent signUp = new Intent(ContentImageDetailScreen.this, SignUpScreen.class);
+                                            startActivity(signUp);
 
-                                    }
-                                })
-                                .show();
+                                        }
+                                    })
+                                    .show();
+                        }
+
+                    }else{
+
+                        SnackbarViewer.showSnackbar(mParentRelativeLayout,"No internet connection ");
+
                     }
+
                 }
             });
 
@@ -346,32 +376,42 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             mWhatsapp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    fileNames = contents.getContentId()+""+contents.getProfileId();
-
-                    AsyncTask mMyTask;
-                    if(contents.getContentType().equalsIgnoreCase("Video")) {
-
-                        url = contents.getContentURL();
 
 
-                        if (url != null && !url.isEmpty()) {
+                    if(Util.isNetworkAvailable(ContentImageDetailScreen.this)){
+
+                        fileNames = contents.getContentId()+""+contents.getProfileId();
+
+                        AsyncTask mMyTask;
+                        if(contents.getContentType().equalsIgnoreCase("Video")) {
+
+                            url = contents.getContentURL();
+
+
+                            if (url != null && !url.isEmpty()) {
+
+                                mMyTask = new ContentImageDetailScreen.DownloadTask()
+                                        .execute(stringToURL(
+                                                "https://img.youtube.com/vi/"+url+"/0.jpg"
+                                        ));
+
+                            }
+
+                        }else{
 
                             mMyTask = new ContentImageDetailScreen.DownloadTask()
                                     .execute(stringToURL(
-                                            "https://img.youtube.com/vi/"+url+"/0.jpg"
+                                            ""+contents.getContentImage().get(0).getImages()
                                     ));
-
                         }
 
+                        //shareApplication();
                     }else{
 
-                        mMyTask = new ContentImageDetailScreen.DownloadTask()
-                                .execute(stringToURL(
-                                        ""+contents.getContentImage().get(0).getImages()
-                                ));
+                        SnackbarViewer.showSnackbar(mParentRelativeLayout,"No internet connection ");
+
                     }
 
-                    //shareApplication();
                 }
             });
 
@@ -379,32 +419,42 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             mShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    fileNames = contents.getContentId()+""+contents.getProfileId();
-
-                    AsyncTask mMyTask;
-                    if(contents.getContentType().equalsIgnoreCase("Video")) {
-
-                        url = contents.getContentURL();
 
 
-                        if (url != null && !url.isEmpty()) {
+                    if(Util.isNetworkAvailable(ContentImageDetailScreen.this)){
+
+                        fileNames = contents.getContentId()+""+contents.getProfileId();
+
+                        AsyncTask mMyTask;
+                        if(contents.getContentType().equalsIgnoreCase("Video")) {
+
+                            url = contents.getContentURL();
+
+
+                            if (url != null && !url.isEmpty()) {
+
+                                mMyTask = new ContentImageDetailScreen.DownloadTasks()
+                                        .execute(stringToURL(
+                                                "https://img.youtube.com/vi/"+url+"/0.jpg"
+                                        ));
+
+                            }
+
+                        }else{
 
                             mMyTask = new ContentImageDetailScreen.DownloadTasks()
                                     .execute(stringToURL(
-                                            "https://img.youtube.com/vi/"+url+"/0.jpg"
+                                            ""+contents.getContentImage().get(0).getImages()
                                     ));
-
                         }
+
+                        //shareApplication();
 
                     }else{
 
-                        mMyTask = new ContentImageDetailScreen.DownloadTasks()
-                                .execute(stringToURL(
-                                        ""+contents.getContentImage().get(0).getImages()
-                                ));
-                    }
+                        SnackbarViewer.showSnackbar(mParentRelativeLayout,"No internet connection ");
 
-                    //shareApplication();
+                    }
                 }
             });
 

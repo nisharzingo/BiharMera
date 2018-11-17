@@ -20,6 +20,7 @@ import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.FollowRequestAdapter;
 import tv.merabihar.app.merabihar.Adapter.NonFollowersAdapter;
 import tv.merabihar.app.merabihar.Adapter.ProfileListAdapter;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
@@ -75,7 +76,14 @@ public class PeopleFollowingScreen extends Fragment {
 
                 mProgressBar.setVisibility(View.VISIBLE);
 
-                getNonFollowers(profileId);
+
+                if(Util.isNetworkAvailable(getActivity())){
+                    getNonFollowers(profileId);
+                }else{
+                    mProgressBar.setVisibility(View.GONE);
+                    SnackbarViewer.showSnackbar(recyclerView,"No internet connection ");
+
+                }
 
             }else{
 
@@ -136,16 +144,10 @@ public class PeopleFollowingScreen extends Fragment {
                                     recyclerView.setAdapter(adapter);
 
                                 }
-
-
-
-
                             }
                             else
                             {
-
                                 mProgressBar.setVisibility(View.GONE);
-
                             }
                         }
                         else

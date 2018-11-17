@@ -22,6 +22,7 @@ import java.util.Date;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Goals;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.R;
@@ -77,11 +78,22 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
             viewMOre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showPopUp();
+
+                    if(Util.isNetworkAvailable(InfluencerProgramDetailScreen.this)){
+                        showPopUp();
+
+                    }else{
+
+                        SnackbarViewer.showSnackbar(findViewById(R.id.influencer_detail_main),"No internet connection ");
+
+                    }
                 }
             });
 
             if(targetDesc!=null){
+
+                if(Util.isNetworkAvailable(InfluencerProgramDetailScreen.this)){
+
                 getGoals(targetDesc.getGoalId(),mGoalTc);
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -115,68 +127,68 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                         mTv4.setText("12 hours watched");
                         mTv5.setText("15 hours watched");
 
-                            String rewards = targetDesc.getRewardsEarned();
+                        String rewards = targetDesc.getRewardsEarned();
 
-                            int value = Integer.parseInt(rewards);
+                        int value = Integer.parseInt(rewards);
 
-                            if (value >= 10800) {
-                                mCircle1.setImageResource(R.drawable.ovel_tick);
-                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+                        if (value >= 10800) {
+                            mCircle1.setImageResource(R.drawable.ovel_tick);
+                            mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
 
 
 
-                                mCircle2.setImageResource(R.drawable.oval_cross);
-                                mCircleView2.setBackgroundColor(Color.parseColor("#FF0000"));
+                            mCircle2.setImageResource(R.drawable.oval_cross);
+                            mCircleView2.setBackgroundColor(Color.parseColor("#FF0000"));
 
-                                mCircle3.setImageResource(R.drawable.oval_cross);
-                                mCircleView3.setBackgroundColor(Color.parseColor("#FF0000"));
+                            mCircle3.setImageResource(R.drawable.oval_cross);
+                            mCircleView3.setBackgroundColor(Color.parseColor("#FF0000"));
 
-                                mCircle4.setImageResource(R.drawable.oval_cross);
-                                mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
+                            mCircle4.setImageResource(R.drawable.oval_cross);
+                            mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
 
-                                mCircle5.setImageResource(R.drawable.oval_cross);
-                            } else if (value >= 21600) {
-                                mCircle2.setImageResource(R.drawable.ovel_tick);
-                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+                            mCircle5.setImageResource(R.drawable.oval_cross);
+                        } else if (value >= 21600) {
+                            mCircle2.setImageResource(R.drawable.ovel_tick);
+                            mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
 
-                                mCircle3.setImageResource(R.drawable.oval_cross);
-                                mCircleView3.setBackgroundColor(Color.parseColor("#FF0000"));
+                            mCircle3.setImageResource(R.drawable.oval_cross);
+                            mCircleView3.setBackgroundColor(Color.parseColor("#FF0000"));
 
-                                mCircle4.setImageResource(R.drawable.oval_cross);
-                                mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
+                            mCircle4.setImageResource(R.drawable.oval_cross);
+                            mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
 
-                                mCircle5.setImageResource(R.drawable.oval_cross);
-                            } else if (value >= 32400) {
-                                mCircle3.setImageResource(R.drawable.ovel_tick);
-                                mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+                            mCircle5.setImageResource(R.drawable.oval_cross);
+                        } else if (value >= 32400) {
+                            mCircle3.setImageResource(R.drawable.ovel_tick);
+                            mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
 
-                                mCircle4.setImageResource(R.drawable.oval_cross);
-                                mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
+                            mCircle4.setImageResource(R.drawable.oval_cross);
+                            mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
 
-                                mCircle5.setImageResource(R.drawable.oval_cross);
-                            } else if (value >= 43200) {
-                                mCircle4.setImageResource(R.drawable.ovel_tick);
-                                mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+                            mCircle5.setImageResource(R.drawable.oval_cross);
+                        } else if (value >= 43200) {
+                            mCircle4.setImageResource(R.drawable.ovel_tick);
+                            mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
 
-                                mCircle5.setImageResource(R.drawable.oval_cross);
-                            } else if (value >= 54000) {
-                                mCircle5.setImageResource(R.drawable.ovel_tick);
-                            }else{
-                                mCircle1.setImageResource(R.drawable.oval_cross);
-                                mCircleView1.setBackgroundColor(Color.parseColor("#FF0000"));
+                            mCircle5.setImageResource(R.drawable.oval_cross);
+                        } else if (value >= 54000) {
+                            mCircle5.setImageResource(R.drawable.ovel_tick);
+                        }else{
+                            mCircle1.setImageResource(R.drawable.oval_cross);
+                            mCircleView1.setBackgroundColor(Color.parseColor("#FF0000"));
 
-                                mCircle2.setImageResource(R.drawable.oval_cross);
-                                mCircleView2.setBackgroundColor(Color.parseColor("#FF0000"));
+                            mCircle2.setImageResource(R.drawable.oval_cross);
+                            mCircleView2.setBackgroundColor(Color.parseColor("#FF0000"));
 
-                                mCircle3.setImageResource(R.drawable.oval_cross);
-                                mCircleView3.setBackgroundColor(Color.parseColor("#FF0000"));
+                            mCircle3.setImageResource(R.drawable.oval_cross);
+                            mCircleView3.setBackgroundColor(Color.parseColor("#FF0000"));
 
-                                mCircle4.setImageResource(R.drawable.oval_cross);
-                                mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
+                            mCircle4.setImageResource(R.drawable.oval_cross);
+                            mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
 
-                                mCircle5.setImageResource(R.drawable.oval_cross);
+                            mCircle5.setImageResource(R.drawable.oval_cross);
 
-                            }
+                        }
 
 
 
@@ -352,7 +364,7 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
                     }
 
-                    }else {
+                }else {
 
                     if (duration != null) {
                         mExpDate.setText(duration + " Days left");
@@ -528,7 +540,11 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                     }
                 }
 
+            }else{
 
+                SnackbarViewer.showSnackbar(findViewById(R.id.influencer_detail_main),"No internet connection ");
+
+            }
 
             }
 
@@ -623,9 +639,6 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
     public String duration(String fromm) throws Exception{
 
         String from = fromm;
-
-
-
 
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 

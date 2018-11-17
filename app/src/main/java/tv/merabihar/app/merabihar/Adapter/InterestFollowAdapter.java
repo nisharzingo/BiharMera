@@ -70,25 +70,32 @@ public class InterestFollowAdapter   extends RecyclerView.Adapter<InterestFollow
                 @Override
                 public void onClick(View view) {
 
-                    int mappingId = Integer.parseInt(holder.mMapId.getText().toString());
+                    if(Util.isNetworkAvailable(context)){
 
-                    if(holder.mFollow.getText().toString().equalsIgnoreCase("Follow")){
-                        holder.mFollow.setEnabled(false);
-                        InterestProfileMapping pm = new InterestProfileMapping();
-                        pm.setZingoInterestId(profile.getZingoInterestId());
-                        pm.setProfileId(PreferenceHandler.getInstance(context).getUserId());
-                        profileInterest(pm,holder.mFollow,holder.mMapId);
-                    }else{
+                        int mappingId = Integer.parseInt(holder.mMapId.getText().toString());
 
-                        if(mappingId!=0){
-
-                            deleteFollow(mappingId,holder.mFollow,holder.mMapId);
-
+                        if(holder.mFollow.getText().toString().equalsIgnoreCase("Follow")){
+                            holder.mFollow.setEnabled(false);
+                            InterestProfileMapping pm = new InterestProfileMapping();
+                            pm.setZingoInterestId(profile.getZingoInterestId());
+                            pm.setProfileId(PreferenceHandler.getInstance(context).getUserId());
+                            profileInterest(pm,holder.mFollow,holder.mMapId);
                         }else{
-                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-                        }
-                    }
 
+                            if(mappingId!=0){
+
+                                deleteFollow(mappingId,holder.mFollow,holder.mMapId);
+
+                            }else{
+                                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+
+                    }else{
+                        Toast.makeText(context, "No internet connection ", Toast.LENGTH_SHORT).show();
+
+                    }
 
                 }
             });

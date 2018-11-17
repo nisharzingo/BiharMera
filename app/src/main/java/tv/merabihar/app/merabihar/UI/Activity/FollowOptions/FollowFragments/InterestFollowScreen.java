@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.InterestFollowAdapter;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Interest;
 import tv.merabihar.app.merabihar.Model.InterestProfileMapping;
 import tv.merabihar.app.merabihar.R;
@@ -72,8 +73,18 @@ public class InterestFollowScreen extends Fragment {
             profileId = PreferenceHandler.getInstance(getActivity()).getUserId();
 
 
-            getInterestByProfileId(profileId);
 
+            if(Util.isNetworkAvailable(getActivity())){
+
+                getInterestByProfileId(profileId);
+
+
+            }else{
+
+                SnackbarViewer.showSnackbar(recyclerView,"No internet connection !");
+                mProgressBar.setVisibility(View.GONE);
+
+            }
 
             return view;
 

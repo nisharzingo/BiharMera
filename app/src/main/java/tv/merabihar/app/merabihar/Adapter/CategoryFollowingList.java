@@ -88,23 +88,36 @@ public class CategoryFollowingList extends RecyclerView.Adapter<CategoryFollowin
                 @Override
                 public void onClick(View view) {
 
-                    int mappingId = Integer.parseInt(holder.mMapId.getText().toString());
 
-                    if(holder.mFollow.getText().toString().equalsIgnoreCase("Follow")){
-                        holder.mFollow.setEnabled(false);
-                        ProfileCategoryMapping pm = new ProfileCategoryMapping();
-                        pm.setCategoryId(profile.getCategoriesId());
-                        pm.setProfileId(PreferenceHandler.getInstance(context).getUserId());
-                        profileCate(pm,holder.mFollow,holder.mMapId);
-                    }else{
-                        if(mappingId!=0){
+                    if(Util.isNetworkAvailable(context)){
 
-                            deleteFollow(mappingId,holder.mFollow,holder.mMapId);
+                        int mappingId = Integer.parseInt(holder.mMapId.getText().toString());
 
+                        if(holder.mFollow.getText().toString().equalsIgnoreCase("Follow")){
+                            holder.mFollow.setEnabled(false);
+                            ProfileCategoryMapping pm = new ProfileCategoryMapping();
+                            pm.setCategoryId(profile.getCategoriesId());
+                            pm.setProfileId(PreferenceHandler.getInstance(context).getUserId());
+                            profileCate(pm,holder.mFollow,holder.mMapId);
                         }else{
-                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                            if(mappingId!=0){
+
+                                deleteFollow(mappingId,holder.mFollow,holder.mMapId);
+
+                            }else{
+                                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                            }
                         }
+
+                    }else{
+
+                        Toast.makeText(context, " No internet connection ", Toast.LENGTH_SHORT).show();
                     }
+
+
+
+
+
 
 
                 }
