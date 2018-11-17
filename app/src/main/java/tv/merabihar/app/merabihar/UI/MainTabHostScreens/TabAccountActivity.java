@@ -210,6 +210,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
                     getProfile(profileId);
                     getProfileContent(profileId);
+                    getFollowingByProfileId(profileId);
 
                 }else{
 

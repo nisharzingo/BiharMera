@@ -215,6 +215,7 @@ public class TabSearchActivity2 extends AppCompatActivity {
                                 }
 
                                 if(contentList!=null&&contentList.size()!=0){
+
                                     FollowFragmentContentAdapter followFragmentContentAdapter = new FollowFragmentContentAdapter(TabSearchActivity2.this, contentList);
                                     contentsView.setLayoutManager(verticalLinearLayoutManager);
                                     contentsView.setHasFixedSize(true);
