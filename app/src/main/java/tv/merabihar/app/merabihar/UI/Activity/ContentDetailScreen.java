@@ -83,8 +83,6 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     CircleImageView mProfilePhoto;
     LinearLayout mProfileContent;
     RecyclerView mCommentsList;
-    RelativeLayout parentRelativeLayout;
-
     MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId;
     ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare;
 
@@ -227,8 +225,8 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                             }
                         }
                     }else{
+                        Toast.makeText(ContentDetailScreen.this, "No Internet connection", Toast.LENGTH_SHORT).show();
 
-                        SnackbarViewer.showSnackbar(parentRelativeLayout,"No Internet connection");
 
                     }
 
@@ -295,7 +293,8 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                         }
 
                     }else{
-                        SnackbarViewer.showSnackbar(parentRelativeLayout,"No Internet connection");
+                        Toast.makeText(ContentDetailScreen.this, "No Internet connection", Toast.LENGTH_SHORT).show();
+
                     }
 
                 }
@@ -362,7 +361,8 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                     }else{
 
-                        SnackbarViewer.showSnackbar(parentRelativeLayout,"No Internet connection");
+                        Toast.makeText(ContentDetailScreen.this, "No Internet connection", Toast.LENGTH_SHORT).show();
+
 
                     }
 
@@ -375,32 +375,43 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             mWhatsapp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    fileNames = contents.getContentId()+""+contents.getProfileId();
 
-                    AsyncTask mMyTask;
-                    if(contents.getContentType().equalsIgnoreCase("Video")) {
+                    if(Util.isNetworkAvailable(ContentDetailScreen.this)){
 
-                        urls = contents.getContentURL();
+                        fileNames = contents.getContentId()+""+contents.getProfileId();
+
+                        AsyncTask mMyTask;
+                        if(contents.getContentType().equalsIgnoreCase("Video")) {
+
+                            urls = contents.getContentURL();
 
 
-                        if (urls != null && !urls.isEmpty()) {
+                            if (urls != null && !urls.isEmpty()) {
+
+                                mMyTask = new DownloadTask()
+                                        .execute(stringToURL(
+                                                "https://img.youtube.com/vi/"+urls+"/0.jpg"
+                                        ));
+
+                            }
+
+                        }else{
 
                             mMyTask = new DownloadTask()
                                     .execute(stringToURL(
-                                            "https://img.youtube.com/vi/"+urls+"/0.jpg"
+                                            ""+contents.getContentImage().get(0).getImages()
                                     ));
-
                         }
 
-                    }else{
+                        //shareApplication();
 
-                        mMyTask = new DownloadTask()
-                                .execute(stringToURL(
-                                        ""+contents.getContentImage().get(0).getImages()
-                                ));
+                    }else{
+                        Toast.makeText(ContentDetailScreen.this, "No Internet connection", Toast.LENGTH_SHORT).show();
                     }
 
-                    //shareApplication();
+
+
+
                 }
             });
 
@@ -408,32 +419,43 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             mShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    fileNames = contents.getContentId()+""+contents.getProfileId();
 
-                    AsyncTask mMyTask;
-                    if(contents.getContentType().equalsIgnoreCase("Video")) {
+                    if(Util.isNetworkAvailable(ContentDetailScreen.this)){
 
-                        urls = contents.getContentURL();
+                        fileNames = contents.getContentId()+""+contents.getProfileId();
+
+                        AsyncTask mMyTask;
+                        if(contents.getContentType().equalsIgnoreCase("Video")) {
+
+                            urls = contents.getContentURL();
 
 
-                        if (urls != null && !urls.isEmpty()) {
+                            if (urls != null && !urls.isEmpty()) {
+
+                                mMyTask = new DownloadTasks()
+                                        .execute(stringToURL(
+                                                "https://img.youtube.com/vi/"+urls+"/0.jpg"
+                                        ));
+
+                            }
+
+                        }else{
 
                             mMyTask = new DownloadTasks()
                                     .execute(stringToURL(
-                                            "https://img.youtube.com/vi/"+urls+"/0.jpg"
+                                            ""+contents.getContentImage().get(0).getImages()
                                     ));
-
                         }
+
+                        //shareApplication();
 
                     }else{
 
-                        mMyTask = new DownloadTasks()
-                                .execute(stringToURL(
-                                        ""+contents.getContentImage().get(0).getImages()
-                                ));
+                        Toast.makeText(ContentDetailScreen.this, "No Internet connection", Toast.LENGTH_SHORT).show();
                     }
 
-                    //shareApplication();
+
+
                 }
             });
 
@@ -483,7 +505,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 //                }else{
 
-//                    SnackbarViewer.showSnackbar(parentRelativeLayout,"No Internet connection");
+//                    "No internet"
 
 //                }
 
