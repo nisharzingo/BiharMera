@@ -43,7 +43,7 @@ public class TabPostOptionsActivity extends AppCompatActivity {
 
                         new AlertDialog.Builder(TabPostOptionsActivity.this)
                                 .setMessage("Please login/Signup to Like the Story")
-                                .setCancelable(false)
+                                .setCancelable(true)
                                 .setPositiveButton("Login", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
 
@@ -81,7 +81,7 @@ public class TabPostOptionsActivity extends AppCompatActivity {
 
                         new AlertDialog.Builder(TabPostOptionsActivity.this)
                                 .setMessage("Please login/Signup to Like the Story")
-                                .setCancelable(false)
+                                .setCancelable(true)
                                 .setPositiveButton("Login", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
 

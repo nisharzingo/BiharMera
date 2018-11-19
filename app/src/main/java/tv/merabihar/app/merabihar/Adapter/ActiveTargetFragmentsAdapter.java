@@ -321,25 +321,58 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
 
 
                             }else{
-                                if(targetDes.getStatus().equalsIgnoreCase("Activated")) {
+                                if(targetDes.getStatus().equalsIgnoreCase("Activated")||targetDes.getStatus().equalsIgnoreCase("Completed")) {
 
                                     String rewards = targetDes.getRewardsEarned();
 
                                     int value = Integer.parseInt(rewards);
 
-                                    if (value >= 10800) {
+                                    if (value >= 10800 && value < 21600 ) {
                                         holder.mCircle1.setImageResource(R.drawable.ovel_tick);
                                         holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
-                                    } else if (value >= 21600) {
+                                    } else if (value >= 21600 && value < 32400 ) {
+
+                                        holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
                                         holder.mCircle2.setImageResource(R.drawable.ovel_tick);
                                         holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
-                                    } else if (value >= 32400) {
+                                    } else if (value >= 32400 && value < 43200 ) {
+
+                                        holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
                                         holder.mCircle3.setImageResource(R.drawable.ovel_tick);
                                         holder.mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
-                                    } else if (value >= 43200) {
+                                    } else if (value >= 43200 && value < 54000 ) {
+                                        holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        holder.mCircle3.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
                                         holder.mCircle4.setImageResource(R.drawable.ovel_tick);
                                         holder.mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
                                     } else if (value >= 54000) {
+
+                                        holder.mCircle1.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        holder.mCircle2.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        holder.mCircle3.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        holder.mCircle4.setImageResource(R.drawable.ovel_tick);
+                                        holder.mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+
                                         holder.mCircle5.setImageResource(R.drawable.ovel_tick);
                                     }
 

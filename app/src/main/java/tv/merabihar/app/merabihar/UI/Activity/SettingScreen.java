@@ -63,7 +63,7 @@ public class SettingScreen extends AppCompatActivity {
     CircleImageView mProfilePhoto;
     ProgressBar progressBar;
     LinearLayout mWhatsapp,mFaceBook,mSms,mMore,mInviteScreen;
-    TextView mCoins,mBalance,mInvite;
+    TextView mCoins,mBalance,mInvite,mVideoCoins;
     LinearLayout withdraw_btn, records_btn, income_btn;
     LinearLayout coints_txt_btn, bal_txt_btn, invite_txt_btn;
 
@@ -104,6 +104,7 @@ public class SettingScreen extends AppCompatActivity {
             mCoins = (TextView) findViewById(R.id.coins_value);
             mBalance = (TextView)findViewById(R.id.balance_value);
             mInvite = (TextView)findViewById(R.id.invite_value);
+            mVideoCoins = (TextView)findViewById(R.id.videoCoins);
 
             records_btn  = findViewById(R.id.balance_ll_btn);
             coints_txt_btn = findViewById(R.id.coins_txt_btn);
@@ -918,13 +919,25 @@ public class SettingScreen extends AppCompatActivity {
                                         double amount = profiles.getReferralAmount();
                                         double valuea = (Double.parseDouble(sg.getRewardsEarned()))*.20;
 
-                                        if(referalCode!=null&&!referalCode.isEmpty()){
-                                            getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
-                                        }else{
-                                            referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
-                                            getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                        if(sg.getStatus().equalsIgnoreCase("Activated")){
+
+                                            mVideoCoins.setText("Non Redeemable Coins : "+valuea);
+
+                                        }else if(sg.getStatus().equalsIgnoreCase("Activated")){
+
+                                            mVideoCoins.setText("Non Redeemable Coins : "+valuea);
+                                            if(referalCode!=null&&!referalCode.isEmpty()){
+                                                getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                            }else{
+                                                referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                                getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                            }
                                         }
+
                                     }else{
+
+                                        mVideoCoins.setText("Non Redeemable Coins : 0");
+
                                         if(referalCode!=null&&!referalCode.isEmpty()){
                                             getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
                                         }else{

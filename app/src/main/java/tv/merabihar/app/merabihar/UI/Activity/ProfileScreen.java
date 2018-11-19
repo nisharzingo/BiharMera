@@ -1,6 +1,9 @@
 package tv.merabihar.app.merabihar.UI.Activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -147,29 +150,56 @@ public class ProfileScreen extends AppCompatActivity {
 
                     if (Util.isNetworkAvailable(ProfileScreen.this)) {
 
-                        String follow = mFollowOption.getText().toString();
+                        if(profileId!=0){
 
-                        if(follow!=null&&!follow.isEmpty()){
+                            String follow = mFollowOption.getText().toString();
 
-                            if(follow.equalsIgnoreCase("Follow")){
+                            if(follow!=null&&!follow.isEmpty()){
 
-                                ProfileFollowMapping pm = new ProfileFollowMapping();
-                                pm.setFollowerId(profileId);
-                                pm.setProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId());
-                                profileFollow(pm);
+                                if(follow.equalsIgnoreCase("Follow")){
 
-                            }else if(follow.equalsIgnoreCase("Unfollow")){
+                                    ProfileFollowMapping pm = new ProfileFollowMapping();
+                                    pm.setFollowerId(profileId);
+                                    pm.setProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId());
+                                    profileFollow(pm);
+
+                                }else if(follow.equalsIgnoreCase("Unfollow")){
 
 
-                                if(mappingId!=0){
+                                    if(mappingId!=0){
 
-                                    deleteFollow(mappingId);
+                                        deleteFollow(mappingId);
 
-                                }else{
-                                    Toast.makeText(ProfileScreen.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Toast.makeText(ProfileScreen.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
+
+                        }else {
+                            new AlertDialog.Builder(ProfileScreen.this)
+                                    .setMessage("Please login/Signup to Like the Story")
+                                    .setCancelable(true)
+                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+
+                                            Intent login = new Intent(ProfileScreen.this, LoginScreen.class);
+                                            startActivity(login);
+
+                                        }
+                                    })
+                                    .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+
+                                            Intent signUp = new Intent(ProfileScreen.this, SignUpScreen.class);
+                                            startActivity(signUp);
+
+                                        }
+                                    })
+                                    .show();
                         }
+
+
                     } else{
                             SnackbarViewer.showSnackbar(findViewById(R.id.activity_profile_main),"Please check your internet connection !");
 

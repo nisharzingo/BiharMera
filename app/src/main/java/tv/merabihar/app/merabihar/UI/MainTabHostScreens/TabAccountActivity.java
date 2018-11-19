@@ -17,8 +17,10 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -58,10 +61,15 @@ import tv.merabihar.app.merabihar.Adapter.ProfileListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Contents;
+import tv.merabihar.app.merabihar.Model.FollowersWithProfileData;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.FollowOptions.FollowOptionsActivity;
+import tv.merabihar.app.merabihar.UI.Activity.FollowersListScreen;
+import tv.merabihar.app.merabihar.UI.Activity.FollowingProfileListScreen;
+import tv.merabihar.app.merabihar.UI.Activity.LoginScreen;
 import tv.merabihar.app.merabihar.UI.Activity.SettingScreen;
+import tv.merabihar.app.merabihar.UI.Activity.SignUpScreen;
 import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.Permission;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
@@ -82,8 +90,13 @@ public class TabAccountActivity extends AppCompatActivity {
     RecyclerView mPostsList;
     //ListView mPostsList;
     ProgressBar progressBar;
+    AppCompatButton mLogin;
+    TextView mSignUp;
 
-    LinearLayout applinear,linearlinear;
+    NestedScrollView mProfileLoginLay;
+    LinearLayout mNonProfileLay;
+
+    LinearLayout applinear,linearlinear,mFollowingLay,mFollowersLay;
     ImageView app,linear;
     ImagePorifleContentAdapter adapters;
     ContentAdapterVertical adapter;
@@ -101,6 +114,8 @@ public class TabAccountActivity extends AppCompatActivity {
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     String status,selectedImage;
 
+    ArrayList<Contents> profileContents;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +128,9 @@ public class TabAccountActivity extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
             setContentView(R.layout.activity_tab_account);
+
+            mLogin = (AppCompatButton) findViewById(R.id.loginAccount);
+            mSignUp = (TextView) findViewById(R.id.link_signup);
             mSettings = (ImageView)findViewById(R.id.settings);
             mFollow = (ImageView)findViewById(R.id.follow_peopls);
             mProfilePhoto = (CircleImageView)findViewById(R.id.profile_photo);
@@ -129,10 +147,131 @@ public class TabAccountActivity extends AppCompatActivity {
             applinear = findViewById(R.id.applinear);
             linearlinear = findViewById(R.id.linearlinear);
 
+            mProfileLoginLay = findViewById(R.id.profile_login_layout);
+            mNonProfileLay = findViewById(R.id.not_login_layout);
+
+            mFollowingLay = findViewById(R.id.following_layout);
+            mFollowersLay = findViewById(R.id.followers_layout);
+
             app = findViewById(R.id.apptool);
             linear = findViewById(R.id.lineartool);
 
+            mFollowingPeoples.setLayoutManager(new LinearLayoutManager(TabAccountActivity.this, LinearLayoutManager.VERTICAL, false));
+            mFollowingPeoples.setNestedScrollingEnabled(false);
+
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(TabAccountActivity.this, 3);
+            mPostsList.setLayoutManager(layoutManager);
+            mPostsList.setItemAnimator(new DefaultItemAnimator());
+
            final int profileId = PreferenceHandler.getInstance(TabAccountActivity.this).getUserId();
+
+           if(profileId!=0){
+
+               mProfileLoginLay.setVisibility(View.VISIBLE);
+               mNonProfileLay.setVisibility(View.GONE);
+
+           }else{
+
+               mProfileLoginLay.setVisibility(View.GONE);
+               mNonProfileLay.setVisibility(View.VISIBLE);
+           }
+
+
+            mLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent login = new Intent(TabAccountActivity.this, LoginScreen.class);
+                    startActivity(login);
+                }
+            });
+
+            mSignUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent login = new Intent(TabAccountActivity.this,SignUpScreen.class);
+                    startActivity(login);
+                }
+            });
+
+           mFollowersLay.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+
+                   if(profileId!=0){
+
+                       String followingCount = mFollowers.getText().toString();
+
+                       try{
+                           int follw = Integer.parseInt(followingCount);
+
+                           if(mFollowers.getText().toString().equalsIgnoreCase("0")||follw==0){
+
+                               Toast.makeText(TabAccountActivity.this, "No followings", Toast.LENGTH_SHORT).show();
+
+                           }else{
+
+                               if(Util.isNetworkAvailable(TabAccountActivity.this)){
+                                   Intent follow = new Intent(TabAccountActivity.this, FollowersListScreen.class);
+                                   startActivity(follow);
+                               }else{
+                                   Toast.makeText(TabAccountActivity.this, "You are offline", Toast.LENGTH_SHORT).show();
+                               }
+
+
+                           }
+                       }catch (Exception e){
+                           e.printStackTrace();
+                       }
+
+
+
+                   }else{
+
+                       Toast.makeText(TabAccountActivity.this, "Please login first", Toast.LENGTH_SHORT).show();
+                   }
+
+               }
+           });
+
+            mFollowingLay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(profileId!=0){
+
+                        String followingCount = mFollowings.getText().toString();
+
+                        try{
+                            int follw = Integer.parseInt(followingCount);
+
+                            if(mFollowings.getText().toString().equalsIgnoreCase("0")||follw==0){
+
+                                Toast.makeText(TabAccountActivity.this, "No followings", Toast.LENGTH_SHORT).show();
+
+                            }else{
+
+                                if(Util.isNetworkAvailable(TabAccountActivity.this)){
+                                    Intent follow = new Intent(TabAccountActivity.this, FollowingProfileListScreen.class);
+                                    startActivity(follow);
+                                }else{
+                                    Toast.makeText(TabAccountActivity.this, "You are offline", Toast.LENGTH_SHORT).show();
+                                }
+
+
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+
+
+                    }else{
+
+                        Toast.makeText(TabAccountActivity.this, "Please login first", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
 
             applinear.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -146,7 +285,14 @@ public class TabAccountActivity extends AppCompatActivity {
                     if(profileId!=0){
 
                         if (Util.isNetworkAvailable(TabAccountActivity.this)) {
-                            getProfileContent(profileId);
+
+                            if(profileContents!=null&&profileContents.size()!=0){
+                                adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,profileContents);
+                                mPostsList.setAdapter(adapters);
+                            }else{
+                                getProfileContent(profileId);
+                            }
+
 
                         }else{
 
@@ -177,7 +323,21 @@ public class TabAccountActivity extends AppCompatActivity {
                         mFollowingPeoples.setAdapter(adapter);
 
                         if (Util.isNetworkAvailable(TabAccountActivity.this)) {
-                            loadFirstSetOfBlogs(profileId);
+
+                            if(profileContents!=null&&profileContents.size()!=0){
+
+                                progressBar.setVisibility(View.GONE);
+                                adapter.addAll(profileContents);
+
+                                if (profileContents != null && profileContents.size() !=0)
+                                    adapter.addLoadingFooter();
+                                else
+                                    isLastPage = true;
+
+                            }else{
+                                loadFirstSetOfBlogs(profileId);
+                            }
+
                         }else{
 
                             SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
@@ -194,12 +354,7 @@ public class TabAccountActivity extends AppCompatActivity {
                 }
             });
 
-            mFollowingPeoples.setLayoutManager(new LinearLayoutManager(TabAccountActivity.this, LinearLayoutManager.VERTICAL, false));
-            mFollowingPeoples.setNestedScrollingEnabled(false);
 
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(TabAccountActivity.this, 3);
-            mPostsList.setLayoutManager(layoutManager);
-            mPostsList.setItemAnimator(new DefaultItemAnimator());
 
 
 
@@ -209,8 +364,8 @@ public class TabAccountActivity extends AppCompatActivity {
                 if (Util.isNetworkAvailable(TabAccountActivity.this)) {
 
                     getProfile(profileId);
-                    getProfileContent(profileId);
-                    getFollowingByProfileId(profileId);
+
+                    //getFollowingByProfileId(profileId);
 
                 }else{
 
@@ -220,7 +375,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
             }else{
 
-                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
+//                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
 
 
             }
@@ -276,13 +431,13 @@ public class TabAccountActivity extends AppCompatActivity {
             public void run() {
 
                 final ProfileAPI subCategoryAPI = Util.getClient().create(ProfileAPI.class);
-                Call<UserProfile> getProf = subCategoryAPI.getProfileById(id);
+                Call<FollowersWithProfileData> getProf = subCategoryAPI.getProfileFollow(id);
                 //Call<ArrayList<Blogs>> getBlog = blogApi.getBlogs();
 
-                getProf.enqueue(new Callback<UserProfile>() {
+                getProf.enqueue(new Callback<FollowersWithProfileData>() {
 
                     @Override
-                    public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
+                    public void onResponse(Call<FollowersWithProfileData> call, Response<FollowersWithProfileData> response) {
 
                         progressBar.setVisibility(View.GONE);
 
@@ -290,9 +445,14 @@ public class TabAccountActivity extends AppCompatActivity {
                         {
                             System.out.println("Inside api");
 
-                            UserProfile profile = response.body();
+                            FollowersWithProfileData data = response.body();
+
+
+                            UserProfile profile = data.getProfile();
                             userProfile = profile;
                             mProfileName.setText(""+profile.getFullName());
+                            mFollowers.setText(""+data.getFollowing());
+                            mFollowings.setText(""+data.getFollowers());
                             if(profile.getPrefix()!=null){
 
                                 mProfileAbout.setText(""+profile.getPrefix());
@@ -317,6 +477,21 @@ public class TabAccountActivity extends AppCompatActivity {
                                 }
                             }
 
+                            if(profile.getContents()!=null&&profile.getContents().size()!=0){
+
+                                mPosts.setText(""+data.getNoOfPost());
+                                profileContents = profile.getContents();
+                                adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,profile.getContents());
+                                mPostsList.setAdapter(adapters);
+                            }else{
+                                if(Util.isNetworkAvailable(TabAccountActivity.this)){
+                                    getProfileContent(id);
+                                }else{
+                                    Toast.makeText(TabAccountActivity.this, "You are offline", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+
 
 
 
@@ -324,7 +499,7 @@ public class TabAccountActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<UserProfile> call, Throwable t) {
+                    public void onFailure(Call<FollowersWithProfileData> call, Throwable t) {
 
                     }
                 });
@@ -546,6 +721,7 @@ public class TabAccountActivity extends AppCompatActivity {
                             if(response.body().size()!=0){
 
                                 mPosts.setText(""+response.body().size());
+                                profileContents = response.body();
                                 adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,response.body());
                                 mPostsList.setAdapter(adapters);
                             }

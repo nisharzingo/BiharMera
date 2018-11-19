@@ -188,7 +188,7 @@ public class PostContentScreen extends AppCompatActivity {
                         String selected = "";
 
                         activity = new SubCategories();
-                        for (int j=0;j<i;j++)
+                       /* for (int j=0;j<i;j++)
                         {
                             //System.out.println();
                             if(((LinearLayout)customGridView.getChildAt(j)).isActivated())
@@ -199,8 +199,9 @@ public class PostContentScreen extends AppCompatActivity {
                                 break;
 
                             }
-                        }
+                        }*/
 
+                       activityId = 101;
                         if(activityId!=0){
 
                             validate();
@@ -279,7 +280,7 @@ public class PostContentScreen extends AppCompatActivity {
         }else{
             Intent intent = new Intent();
             intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);//
+            intent.setAction(Intent.ACTION_PICK);//
             startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
         }
 }
@@ -454,7 +455,7 @@ public class PostContentScreen extends AppCompatActivity {
         });
     }
 
-    public void validate(){
+    public void  validate(){
 
         String title = mTitle.getText().toString();
         // String shortDesc = mShort.getText().toString();
@@ -472,9 +473,9 @@ public class PostContentScreen extends AppCompatActivity {
             Toast.makeText(PostContentScreen.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
         }*/if(longDesc==null||longDesc.isEmpty()){
             Toast.makeText(PostContentScreen.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
-        }else if(tags==null||tags.isEmpty()){
+        }/*else if(tags==null||tags.isEmpty()){
             Toast.makeText(PostContentScreen.this, "Tag should not be Empty", Toast.LENGTH_SHORT).show();
-        }else{
+        }*/else{
 
             try
             {
@@ -767,7 +768,7 @@ public class PostContentScreen extends AppCompatActivity {
                 blogs.setUpdatedDate(""+new SimpleDateFormat("MM/dd/yyyyy").format(new Date()));
                 blogs.setProfileId(PreferenceHandler.getInstance(PostContentScreen.this).getUserId());
                 blogs.setContentImage(blogImagesArrayList);
-                blogs.setSubCategoriesId(activityId);
+                blogs.setSubCategoriesId(101);
 
 
                 if(mTags.getText().toString()!=null||!mTags.getText().toString().isEmpty()){

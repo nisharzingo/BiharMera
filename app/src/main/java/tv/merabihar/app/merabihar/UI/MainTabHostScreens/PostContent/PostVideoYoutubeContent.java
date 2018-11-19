@@ -149,7 +149,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                         String selected = "";
 
                         activity = new SubCategories();
-                        for (int j=0;j<i;j++)
+                        /*for (int j=0;j<i;j++)
                         {
                             //System.out.println();
                             if(((LinearLayout)customGridView.getChildAt(j)).isActivated())
@@ -160,8 +160,9 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                                 break;
 
                             }
-                        }
+                        }*/
 
+                        activityId = 101;
                         if(activityId!=0){
 
                             System.out.println("URL VIdeo = "+extractYTId(mURL.getText().toString()));
@@ -282,9 +283,9 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
         }else if(longDesc==null||longDesc.isEmpty()){
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
-        }else if(tags==null||tags.isEmpty()){
+        }/*else if(tags==null||tags.isEmpty()){
             Toast.makeText(PostVideoYoutubeContent.this, "Tags Should not be Empty", Toast.LENGTH_SHORT).show();
-        }else{
+        }*/else{
 
             try
             {
@@ -300,7 +301,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                 blogs.setCreatedDate(""+new SimpleDateFormat("MM/dd/yyyyy").format(new Date()));
                 blogs.setUpdatedDate(""+new SimpleDateFormat("MM/dd/yyyyy").format(new Date()));
                 blogs.setProfileId(PreferenceHandler.getInstance(PostVideoYoutubeContent.this).getUserId());
-                blogs.setSubCategoriesId(activityId);
+                blogs.setSubCategoriesId(101);
 
 
                 if(mTags.getText().toString()!=null||!mTags.getText().toString().isEmpty()){

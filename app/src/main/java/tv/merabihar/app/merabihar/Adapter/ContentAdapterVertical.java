@@ -402,7 +402,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                                 //url = contents.getContentURL();
 
-
+                                holder.mContentPic.setScaleType(ImageView.ScaleType.FIT_XY);
                                 holder.mIcon.setVisibility(View.VISIBLE);
                                 if(contents.getContentURL()!=null&&!contents.getContentURL().isEmpty()){
                                     String img = "https://img.youtube.com/vi/"+contents.getContentURL()+"/0.jpg";
@@ -459,8 +459,32 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                     String img = contents.getContentImage().get(0).getImages();
 
                                     if(img!=null&&!img.isEmpty()){
+
+                                        /*URL url = new URL(img);
+                                        Bitmap loadedImage = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+
+                                        // Gets the width you want it to be
+                                        int intendedWidth = holder.mContentPic.getWidth();
+
+                                        // Gets the downloaded image dimensions
+                                        int originalWidth = loadedImage.getWidth();
+                                        int originalHeight = loadedImage.getHeight();
+
+                                        // Calculates the new dimensions
+                                        float scale = (float) intendedWidth / originalWidth;
+                                        int newHeight = (int) Math.round(originalHeight * scale);
+
+                                        // Resizes mImageView. Change "FrameLayout" to whatever layout mImageView is located in.
+                                        holder.mContentPic.setLayoutParams(new FrameLayout.LayoutParams(
+                                                FrameLayout.LayoutParams.WRAP_CONTENT,
+                                                FrameLayout.LayoutParams.WRAP_CONTENT));
+                                        holder.mContentPic.getLayoutParams().width = intendedWidth;
+                                        holder.mContentPic.getLayoutParams().height = newHeight;*/
+
                                         Picasso.with(context).load(img).placeholder(R.drawable.no_image).
                                                 error(R.drawable.no_image).into(holder.mContentPic);
+                                        holder.mContentPic.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
 
                                     }else{
@@ -521,7 +545,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 @Override
                                 public void onClick(View view) {
 
-                                    new CountDownTimer(500, 500) {
+                                    new CountDownTimer(300, 300) {
                                         @Override
                                         public void onTick(long l) {
                                             if(!isFirstTimePressed)
@@ -552,7 +576,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                                     else
                                                     {
 
-                                                        postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId, holder.mLikeLayout);
+                                                        postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId, holder.mLikeLayout,holder.mDislikeLayout);
                                                     }
 
 
@@ -650,7 +674,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                             else
                                             {
 
-                                                postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId,holder.mLikeLayout);
+                                                postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId,holder.mLikeLayout,holder.mDislikeLayout);
                                             }
 
 
@@ -1178,12 +1202,14 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
 
 
+                        }else{
+                            cv.setImageResource(R.drawable.profile_image);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserProfile> call, Throwable t) {
-
+                        cv.setImageResource(R.drawable.profile_image);
                     }
                 });
 
@@ -1232,7 +1258,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         return duration;
     }
 
-    private void postLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId,final LinearLayout likeLyout) {
+    private void postLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId,final LinearLayout likeLyout,final LinearLayout dislikeLayout) {
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -1258,11 +1284,12 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 likeCount.setText(""+(count+1));
                             }
 
+                            dislikeLayout.setEnabled(true);
 
                         }
                         else
                         {
-                            likeLyout.setEnabled(false);
+                            likeLyout.setEnabled(true);
 
                         }
                     }
@@ -1320,7 +1347,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                         else
                         {
 
-                            likeLayout.setEnabled(false);
+                            likeLayout.setEnabled(true);
 
                         }
                     }
@@ -1377,7 +1404,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                         }
                         else
                         {
-                            dislikeLayout.setEnabled(false);
+                            dislikeLayout.setEnabled(true);
                         }
                     }
 

@@ -10,6 +10,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import tv.merabihar.app.merabihar.Model.FollowerNonFollowers;
+import tv.merabihar.app.merabihar.Model.FollowersWithProfileData;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 
 /**
@@ -26,6 +27,9 @@ public interface ProfileAPI {
 
     @DELETE("Profiles/{id}")
     Call<UserProfile> deletProfile(@Path("id") int id);
+
+    @GET("Follow/GetFollowersAndNonFollowersWithProfileDataByProfileId/{ProfileId}")
+    Call<FollowersWithProfileData> getProfileFollow(@Path("ProfileId") int id);
 
     @GET("Profiles/{id}")
     Call<UserProfile> getProfileById(@Path("id") int id);

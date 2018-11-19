@@ -43,6 +43,9 @@ public interface ProfileFollowAPI {
     @GET("Follow/GetFollowersWithMappingByProfileId/{ProfileId}")
     Call<ArrayList<FollowsWithMapping>> getFollowingsWithMappingByProfileId(@Path("ProfileId") int id);
 
+    @GET("Follow/GetFollowingWithMappingByProfileId/{ProfileId}")
+    Call<ArrayList<FollowsWithMapping>> getFollowerssWithMappingByProfileId(@Path("ProfileId") int id);
+
     @GET("Follow/GetFollowingContentByProfileId/{ProfileId}")
     Call<ArrayList<UserProfile>> getFollowingContentByProfileId(@Path("ProfileId") int id);
 

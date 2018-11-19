@@ -288,11 +288,11 @@ public class IndirectFriendFragment  extends Fragment {
                                         ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList);
                                         recyclerView.setAdapter(adapter);
                                         indirectViewContainer.setVisibility(View.VISIBLE);
-                                    }else if(profileArrayLists!=null){
+                                    }/*else if(profileArrayLists!=null){
                                         ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayLists);
                                         recyclerView.setAdapter(adapter);
                                         indirectViewContainer.setVisibility(View.VISIBLE);
-                                    }else{
+                                    }*/else{
                                         showShareActivity();
                                     }
 
@@ -309,11 +309,11 @@ public class IndirectFriendFragment  extends Fragment {
                                     ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList);
                                     recyclerView.setAdapter(adapter);
                                     indirectViewContainer.setVisibility(View.VISIBLE);
-                                }else if(profileArrayLists!=null){
-                                    ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayLists);
-                                    recyclerView.setAdapter(adapter);
-                                    indirectViewContainer.setVisibility(View.VISIBLE);
-                                }else{
+                                }/*else if(profileArrayLists!=null){
+                                        ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayLists);
+                                        recyclerView.setAdapter(adapter);
+                                        indirectViewContainer.setVisibility(View.VISIBLE);
+                                    }*/else{
                                     showShareActivity();
                                 }
 
@@ -322,6 +322,7 @@ public class IndirectFriendFragment  extends Fragment {
                         }
                         else
                         {
+                            showShareActivity();
 
                             Toast.makeText(getActivity(),response.message(),Toast.LENGTH_SHORT).show();
                         }
@@ -338,11 +339,11 @@ public class IndirectFriendFragment  extends Fragment {
                             ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList);
                             recyclerView.setAdapter(adapter);
                             indirectViewContainer.setVisibility(View.VISIBLE);
-                        }else if(profileArrayLists!=null){
-                            ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayLists);
-                            recyclerView.setAdapter(adapter);
-                            indirectViewContainer.setVisibility(View.VISIBLE);
-                        }else{
+                        }/*else if(profileArrayLists!=null){
+                                        ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayLists);
+                                        recyclerView.setAdapter(adapter);
+                                        indirectViewContainer.setVisibility(View.VISIBLE);
+                                    }*/else{
                             showShareActivity();
                         }
 

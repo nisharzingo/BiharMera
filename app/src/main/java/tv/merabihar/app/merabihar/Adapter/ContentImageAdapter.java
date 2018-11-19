@@ -23,6 +23,7 @@ import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.InterestContentMapping;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.ContentDetailScreen;
 import tv.merabihar.app.merabihar.UI.Activity.InterestContentListScreen;
 import tv.merabihar.app.merabihar.UI.YoutubePlayList.YouTubeListScreen;
 
@@ -120,9 +121,9 @@ public class ContentImageAdapter extends RecyclerView.Adapter<ContentImageAdapte
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(context, YouTubeListScreen.class);
+                    Intent intent = new Intent(context, ContentDetailScreen.class);
                     Bundle bundle = new Bundle();
-                    bundle.putInt("Position",position);
+                    bundle.putSerializable("Contents",content);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
 

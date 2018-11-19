@@ -145,14 +145,14 @@
         <activity android:name=".UI.Activity.ContentListScreen" />
         <activity android:name=".UI.MainTabHostScreens.TabHomeHostScreen" />
         <activity android:name=".UI.MainTabHostScreens.TabPostMediaActivity" />
-        <activity android:name=".UI.Activity.Influencer.WithdrawMoney" />
+        <activity android:name=".UI.Activity.Influencer.WithdrawMoney"></activity>
         <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign2" />
         <activity
             android:name=".UI.MainTabHostScreens.TabSearchActivity2"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UI.Activity.Influencer.Records" />
-        <activity android:name=".UI.Activity.TimeWatchedScreen" />
+        <activity android:name=".UI.Activity.TimeWatchedScreen"></activity>
 
         <service android:name=".Service.BackgroundNotificationService" />
         <service android:name=".Service.VideoWatchedService" />
@@ -164,6 +164,12 @@
         <activity
             android:name=".UI.Activity.WatchHistroyScreen"
             android:theme="@style/AppThemes" />
+        <activity
+            android:name=".UI.Activity.FollowingProfileListScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.Activity.FollowersListScreen"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity android:name=".UI.YoutubeSearch.YoutubeSearchScreenMain">
 
         </activity>

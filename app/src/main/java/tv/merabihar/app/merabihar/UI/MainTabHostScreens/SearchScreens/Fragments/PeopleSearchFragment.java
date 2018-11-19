@@ -302,7 +302,7 @@ public class PeopleSearchFragment extends Fragment {
                                     userProfile.add(usr);
 
                                 }
-                                ProfileSearchAdapter adapter = new ProfileSearchAdapter(getActivity(),userProfile);
+                                                             ProfileSearchAdapter adapter = new ProfileSearchAdapter(getActivity(),userProfile);
                                 recyclerViewFolloers.setAdapter(adapter);
 
                             }else{

@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -24,11 +26,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.CategoryGridAdapter;
 import tv.merabihar.app.merabihar.Adapter.ContentImageAdapter;
+import tv.merabihar.app.merabihar.Adapter.ContentSearchPaginationAdapter;
 import tv.merabihar.app.merabihar.Adapter.FollowFragmentContentAdapter;
 import tv.merabihar.app.merabihar.Adapter.MultiContentImageAdapter;
 import tv.merabihar.app.merabihar.Adapter.TrendingIntrestAdapter;
 import tv.merabihar.app.merabihar.Adapter.VideoFragmentAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold;
+import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
 import tv.merabihar.app.merabihar.CustomViews.CustomGridView;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Category;
@@ -60,6 +64,16 @@ public class TabVideoNewDesign extends AppCompatActivity {
     private static final String FRAGMENT_TAG = VideoYoutubeFragment.class.getSimpleName();
     LinearLayoutManager verticalLinearLayoutManager;
 
+    ContentSearchPaginationAdapter adapter;
+
+    private static final int PAGE_START = 1;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int TOTAL_PAGES ;
+    private int currentPage = PAGE_START;
+
+    private String TAG="BlogList";
+
 
 
     @Override
@@ -84,6 +98,11 @@ public class TabVideoNewDesign extends AppCompatActivity {
             mTrendingInterest.setLayoutManager(new LinearLayoutManager(TabVideoNewDesign.this, LinearLayoutManager.HORIZONTAL, false));
             mTrendingInterest.setNestedScrollingEnabled(false);
 
+            mImagesList.setLayoutManager(verticalLinearLayoutManager);
+
+            mImagesList.setItemAnimator(new DefaultItemAnimator());
+            adapter = new ContentSearchPaginationAdapter(TabVideoNewDesign.this);
+            mImagesList.setAdapter(adapter);
 
 
 
@@ -95,7 +114,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
             Thread video = new Thread() {
                 public void run() {
-                    loadFirstSetOfContents();
+                    loadFirstSetOfBlogs();
                 }
             };
 
@@ -103,7 +122,8 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
             if (Util.isNetworkAvailable(this)) {
 
-                video.start();
+                //video.start();
+                loadFirstSetOfBlogs();
                 //category.start();
 
             }else{
@@ -118,6 +138,38 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
 
         mTrendingInterest.requestFocus();
+
+            mImagesList.addOnScrollListener(new PageScrollListener(verticalLinearLayoutManager) {
+                @Override
+                protected void loadMoreItems() {
+                    isLoading = true;
+
+                    currentPage = currentPage+1;
+
+                    if (Util.isNetworkAvailable(TabVideoNewDesign.this)) {
+                        loadNextSetOfItems();
+
+                    }else{
+                        SnackbarViewer.showSnackbar(findViewById(R.id.content_list_screen_ll),"No Internet connection");
+                    }
+
+                }
+
+                @Override
+                public int getTotalPageCount() {
+                    return currentPage;
+                }
+
+                @Override
+                public boolean isLastPage() {
+                    return isLastPage;
+                }
+
+                @Override
+                public boolean isLoading() {
+                    return isLoading;
+                }
+            });
 
 
         }catch (Exception e){
@@ -479,5 +531,220 @@ public class TabVideoNewDesign extends AppCompatActivity {
         TabVideoNewDesign.this.finish();
     }
 
+    public void loadFirstSetOfBlogs() {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
+
+                Call<ArrayList<Contents>> getAllBookings = bookingApi.
+                        getContentByVideoAndCity(Constants.CITY_ID,"Video",currentPage,9);
+
+                getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
+
+                        progressBar.setVisibility(View.GONE);
+                        try {
+                            if (response.code() == 200 && response.body() != null) {
+                                if (response.body().size() != 0) {
+                                    Log.d(TAG, "loadFirstPage: " + response.message());
+                                    ArrayList<Contents> approvedBlogs = response.body();
+
+                                    if (approvedBlogs != null && approvedBlogs.size() != 0) {
+
+
+                                        ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                                        ArrayList<Contents> contents = new ArrayList<>();
+                                        if (response.body().size() != 0) {
+
+                                            System.out.println("Content inside");
+
+                                            int count = 0;
+
+                                            for (Contents content : response.body()) {
+
+
+                                                //if(content.getContentType().equalsIgnoreCase("Image")){
+                                                contents.add(content);
+                                                count = count + 1;
+                                                if (count == 9) {
+                                                    contentList.add(contents);
+                                                    count = 0;
+                                                    contents = new ArrayList<>();
+                                                }
+                                                // }
+
+
+                                            }
+
+                                            ContentImageAdapter blogAdapters = new ContentImageAdapter(TabVideoNewDesign.this,response.body());//,pagerModelArrayList);
+                                            mTrendingInterest.setAdapter(blogAdapters);
+                                            mTrendingInterest.requestFocus();
+
+                                            if (contentList != null && contentList.size() != 0) {
+                                                loadFirstPage(contentList);
+                                            }
+
+
+
+                                        } else {
+                                            isLoading = true;
+
+                                            currentPage = currentPage + 1;
+                                            loadNextSetOfItems();
+                                        }
+
+                                    } else {
+                                        adapter.removeLoadingFooter();
+                                        isLastPage = true;
+                                        isLoading = true;
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+
+                                } else {
+
+                                }
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
+                    }
+                });
+
+                //WebService.getAllBookings(PreferenceHandler.getInstance(getActivity()).getHotelID());
+            }
+        });
+
+    }
+
+    private void loadFirstPage(ArrayList<ArrayList<Contents>> list) {
+        Log.d(TAG, "loadFirstPage: "+list.size());
+        //Collections.reverse(list);
+        progressBar.setVisibility(View.GONE);
+        adapter.addAll(list);
+
+        if (list != null && list.size() !=0)
+            adapter.addLoadingFooter();
+        else
+            isLastPage = true;
+
+    }
+
+    public void loadNextSetOfItems() {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
+
+                Call<ArrayList<Contents>> getAllBookings = bookingApi.
+                        getContentByVideoAndCity(Constants.CITY_ID,"Video",currentPage,9);
+
+                getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
+
+
+                        try{
+                            if(response.code() == 200 && response.body()!= null)
+                            {
+                                if(response.body().size() != 0) {
+
+                                    ArrayList<Contents> approvedBlogs = response.body();
+
+
+                                    if(approvedBlogs!=null&&approvedBlogs.size()!=0){
+
+                                        ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                                        ArrayList<Contents> contents = new ArrayList<>();
+                                        if (response.body().size() != 0) {
+
+                                            System.out.println("Content inside");
+
+                                            int count = 0;
+
+                                            for (Contents content : response.body()) {
+
+
+                                                //if(content.getContentType().equalsIgnoreCase("Image")){
+                                                contents.add(content);
+                                                count = count + 1;
+                                                if (count == 9) {
+                                                    contentList.add(contents);
+                                                    count = 0;
+                                                    contents = new ArrayList<>();
+                                                }
+                                                // }
+
+
+                                            }
+
+                                            if (contentList != null && contentList.size() != 0) {
+                                                loadNextPage(contentList);
+                                            }
+                                        }
+                                    }else{
+                                        isLoading = true;
+
+                                        currentPage = currentPage+1;
+                                        loadNextSetOfItems();
+                                    }
+
+                                }
+                                else
+                                {
+                                    Log.d(TAG, "loadNextPage: " + currentPage+" == "+"FALSE = "+response.body().size());
+                                    adapter.removeLoadingFooter();
+                                    isLastPage = true;
+                                }
+
+                            }
+                            else
+                            {
+
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
+                    }
+                });
+                //WebService.getAllBookings(PreferenceHandler.getInstance(getActivity()).getHotelID());
+            }
+        });
+
+    }
+
+    private void loadNextPage(ArrayList<ArrayList<Contents>> list) {
+        //Collections.reverse(list);
+        adapter.removeLoadingFooter();
+        isLoading = false;
+
+        adapter.addAll(list);
+
+        if (list != null && list.size() !=0)
+        {
+            adapter.addLoadingFooter();
+            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
+        }
+        else
+        {
+            isLastPage = true;
+            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
+        }
+    }
 
 }

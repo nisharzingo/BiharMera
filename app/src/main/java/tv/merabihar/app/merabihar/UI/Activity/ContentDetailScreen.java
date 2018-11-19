@@ -147,6 +147,18 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 
             if(contents!=null){
+
+                if(profileId!=0){
+
+                    if(profileId==contents.getProfileId()){
+
+                        mFollow.setVisibility(View.GONE);
+                    }else{
+                        //getFollowingByProfileId(profileId,mFollowLay,blogDataModel.getProfileId());
+
+                    }
+
+                }
                 setViewPager();
             }else{
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -1032,58 +1044,67 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
     @Override
     public void finish() {
-        Intent data = new Intent();
-        int t = (mPlayer.getCurrentTimeMillis()/1000);
-        data.putExtra("tiempo",t );
-        System.out.println("Value youtube "+t);
-        setResult(0, data);
-        youtubeWatcheTime = t;
 
-        Intent intent = new Intent(ContentDetailScreen.this, VideoWatchedService.class);
-        intent.putExtra("ProfileId",PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId());
-        intent.putExtra("Time",youtubeWatcheTime);
-        startService(intent);
+        try{
+            Intent data = new Intent();
+            int t = (mPlayer.getCurrentTimeMillis()/1000);
+            data.putExtra("tiempo",t );
+            System.out.println("Value youtube "+t);
+            setResult(0, data);
+            youtubeWatcheTime = t;
 
-        if(sg!=null){
+            Intent intent = new Intent(ContentDetailScreen.this, VideoWatchedService.class);
+            intent.putExtra("ProfileId",PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId());
+            intent.putExtra("Time",youtubeWatcheTime);
+            startService(intent);
 
-            int value = Integer.parseInt(sg.getRewardsEarned());
+            if(sg!=null){
 
-            sg.setRewardsEarned(""+(t+value));
-            if(sg.getStatus().equals("Activated")){
+                int value = Integer.parseInt(sg.getRewardsEarned());
 
-                String endDate = sg.getEndDate();
+                sg.setRewardsEarned(""+(t+value));
+                if(sg.getStatus().equals("Activated")){
 
-                if(endDate!=null&&!endDate.isEmpty()){
+                    String endDate = sg.getEndDate();
 
-                    if(endDate.contains("T")){
+                    if(endDate!=null&&!endDate.isEmpty()){
 
-                        String dats[] = endDate.split("T");
-                        try {
-                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dats[0]);
+                        if(endDate.contains("T")){
 
-                            if(new Date().getTime()-date.getTime()>0){
+                            String dats[] = endDate.split("T");
+                            try {
+                                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dats[0]);
 
-                                sg.setExtraDescription(""+(54000-(t+value)));
-                                sg.setStatus("Penalty");
+                                if(new Date().getTime()-date.getTime()>0){
 
-                                double amount = currentProfile.getReferralAmount();
-                                double valuea = (t+value)*.20;
-                                currentProfile.setReferralAmount(valuea);
-                            }else{
-                                if((t+value)>=54000){
-                                    sg.setStatus("Completed");
+                                    sg.setExtraDescription(""+(54000-(t+value)));
+                                    sg.setStatus("Penalty");
+
+                                    double amount = currentProfile.getReferralAmount();
+                                    double valuea = (t+value)*.20;
+                                    currentProfile.setReferralAmount(valuea);
+                                }else{
+                                    if((t+value)>=54000){
+                                        sg.setStatus("Completed");
+                                    }
                                 }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
                 }
+                sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                profileSubScribed(sg);
             }
-            sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
-            profileSubScribed(sg);
+            super.finish();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            super.finish();
         }
-        super.finish();
+
+
     }
     public void getGoalsByProfileId(final int id)
     {

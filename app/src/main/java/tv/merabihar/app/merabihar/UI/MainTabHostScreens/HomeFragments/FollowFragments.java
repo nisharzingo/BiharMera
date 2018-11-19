@@ -79,18 +79,7 @@ public class FollowFragments extends Fragment {
         horizontalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         verticalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
-        if (Util.isNetworkAvailable(getActivity())) {
 
-            getCategories();
-            loadFirstSetOfContents();
-
-        }else{
-
-            SnackbarViewer.showSnackbar(mFragmentView.findViewById(R.id.follow_frag_ll_main),"No Internet connection");
-//            Toast.makeText(context, "No internet Connection", Toast.LENGTH_SHORT).show();
-            mContentProgressBar.setVisibility(View.GONE);
-            mCategoryProgressBar.setVisibility(View.GONE);
-        }
 
 
         // content recyclerview will be vertical
@@ -257,4 +246,21 @@ public class FollowFragments extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (Util.isNetworkAvailable(getActivity())) {
+
+            getCategories();
+            loadFirstSetOfContents();
+
+        }else{
+
+            SnackbarViewer.showSnackbar(mFragmentView.findViewById(R.id.follow_frag_ll_main),"No Internet connection");
+//            Toast.makeText(context, "No internet Connection", Toast.LENGTH_SHORT).show();
+            mContentProgressBar.setVisibility(View.GONE);
+            mCategoryProgressBar.setVisibility(View.GONE);
+        }
+    }
 }

@@ -23,12 +23,13 @@ public class Records extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_records);
 
-        mRecordsToolbar = findViewById(R.id.records_toolbar);
-        recent_transition_rv = findViewById(R.id.recent_transition_list);
 
         try{
+            setContentView(R.layout.activity_records);
+
+            mRecordsToolbar = findViewById(R.id.records_toolbar);
+            recent_transition_rv = findViewById(R.id.recent_transition_list);
 
             setSupportActionBar(mRecordsToolbar);
             getSupportActionBar().setTitle("Exchange Record");

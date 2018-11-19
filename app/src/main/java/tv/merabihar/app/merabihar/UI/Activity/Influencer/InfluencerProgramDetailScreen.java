@@ -375,25 +375,65 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
                     if (targetDesc.getGoalId() == 3) {
 
-                        if (targetDesc.getStatus().equalsIgnoreCase("Activated")) {
+                        mTv1.setText("3 hours watched");
+                        mTv2.setText("6 hours watched");
+                        mTv3.setText("9 hours watched");
+                        mTv4.setText("12 hours watched");
+                        mTv5.setText("15 hours watched");
+
+
+                        if (targetDesc.getStatus().equalsIgnoreCase("Activated")||targetDesc.getStatus().equalsIgnoreCase("Completed")) {
 
                             String rewards = targetDesc.getRewardsEarned();
 
                             int value = Integer.parseInt(rewards);
 
-                            if (value >= 10800) {
+                            if (value >= 10800 && value < 21600 ) {
                                 mCircle1.setImageResource(R.drawable.ovel_tick);
                                 mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
-                            } else if (value >= 21600) {
+                            } else if (value >= 21600 && value < 32400) {
+
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
                                 mCircle2.setImageResource(R.drawable.ovel_tick);
                                 mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
-                            } else if (value >= 32400) {
+                            } else if (value >= 32400 && value < 43200) {
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
                                 mCircle3.setImageResource(R.drawable.ovel_tick);
                                 mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
-                            } else if (value >= 43200) {
+                            } else if (value >= 43200 && value < 54000) {
+
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle3.setImageResource(R.drawable.ovel_tick);
+                                mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
                                 mCircle4.setImageResource(R.drawable.ovel_tick);
                                 mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
-                            } else if (value >= 54000) {
+                            } else if (value >= 54000 ) {
+
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle3.setImageResource(R.drawable.ovel_tick);
+                                mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle4.setImageResource(R.drawable.ovel_tick);
+                                mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+
                                 mCircle5.setImageResource(R.drawable.ovel_tick);
                             }
 
@@ -406,6 +446,7 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                         mTv3.setText("3rd Month");
                         mTv4.setText("4th Month");
                         mTv5.setText("5th Month");
+
                         String rewards = targetDesc.getRewardsEarned();
                         if (rewards.contains(",")) {
 

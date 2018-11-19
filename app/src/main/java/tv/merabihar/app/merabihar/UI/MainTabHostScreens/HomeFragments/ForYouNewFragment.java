@@ -129,14 +129,7 @@ public class ForYouNewFragment extends Fragment {
 
             //getBlogs();
 
-            if (Util.isNetworkAvailable(getActivity())) {
 
-                loadFirstSetOfBlogs();
-            }else{
-                SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
-                progressBar.setVisibility(View.GONE);
-
-            }
 
             pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 int Refreshcounter = 1; //Counting how many times user have refreshed the layout
@@ -322,5 +315,17 @@ public class ForYouNewFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        if (Util.isNetworkAvailable(getActivity())) {
+
+            loadFirstSetOfBlogs();
+        }else{
+            SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
+            progressBar.setVisibility(View.GONE);
+
+        }
+    }
 }

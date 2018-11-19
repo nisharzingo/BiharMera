@@ -204,6 +204,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.AppCompatTextView
@@ -245,6 +246,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tag_layout"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.AppCompatTextView

@@ -10,7 +10,9 @@
     <android.support.v4.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent"
+        android:id="@+id/profile_login_layout"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
 
@@ -19,6 +21,10 @@
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants"
         >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <ProgressBar
                 android:layout_width="80dp"
@@ -170,6 +176,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:id="@+id/followers_layout"
                         android:orientation="vertical"
                         android:layout_gravity="center">
 
@@ -212,6 +219,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:id="@+id/following_layout"
                         android:orientation="vertical"
                         android:layout_gravity="center">
 
@@ -322,9 +330,65 @@
 
             </LinearLayout>
         </FrameLayout>
+    </FrameLayout>
 
 
     </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/not_login_layout"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Please log in to your account"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textColor="@color/text_grey"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:textSize="16.0sp"
+            android:textColor="@color/white"
+            android:id="@+id/loginAccount"
+            android:background="@drawable/rect_primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_large_margin"
+            android:layout_marginTop="10.0dip"
+            android:layout_marginRight="@dimen/activity_large_margin"
+            android:text="Login"
+            android:textAllCaps="false"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center"
+            android:text="OR"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textColor="@color/text_grey"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_gravity="center"
+            android:text="No account yet? Create an Account"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:id="@+id/link_signup"
+            android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

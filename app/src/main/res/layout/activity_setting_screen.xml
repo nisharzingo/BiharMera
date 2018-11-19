@@ -91,7 +91,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="80dp"
+                android:layout_below="@+id/videoCoins"
+
                 android:background="#ACACAC" />
 
             <LinearLayout
@@ -104,7 +105,7 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.rey.material.widget.LinearLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -124,9 +125,9 @@
                         android:text="Coins"
                         />
 
-                </com.rey.material.widget.LinearLayout>
+                </LinearLayout>
 
-                <com.rey.material.widget.LinearLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:id="@+id/bal_txt_btn"
@@ -148,11 +149,11 @@
                         />
 
 
-                </com.rey.material.widget.LinearLayout>
+                </LinearLayout>
 
 
 
-                <com.rey.material.widget.LinearLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -173,20 +174,30 @@
                         android:text="Invite"
                         />
 
-                </com.rey.material.widget.LinearLayout>
+                </LinearLayout>
 
             </LinearLayout>
             <!--ll layout1-->
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/videoCoins"
+                android:layout_margin="10dp"
+                android:layout_below="@+id/reward_ll1"
+                android:text="Non Redeemable Coins :"
+                />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:layout_below="@id/reward_ll1"
+                android:layout_below="@id/videoCoins"
                 android:gravity="center"
                 android:id="@+id/reward_ll2"
                 android:orientation="horizontal">
 
-                <com.rey.material.widget.LinearLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -207,14 +218,14 @@
                         android:text="Withdraw"
                         />
 
-                </com.rey.material.widget.LinearLayout>
+                </LinearLayout>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="#ACACAC" />
 
-                <com.rey.material.widget.LinearLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:gravity="center"
                     android:layout_weight="1"
@@ -233,14 +244,14 @@
                         android:layout_marginTop="10dp"
                         android:text="Records"
                         />
-                </com.rey.material.widget.LinearLayout>
+                </LinearLayout>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="#ACACAC" />
 
-                <com.rey.material.widget.LinearLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -260,7 +271,7 @@
                         android:text="Income"
                         android:layout_marginTop="10dp"
                         />
-                </com.rey.material.widget.LinearLayout>
+                </LinearLayout>
             </LinearLayout>
             <!--ll layout 2-->
 
@@ -330,7 +341,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <com.rey.material.widget.LinearLayout
+                    <LinearLayout
                         android:id="@+id/invite_whatsapp"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -363,9 +374,9 @@
                             android:text="WhatsApp"
                             android:textColor="@color/white" />
 
-                    </com.rey.material.widget.LinearLayout>
+                    </LinearLayout>
 
-                    <com.rey.material.widget.LinearLayout
+                    <LinearLayout
                         android:id="@+id/invite_facebook"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -396,9 +407,9 @@
                             android:layout_marginTop="10dp"
                             android:text="Facebook"
                             android:textColor="@color/white" />
-                    </com.rey.material.widget.LinearLayout>
+                    </LinearLayout>
 
-                    <com.rey.material.widget.LinearLayout
+                    <LinearLayout
                         android:id="@+id/invite_sms"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -432,9 +443,9 @@
                             android:textColor="@color/white" />
 
 
-                    </com.rey.material.widget.LinearLayout>
+                    </LinearLayout>
 
-                    <com.rey.material.widget.LinearLayout
+                    <LinearLayout
                         android:id="@+id/invite_more"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -464,7 +475,7 @@
                             android:layout_marginTop="10dp"
                             android:text="More"
                             android:textColor="@color/white" />
-                    </com.rey.material.widget.LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
 
