@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.R;
@@ -40,7 +43,7 @@ public class FollowFragmentCategoriesAdapter extends RecyclerView.Adapter<Follow
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
         final  Category mCategory =  mCategoriesList.get(position);
-        ImageView catPoster = holder.categoryPoster;
+        RoundedImageView catPoster = holder.categoryPoster;
         TextView catTitle = holder.categoryTitle;
 
         // load image from api
@@ -51,7 +54,7 @@ public class FollowFragmentCategoriesAdapter extends RecyclerView.Adapter<Follow
             String urlString = mCategory.getCategoriesImage();
 
             if(urlString!=null){
-                catPoster.setImageURI(Uri.parse(urlString));
+                Picasso.with(context).load(urlString).placeholder(R.drawable.no_image).error(R.drawable.no_image).into(catPoster);
             }
 
 
@@ -80,7 +83,7 @@ public class FollowFragmentCategoriesAdapter extends RecyclerView.Adapter<Follow
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        SimpleDraweeView categoryPoster;
+        RoundedImageView categoryPoster;
         TextView categoryTitle;
 
         MyViewHolder(View itemView) {

@@ -8,15 +8,19 @@
     android:layout_height="wrap_content">
 
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:layout_width="130dp"
-        app:roundedCornerRadius="10dp"
-        app:placeholderImage="@drawable/no_image"
-        app:placeholderImageScaleType="fitXY"
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/follow_cate_imageview"
-        android:scaleType="fitXY"
+        android:layout_width="130dp"
         android:alpha="0.8"
-        android:layout_height="70dp" />
+        android:layout_height="70dp"
+        android:src="@drawable/no_image"
+        android:scaleType="fitXY"
+        app:riv_corner_radius="4dp"
+        app:riv_oval="false" />
+
+
+
 
     <TextView
         android:id="@+id/follow_cate_title"

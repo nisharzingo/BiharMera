@@ -3,8 +3,6 @@ package tv.merabihar.app.merabihar.Adapter;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DownloadManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -196,23 +194,23 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                             holder.mContentDesc.setText(""+contentDesc);
 
                             int countLine= holder.mContentDesc.getLineHeight();
-                            System.out.println("LineCount " + countLine);
+//                            System.out.println("LineCount " + countLine);
                             if (countLine>=25){
                                 holder.mMore.setVisibility(View.VISIBLE);
                             }
                             // holder.mProfileName.setText(""+createdBy);
+
 
                             holder.mMore.setOnClickListener(new View.OnClickListener() {
 
                                 @Override
                                 public void onClick(View v) {
 
-
                                     holder.mContentDesc.setMaxLines(5);
                                     holder.mContentDesc.setText(""+contentDesc);
 
                                     int countLine= holder.mContentDesc.getLineHeight();
-                                    System.out.println("LineCount " + countLine);
+//                                    System.out.println("LineCount " + countLine);
                                     if (countLine>=50){
                                         holder.mMoreExtnd.setVisibility(View.GONE);
                                         holder.mMoreLine.setVisibility(View.VISIBLE);
@@ -238,7 +236,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                     holder.mContentDesc.setText(""+contentDesc);
 
                                     int countLine= holder.mContentDesc.getLineHeight();
-                                    System.out.println("LineCount " + countLine);
+//                                    System.out.println("LineCount " + countLine);
                                     if (countLine>=70){
                                         holder.mMoreExtnd.setVisibility(View.VISIBLE);
                                         holder.mMore.setVisibility(View.GONE);
@@ -548,13 +546,13 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                                         if(holder.mDislikedId.getText().toString()!=null&&!holder.mDislikedId.getText().toString().isEmpty()){
 
 
-                                                            //  updateLike(likes,holder.mLike,holder.mLikesCount,Integer.parseInt(holder.mDislikedId.getText().toString()),holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
+                                                            // updateLike(likes,holder.mLike,holder.mLikesCount,Integer.parseInt(holder.mDislikedId.getText().toString()),holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
                                                         }
                                                     }
                                                     else
                                                     {
 
-                                                        postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
+                                                        postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId, holder.mLikeLayout);
                                                     }
 
 
@@ -626,7 +624,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 }
                             });*/
 
-                            holder.mLike.setOnClickListener(new View.OnClickListener() {
+                            holder.mLikeLayout.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
 
@@ -634,7 +632,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                                         if(profileId!=0){
 
-                                            holder.mLike.setEnabled(false);
+                                            holder.mLikeLayout.setEnabled(false);
                                             Likes likes = new Likes();
                                             likes.setContentId(contents.getContentId());
                                             likes.setProfileId(profileId);
@@ -645,13 +643,14 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                                 if(holder.mDislikedId.getText().toString()!=null&&!holder.mDislikedId.getText().toString().isEmpty()){
 
 
-                                                    updateLike(likes,holder.mLike,holder.mLikesCount,Integer.parseInt(holder.mDislikedId.getText().toString()),holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
+                                                    updateLike(likes,holder.mLike,holder.mLikesCount,Integer.parseInt(holder.mDislikedId.getText().toString()),holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId,holder.mLikeLayout,holder.mDislikeLayout);
+
                                                 }
                                             }
                                             else
                                             {
 
-                                                postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
+                                                postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId,holder.mLikeLayout);
                                             }
 
 
@@ -665,7 +664,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                         }else {
                                             new AlertDialog.Builder(context)
                                                     .setMessage("Please login/Signup to Like the Story")
-                                                    .setCancelable(false)
+                                                    .setCancelable(true)
                                                     .setPositiveButton("Login", new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
 
@@ -693,7 +692,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 }
                             });
 
-                            holder.mDislike.setOnClickListener(new View.OnClickListener() {
+                            holder.mDislikeLayout.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
 
@@ -701,7 +700,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                                         if(profileId!=0){
 
-                                            holder.mDislike.setEnabled(false);
+                                            holder.mDislikeLayout.setEnabled(false);
                                             Likes likes = new Likes();
                                             likes.setContentId(contents.getContentId());
                                             likes.setProfileId(profileId);
@@ -712,13 +711,13 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                                 if(holder.mLikedId.getText().toString()!=null&&!holder.mLikedId.getText().toString().isEmpty()){
 
 
-                                                    updatedisLike(likes,holder.mDislike,holder.mDislikesCount,Integer.parseInt(holder.mLikedId.getText().toString()),holder.mLike,holder.mLikedId,holder.mLikesCount,holder.mDislikedId);
+                                                    updatedisLike(likes,holder.mDislike,holder.mDislikesCount,Integer.parseInt(holder.mLikedId.getText().toString()),holder.mLike,holder.mLikedId,holder.mLikesCount,holder.mDislikedId, holder.mDislikeLayout,holder.mLikeLayout);
                                                 }
                                             }
                                             else
                                             {
 
-                                                postDislike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
+                                                postDislike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId, holder.mDislikeLayout, holder.mLikeLayout);
                                             }
 
 
@@ -732,7 +731,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                         }else {
                                             new AlertDialog.Builder(context)
                                                     .setMessage("Please login/Signup to Like the Story")
-                                                    .setCancelable(false)
+                                                    .setCancelable(true)
                                                     .setPositiveButton("Login", new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
 
@@ -785,7 +784,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                                             new AlertDialog.Builder(context)
                                                     .setMessage("Please login/Signup to Like the Story")
-                                                    .setCancelable(false)
+                                                    .setCancelable(true)
                                                     .setPositiveButton("Login", new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
 
@@ -817,7 +816,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                             holder.mProfileContent.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-
                                     Intent intent = new Intent(context, ProfileScreen.class);
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable("Profile",contents.getProfile());
@@ -953,7 +951,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                             });
 
 
-                            holder.mComment.setOnClickListener(new View.OnClickListener() {
+                            holder.mCommentLayout.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
 
@@ -1025,7 +1023,10 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         FrameLayout mContentDetail;
         TextView mMore,mLess,mMoreExtnd,mMoreLine;
 
-        ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare,mDownLoad;
+        ImageView mMoreShare,mLike,mDislike,mComment;
+
+        LinearLayout mWhatsapp,mDownLoad,mShare, mLikeLayout, mDislikeLayout, mCommentLayout ;
+
 
 
         public BlogViewHolder(View view) {
@@ -1051,13 +1052,16 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
             mLess = (TextView) view.findViewById(R.id.read_less);
             mContentDetail = (FrameLayout) view.findViewById(R.id.content_detail);
             mProfileContent = (LinearLayout) view.findViewById(R.id.profile_lay_content);
+            mLikeLayout = (LinearLayout) view.findViewById(R.id.like_ll);
+            mDislikeLayout = (LinearLayout) view.findViewById(R.id.disLike_ll);
+            mCommentLayout = (LinearLayout) view.findViewById(R.id.comment_ll);
             mLike = (ImageView) view.findViewById(R.id.likes_image);
             mDislike = (ImageView) view.findViewById(R.id.unlikes_image);
             mComment = (ImageView) view.findViewById(R.id.comments_image);
-            mWhatsapp = (ImageView) view.findViewById(R.id.whatsapp_share);
-            mShare = (ImageView) view.findViewById(R.id.share_image);
+            mWhatsapp = (LinearLayout) view.findViewById(R.id.whatsapp_share);
+            mShare = (LinearLayout) view.findViewById(R.id.share_image);
             mMoreShare = (ImageView) view.findViewById(R.id.more_icons);
-            mDownLoad = (ImageView) view.findViewById(R.id.download_screen);
+            mDownLoad = (LinearLayout) view.findViewById(R.id.download_screen);
 
 
 
@@ -1228,12 +1232,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         return duration;
     }
 
-    private void postLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
-
-        final ProgressDialog dialog = new ProgressDialog(context);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
+    private void postLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId,final LinearLayout likeLyout) {
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -1244,12 +1243,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     @Override
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
-                        System.out.println(response.code());
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
-
+//                        System.out.println(response.code());
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
 
@@ -1268,11 +1262,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                         }
                         else
                         {
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-                            like.setEnabled(false);
+                            likeLyout.setEnabled(false);
 
                         }
                     }
@@ -1280,12 +1270,8 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
                         Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
+                        likeLyout.setEnabled(true);
 
                     }
                 });
@@ -1293,14 +1279,9 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         });
     }
 
-    private void updateLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
+    private void updateLike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout likeLayout, final LinearLayout mDislikeLayout) {
 
         likes.setLikeId(dislikedId);
-
-        final ProgressDialog dialog = new ProgressDialog(context);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -1312,11 +1293,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
                         System.out.println(response.code());
-
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -1338,27 +1314,22 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 dislikeCount.setText(""+(count-1));
                             }
 
+                            mDislikeLayout.setEnabled(true);
+
                         }
                         else
                         {
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-                            like.setEnabled(false);
+
+                            likeLayout.setEnabled(false);
 
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
+                        likeLayout.setEnabled(true);
 
                     }
                 });
@@ -1366,12 +1337,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         });
     }
 
-    private void updatedisLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
-
-        final ProgressDialog dialog = new ProgressDialog(context);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
+    private void updatedisLike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout dislikeLayout, final LinearLayout mLikeLayout) {
 
         likes.setLikeId(dislikedId);
 
@@ -1386,10 +1352,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                         System.out.println(response.code());
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
 
@@ -1410,27 +1372,19 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 dislikeCount.setText(""+(count-1));
                             }
 
+                            mLikeLayout.setEnabled(true);
+
                         }
                         else
                         {
-                            like.setEnabled(false);
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-
+                            dislikeLayout.setEnabled(false);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
-
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
                         Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
+                        dislikeLayout.setEnabled(true);
 
                     }
                 });
@@ -1439,12 +1393,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
     }
 
 
-    private void postDislike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
-
-        final ProgressDialog dialog = new ProgressDialog(context);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
+    private void postDislike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout mDislikeLayout, final LinearLayout mLikeLayout) {
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -1456,18 +1405,10 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
                         System.out.println(response.code());
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
 
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
                             dislike.setImageResource(R.drawable.unliked_icons);
                             like.setImageResource(R.drawable.non_like);
 
@@ -1480,28 +1421,21 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 dislikeCount.setText(""+(count+1));
                             }
 
+                            mLikeLayout.setEnabled(true);
 
                         }
                         else
                         {
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-                            dislike.setEnabled(false);
+
+                            mDislikeLayout.setEnabled(true);
 
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
-
                         Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
+                        mDislikeLayout.setEnabled(true);
 
                     }
                 });
@@ -1662,11 +1596,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
     private void profileFollow(final ProfileFollowMapping intrst, final MyTextView_Lato_Regular tv) {
 
 
-        final ProgressDialog dialog = new ProgressDialog(context);
-        dialog.setMessage("Following");
-        dialog.setCancelable(false);
-        dialog.show();
-
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
@@ -1677,11 +1606,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     public void onResponse(Call<ProfileFollowMapping> call, Response<ProfileFollowMapping> response) {
 
                         System.out.println(response.code());
-
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -1700,10 +1624,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                     @Override
                     public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
                         Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         tv.setEnabled(true);
                     }

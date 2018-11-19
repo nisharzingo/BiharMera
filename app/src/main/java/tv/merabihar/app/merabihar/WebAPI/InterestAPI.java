@@ -19,4 +19,5 @@ public interface InterestAPI {
 
     @GET("interest")
     Call<ArrayList<Interest>> getInterest();
+
 }

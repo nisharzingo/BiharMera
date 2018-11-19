@@ -8,20 +8,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
@@ -70,15 +63,15 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
         }
 
-        SimpleDraweeView iv1 = holder.iv1 ;
-        SimpleDraweeView iv2 = holder.iv2 ;
-        SimpleDraweeView iv3 = holder.iv3 ;  // large imageview
-        SimpleDraweeView iv4 = holder.iv4 ;
-        SimpleDraweeView iv5 = holder.iv5 ;
-        SimpleDraweeView iv6 = holder.iv6 ;
-        SimpleDraweeView iv7 = holder.iv7 ;
-        SimpleDraweeView iv8 = holder.iv8 ;
-        SimpleDraweeView iv9 = holder.iv9 ;
+        final ImageView iv1 = holder.iv1 ;
+        ImageView iv2 = holder.iv2 ;
+        ImageView iv3 = holder.iv3 ;  // large imageview
+        ImageView iv4 = holder.iv4 ;
+        ImageView iv5 = holder.iv5 ;
+        ImageView iv6 = holder.iv6 ;
+        ImageView iv7 = holder.iv7 ;
+        ImageView iv8 = holder.iv8 ;
+        ImageView iv9 = holder.iv9 ;
 
 
         if(content!=null&&content.size()!=0&&content.size()==9){
@@ -89,10 +82,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                 holder.ivp1.setVisibility(View.VISIBLE);
 
                 if(content.get(0).getContentURL()!=null&&!content.get(0).getContentURL().isEmpty()){
-                    String img = "https://img.youtube.com/vi/"+content.get(0).getContentURL()+"/0.jpg";
+                    final String img = "https://img.youtube.com/vi/"+content.get(0).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
-                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(iv1);
+
 
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
@@ -108,13 +100,15 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                                                 .error(R.drawable.no_image))
                                         .into(holder.iv1);
 
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+
+
                             }
 
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
-                                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+                                Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                        error(R.drawable.no_image).into(iv1);
+
                             }
 
                             @Override
@@ -133,7 +127,12 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     String urlString1 = content.get(0).getContentImage().get(0).getImages();
 
                     if(urlString1!=null){
-                        iv1.setImageURI(Uri.parse(urlString1));
+                        Picasso.with(context)
+                                .load(Uri.parse(urlString1))
+                                .error(R.drawable.no_image)
+                                .placeholder(R.drawable.no_image)
+                                .into(holder.iv1);
+//                        iv1.setImageURI(Uri.parse(urlString1));
                     }
 
                 }
@@ -145,10 +144,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                 holder.ivp2.setVisibility(View.VISIBLE);
 
                 if(content.get(1).getContentURL()!=null&&!content.get(1).getContentURL().isEmpty()){
-                    String img = "https://img.youtube.com/vi/"+content.get(1).getContentURL()+"/0.jpg";
+                    final String img = "https://img.youtube.com/vi/"+content.get(1).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
-                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv2);
+
 
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
@@ -169,8 +167,11 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
-                                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+
+                                Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                        error(R.drawable.no_image).into(holder.iv2);
+
+
                             }
 
                             @Override
@@ -201,10 +202,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                 holder.ivp3.setVisibility(View.VISIBLE);
 
                 if(content.get(2).getContentURL()!=null&&!content.get(2).getContentURL().isEmpty()){
-                    String img = "https://img.youtube.com/vi/"+content.get(2).getContentURL()+"/0.jpg";
+                    final String img = "https://img.youtube.com/vi/"+content.get(2).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
-                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv3);
 
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
@@ -220,13 +219,15 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                                                 .error(R.drawable.no_image))
                                         .into(holder.iv3);
 
-//                mCustomLoader.setVisibility(View.INVISIBLE);
                             }
 
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
-                                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+
+                                Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                        error(R.drawable.no_image).into(holder.iv3);
+
+
                             }
 
                             @Override
@@ -257,10 +258,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                 holder.ivp4.setVisibility(View.VISIBLE);
 
                 if(content.get(3).getContentURL()!=null&&!content.get(3).getContentURL().isEmpty()){
-                    String img = "https://img.youtube.com/vi/"+content.get(3).getContentURL()+"/0.jpg";
+                    final String img = "https://img.youtube.com/vi/"+content.get(3).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
-                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv4);
 
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
@@ -281,8 +280,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
-                                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+                                Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                        error(R.drawable.no_image).into(holder.iv4);
+
                             }
 
                             @Override
@@ -313,10 +313,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                 holder.ivp5.setVisibility(View.VISIBLE);
 
                 if(content.get(4).getContentURL()!=null&&!content.get(4).getContentURL().isEmpty()){
-                    String img = "https://img.youtube.com/vi/"+content.get(4).getContentURL()+"/0.jpg";
+                    final String img = "https://img.youtube.com/vi/"+content.get(4).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
-                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv5);
+
 
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
@@ -337,8 +336,11 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
-                                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+
+                                Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                        error(R.drawable.no_image).into(holder.iv5);
+
+
                             }
 
                             @Override
@@ -369,10 +371,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                 holder.ivp6.setVisibility(View.VISIBLE);
 
                 if(content.get(5).getContentURL()!=null&&!content.get(5).getContentURL().isEmpty()){
-                    String img = "https://img.youtube.com/vi/"+content.get(5).getContentURL()+"/0.jpg";
+                    final String img = "https://img.youtube.com/vi/"+content.get(5).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
-                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv6);
+
 
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
@@ -393,8 +394,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
-                                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+                                Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                        error(R.drawable.no_image).into(holder.iv6);
                             }
 
                             @Override
@@ -425,10 +426,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                 holder.ivp7.setVisibility(View.VISIBLE);
 
                 if(content.get(6).getContentURL()!=null&&!content.get(6).getContentURL().isEmpty()){
-                    String img = "https://img.youtube.com/vi/"+content.get(6).getContentURL()+"/0.jpg";
+                    final String img = "https://img.youtube.com/vi/"+content.get(6).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
-                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv7);
+
 
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
@@ -449,8 +449,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
-                                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+                                Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                        error(R.drawable.no_image).into(holder.iv7);
                             }
 
                             @Override
@@ -481,10 +481,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                 holder.ivp8.setVisibility(View.VISIBLE);
 
                 if(content.get(7).getContentURL()!=null&&!content.get(7).getContentURL().isEmpty()){
-                    String img = "https://img.youtube.com/vi/"+content.get(7).getContentURL()+"/0.jpg";
+                    final String img = "https://img.youtube.com/vi/"+content.get(7).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
-                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv8);
+
 
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
@@ -505,8 +504,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
-                                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+                                Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                        error(R.drawable.no_image).into(holder.iv8);
                             }
 
                             @Override
@@ -537,10 +536,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                 holder.ivp9.setVisibility(View.VISIBLE);
 
                 if(content.get(8).getContentURL()!=null&&!content.get(8).getContentURL().isEmpty()){
-                    String img = "https://img.youtube.com/vi/"+content.get(8).getContentURL()+"/0.jpg";
+                    final String img = "https://img.youtube.com/vi/"+content.get(8).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
-                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv9);
+
 
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
@@ -561,8 +559,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
-                                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+                                Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                        error(R.drawable.no_image).into(holder.iv9);
                             }
 
                             @Override
@@ -793,7 +791,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        SimpleDraweeView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9,ivp1, ivp2, ivp3, ivp4, ivp5, ivp6, ivp7, ivp8, ivp9 ;
+        ImageView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9,ivp1, ivp2, ivp3, ivp4, ivp5, ivp6, ivp7, ivp8, ivp9 ;
 
         MyViewHolder(View itemView) {
             super(itemView);

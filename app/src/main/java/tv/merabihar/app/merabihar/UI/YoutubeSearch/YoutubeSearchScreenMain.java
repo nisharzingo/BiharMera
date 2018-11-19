@@ -35,7 +35,7 @@ public class YoutubeSearchScreenMain extends AppCompatActivity {
         mToolbar = findViewById(R.id.youtube_search_toolbar);
         mSearchView =(MaterialSearchView) findViewById(R.id.youtube_search_material_search_view);
         mYoutubeContentLayout = findViewById(R.id.youtube_search_contents);
-        Fresco.initialize(this);
+        Fresco.initialize(this); // No need to initialize if it was already initialized somewhere in application
         mSearchView.setVoiceSearch(true);  // enabling the voice search
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -49,7 +49,7 @@ public class YoutubeSearchScreenMain extends AppCompatActivity {
 
 
 
-        // Running default youtube screen on seperate thread
+        // Running default youtube screen on separate thread
         Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override

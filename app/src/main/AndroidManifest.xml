@@ -35,6 +35,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemes">
+
         <activity android:name=".UI.Activity.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,6 +43,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".UI.Activity.SlideOptionScreen" />
         <activity
             android:name=".UI.Activity.LoginScreen"
@@ -143,14 +145,14 @@
         <activity android:name=".UI.Activity.ContentListScreen" />
         <activity android:name=".UI.MainTabHostScreens.TabHomeHostScreen" />
         <activity android:name=".UI.MainTabHostScreens.TabPostMediaActivity" />
-        <activity android:name=".UI.Activity.Influencer.WithdrawMoney"></activity>
+        <activity android:name=".UI.Activity.Influencer.WithdrawMoney" />
         <activity android:name=".UI.MainTabHostScreens.TabVideoNewDesign2" />
         <activity
             android:name=".UI.MainTabHostScreens.TabSearchActivity2"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UI.Activity.Influencer.Records" />
-        <activity android:name=".UI.Activity.TimeWatchedScreen"></activity>
+        <activity android:name=".UI.Activity.TimeWatchedScreen" />
 
         <service android:name=".Service.BackgroundNotificationService" />
         <service android:name=".Service.VideoWatchedService" />
@@ -159,8 +161,12 @@
         <activity
             android:name=".UI.Activity.ChangePasswordScreen"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UI.Activity.WatchHistroyScreen"
-            android:theme="@style/AppThemes"></activity>
+        <activity
+            android:name=".UI.Activity.WatchHistroyScreen"
+            android:theme="@style/AppThemes" />
+        <activity android:name=".UI.YoutubeSearch.YoutubeSearchScreenMain">
+
+        </activity>
     </application>
 
 </manifest>

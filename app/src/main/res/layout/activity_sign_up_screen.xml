@@ -1,376 +1,387 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context=".UI.Activity.SignUpScreen">
+    android:id="@+id/signup_main_screen"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:orientation="vertical">
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:context=".UI.Activity.SignUpScreen">
 
-        <TextView
-            android:fontFamily="@fonts/sfnsdisplay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:text="नमस्ते बिहार!"
-            android:textColor="#d11e48"
-            android:textSize="28sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@fonts/maven_pro_regular"
-            android:text="Please sign up to explore."
-            android:textColor="#444444"
-            android:textSize="18dp" />
-
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/nameInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:fontFamily="@fonts/roboto_light"
-            android:textColorHint="@color/text_grey"
-            android:hint="Full Name"
-
-            >
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/full_name"
-                android:maxLength="50"
-                android:fontFamily="@fonts/roboto_light"
-                android:inputType="text"
-                style="@style/fp_editText" />
-        </android.support.design.widget.TextInputLayout>
-
-
-        <!--<EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:background="#00000000"
-            android:fontFamily="@fonts/roboto_light"
-            android:hint="Full Name"
-
-            android:inputType="text"
-            android:textColor="#000000"
-            android:textColorHint="@color/text_grey" />
--->
-       <!-- <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />-->
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:id="@+id/radio_group_gender"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:gravity="center">
-            <RadioButton
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:button="@drawable/editext_border"
-                android:background="@drawable/radio_btn_selector"
-                android:textColor="@drawable/rbtn_textcolor_selector"
-                android:text="Male"
-                android:id="@+id/sign_up_male"
-                android:textSize="16sp"
-                android:gravity="center"
-                />
-            <RadioButton
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:button="@drawable/editext_border"
-                android:background="@drawable/radio_btn_selector"
-                android:textColor="@drawable/rbtn_textcolor_selector"
-                android:text="Female"
-                android:id="@+id/sign_up_female"
-                android:textSize="16sp"
-                android:gravity="center"/>
-            <RadioButton
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:button="@drawable/editext_border"
-                android:background="@drawable/radio_btn_selector"
-                android:textColor="@drawable/rbtn_textcolor_selector"
-                android:text="Other"
-                android:id="@+id/sign_up_other"
-                android:textSize="16sp"
-                android:gravity="center"
-
-                />
-        </RadioGroup>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/emailInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@fonts/roboto_light"
-            android:textColorHint="@color/text_grey"
-            android:hint="Email address"
-
-            >
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/email"
-                android:maxLength="50"
-                android:fontFamily="@fonts/roboto_light"
-                android:inputType="textEmailAddress"
-                style="@style/fp_editText" />
-        </android.support.design.widget.TextInputLayout>
-
-
-      <!--  <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="#00000000"
-            android:fontFamily="@fonts/roboto_light"
-            android:hint="Email address"
-
-            android:inputType="textEmailAddress"
-            android:textColor="#000000"
-            android:textColorHint="@color/text_grey" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />-->
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/mobile_numberInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@fonts/roboto_light"
-            android:textColorHint="@color/text_grey"
-            android:hint="Mobile Number"
-
-            >
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/mobile_number"
-                android:maxLength="50"
-                android:fontFamily="@fonts/roboto_light"
-                android:inputType="number"
-                style="@style/fp_editText" />
-        </android.support.design.widget.TextInputLayout>
-
-
-       <!-- <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="#00000000"
-            android:fontFamily="@fonts/roboto_light"
-
-
-            android:inputType="number"
-            android:textColor="#000000"
-            android:textColorHint="@color/text_grey" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />-->
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/passwordInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@fonts/roboto_light"
-            app:passwordToggleEnabled="true"
-            android:textColorHint="@color/text_grey"
-            android:hint="Password"
-
-            >
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/password"
-                android:maxLength="50"
-                android:fontFamily="@fonts/roboto_light"
-                android:inputType="textPassword"
-                style="@style/fp_editText" />
-        </android.support.design.widget.TextInputLayout>
-
-
-       <!-- <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="#00000000"
-            android:fontFamily="@fonts/roboto_light"
-            android:hint="Password"
-
-            android:inputType="textPassword"
-            android:textColor="#000000"
-            android:textColorHint="@color/text_grey" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />-->
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/cnfrmpasswordInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@fonts/roboto_light"
-            app:passwordToggleEnabled="true"
-            android:textColorHint="@color/text_grey"
-            android:hint="Confirm Password"
-
-            >
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/confirm_password"
-                android:maxLength="50"
-                android:fontFamily="@fonts/roboto_light"
-                android:inputType="textPassword"
-                style="@style/fp_editText" />
-        </android.support.design.widget.TextInputLayout>
-
-
-        <!--<EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="#00000000"
-            android:fontFamily="@fonts/roboto_light"
-            android:hint="Confirm Password"
-
-            android:inputType="textPassword"
-            android:textColor="#000000"
-            android:textColorHint="@color/text_grey"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />-->
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/referal_codeInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@fonts/roboto_light"
-
-            android:textColorHint="@color/text_grey"
-            android:hint="Referal Code(Optional)"
-
-            >
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/referal_code"
-                android:maxLength="50"
-                android:fontFamily="@fonts/roboto_light"
-                android:inputType="text"
-                style="@style/fp_editText" />
-        </android.support.design.widget.TextInputLayout>
-
-
-        <!--<EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="#00000000"
-            android:fontFamily="@fonts/roboto_light"
-            android:hint="Referal Code(Optional)"
-
-            android:inputType="text"
-            android:textColor="#000000"
-            android:textColorHint="@color/text_grey" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="9dp"
-            android:background="#b9b9b9" />
--->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <CheckBox
-                android:textSize="@dimen/veryTinyFont"
-                android:textColor="@color/grey_charcoal"
-                android:textColorLink="@color/blue_express_delivery"
-                android:id="@+id/termsCondition"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:orientation="vertical">
 
+            <TextView
+                android:fontFamily="@fonts/sfnsdisplay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8.0dip"
-
-                />
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="नमस्ते बिहार!"
+                android:textColor="#d11e48"
+                android:textSize="28sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:id="@+id/termsConditionText"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:textColor="@color/colorPrimary"
-                android:backgroundTint="@color/colorAccent"
                 android:layout_gravity="center"
-                android:text="@string/terms"/>
+                android:layout_marginTop="15dp"
+                android:fontFamily="@fonts/maven_pro_regular"
+                android:text="Please sign up to explore."
+                android:textColor="#444444"
+                android:textSize="18dp" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/nameInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@fonts/roboto_light"
+                android:textColorHint="@color/text_grey"
+                android:hint="Full Name"
+
+                >
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/full_name"
+                    android:maxLength="50"
+                    android:fontFamily="@fonts/roboto_light"
+                    android:inputType="text"
+                    style="@style/fp_editText" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!--<EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:background="#00000000"
+                android:fontFamily="@fonts/roboto_light"
+                android:hint="Full Name"
+
+                android:inputType="text"
+                android:textColor="#000000"
+                android:textColorHint="@color/text_grey" />
+    -->
+            <!-- <View
+                 android:layout_width="match_parent"
+                 android:layout_height="2dp"
+                 android:layout_marginTop="9dp"
+                 android:background="#b9b9b9" />-->
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/radio_group_gender"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center">
+                <RadioButton
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:button="@drawable/editext_border"
+                    android:background="@drawable/radio_btn_selector"
+                    android:textColor="@drawable/rbtn_textcolor_selector"
+                    android:text="Male"
+                    android:id="@+id/sign_up_male"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    />
+                <RadioButton
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:button="@drawable/editext_border"
+                    android:background="@drawable/radio_btn_selector"
+                    android:textColor="@drawable/rbtn_textcolor_selector"
+                    android:text="Female"
+                    android:id="@+id/sign_up_female"
+                    android:textSize="16sp"
+                    android:gravity="center"/>
+                <RadioButton
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:button="@drawable/editext_border"
+                    android:background="@drawable/radio_btn_selector"
+                    android:textColor="@drawable/rbtn_textcolor_selector"
+                    android:text="Other"
+                    android:id="@+id/sign_up_other"
+                    android:textSize="16sp"
+                    android:gravity="center"
+
+                    />
+            </RadioGroup>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/emailInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@fonts/roboto_light"
+                android:textColorHint="@color/text_grey"
+                android:hint="Email address"
+
+                >
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/email"
+                    android:maxLength="50"
+                    android:fontFamily="@fonts/roboto_light"
+                    android:inputType="textEmailAddress"
+                    style="@style/fp_editText" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!--  <EditText
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="30dp"
+                  android:background="#00000000"
+                  android:fontFamily="@fonts/roboto_light"
+                  android:hint="Email address"
+
+                  android:inputType="textEmailAddress"
+                  android:textColor="#000000"
+                  android:textColorHint="@color/text_grey" />
+
+              <View
+                  android:layout_width="match_parent"
+                  android:layout_height="2dp"
+                  android:layout_marginTop="9dp"
+                  android:background="#b9b9b9" />-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/mobile_numberInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@fonts/roboto_light"
+                android:textColorHint="@color/text_grey"
+                android:hint="Mobile Number"
+
+                >
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/mobile_number"
+                    android:maxLength="50"
+                    android:fontFamily="@fonts/roboto_light"
+                    android:inputType="number"
+                    style="@style/fp_editText" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!-- <EditText
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="30dp"
+                 android:background="#00000000"
+                 android:fontFamily="@fonts/roboto_light"
+
+
+                 android:inputType="number"
+                 android:textColor="#000000"
+                 android:textColorHint="@color/text_grey" />
+
+             <View
+                 android:layout_width="match_parent"
+                 android:layout_height="2dp"
+                 android:layout_marginTop="9dp"
+                 android:background="#b9b9b9" />-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/passwordInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@fonts/roboto_light"
+                app:passwordToggleEnabled="true"
+                android:textColorHint="@color/text_grey"
+                android:hint="Password"
+
+                >
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/password"
+                    android:maxLength="50"
+                    android:fontFamily="@fonts/roboto_light"
+                    android:inputType="textPassword"
+                    style="@style/fp_editText" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!-- <EditText
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="30dp"
+                 android:background="#00000000"
+                 android:fontFamily="@fonts/roboto_light"
+                 android:hint="Password"
+
+                 android:inputType="textPassword"
+                 android:textColor="#000000"
+                 android:textColorHint="@color/text_grey" />
+
+             <View
+                 android:layout_width="match_parent"
+                 android:layout_height="2dp"
+                 android:layout_marginTop="9dp"
+                 android:background="#b9b9b9" />-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/cnfrmpasswordInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@fonts/roboto_light"
+                app:passwordToggleEnabled="true"
+                android:textColorHint="@color/text_grey"
+                android:hint="Confirm Password"
+
+                >
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/confirm_password"
+                    android:maxLength="50"
+                    android:fontFamily="@fonts/roboto_light"
+                    android:inputType="textPassword"
+                    style="@style/fp_editText" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!--<EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="#00000000"
+                android:fontFamily="@fonts/roboto_light"
+                android:hint="Confirm Password"
+
+                android:inputType="textPassword"
+                android:textColor="#000000"
+                android:textColorHint="@color/text_grey"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="9dp"
+                android:background="#b9b9b9" />-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/referal_codeInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@fonts/roboto_light"
+
+                android:textColorHint="@color/text_grey"
+                android:hint="Referal Code(Optional)"
+
+                >
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/referal_code"
+                    android:maxLength="50"
+                    android:fontFamily="@fonts/roboto_light"
+                    android:inputType="text"
+                    style="@style/fp_editText" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!--<EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="#00000000"
+                android:fontFamily="@fonts/roboto_light"
+                android:hint="Referal Code(Optional)"
+
+                android:inputType="text"
+                android:textColor="#000000"
+                android:textColorHint="@color/text_grey" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="9dp"
+                android:background="#b9b9b9" />
+    -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <CheckBox
+                    android:textSize="@dimen/veryTinyFont"
+                    android:textColor="@color/grey_charcoal"
+                    android:textColorLink="@color/blue_express_delivery"
+                    android:id="@+id/termsCondition"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8.0dip"
+
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:id="@+id/termsConditionText"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_gravity="center"
+                    android:text="@string/terms"/>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/createAccount"
+                android:layout_marginTop="30dp">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/circle"
+                    android:tint="@color/colorPrimary"/>
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="22dp"
+                    android:src="@drawable/whitearrow"/>
+            </FrameLayout>
+
+            <TextView
+                android:fontFamily="@fonts/VarelaRound-Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/login_screen"
+                android:text="Login, if you’ve an Account!"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:layout_centerHorizontal="true"
+                />
         </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/createAccount"
-            android:layout_marginTop="30dp">
+    </ScrollView>
 
-            <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/circle"
-                android:tint="@color/colorPrimary"/>
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="22dp"
-                android:src="@drawable/whitearrow"/>
-        </FrameLayout>
 
-        <TextView
-            android:fontFamily="@fonts/VarelaRound-Regular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:id="@+id/login_screen"
-            android:text="Login, if you’ve an Account!"
-            android:textSize="20sp"
-            android:textColor="@color/colorPrimary"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_centerHorizontal="true"
-            />
-    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
 
-</ScrollView>
+

@@ -24,26 +24,24 @@
                 android:layout_height="match_parent"
                 android:id="@+id/vf1"
                 android:layout_weight="1">
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                    app:placeholderImage="@drawable/no_image"
-                    app:placeholderImageScaleType="fitXY"
+                    android:src="@drawable/no_image"
                     android:id="@+id/follow_frag_img_view1"
                     >
 
-                </com.facebook.drawee.view.SimpleDraweeView>
+                </ImageView>
 
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="25dp"
                     android:layout_margin="2dp"
                     android:scaleType="fitXY"
                     android:visibility="gone"
-                    app:placeholderImage="@drawable/video_insta"
+                    android:src="@drawable/video_insta"
                     android:layout_gravity="end"
-                    app:placeholderImageScaleType="fitXY"
                     android:id="@+id/videoicon1"
                     android:layout_height="25dp" />
             </FrameLayout>
@@ -52,27 +50,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
-                <com.facebook.drawee.view.SimpleDraweeView
+
+                <ImageView
                     android:layout_width="match_parent"
                     android:id="@+id/follow_frag_img_view2"
                     android:scaleType="fitXY"
-                    app:placeholderImage="@drawable/no_image"
-                    app:placeholderImageScaleType="fitXY"
+                    android:src="@drawable/no_image"
                     android:layout_height="match_parent"
-
                     android:layout_marginTop="3dp">
 
-                </com.facebook.drawee.view.SimpleDraweeView>
+                </ImageView>
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="25dp"
                     android:layout_margin="2dp"
                     android:scaleType="fitXY"
                     android:id="@+id/videoicon2"
                     android:visibility="gone"
-                    app:placeholderImage="@drawable/video_insta"
+                    android:src="@drawable/video_insta"
                     android:layout_gravity="end"
-                    app:placeholderImageScaleType="fitXY"
                     android:layout_height="25dp" />
             </FrameLayout>
 
@@ -89,26 +85,23 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:layout_width="match_parent"
                 android:id="@+id/follow_frag_img_view3"
                 android:layout_height="match_parent"
+                android:src="@drawable/no_image"
                 android:scaleType="fitXY"
-
-                app:placeholderImage="@drawable/no_image"
-                app:placeholderImageScaleType="fitXY"
                 android:orientation="vertical">
-            </com.facebook.drawee.view.SimpleDraweeView>
+            </ImageView>
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:layout_width="25dp"
                 android:layout_margin="5dp"
                 android:scaleType="fitXY"
                 android:id="@+id/videoicon3"
                 android:visibility="gone"
-                app:placeholderImage="@drawable/video_insta"
+                android:src="@drawable/video_insta"
                 android:layout_gravity="end"
-                app:placeholderImageScaleType="fitXY"
                 android:layout_height="25dp" />
         </FrameLayout>
 
@@ -135,25 +128,23 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_weight="1"
-                    app:placeholderImage="@drawable/no_image"
-                    app:placeholderImageScaleType="fitXY"
+                    android:src="@drawable/no_image"
                     android:scaleType="fitXY"
                     android:id="@+id/follow_frag_img_view4"
                     android:layout_marginRight="3dp"
                     android:layout_height="match_parent" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="25dp"
                     android:layout_margin="5dp"
                     android:scaleType="fitXY"
                     android:id="@+id/videoicon4"
                     android:visibility="gone"
-                    app:placeholderImage="@drawable/video_insta"
+                    android:src="@drawable/video_insta"
                     android:layout_gravity="end"
-                    app:placeholderImageScaleType="fitXY"
                     android:layout_height="25dp" />
             </FrameLayout>
 
@@ -165,10 +156,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_marginRight="3dp"
-                    app:placeholderImage="@drawable/no_image"
-                    app:placeholderImageScaleType="fitXY"
+                    android:src="@drawable/no_image"
                     android:id="@+id/follow_frag_img_view5"
                     android:layout_width="match_parent"
                     android:scaleType="fitXY"
@@ -176,15 +166,14 @@
 
                     android:layout_height="match_parent" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="25dp"
                     android:layout_margin="5dp"
                     android:scaleType="fitXY"
                     android:id="@+id/videoicon5"
                     android:visibility="gone"
-                    app:placeholderImage="@drawable/video_insta"
+                    android:src="@drawable/video_insta"
                     android:layout_gravity="end"
-                    app:placeholderImageScaleType="fitXY"
                     android:layout_height="25dp" />
             </FrameLayout>
 
@@ -195,24 +184,22 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="match_parent"
                     android:id="@+id/follow_frag_img_view6"
                     android:layout_weight="1"
                     android:scaleType="fitXY"
-                    app:placeholderImage="@drawable/no_image"
-                    app:placeholderImageScaleType="fitXY"
+                    android:src="@drawable/no_image"
                     android:layout_height="match_parent" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="25dp"
                     android:layout_margin="5dp"
                     android:scaleType="fitXY"
                     android:visibility="gone"
                     android:id="@+id/videoicon6"
-                    app:placeholderImage="@drawable/video_insta"
+                    android:src="@drawable/video_insta"
                     android:layout_gravity="end"
-                    app:placeholderImageScaleType="fitXY"
                     android:layout_height="25dp" />
 
             </FrameLayout>
@@ -232,25 +219,23 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:layout_width="match_parent"
 
+                <ImageView
+                    android:layout_width="match_parent"
                     android:scaleType="fitXY"
-                    app:placeholderImage="@drawable/no_image"
-                    app:placeholderImageScaleType="fitXY"
                     android:id="@+id/follow_frag_img_view7"
                     android:layout_marginRight="3dp"
+                    android:src="@drawable/no_image"
                     android:layout_height="match_parent" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="25dp"
                     android:layout_margin="5dp"
                     android:scaleType="fitXY"
                     android:visibility="gone"
                     android:id="@+id/videoicon7"
-                    app:placeholderImage="@drawable/video_insta"
+                    android:src="@drawable/video_insta"
                     android:layout_gravity="end"
-                    app:placeholderImageScaleType="fitXY"
                     android:layout_height="25dp" />
 
             </FrameLayout>
@@ -262,25 +247,23 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_marginRight="3dp"
                     android:id="@+id/follow_frag_img_view8"
                     android:scaleType="fitXY"
-                    app:placeholderImage="@drawable/no_image"
-                    app:placeholderImageScaleType="fitXY"
+                    android:src="@drawable/no_image"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
                     android:layout_height="match_parent" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="25dp"
                     android:layout_margin="5dp"
                     android:scaleType="fitXY"
                     android:visibility="gone"
                     android:id="@+id/videoicon8"
-                    app:placeholderImage="@drawable/video_insta"
                     android:layout_gravity="end"
-                    app:placeholderImageScaleType="fitXY"
+                    android:src="@drawable/video_insta"
                     android:layout_height="25dp" />
             </FrameLayout>
 
@@ -291,24 +274,22 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="match_parent"
                     android:id="@+id/follow_frag_img_view9"
                     android:scaleType="fitXY"
-                    app:placeholderImage="@drawable/no_image"
-                    app:placeholderImageScaleType="fitXY"
+                    android:src="@drawable/no_image"
                     android:layout_weight="1"
                     android:layout_height="match_parent" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:layout_width="25dp"
                     android:layout_margin="5dp"
                     android:visibility="gone"
                     android:scaleType="fitXY"
                     android:id="@+id/videoicon9"
-                    app:placeholderImage="@drawable/video_insta"
+                    android:src="@drawable/video_insta"
                     android:layout_gravity="end"
-                    app:placeholderImageScaleType="fitXY"
                     android:layout_height="25dp" />
             </FrameLayout>
 

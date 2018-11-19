@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:text="Mera Bihar"
         android:textColor="#ffffff"
+        android:textStyle="bold"
         android:textSize="28sp"
         android:paddingBottom="10dp"
         android:layout_marginLeft="45dp"
@@ -58,38 +59,55 @@
             android:backgroundTint="@android:color/white"/>
 
 
+            <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/signup_ract"
+                android:text="Sign Up"
+                android:id="@+id/signUp"
+                android:paddingTop="13dp"
+                android:paddingBottom="15dp"
+                android:textSize="18sp"
+                android:paddingRight="50dp"
+                android:paddingLeft="50dp"
+                android:gravity="bottom"
+                android:layout_gravity="center"
+                android:textColor="#ffffff"/>
+
+            <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mediatransperent_ract"
+                android:text="Login"
+                android:id="@+id/login"
+                android:paddingTop="13dp"
+                android:paddingBottom="15dp"
+                android:textSize="18sp"
+                android:paddingRight="58dp"
+                android:paddingLeft="58dp"
+                android:gravity="bottom"
+                android:layout_gravity="center"
+                android:layout_marginTop="70dp"
+                android:textColor="#ffffff"/>
 
 
         <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
+            android:id="@+id/login_user_asguest_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/signup_ract"
-            android:text="Sign Up"
-            android:id="@+id/signUp"
-            android:paddingTop="13dp"
-            android:paddingBottom="15dp"
-            android:textSize="18sp"
-            android:paddingRight="50dp"
-            android:paddingLeft="50dp"
-            android:gravity="bottom"
-            android:layout_gravity="center"
-            android:textColor="#ffffff"/>
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:text="Login as Guest"
+            android:textColor="#d9e43d"
+            android:textSize="18sp" />
 
-        <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/mediatransperent_ract"
-            android:text="Login"
-            android:id="@+id/login"
-            android:paddingTop="13dp"
-            android:paddingBottom="15dp"
-            android:textSize="18sp"
-            android:paddingRight="58dp"
-            android:paddingLeft="58dp"
-            android:gravity="bottom"
-            android:layout_gravity="center"
-            android:layout_marginTop="70dp"
-            android:textColor="#ffffff"/>
+
+
+
+
+
+
     </FrameLayout>
 
 

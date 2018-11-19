@@ -38,12 +38,14 @@
 
         </FrameLayout>
     </RelativeLayout>
+
     <TextView
         android:id="@+id/youtube_Search_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="20sp"/>
+
     <TextView
         android:visibility="gone"
         android:id="@+id/youtube_search_description"

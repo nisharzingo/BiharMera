@@ -12,6 +12,7 @@ import me.relex.circleindicator.CircleIndicator;
 import tv.merabihar.app.merabihar.Adapter.SlideAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabMainActivity;
 
 public class SlideOptionScreen extends AppCompatActivity {
 
@@ -20,7 +21,7 @@ public class SlideOptionScreen extends AppCompatActivity {
     private SlideAdapter a;
     private CircleIndicator indicator;
 
-    MyTextView_Roboto_Regular mSignUp,mLogin;
+    MyTextView_Roboto_Regular mSignUp,mLogin, mLoginAsGuest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +36,23 @@ public class SlideOptionScreen extends AppCompatActivity {
             indicator = (CircleIndicator)findViewById(R.id.indicator);
             mSignUp = (MyTextView_Roboto_Regular)findViewById(R.id.signUp);
             mLogin = (MyTextView_Roboto_Regular)findViewById(R.id.login);
+            mLoginAsGuest = (MyTextView_Roboto_Regular)findViewById(R.id.login_user_asguest_btn);
+
 
             a = new SlideAdapter(getSupportFragmentManager());
             viewPager.setAdapter(a);
             indicator.setViewPager(viewPager);
             a.registerDataSetObserver(indicator.getDataSetObserver());
+
+            mLoginAsGuest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent guestLogin = new Intent(SlideOptionScreen.this, TabMainActivity.class);
+                    startActivity(guestLogin);
+                    SlideOptionScreen.this.finish();
+                }
+            });
+
 
 
             mLogin.setOnClickListener(new View.OnClickListener() {

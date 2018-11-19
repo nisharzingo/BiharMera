@@ -27,6 +27,7 @@ import java.util.Date;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.Model.UserRole;
 import tv.merabihar.app.merabihar.R;
@@ -72,19 +73,24 @@ public class SignUpScreen extends AppCompatActivity {
             mCreateAccount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(Util.isNetworkAvailable(SignUpScreen.this)){
 
-                    if(mTerms.isChecked()){
-                        try {
-                            mCreateAccount.setEnabled(false);
-                            validate();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        mCreateAccount.setEnabled(false);
+
+                        if(mTerms.isChecked()){
+                            try {
+                                    validate();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            mCreateAccount.setEnabled(true);
+                            SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), "Agree Privacy Policy");
                         }
+
                     }else{
-
-                        Toast.makeText(SignUpScreen.this, "Agree Privacy Policy", Toast.LENGTH_SHORT).show();
+                        SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), "No internet connection");
                     }
-
                 }
             });
 
@@ -241,51 +247,61 @@ public class SignUpScreen extends AppCompatActivity {
             //Toast.makeText(this, "Please enter Name", Toast.LENGTH_SHORT).show();
             mName.requestFocus();
             mName.setError("Please enter Name");
+            mCreateAccount.setEnabled(true);
+
 
         }else if(!isValidMail(email)){
 
             //Toast.makeText(this, "Please enter Email", Toast.LENGTH_SHORT).show();
             mEmail.requestFocus();
             mEmail.setError("Please enter Email");
+            mCreateAccount.setEnabled(true);
 
         }else if(!isValidMobile(mobile)){
 
            // Toast.makeText(this, "Please enter Mobile", Toast.LENGTH_SHORT).show();
             mMobile.requestFocus();
             mMobile.setError("Please enter valid Mobile");
+            mCreateAccount.setEnabled(true);
 
         }else if(password==null||password.isEmpty()){
 
            // Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
             mPassword.requestFocus();
             mPassword.setError("Please enter Password");
+            mCreateAccount.setEnabled(true);
 
         }else if(password!=null&&!password.isEmpty()&&password.length()<8){
 
             // Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
             mPassword.requestFocus();
             mPassword.setError("Password length is 8");
+            mCreateAccount.setEnabled(true);
 
         }else if(password!=null&&!password.isEmpty()&&password.contains(" ")){
 
             // Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
             mPassword.requestFocus();
             mPassword.setError("Password should not contain space");
+            mCreateAccount.setEnabled(true);
 
         }else if(confirmPassword==null||confirmPassword.isEmpty()){
 
             //Toast.makeText(this, "Please enter Confirm Password", Toast.LENGTH_SHORT).show();
             mConfirmPassword.requestFocus();
             mConfirmPassword.setError("Please enter Confirm Password");
+            mCreateAccount.setEnabled(true);
 
         }else if(!password.equals(confirmPassword)){
 
             //Toast.makeText(this, "Password not match", Toast.LENGTH_SHORT).show();
             mConfirmPassword.requestFocus();
             mConfirmPassword.setError("Password is not matching");
+            mCreateAccount.setEnabled(true);
         }else if(!mMale.isChecked()&&!mFemale.isChecked()&&!mOther.isChecked()){
 
-            Toast.makeText(this, "Please select Gender", Toast.LENGTH_SHORT).show();
+            SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), "Please select Gender");
+            mCreateAccount.setEnabled(true);
 
         }else{
 
@@ -357,8 +373,6 @@ public class SignUpScreen extends AppCompatActivity {
     private void checkUserByReferalCode(final UserProfile userProfile,final String type,final String i){
 
 
-
-
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
@@ -425,14 +439,14 @@ public class SignUpScreen extends AppCompatActivity {
                         }
                         else
                         {
-
+                            mCreateAccount.setEnabled(true);
                             Toast.makeText(SignUpScreen.this,response.message(),Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserProfile> call, Throwable t) {
-
+                        mCreateAccount.setEnabled(true);
                         Log.e("TAG", t.toString());
                     }
                 });
@@ -479,7 +493,8 @@ public class SignUpScreen extends AppCompatActivity {
 
                                 if(type!=null&&!type.isEmpty()){
                                     if(type.equalsIgnoreCase("Google")){
-                                        Toast.makeText(SignUpScreen.this, "Email already registered with us", Toast.LENGTH_SHORT).show();
+                                        SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), "Email already registered with us");
+                                        mCreateAccount.setEnabled(true);
 
                                         /*if(mGoogleApiClient!=null){
 
@@ -501,14 +516,15 @@ public class SignUpScreen extends AppCompatActivity {
 
 
                                         }//lv-uw03*/
-
-                                        Toast.makeText(SignUpScreen.this, "Email Already Exists", Toast.LENGTH_SHORT).show();
+                                        mCreateAccount.setEnabled(true);
+                                        SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), "Email already registered with us");
                                     }else{
-                                        mEmail.setError("Email Already Exists");
+                                        SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), "Email already registered with us");
                                         mCreateAccount.setEnabled(true);
                                     }
                                 }else{
-                                    mEmail.setError("Email Already Exists");
+
+                                    SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), "Email already registered with us");
                                     mCreateAccount.setEnabled(true);
                                 }
 
@@ -522,13 +538,13 @@ public class SignUpScreen extends AppCompatActivity {
                                     checkUserByPhone(userProfile,type);
                                 }
 
-
                             }
                         }
                         else
                         {
-
-                            Toast.makeText(SignUpScreen.this,response.message(),Toast.LENGTH_SHORT).show();
+                            SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), response.message());
+//                            Toast.makeText(SignUpScreen.this,response.message(),Toast.LENGTH_SHORT).show();
+                            mCreateAccount.setEnabled(true);
                         }
 //                callGetStartEnd();
                     }
@@ -541,7 +557,7 @@ public class SignUpScreen extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-
+                        mCreateAccount.setEnabled(true);
                         Log.e("TAG", t.toString());
                     }
                 });
@@ -573,10 +589,10 @@ public class SignUpScreen extends AppCompatActivity {
                             ArrayList<UserProfile> responseProfile = response.body();
                             if(responseProfile != null && responseProfile.size()!=0 )
                             {
-
                                 if(type!=null&&!type.isEmpty()){
                                     if(type.equalsIgnoreCase("Google")){
-                                        Toast.makeText(SignUpScreen.this, "Mobile number already registered with us", Toast.LENGTH_SHORT).show();
+                                        SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), "Mobile number already registered with us");
+//                                        Toast.makeText(SignUpScreen.this, "Mobile number already registered with us", Toast.LENGTH_SHORT).show();
                                         mCreateAccount.setEnabled(true);
                                     }else{
                                         mMobile.setError("Number Already Exists");
@@ -586,9 +602,6 @@ public class SignUpScreen extends AppCompatActivity {
                                     mMobile.setError("Number Already Exists");
                                     mCreateAccount.setEnabled(true);
                                 }
-
-
-
                             }
                             else
                             {
@@ -598,15 +611,16 @@ public class SignUpScreen extends AppCompatActivity {
                         }
                         else
                         {
-
-                            Toast.makeText(SignUpScreen.this,response.message(),Toast.LENGTH_SHORT).show();
+                            mCreateAccount.setEnabled(true);
+                            SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), response.message() );
+//                            Toast.makeText(SignUpScreen.this,response.message(),Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
-
+                        mCreateAccount.setEnabled(true);
                         Log.e("TAG", t.toString());
                     }
                 });
@@ -620,8 +634,6 @@ public class SignUpScreen extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.setTitle("Please wait..");
         dialog.show();
-
-
 
         //System.out.println(sub.getCategoriesName()+","+sub.getDescription()+","+sub.getOrderNo()+","+sub.getCityId());
 
@@ -637,7 +649,7 @@ public class SignUpScreen extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        System.out.println(response.code());
+//                        System.out.println(response.code());
 
                         if(response.code() == 201)
                         {
@@ -663,7 +675,7 @@ public class SignUpScreen extends AppCompatActivity {
                                 UserRole userRole = dto.getUserRoles();
                                 if(userRole != null)
                                 {
-                                    System.out.println("Unique id = "+userRole.getUserRoleUniqueId());
+//                                    System.out.println("Unique id = "+userRole.getUserRoleUniqueId());
                                     PreferenceHandler.getInstance(SignUpScreen.this).setUserRoleUniqueID(userRole.getUserRoleUniqueId());
                                 }
 
@@ -689,7 +701,7 @@ public class SignUpScreen extends AppCompatActivity {
 
 
 
-                                Toast.makeText(SignUpScreen.this,"Profile created Successfull",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpScreen.this,"Profile created Successfully",Toast.LENGTH_SHORT).show();
                                 //Intent intent = new Intent(SignUpScreen.this, PickInterestsScreenForProfile.class);
                                 Intent intent = new Intent(SignUpScreen.this, PickInterestsScreenForProfile.class);
                                 intent.putExtra("Activity","SignUp");
@@ -703,7 +715,10 @@ public class SignUpScreen extends AppCompatActivity {
                         else
                         {
                             mCreateAccount.setEnabled(true);
-                            Toast.makeText(SignUpScreen.this,response.message(),Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(SignUpScreen.this,response.message(),Toast.LENGTH_SHORT).show();
+                            SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), response.message() );
+
+
                         }
                     }
 
@@ -714,7 +729,8 @@ public class SignUpScreen extends AppCompatActivity {
                             dialog.dismiss();
                         }
                         mCreateAccount.setEnabled(true);
-                        Toast.makeText(SignUpScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(SignUpScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                        SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), t.getMessage() );
 
                     }
                 });

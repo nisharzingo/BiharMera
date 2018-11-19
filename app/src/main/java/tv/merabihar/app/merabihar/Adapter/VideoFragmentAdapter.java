@@ -62,15 +62,15 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
             view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
 
-        SimpleDraweeView iv1 = holder.iv1 ;
-        SimpleDraweeView iv2 = holder.iv2 ;
-        SimpleDraweeView iv3 = holder.iv3 ;  // large imageview
-        SimpleDraweeView iv4 = holder.iv4 ;
-        SimpleDraweeView iv5 = holder.iv5 ;
-        SimpleDraweeView iv6 = holder.iv6 ;
-        SimpleDraweeView iv7 = holder.iv7 ;
-        SimpleDraweeView iv8 = holder.iv8 ;
-        SimpleDraweeView iv9 = holder.iv9 ;
+        ImageView iv1 = holder.iv1 ;
+        ImageView iv2 = holder.iv2 ;
+        ImageView iv3 = holder.iv3 ;  // large imageview
+        ImageView iv4 = holder.iv4 ;
+        ImageView iv5 = holder.iv5 ;
+        ImageView iv6 = holder.iv6 ;
+        ImageView iv7 = holder.iv7 ;
+        ImageView iv8 = holder.iv8 ;
+        ImageView iv9 = holder.iv9 ;
 
 
         if(content!=null&&content.size()!=0&&content.size()==9){
@@ -253,7 +253,7 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter<VideoFragmentAdap
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        SimpleDraweeView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9 ;
+        ImageView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9 ;
 
         MyViewHolder(View itemView) {
             super(itemView);

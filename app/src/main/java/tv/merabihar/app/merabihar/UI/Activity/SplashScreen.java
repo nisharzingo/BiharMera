@@ -47,7 +47,7 @@ public class SplashScreen extends AppCompatActivity {
 
 
         try{
-            Fresco.initialize(this);
+//            Fresco.initialize(this);
 
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
