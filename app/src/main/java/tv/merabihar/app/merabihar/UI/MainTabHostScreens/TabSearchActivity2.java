@@ -299,13 +299,34 @@ public class TabSearchActivity2 extends AppCompatActivity {
                         Toast.makeText(TabSearchActivity2.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
-
                 //System.out.println(TAG+" thread started");
             }
 
         });
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goBack();
+    }
+
+    private void goBack()
+    {
+        Intent intent = null;
+
+        intent = new Intent(TabSearchActivity2.this,TabMainActivity.class);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        TabSearchActivity2.this.finish();
+    }
+
+
 
     public void loadFirstSetOfBlogs() {
 

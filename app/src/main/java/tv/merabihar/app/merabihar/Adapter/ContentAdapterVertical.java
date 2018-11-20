@@ -559,7 +559,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                                 isFirstTimePressed = false;
                                                 if(profileId!=0 && holder.mLike.getDrawable().getConstantState()!=context.getResources().getDrawable(R.drawable.liked_icon).getConstantState()){
 
-                                                    holder.mLike.setEnabled(false);
+                                                    holder.mLikeLayout.setEnabled(false);
                                                     Likes likes = new Likes();
                                                     likes.setContentId(contents.getContentId());
                                                     likes.setProfileId(profileId);
@@ -569,7 +569,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                                     {
                                                         if(holder.mDislikedId.getText().toString()!=null&&!holder.mDislikedId.getText().toString().isEmpty()){
 
-
+                                                            updateLike(likes,holder.mLike,holder.mLikesCount,Integer.parseInt(holder.mDislikedId.getText().toString()),holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId,holder.mLikeLayout,holder.mDislikeLayout);
                                                             // updateLike(likes,holder.mLike,holder.mLikesCount,Integer.parseInt(holder.mDislikedId.getText().toString()),holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId);
                                                         }
                                                     }

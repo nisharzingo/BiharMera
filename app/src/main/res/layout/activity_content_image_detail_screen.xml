@@ -91,6 +91,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
+                android:id="@+id/content_detail_like_enabler"
                 android:layout_height="wrap_content">
 
                 <com.makeramen.roundedimageview.RoundedImageView

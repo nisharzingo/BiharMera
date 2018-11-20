@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.content.FileProvider;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -78,8 +80,11 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     RecyclerView mCommentsList;
     RelativeLayout mParentRelativeLayout;
     LinearLayout mWhatsapp, mShare, mLikeLayout, mDislikeLayout, mCommentLayout ;
+    FrameLayout mCOntentDetailScreen;
 
     Contents contents;
+    boolean isFirstTimePressed = false;
+
 
     int mappingId=0,profileId;
 
@@ -131,6 +136,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             //mMoreShare = (ImageView) findViewById(R.id.more_icons);
 
             mCommentsList = (RecyclerView) findViewById(R.id.comments_list);
+            mCOntentDetailScreen = (FrameLayout) findViewById(R.id.content_detail_like_enabler);
 
             final Bundle bundle = getIntent().getExtras();
             if(bundle!=null){
@@ -252,6 +258,66 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 }
             });
 
+
+            mCOntentDetailScreen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    new CountDownTimer(300, 300) {
+                        @Override
+                        public void onTick(long l) {
+                            if(!isFirstTimePressed)
+                            {
+
+                                isFirstTimePressed = true;
+                            }
+                            else
+                            {
+                                //System.out.println("isFirstTimePressed = "+isFirstTimePressed);
+                                isFirstTimePressed = false;
+                                if(profileId!=0 && mLike.getDrawable().getConstantState()!= getResources().getDrawable(R.drawable.liked_icon).getConstantState()){
+
+                                    mLikeLayout.setEnabled(false);
+                                    Likes likes = new Likes();
+                                    likes.setContentId(contents.getContentId());
+                                    likes.setProfileId(profileId);
+                                    likes.setLiked(true);
+
+                                    if (mDislike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.unliked_icons).getConstantState())
+                                    {
+                                        if(mDislikedId.getText().toString()!=null&&!mDislikedId.getText().toString().isEmpty()){
+                                            updateLike(likes,mLike,mLikesCount,Integer.parseInt(mDislikedId.getText().toString()),mDislike,mDislikedId,mDislikesCount,mLikedId, mLikeLayout, mDislikeLayout);
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                        postLike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId, mLikeLayout,mDislikeLayout);
+                                    }
+
+
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onFinish() {
+
+
+                            isFirstTimePressed = false;
+
+
+                        }
+                    }.start();
+
+                }
+            });
+
+
+
+
             mLikeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -259,7 +325,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     if(Util.isNetworkAvailable(ContentImageDetailScreen.this)){
                         if(profileId!=0){
 
-                            mLike.setEnabled(false);
+                            mLikeLayout.setEnabled(false);
                             Likes likes = new Likes();
                             likes.setContentId(contents.getContentId());
                             likes.setProfileId(profileId);
@@ -326,7 +392,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     if(Util.isNetworkAvailable(ContentImageDetailScreen.this)){
                         if(profileId!=0){
 
-                            mDislike.setEnabled(false);
+                            mDislikeLayout.setEnabled(false);
                             Likes likes = new Likes();
                             likes.setContentId(contents.getContentId());
                             likes.setProfileId(profileId);
@@ -925,7 +991,6 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                         {
                             mLikeLayout.setEnabled(true);
 
-
                         }
                     }
 
@@ -954,7 +1019,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
-                        System.out.println(response.code());
+//                        System.out.println(response.code());
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -981,10 +1046,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                         }
                         else
                         {
-
                             mLikeLayout.setEnabled(true);
-
-
                         }
                     }
 

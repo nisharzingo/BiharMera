@@ -88,7 +88,8 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     LinearLayout mProfileContent;
     RecyclerView mCommentsList;
     MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId;
-    ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare;
+    ImageView mLike,mDislike,mComment;
+    LinearLayout mWhatsapp, mShare, mLikeLayout, mDislikeLayout, mCommentLayout ;
 
     private YouTubePlayerFragment playerFragmentTop;
     private YouTubePlayer mPlayer;
@@ -140,11 +141,13 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             mLike = (ImageView) findViewById(R.id.likes_image);
             mDislike = (ImageView) findViewById(R.id.unlikes_image);
             mComment = (ImageView) findViewById(R.id.comments_image);
-            mWhatsapp = (ImageView) findViewById(R.id.whatsapp_share);
-            mShare = (ImageView) findViewById(R.id.share_image);
+            mWhatsapp = (LinearLayout) findViewById(R.id.whatsapp_share);
+            mShare = (LinearLayout) findViewById(R.id.share_image);
+            mLikeLayout = (LinearLayout) findViewById(R.id.like_ll_cds);
+            mDislikeLayout = (LinearLayout) findViewById(R.id.dislike_ll_cds);
+            mCommentLayout = (LinearLayout) findViewById(R.id.comment_ll_cds);
             mNocomments = (TextViewSFProDisplayRegular)findViewById(R.id.no_comments);
             //mMoreShare = (ImageView) findViewById(R.id.more_icons);
-
             mCommentsList = (RecyclerView) findViewById(R.id.comments_list);
 
             final Bundle bundle = getIntent().getExtras();
@@ -255,7 +258,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             });
 
 
-            mLike.setOnClickListener(new View.OnClickListener() {
+            mLikeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -265,24 +268,24 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                         if(profileId!=0){
 
-                            mLike.setEnabled(false);
+                            mLikeLayout.setEnabled(false);
                             Likes likes = new Likes();
                             likes.setContentId(contents.getContentId());
                             likes.setProfileId(profileId);
                             likes.setLiked(true);
 
-                            if (mDislike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
+                            if (mDislike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.unliked_icons).getConstantState())
                             {
                                 if(mDislikedId.getText().toString()!=null&&!mDislikedId.getText().toString().isEmpty()){
 
 
-                                    updateLike(likes,mLike,mLikesCount,Integer.parseInt(mDislikedId.getText().toString()),mDislike,mDislikedId,mDislikesCount,mLikedId);
+                                    updateLike(likes,mLike,mLikesCount,Integer.parseInt(mDislikedId.getText().toString()),mDislike,mDislikedId,mDislikesCount,mLikedId, mLikeLayout, mDislikeLayout);
                                 }
                             }
                             else
                             {
 
-                                postLike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
+                                postLike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId, mLikeLayout, mDislikeLayout);
                             }
 
                                        /* }else{
@@ -321,7 +324,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 }
             });
 
-            mDislike.setOnClickListener(new View.OnClickListener() {
+            mDislikeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -330,7 +333,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                         if(profileId!=0){
 
-                            mDislike.setEnabled(false);
+                            mDislikeLayout.setEnabled(false);
                             Likes likes = new Likes();
                             likes.setContentId(contents.getContentId());
                             likes.setProfileId(profileId);
@@ -341,13 +344,13 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                                 if(mLikedId.getText().toString()!=null&&!mLikedId.getText().toString().isEmpty()){
 
 
-                                    updatedisLike(likes,mDislike,mDislikesCount,Integer.parseInt(mLikedId.getText().toString()),mLike,mLikedId,mLikesCount,mDislikedId);
+                                    updatedisLike(likes,mDislike,mDislikesCount,Integer.parseInt(mLikedId.getText().toString()),mLike,mLikedId,mLikesCount,mDislikedId, mDislikeLayout, mLikeLayout);
                                 }
                             }
                             else
                             {
 
-                                postDislike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
+                                postDislike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId, mDislikeLayout, mLikeLayout);
                             }
 
                                        /* }else{
@@ -480,7 +483,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 }
             });
 
-            mComment.setOnClickListener(new View.OnClickListener() {
+            mCommentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -919,11 +922,6 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     private void profileFollow(final ProfileFollowMapping intrst) {
 
 
-        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
-
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
@@ -933,12 +931,8 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onResponse(Call<ProfileFollowMapping> call, Response<ProfileFollowMapping> response) {
 
-                        System.out.println(response.code());
+//                        System.out.println(response.code());
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -956,10 +950,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                     @Override
                     public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+
                         Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
@@ -970,11 +961,6 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
     private void deleteFollow(final int mapId) {
 
-
-        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -987,10 +973,6 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                         System.out.println(response.code());
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -1009,10 +991,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                     @Override
                     public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+
                         Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
@@ -1218,12 +1197,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
         });
     }
 
-    private void postLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
-
-        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
+    private void postLike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout mLikeLayout, final LinearLayout mDislikeLayout) {
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -1235,10 +1209,6 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
                         System.out.println(response.code());
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -1254,15 +1224,13 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                                 likeCount.setText(""+(count+1));
                             }
 
+                            mDislikeLayout.setEnabled(true);
 
                         }
                         else
                         {
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-                            like.setEnabled(false);
+
+                            mLikeLayout.setEnabled(true);
 
                         }
                     }
@@ -1270,12 +1238,9 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
                         Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
+                        mLikeLayout.setEnabled(true);
+
 
                     }
                 });
@@ -1283,14 +1248,9 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
         });
     }
 
-    private void updateLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
+    private void updateLike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout mLikeLayout, final LinearLayout mDislikeLayout) {
 
         likes.setLikeId(dislikedId);
-
-        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -1301,12 +1261,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
-                        System.out.println(response.code());
-
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+//                        System.out.println(response.code());
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -1326,29 +1281,25 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                                 int count = Integer.parseInt(dislikeText);
                                 dislikeCount.setText(""+(count-1));
+                                mDislikeLayout.setEnabled(true);
+
                             }
 
                         }
                         else
                         {
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-                            like.setEnabled(false);
+
+                            mLikeLayout.setEnabled(true);
 
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
+                        mLikeLayout.setEnabled(true);
+
 
                     }
                 });
@@ -1356,12 +1307,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
         });
     }
 
-    private void updatedisLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
-
-        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
+    private void updatedisLike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout mDislikeLayout, final LinearLayout mLikeLayout) {
 
         likes.setLikeId(dislikedId);
 
@@ -1376,10 +1322,6 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                         System.out.println(response.code());
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
 
@@ -1398,16 +1340,14 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                                 int count = Integer.parseInt(dislikeText);
                                 dislikeCount.setText(""+(count-1));
+                                mLikeLayout.setEnabled(true);
+
                             }
 
                         }
                         else
                         {
-                            like.setEnabled(false);
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
+                            mDislikeLayout.setEnabled(false);
 
                         }
                     }
@@ -1415,10 +1355,8 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+                        mDislikeLayout.setEnabled(false);
+
                         Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         like.setEnabled(true);
 
@@ -1429,12 +1367,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     }
 
 
-    private void postDislike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
-
-        final ProgressDialog dialog = new ProgressDialog(ContentDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
+    private void postDislike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout mDislikeLayout, final LinearLayout mLikeLayout) {
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -1445,19 +1378,11 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
-                        System.out.println(response.code());
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+//                        System.out.println(response.code());
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
 
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
                             dislike.setImageResource(R.drawable.unliked_icons);
                             like.setImageResource(R.drawable.non_like);
 
@@ -1470,28 +1395,24 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                                 dislikeCount.setText(""+(count+1));
                             }
 
+                            mLikeLayout.setEnabled(true);
 
                         }
                         else
                         {
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-                            dislike.setEnabled(false);
+
+                            mDislikeLayout.setEnabled(true);
+
 
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
+                        mDislikeLayout.setEnabled(true);
+
 
                     }
                 });
