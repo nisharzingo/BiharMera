@@ -11,6 +11,8 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -75,7 +77,7 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 import tv.merabihar.app.merabihar.WebAPI.SubscribedGoalsAPI;
 
-public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener,YouTubePlayer.PlaybackEventListener{
+public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
 
 
     ImageView mback;
@@ -103,6 +105,10 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     String fileNames;
     String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId()+"\n http://bit.ly/2JXcOnw";
 
+    long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L ;
+    Handler handler;
+    int Seconds, Minutes, MilliSeconds ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +119,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             //GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
             profileId = PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId();
 
+            handler = new Handler() ;
             mback = (ImageView)findViewById(R.id.back_view);
             mSubCategory = (TextViewSFProDisplayRegular)findViewById(R.id.subcategory_of_content);
 
@@ -806,6 +813,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
         //System controls will appear automatically
         mPlayer.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_SYSTEM_UI);
+        mPlayer.setPlaybackEventListener(playbackEventListener);
 
         if (!wasRestored) {
             player.loadVideo(url);
@@ -1014,7 +1022,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     }
 
 
-    @Override
+    /*@Override
     public void onPlaying() {
 
         videoTime = mPlayer.getDurationMillis();
@@ -1040,19 +1048,21 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     @Override
     public void onSeekTo(int i) {
 
-    }
+    }*/
 
     @Override
     public void finish() {
 
         try{
-            Intent data = new Intent();
+           /* Intent data = new Intent();
             int t = (mPlayer.getCurrentTimeMillis()/1000);
             data.putExtra("tiempo",t );
             System.out.println("Value youtube "+t);
-            setResult(0, data);
-            youtubeWatcheTime = t;
+            setResult(0, data);*/
+            //youtubeWatcheTime = t;
 
+            System.out.println("Youtube Watch time "+youtubeWatcheTime);
+          //  Toast.makeText(this, "Youtube Watch time "+youtubeWatcheTime, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(ContentDetailScreen.this, VideoWatchedService.class);
             intent.putExtra("ProfileId",PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId());
             intent.putExtra("Time",youtubeWatcheTime);
@@ -1062,7 +1072,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                 int value = Integer.parseInt(sg.getRewardsEarned());
 
-                sg.setRewardsEarned(""+(t+value));
+                sg.setRewardsEarned(""+(youtubeWatcheTime+value));
                 if(sg.getStatus().equals("Activated")){
 
                     String endDate = sg.getEndDate();
@@ -1077,14 +1087,14 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                                 if(new Date().getTime()-date.getTime()>0){
 
-                                    sg.setExtraDescription(""+(54000-(t+value)));
+                                    sg.setExtraDescription(""+(54000-(youtubeWatcheTime+value)));
                                     sg.setStatus("Penalty");
 
                                     double amount = currentProfile.getReferralAmount();
-                                    double valuea = (t+value)*.20;
+                                    double valuea = (youtubeWatcheTime+value)*.20;
                                     currentProfile.setReferralAmount(valuea);
                                 }else{
-                                    if((t+value)>=54000){
+                                    if((youtubeWatcheTime+value)>=54000){
                                         sg.setStatus("Completed");
                                     }
                                 }
@@ -1818,5 +1828,78 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
         canvas.drawBitmap(resized,pw,ph,paint);
         return result;
     }
+
+    private YouTubePlayer.PlaybackEventListener playbackEventListener = new YouTubePlayer.PlaybackEventListener()    {
+
+        @Override
+        public void onBuffering(boolean arg0) {
+
+            //Toast.makeText(ContentDetailScreen.this, "Video Buffering", Toast.LENGTH_SHORT).show();
+            System.out.println("Video Buffering");
+        }
+
+        @Override
+        public void onPaused() {
+
+            //Toast.makeText(ContentDetailScreen.this, "Video Pause", Toast.LENGTH_SHORT).show();
+            System.out.println("Video Pause");
+
+            TimeBuff += MillisecondTime;
+
+            handler.removeCallbacks(runnable);
+        }
+
+        @Override
+        public void onPlaying() {
+
+            //Toast.makeText(ContentDetailScreen.this, "Video Play", Toast.LENGTH_SHORT).show();
+
+            StartTime = SystemClock.uptimeMillis();
+            handler.postDelayed(runnable, 0);
+            System.out.println("Video Play");
+        }
+
+        @Override
+        public void onSeekTo(int arg0) {
+
+            //Toast.makeText(ContentDetailScreen.this, "Video Seeking", Toast.LENGTH_SHORT).show();
+            System.out.println("Video Seeking");
+        }
+
+        @Override
+        public void onStopped() {
+
+            //Toast.makeText(ContentDetailScreen.this, "Video Stop", Toast.LENGTH_SHORT).show();
+            System.out.println("Video Stop");
+            TimeBuff += MillisecondTime;
+
+            handler.removeCallbacks(runnable);
+        }
+
+    };
+
+    public Runnable runnable = new Runnable() {
+
+        public void run() {
+
+            MillisecondTime = SystemClock.uptimeMillis() - StartTime;
+
+            UpdateTime = TimeBuff + MillisecondTime;
+
+            Seconds = (int) (UpdateTime / 1000);
+
+           /* Minutes = Seconds / 60;
+
+            Seconds = Seconds % 60;*/
+
+            //MilliSeconds = (int) (UpdateTime % 1000);
+
+            youtubeWatcheTime = Seconds;
+
+            handler.postDelayed(this, 0);
+        }
+
+    };
+
 
 }
