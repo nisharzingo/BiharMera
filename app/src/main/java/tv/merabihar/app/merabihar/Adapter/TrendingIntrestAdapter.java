@@ -93,8 +93,16 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
 
                         if(img!=null&&!img.isEmpty()){
                             // crop the image & load
-                            loadCroppedImage(img,holder.mContentImage);
-//                            holder.mLoader.setVisibility(View.INVISIBLE);
+//                            loadCroppedImage(img,holder.mContentImage);
+
+                            Glide.with(context)
+                                    .load(img)
+                                    .apply(new RequestOptions()
+                                            .placeholder(R.drawable.no_image)
+                                            .error(R.drawable.no_image))
+                                    .into(holder.mContentImage);
+
+
                         }
                     }
 
@@ -103,7 +111,6 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
 
                 }else{
 
-//                    holder.mLoader.setVisibility(View.INVISIBLE);
 
                     if(contents.getContentImage() != null && contents.getContentImage().size()!=0)
                     {
@@ -159,8 +166,7 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
         RoundedImageView mContentImage;
         MyTextView_Lato_Regular mInterestName;
         LinearLayout mInterestLay;
-//        MKLoader mLoader;
-//        ProgressBar mLoader;
+
 
 
 
@@ -173,8 +179,7 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
             mInterestName = (MyTextView_Lato_Regular) itemView.findViewById(R.id.interest_name);
             mContentImage = (RoundedImageView) itemView.findViewById(R.id.content_image);
             mInterestLay = (LinearLayout) itemView.findViewById(R.id.collection_lay);
-//            mLoader =  (MKLoader) itemView.findViewById(R.id.loader_trending_interests);
-//            mLoader =  (ProgressBar) itemView.findViewById(R.id.loader_trending_interests);
+
 
         }
 
@@ -197,13 +202,10 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
                                 .error(R.drawable.no_image))
                         .into(imageView);
 
-//                mCustomLoader.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
             }
 
             @Override

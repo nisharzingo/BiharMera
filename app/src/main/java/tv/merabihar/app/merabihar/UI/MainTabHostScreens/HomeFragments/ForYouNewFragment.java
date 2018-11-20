@@ -249,7 +249,6 @@ public class ForYouNewFragment extends Fragment {
                     @Override
                     public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
 
-
                         try{
                             if(response.code() == 200 && response.body()!= null)
                             {

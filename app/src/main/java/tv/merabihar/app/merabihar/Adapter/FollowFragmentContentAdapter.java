@@ -23,11 +23,12 @@ import tv.merabihar.app.merabihar.UI.Activity.ContentImageDetailScreen;
 
 public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFragmentContentAdapter.MyViewHolder> {
 
+    public int targetWidth = 300;
+    public int targetHeight = 300;
+
     Context context;
     ArrayList<ArrayList<Contents>> mContentList;
     View view;
-
-
 
     public FollowFragmentContentAdapter(Context context , ArrayList<ArrayList<Contents>> mContentList)
     {
@@ -56,11 +57,6 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
         }else{
 
             view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-            //((FrameLayout.LayoutParams)holder.ivp1.getLayoutParams()).setGravity(int)
-            //paramsMsg.gravity = Gravity.START;
-
-
-
         }
 
         final ImageView iv1 = holder.iv1 ;
@@ -85,8 +81,10 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     final String img = "https://img.youtube.com/vi/"+content.get(0).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
 
+                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(iv1);
 
-                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+/*                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
@@ -99,9 +97,6 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                                                 .placeholder(R.drawable.no_image)
                                                 .error(R.drawable.no_image))
                                         .into(holder.iv1);
-
-
-
                             }
 
                             @Override
@@ -115,7 +110,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                             public void onPrepareLoad(Drawable placeHolderDrawable) {
 
                             }
-                        });
+                        });*/
+
                     }else{
                         holder.iv1.setImageResource(R.drawable.no_image);
                     }
@@ -129,6 +125,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     if(urlString1!=null){
                         Picasso.with(context)
                                 .load(Uri.parse(urlString1))
+                                .resize(targetWidth,targetHeight)
                                 .error(R.drawable.no_image)
                                 .placeholder(R.drawable.no_image)
                                 .into(holder.iv1);
@@ -147,7 +144,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     final String img = "https://img.youtube.com/vi/"+content.get(1).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
 
-
+                       Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv2);
+/*
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -162,7 +161,6 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                                                 .error(R.drawable.no_image))
                                         .into(holder.iv2);
 
-//                mCustomLoader.setVisibility(View.INVISIBLE);
                             }
 
                             @Override
@@ -178,7 +176,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                             public void onPrepareLoad(Drawable placeHolderDrawable) {
 
                             }
-                        });
+                        });*/
+
                     }else{
                         holder.iv2.setImageResource(R.drawable.no_image);
                     }
@@ -190,7 +189,10 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     String urlString1 = content.get(1).getContentImage().get(0).getImages();
 
                     if(urlString1!=null){
-                        iv2.setImageURI(Uri.parse(urlString1));
+
+                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv2);
+
                     }
 
                 }
@@ -205,7 +207,10 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     final String img = "https://img.youtube.com/vi/"+content.get(2).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
 
-                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv3);
+
+                        /*Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
@@ -218,6 +223,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                                                 .placeholder(R.drawable.no_image)
                                                 .error(R.drawable.no_image))
                                         .into(holder.iv3);
+
 
                             }
 
@@ -234,7 +240,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                             public void onPrepareLoad(Drawable placeHolderDrawable) {
 
                             }
-                        });
+                        });*/
+
+
                     }else{
                         holder.iv3.setImageResource(R.drawable.no_image);
                     }
@@ -246,7 +254,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     String urlString1 = content.get(2).getContentImage().get(0).getImages();
 
                     if(urlString1!=null){
-                        iv3.setImageURI(Uri.parse(urlString1));
+                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv3);
                     }
 
                 }
@@ -261,6 +270,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     final String img = "https://img.youtube.com/vi/"+content.get(3).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
 
+                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv4);
+/*
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -289,7 +301,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                             public void onPrepareLoad(Drawable placeHolderDrawable) {
 
                             }
-                        });
+                        });*/
+
                     }else{
                         holder.iv4.setImageResource(R.drawable.no_image);
                     }
@@ -301,7 +314,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     String urlString1 = content.get(3).getContentImage().get(0).getImages();
 
                     if(urlString1!=null){
-                        iv4.setImageURI(Uri.parse(urlString1));
+                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv4);
                     }
 
                 }
@@ -317,6 +331,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     if(img!=null&&!img.isEmpty()){
 
 
+                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv5);
+/*
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -348,6 +365,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             }
                         });
+       */
                     }else{
                         holder.iv5.setImageResource(R.drawable.no_image);
                     }
@@ -359,7 +377,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     String urlString1 = content.get(4).getContentImage().get(0).getImages();
 
                     if(urlString1!=null){
-                        iv5.setImageURI(Uri.parse(urlString1));
+                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv5);
                     }
 
                 }
@@ -374,7 +393,10 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     final String img = "https://img.youtube.com/vi/"+content.get(5).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
 
+                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv6);
 
+/*
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -403,6 +425,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             }
                         });
+
+                        */
                     }else{
                         holder.iv6.setImageResource(R.drawable.no_image);
                     }
@@ -414,7 +438,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     String urlString1 = content.get(5).getContentImage().get(0).getImages();
 
                     if(urlString1!=null){
-                        iv6.setImageURI(Uri.parse(urlString1));
+                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv6);
+//                        iv6.setImageURI(Uri.parse(urlString1));
                     }
 
                 }
@@ -429,7 +455,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     final String img = "https://img.youtube.com/vi/"+content.get(6).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
 
-
+                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv7);
+                        /*
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -444,7 +472,6 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                                                 .error(R.drawable.no_image))
                                         .into(holder.iv7);
 
-//                mCustomLoader.setVisibility(View.INVISIBLE);
                             }
 
                             @Override
@@ -458,6 +485,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             }
                         });
+                        */
                     }else{
                         holder.iv7.setImageResource(R.drawable.no_image);
                     }
@@ -469,7 +497,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     String urlString1 = content.get(6).getContentImage().get(0).getImages();
 
                     if(urlString1!=null){
-                        iv7.setImageURI(Uri.parse(urlString1));
+                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv7);
                     }
 
                 }
@@ -485,6 +514,10 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     if(img!=null&&!img.isEmpty()){
 
 
+                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv8);
+
+                        /*
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -513,6 +546,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             }
                         });
+
+                        */
                     }else{
                         holder.iv8.setImageResource(R.drawable.no_image);
                     }
@@ -524,7 +559,10 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     String urlString1 = content.get(7).getContentImage().get(0).getImages();
 
                     if(urlString1!=null){
-                        iv8.setImageURI(Uri.parse(urlString1));
+                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv8);
+
+//                        iv8.setImageURI(Uri.parse(urlString1));
                     }
 
                 }
@@ -537,9 +575,12 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                 if(content.get(8).getContentURL()!=null&&!content.get(8).getContentURL().isEmpty()){
                     final String img = "https://img.youtube.com/vi/"+content.get(8).getContentURL()+"/0.jpg";
+
                     if(img!=null&&!img.isEmpty()){
 
-
+                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv9);
+                        /*
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -554,7 +595,6 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                                                 .error(R.drawable.no_image))
                                         .into(holder.iv9);
 
-//                mCustomLoader.setVisibility(View.INVISIBLE);
                             }
 
                             @Override
@@ -568,6 +608,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                             }
                         });
+
+                        */
                     }else{
                         holder.iv9.setImageResource(R.drawable.no_image);
                     }
@@ -580,15 +622,13 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     String urlString1 = content.get(8).getContentImage().get(0).getImages();
 
                     if(urlString1!=null){
-                        iv9.setImageURI(Uri.parse(urlString1));
+                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image).into(holder.iv9);
+//                        iv9.setImageURI(Uri.parse(urlString1));
                     }
 
                 }
             }
-
-
-
-
 
         }
         // load image from api

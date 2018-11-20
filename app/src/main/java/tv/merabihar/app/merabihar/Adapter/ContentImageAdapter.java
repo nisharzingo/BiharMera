@@ -84,7 +84,10 @@ public class ContentImageAdapter extends RecyclerView.Adapter<ContentImageAdapte
                         if(img!=null&&!img.isEmpty()){
 
                             // crop the youtube image & show
-                            loadCroppedImage(img, holder.mContentImage);
+//                            loadCroppedImage(img, holder.mContentImage);
+                            Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.mContentImage);
+
                         }
                     }
 

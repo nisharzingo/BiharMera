@@ -662,18 +662,15 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                             likes.setProfileId(profileId);
                                             likes.setLiked(true);
 
-                                            if (holder.mDislike.getDrawable().getConstantState() == context.getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
+                                            if (holder.mDislike.getDrawable().getConstantState() == context.getResources().getDrawable( R.drawable.unliked_icons).getConstantState())
                                             {
                                                 if(holder.mDislikedId.getText().toString()!=null&&!holder.mDislikedId.getText().toString().isEmpty()){
 
-
                                                     updateLike(likes,holder.mLike,holder.mLikesCount,Integer.parseInt(holder.mDislikedId.getText().toString()),holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId,holder.mLikeLayout,holder.mDislikeLayout);
-
                                                 }
                                             }
                                             else
                                             {
-
                                                 postLike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId,holder.mLikeLayout,holder.mDislikeLayout);
                                             }
 
@@ -743,9 +740,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                                                 postDislike(likes,holder.mLike,holder.mLikesCount,0,holder.mDislike,holder.mDislikedId,holder.mDislikesCount,holder.mLikedId, holder.mDislikeLayout, holder.mLikeLayout);
                                             }
-
-
-
 
                                        /* }else{
 
@@ -987,18 +981,11 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                     context.startActivity(comments);
                                 }
                             });
-
-
                         }
-
-
                         break;
-
                     case LOADING:
 //                Do nothing
                         break;
-
-
                 }
 
             }

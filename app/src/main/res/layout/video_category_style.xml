@@ -11,15 +11,5 @@
         android:id="@+id/cat_content_poster"
         android:layout_height="match_parent" />
 
-    <com.tuyenmonkey.mkloader.MKLoader
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/cat_content_poster"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/custom_loader_content"
-        android:layout_marginTop="0dp"
-        android:visibility="gone"
-        app:mk_color="@color/colorPrimary" />
-
 
 </RelativeLayout>

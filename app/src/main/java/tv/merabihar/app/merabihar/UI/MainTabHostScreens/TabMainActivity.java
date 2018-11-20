@@ -9,9 +9,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -37,6 +37,7 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
 
     TextView labelHome, labelSearch, labelStory, labelVideo,labelAccount;
     ImageView imgHome, imgSearch, imgStory, imgVideo,imgAccount;
+//    ImageView master_imgHome;
 
     int defaultValue = 0;
     public static final int MY_PERMISSIONS_REQUEST_RESULT = 1;
@@ -46,11 +47,14 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
     TabHost.TabSpec tabHome,tabStay,tabNotification,tabVideo,tabMenu;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         try {
+
 
 
 
@@ -99,7 +103,6 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             labelHome.setText(getResources().getString(R.string.home));
             imgHome.setImageResource(R.drawable.home_icon);
             tabHome.setIndicator(tabIndicatorHome);
-
             Intent dash = new Intent(this, TabHomeNewDesign.class);
             dash.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             tabHome.setContent(dash);
@@ -107,7 +110,10 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             labelSearch.setText(getResources().getString(R.string.search));
             imgSearch.setImageResource(R.drawable.search_icons);
             tabStay.setIndicator(tabIndicatorStayView);
-            tabStay.setContent(new Intent(this, TabSearchActivity2.class));
+
+            Intent tabSearchIntent = new Intent(this, TabSearchActivity2.class);
+            tabSearchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            tabStay.setContent(tabSearchIntent);
 
             //labelStory.setText(getResources().getString(R.string.story));
             //imgStory.setImageResource(R.drawable.add);
@@ -119,12 +125,17 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             imgVideo.setImageResource(R.drawable.video_icon);
             tabVideo.setIndicator(tabIndicatorVideo);
             //tabNotification.setContent(new Intent(this, NotificationOptionsActivity.class));
-            tabVideo.setContent(new Intent(this, TabVideoNewDesign.class));
+            Intent tabVideoIntent = new Intent(this, TabVideoNewDesign.class);
+            tabVideoIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            tabVideo.setContent(tabVideoIntent);
+
 
             labelAccount.setText(getResources().getString(R.string.account));
             imgAccount.setImageResource(R.drawable.account_icon);
             tabMenu.setIndicator(tabIndicatorMenu);
-            tabMenu.setContent(new Intent(this, TabAccountActivity.class));
+            Intent tabAccountIntent = new Intent(this, TabAccountActivity.class);
+            tabAccountIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            tabMenu.setContent(tabAccountIntent);
 
 
 
@@ -160,8 +171,6 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             dialog.show();
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.getWindow().setAttributes(lp);
-
-
 
 
                 now.setOnClickListener(new View.OnClickListener() {
@@ -234,6 +243,25 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             {
                 tabHost.setCurrentTab(page);
             }
+
+
+
+/*
+            // listener for Home fragment
+            getTabWidget().getChildAt(0).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // custom code
+                    tabHost.setCurrentTab(0);
+                    FragmentActivity fragmentActivity = new FragmentActivity();
+                    fragmentActivity.getSupportFragmentManager().findFragmentByTag("Your_Fragment_TAG");
+
+                }
+            });
+*/
+
+
+
         }
         catch (Exception ex)
         {
@@ -261,10 +289,12 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
         {
             tabHost.setCurrentTab(page);
         }
+
     }
 
     @Override
     public void onTabChanged(String tabId) {
+
 
         labelHome.setTextColor(Color.parseColor("#000000"));
         labelHome.setTypeface(Typeface.DEFAULT);
@@ -313,6 +343,9 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             labelAccount.setTypeface(null, Typeface.BOLD);
             imgAccount.setImageResource(R.drawable.selected_account_icon);
         }
+
+
+
     }
 
     public boolean checkPermission() throws Exception{

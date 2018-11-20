@@ -74,9 +74,10 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     CircleImageView mProfilePhoto;
     LinearLayout mProfileContent;
     MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId;
-    ImageView mLike,mDislike,mComment,mWhatsapp,mShare,mMoreShare;
+    ImageView mLike,mDislike,mComment;
     RecyclerView mCommentsList;
     RelativeLayout mParentRelativeLayout;
+    LinearLayout mWhatsapp, mShare, mLikeLayout, mDislikeLayout, mCommentLayout ;
 
     Contents contents;
 
@@ -120,8 +121,11 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             mLike = (ImageView) findViewById(R.id.likes_image);
             mDislike = (ImageView) findViewById(R.id.unlikes_image);
             mComment = (ImageView) findViewById(R.id.comments_image);
-            mWhatsapp = (ImageView) findViewById(R.id.whatsapp_share);
-            mShare = (ImageView) findViewById(R.id.share_image);
+            mWhatsapp = (LinearLayout) findViewById(R.id.whatsapp_share);
+            mShare = (LinearLayout) findViewById(R.id.share_image);
+            mLikeLayout = (LinearLayout) findViewById(R.id.like_ll_cds);
+            mDislikeLayout = (LinearLayout) findViewById(R.id.dislike_ll_cds);
+            mCommentLayout = (LinearLayout) findViewById(R.id.comment_ll_cds);
 
             mNocomments = (TextViewSFProDisplayRegular)findViewById(R.id.no_comments);
             //mMoreShare = (ImageView) findViewById(R.id.more_icons);
@@ -176,7 +180,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 }
             });
 
-            mComment.setOnClickListener(new View.OnClickListener() {
+            mCommentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -248,7 +252,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 }
             });
 
-            mLike.setOnClickListener(new View.OnClickListener() {
+            mLikeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -261,18 +265,18 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                             likes.setProfileId(profileId);
                             likes.setLiked(true);
 
-                            if (mDislike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.unliked_icon).getConstantState())
+                            if (mDislike.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.unliked_icons).getConstantState())
                             {
                                 if(mDislikedId.getText().toString()!=null&&!mDislikedId.getText().toString().isEmpty()){
 
 
-                                    updateLike(likes,mLike,mLikesCount,Integer.parseInt(mDislikedId.getText().toString()),mDislike,mDislikedId,mDislikesCount,mLikedId);
+                                    updateLike(likes,mLike,mLikesCount,Integer.parseInt(mDislikedId.getText().toString()),mDislike,mDislikedId,mDislikesCount,mLikedId, mLikeLayout, mDislikeLayout);
                                 }
                             }
                             else
                             {
 
-                                postLike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
+                                postLike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId, mLikeLayout, mDislikeLayout);
                             }
 
 
@@ -315,11 +319,9 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 }
             });
 
-            mDislike.setOnClickListener(new View.OnClickListener() {
+            mDislikeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-
 
                     if(Util.isNetworkAvailable(ContentImageDetailScreen.this)){
                         if(profileId!=0){
@@ -335,13 +337,13 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                                 if(mLikedId.getText().toString()!=null&&!mLikedId.getText().toString().isEmpty()){
 
 
-                                    updatedisLike(likes,mDislike,mDislikesCount,Integer.parseInt(mLikedId.getText().toString()),mLike,mLikedId,mLikesCount,mDislikedId);
+                                    updatedisLike(likes,mDislike,mDislikesCount,Integer.parseInt(mLikedId.getText().toString()),mLike,mLikedId,mLikesCount,mDislikedId, mDislikeLayout, mLikeLayout);
                                 }
                             }
                             else
                             {
 
-                                postDislike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId);
+                                postDislike(likes,mLike,mLikesCount,0,mDislike,mDislikedId,mDislikesCount,mLikedId, mDislikeLayout, mLikeLayout );
                             }
 
 
@@ -810,10 +812,6 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     private void profileFollow(final ProfileFollowMapping intrst) {
 
 
-        final ProgressDialog dialog = new ProgressDialog(ContentImageDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -824,12 +822,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ProfileFollowMapping> call, Response<ProfileFollowMapping> response) {
 
-                        System.out.println(response.code());
-
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+//                        System.out.println(response.code());
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -847,10 +840,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+
                         Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
@@ -862,11 +852,6 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     private void deleteFollow(final int mapId) {
 
 
-        final ProgressDialog dialog = new ProgressDialog(ContentImageDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
-
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
@@ -876,12 +861,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ProfileFollowMapping> call, Response<ProfileFollowMapping> response) {
 
-                        System.out.println(response.code());
-
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+//                        System.out.println(response.code());
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -900,10 +880,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+
                         Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
@@ -912,12 +889,8 @@ public class ContentImageDetailScreen extends AppCompatActivity {
         });
     }
 
-    private void postLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
+    private void postLike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout mLikeLayout, final LinearLayout mDislikeLayout) {
 
-        final ProgressDialog dialog = new ProgressDialog(ContentImageDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -928,11 +901,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
-                        System.out.println(response.code());
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
+//                        System.out.println(response.code());
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -946,17 +915,16 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                                 int count = Integer.parseInt(likeText);
                                 likeCount.setText(""+(count+1));
+                                mDislikeLayout.setEnabled(true);
+
                             }
 
 
                         }
                         else
                         {
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-                            like.setEnabled(false);
+                            mLikeLayout.setEnabled(true);
+
 
                         }
                     }
@@ -964,27 +932,18 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
                         Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
-
+                        mLikeLayout.setEnabled(true);
                     }
                 });
             }
         });
     }
 
-    private void updateLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
+    private void updateLike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout mLikeLayout, final LinearLayout mDislikeLayout) {
 
         likes.setLikeId(dislikedId);
 
-        final ProgressDialog dialog = new ProgressDialog(ContentImageDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -996,11 +955,6 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
                         System.out.println(response.code());
-
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
@@ -1020,29 +974,25 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                                 int count = Integer.parseInt(dislikeText);
                                 dislikeCount.setText(""+(count-1));
+                                mDislikeLayout.setEnabled(true);
+
                             }
 
                         }
                         else
                         {
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-                            like.setEnabled(false);
+
+                            mLikeLayout.setEnabled(true);
+
 
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
+                        mLikeLayout.setEnabled(true);
 
                     }
                 });
@@ -1050,12 +1000,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
         });
     }
 
-    private void updatedisLike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
-
-        final ProgressDialog dialog = new ProgressDialog(ContentImageDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
+    private void updatedisLike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout mDislikeLayout, final LinearLayout mLikeLayout) {
 
         likes.setLikeId(dislikedId);
 
@@ -1063,17 +1008,13 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             @Override
             public void run() {
                 LikeAPI mapApi = Util.getClient().create(LikeAPI.class);
-                Call<Likes> response = mapApi.updateLikes(dislikedId,likes);
+                final Call<Likes> response = mapApi.updateLikes(dislikedId,likes);
                 response.enqueue(new Callback<Likes>() {
                     @Override
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
-                        System.out.println(response.code());
+//                        System.out.println(response.code());
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
 
@@ -1092,29 +1033,25 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                                 int count = Integer.parseInt(dislikeText);
                                 dislikeCount.setText(""+(count-1));
+
+                                mLikeLayout.setEnabled(true);
+
+
                             }
 
                         }
                         else
                         {
-                            like.setEnabled(false);
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-
+                            mDislikeLayout.setEnabled(false);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
                         Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
+                        mDislikeLayout.setEnabled(true);
+
 
                     }
                 });
@@ -1123,12 +1060,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     }
 
 
-    private void postDislike(final Likes likes, final ImageView like,final MyTextView_Lato_Regular likeCount,final int dislikedId,final ImageView dislike,final MyTextView_Lato_Regular dislikeId,final MyTextView_Lato_Regular dislikeCount,final MyTextView_Lato_Regular likedId) {
-
-        final ProgressDialog dialog = new ProgressDialog(ContentImageDetailScreen.this);
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
+    private void postDislike(final Likes likes, final ImageView like, final MyTextView_Lato_Regular likeCount, final int dislikedId, final ImageView dislike, final MyTextView_Lato_Regular dislikeId, final MyTextView_Lato_Regular dislikeCount, final MyTextView_Lato_Regular likedId, final LinearLayout mDislikeLayout, final LinearLayout mLikeLayout) {
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -1140,18 +1072,9 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     public void onResponse(Call<Likes> call, Response<Likes> response) {
 
                         System.out.println(response.code());
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
-
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
                             dislike.setImageResource(R.drawable.unliked_icons);
                             like.setImageResource(R.drawable.non_like);
 
@@ -1162,31 +1085,25 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                                 int count = Integer.parseInt(likeText);
                                 dislikeCount.setText(""+(count+1));
+
+                                mLikeLayout.setEnabled(true);
+
                             }
 
 
                         }
                         else
                         {
-                            if(dialog != null)
-                            {
-                                dialog.dismiss();
-                            }
-                            dislike.setEnabled(false);
+
+                            mDislikeLayout.setEnabled(true);
 
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
-                        if(dialog != null)
-                        {
-                            dialog.dismiss();
-                        }
-
                         Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        like.setEnabled(true);
-
+                        mDislikeLayout.setEnabled(true);
                     }
                 });
             }

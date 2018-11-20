@@ -29,8 +29,6 @@ public class VideoCategoryItemAdapter extends RecyclerView.Adapter<VideoCategory
 
     Context context;
     ArrayList<Contents> mContentsList; /* Contents  Type*/
-    MKLoader mCustomLoader;
-
 
     public VideoCategoryItemAdapter(Context context , ArrayList<Contents> mContentsList)
     {
@@ -50,12 +48,11 @@ public class VideoCategoryItemAdapter extends RecyclerView.Adapter<VideoCategory
 
         final  Contents mContent =  mContentsList.get(position);
         ImageView content_poster = holder.content_poster;
-        mCustomLoader = holder.customLoader;
 
         // load image from api
         String urlString = "https://img.youtube.com/vi/"+mContent.getContentURL()+"/0.jpg";
-        loadCroppedImage(urlString, content_poster);
-
+        Picasso.with(context).load(urlString).placeholder(R.drawable.no_image).resize(400,400).error(R.drawable.no_image).into(content_poster);
+//        loadCroppedImage(urlString, content_poster);
         /*When clicked on the content image*/
         content_poster.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +70,7 @@ public class VideoCategoryItemAdapter extends RecyclerView.Adapter<VideoCategory
 
 
     // loading the cropped image from youtube
-    private void loadCroppedImage(String urlString, final ImageView content_poster) {
+    private void loadCroppedImage(final String urlString, final ImageView content_poster) {
         Picasso.with(context).load(urlString).into(new com.squareup.picasso.Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -81,17 +78,16 @@ public class VideoCategoryItemAdapter extends RecyclerView.Adapter<VideoCategory
                 // Cropping the image
                 Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
                 Glide.with(context).load(customBitMap).into(content_poster);
-//                mCustomLoader.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-               // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
+                Picasso.with(context).load(urlString).placeholder(R.drawable.no_image).error(R.drawable.no_image).into(content_poster);
             }
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
+                Picasso.with(context).load(urlString).placeholder(R.drawable.no_image).error(R.drawable.no_image).into(content_poster);
 
             }
         });
@@ -105,13 +101,10 @@ public class VideoCategoryItemAdapter extends RecyclerView.Adapter<VideoCategory
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView content_poster;
-        MKLoader customLoader;
 
         MyViewHolder(View itemView) {
             super(itemView);
             content_poster = itemView.findViewById(R.id.cat_content_poster);
-            customLoader = itemView.findViewById(R.id.custom_loader_content);
-//            customLoader.setVisibility(View.VISIBLE);
         }
 
     }
