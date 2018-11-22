@@ -61,7 +61,7 @@ public class ForYouNewFragment extends Fragment {
 
     private String TAG="BlogList";
 
- //  DataBaseHelper db ;
+  DataBaseHelper db ;
 
     public ForYouNewFragment() {
         // Required empty public constructor
@@ -79,7 +79,7 @@ public class ForYouNewFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
 
-      //  db = new DataBaseHelper(getActivity());
+        db = new DataBaseHelper(getActivity());
     }
 
 
@@ -181,7 +181,19 @@ public class ForYouNewFragment extends Fragment {
             });
 */
 
-            loadFirstSetOfBlogs();
+            if(Util.isNetworkAvailable(getActivity())){
+
+                loadFirstSetOfBlogs();
+//                System.out.println("Db size"+db.getContents().size());
+            }else{
+                System.out.println("Db size"+db.getContents().size());
+                if(db.getContents()!=null&&db.getContents().size()!=0){
+                    loadNextPageDb(db.getContents());
+                }else{
+                    Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
+                }
+            }
+
             return view;
 
         }catch (Exception e){
@@ -217,21 +229,40 @@ public class ForYouNewFragment extends Fragment {
                                     if(approvedBlogs!=null&&approvedBlogs.size()!=0){
                                         loadFirstPage(approvedBlogs);
 
-                                        /*if(db.getContents()!=null&&db.getContents().size()!=0){
+                                        if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            /*Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
                                             Bundle bundle = new Bundle();
                                             bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);
+                                            getActivity().startService(intent);*/
+
+                                            for (Contents content:approvedBlogs) {
+
+                                                if(db.getContentById(content.getContentId())!=null){
+
+                                                    db.updateContents(content);
+                                                    System.out.println("Data Base Update Service");
+
+                                                }else{
+                                                    db.addContents(content);
+                                                    System.out.println("Data Base add Service");
+
+                                                }
+
+                                            }
 
                                         }else{
 
                                             //db.addContents();
-                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                           /* Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
                                             Bundle bundle = new Bundle();
                                             bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);
-                                        }*/
+                                            getActivity().startService(intent);*/
+
+                                            for (Contents content:approvedBlogs) {
+                                                db.addContents(content);
+                                            }
+                                        }
                                     }else{
                                         isLoading = true;
 
@@ -310,21 +341,38 @@ public class ForYouNewFragment extends Fragment {
                                     if(approvedBlogs!=null&&approvedBlogs.size()!=0){
                                         loadNextPage(approvedBlogs);
 
-                                        /*if(db.getContents()!=null&&db.getContents().size()!=0){
+                                        if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            /*Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
                                             Bundle bundle = new Bundle();
                                             bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);
+                                            getActivity().startService(intent);*/
+
+                                            for (Contents content:approvedBlogs) {
+
+                                                if(db.getContentById(content.getContentId())!=null){
+
+                                                    db.updateContents(content);
+                                                    System.out.println("Data Base Update Service");
+
+                                                }else{
+                                                    db.addContents(content);
+                                                    System.out.println("Data Base add Service");
+
+                                                }
+
+                                            }
 
                                         }else{
 
-                                            //db.addContents();
-                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            for (Contents content:approvedBlogs) {
+                                                db.addContents(content);
+                                            }
+                                           /* Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
                                             Bundle bundle = new Bundle();
                                             bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);
-                                        }*/
+                                            getActivity().startService(intent);*/
+                                        }
 
                                     }else{
                                         isLoading = true;
@@ -379,6 +427,21 @@ public class ForYouNewFragment extends Fragment {
             isLastPage = true;
             Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
         }
+    }
+
+    private void loadNextPageDb(ArrayList<Contents> list) {
+        //Collections.reverse(list);
+        adapter.removeLoadingFooter();
+        isLoading = false;
+
+        adapter.addAll(list);
+
+        if (list != null && list.size() !=0)
+        {
+            //adapter.addLoadingFooter();
+            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
+        }
+
     }
 
 }

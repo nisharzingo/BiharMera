@@ -38,9 +38,9 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
         String contentDetails = "CREATE TABLE "+CONTENT_TABLE+"(ID INTEGER PRIMARY KEY,ContentId INTEGER,Title TEXT," +
                 "Description TEXT,ContentType TEXT,ContentURL TEXT,Thumbnail TEXT,CreatedBy TEXT," +
-                "CreatedDate TEXT,UpdatedBy TEXT,UpdatedDate TEXT,Views TEXT"+
+                "CreatedDate TEXT,UpdatedBy TEXT,UpdatedDate TEXT,Views TEXT,"+
                 "WatchTime TEXT,CreditName TEXT,OriginalURL TEXT,ProfileId INTEGER,"+
-                "SubCategoriesId INTEGER"+
+                "SubCategoriesId INTEGER,"+
                 " FOREIGN KEY(ProfileId) REFERENCES "+PROFILE_TABLE+"(ProfileId))";
 
         String profileDetails = "CREATE TABLE "+PROFILE_TABLE+"(ID INTEGER,ProfileId INTEGER PRIMARY KEY,Prefix TEXT," +
@@ -90,7 +90,6 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         // Inserting Row
         db.insert(CONTENT_TABLE, null, values);
         db.close(); // Closing database connection
-        System.out.println("Table Name="+CONTENT_TABLE+" Booking");
     }
 
     public ArrayList<Contents> getContents() {
