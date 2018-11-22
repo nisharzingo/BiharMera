@@ -127,30 +127,31 @@ public class FollowFragments extends Fragment {
 
             if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
-                ArrayList<Contents> contents = new ArrayList<>();
-                int count = 0;
+                ArrayList<Contents> contents = db.getContents();
 
-                for (Contents content : db.getContents()) {
+                if(contents!=null && contents.size()!=0) {
 
+                    ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
 
-                    //if(content.getContentType().equalsIgnoreCase("Image")){
-                    contents.add(content);
-                    count = count + 1;
-                    if (count == 9) {
-                        contentList.add(contents);
-                        count = 0;
-                        contents = new ArrayList<>();
+                    int count = contents.size();
+                    int init = count - 1;
+
+                    while (count >= 9) {
+
+                        ArrayList<Contents> list = new ArrayList<>();
+
+                        for (int i = 0; i < 9; i++) {
+                            list.add(contents.get(init));
+                            init--;
+                        }
+                        contentList.add(list);
+                        count = count - 9;
                     }
-                    // }
 
-
+                    if (contentList.size() != 0) {
+                        loadNextPageDb(contentList);
+                    }
                 }
-
-                if (contentList != null && contentList.size() != 0) {
-                    loadNextPageDb(contentList);
-                }
-
                 mContentProgressBar.setVisibility(View.GONE);
             }else{
                 Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
@@ -639,7 +640,6 @@ public class FollowFragments extends Fragment {
         adapter.removeLoadingFooter();
         isLoading = false;
 
-        Collections.reverse(list);
         adapter.addAll(list);
 
         if (list != null && list.size() !=0)

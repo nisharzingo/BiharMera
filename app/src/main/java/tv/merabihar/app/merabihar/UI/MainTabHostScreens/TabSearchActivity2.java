@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,8 +73,6 @@ public class TabSearchActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_tab_search2);
 
 
-        /*dummy contents for testing*/
-
         contentsView = findViewById(R.id.category_layout);
         mSearch = (CardView) findViewById(R.id.linear);
         mTrendingInterest = (RecyclerView) findViewById(R.id.trending_tags);
@@ -119,7 +118,9 @@ public class TabSearchActivity2 extends AppCompatActivity {
                 ArrayList<Contents> contents = new ArrayList<>();
                 int count = 0;
 
-                for (Contents content : db.getContents()) {
+                Collections.shuffle(db.getContents());
+
+                for (Contents content :db.getContents()) {
 
 
                     //if(content.getContentType().equalsIgnoreCase("Image")){

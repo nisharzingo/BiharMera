@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -136,7 +137,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
                     ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
                     ArrayList<Contents> contents = new ArrayList<>();
                     int count = 0;
-
+                    Collections.shuffle(db.getContentByType("Video"));
                     for (Contents content : db.getContentByType("Video")) {
 
 
@@ -164,9 +165,6 @@ public class TabVideoNewDesign extends AppCompatActivity {
                 }
                 progressBar.setVisibility(View.GONE);
             }
-
-
-
 
 
 
