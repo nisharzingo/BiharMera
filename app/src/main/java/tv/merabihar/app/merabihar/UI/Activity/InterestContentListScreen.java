@@ -186,7 +186,7 @@ public class InterestContentListScreen extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(InterestContentListScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(InterestContentListScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

@@ -117,7 +117,7 @@ public class ActiveTargetFragment extends Fragment {
                     @Override
                     public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
 
-                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

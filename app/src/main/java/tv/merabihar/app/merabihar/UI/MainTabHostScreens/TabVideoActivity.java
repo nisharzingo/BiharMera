@@ -149,7 +149,7 @@ public class TabVideoActivity extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(TabVideoActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(TabVideoActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

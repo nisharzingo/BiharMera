@@ -156,7 +156,7 @@ public class TabSearchActivity extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(TabSearchActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(TabSearchActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -222,7 +222,7 @@ public class TabSearchActivity extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }*/
-                            Toast.makeText(TabSearchActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(TabSearchActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                             mCategoryLayout.setVisibility(View.GONE);
                         }
                     });

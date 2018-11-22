@@ -813,7 +813,7 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                     public void onFailure(Call<Goals> call, Throwable t) {
 
 
-                        Toast.makeText(InfluencerProgramDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(InfluencerProgramDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

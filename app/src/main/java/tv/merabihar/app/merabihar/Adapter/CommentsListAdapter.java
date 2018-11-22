@@ -140,7 +140,7 @@ public class CommentsListAdapter  extends RecyclerView.Adapter<CommentsListAdapt
                     @Override
                     public void onFailure(Call<InterestProfileMapping> call, Throwable t) {
 
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         tv.setEnabled(true);
                     }
                 });

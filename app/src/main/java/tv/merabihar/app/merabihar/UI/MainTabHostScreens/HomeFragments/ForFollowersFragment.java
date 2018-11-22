@@ -494,7 +494,7 @@ public class ForFollowersFragment extends Fragment {
 
                         getNonFollowers(id);
 
-                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

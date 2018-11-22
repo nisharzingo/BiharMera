@@ -224,7 +224,7 @@ public class FollowingProfileListScreen extends AppCompatActivity {
                         // Log error here since request failed
 
                         mProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(FollowingProfileListScreen.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(FollowingProfileListScreen.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
 
                         Log.e("TAG", t.toString());
                     }

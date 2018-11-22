@@ -216,7 +216,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                                 // Cropping the image
                                                 Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
 
-                                                GlideApp.with(context)
+                                                Glide.with(context)
                                                         .load(customBitMap)
                                                         .apply(new RequestOptions()
                                                                 .placeholder(R.drawable.no_image)
@@ -1310,7 +1310,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         likeLyout.setEnabled(true);
 
                     }
@@ -1368,7 +1368,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         likeLayout.setEnabled(true);
 
                     }
@@ -1423,7 +1423,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         dislikeLayout.setEnabled(true);
 
                     }
@@ -1474,7 +1474,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         mDislikeLayout.setEnabled(true);
 
                     }
@@ -1664,7 +1664,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                     @Override
                     public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         tv.setEnabled(true);
                     }
                 });

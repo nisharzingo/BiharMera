@@ -152,7 +152,7 @@ public class VideoCategoryScreens extends AppCompatActivity {
                         mRecyclerView.setVisibility(View.GONE);
                         mProgressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(VideoCategoryScreens.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(VideoCategoryScreens.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

@@ -255,7 +255,7 @@ public class FollowFragments extends Fragment {
                             dialog.dismiss();
                         }*/
                         mCategoryProgressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                         categoryRecyclerView.setVisibility(View.GONE);
                     }
                 });
@@ -341,7 +341,7 @@ public class FollowFragments extends Fragment {
                     @Override
                     public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
                         mContentProgressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

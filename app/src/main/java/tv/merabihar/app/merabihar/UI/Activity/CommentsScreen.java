@@ -202,7 +202,7 @@ public class CommentsScreen extends AppCompatActivity {
                         mProgressBar.setVisibility(View.GONE);
 
 
-                        Toast.makeText(CommentsScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(CommentsScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -259,7 +259,7 @@ public class CommentsScreen extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(CommentsScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(CommentsScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });

@@ -95,7 +95,7 @@ public class InterestListScreen extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<Interest>> call, Throwable t) {
                         mProgressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(InterestListScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(InterestListScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

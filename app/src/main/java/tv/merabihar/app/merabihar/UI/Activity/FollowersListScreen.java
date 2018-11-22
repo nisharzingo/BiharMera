@@ -217,7 +217,7 @@ public class FollowersListScreen extends AppCompatActivity {
                         // Log error here since request failed
 
                         mProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(FollowersListScreen.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(FollowersListScreen.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
 
                         Log.e("TAG", t.toString());
                     }

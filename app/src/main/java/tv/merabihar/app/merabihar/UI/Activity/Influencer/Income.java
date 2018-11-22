@@ -748,7 +748,7 @@ public class Income extends AppCompatActivity {
 
                        // getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
 
-                        Toast.makeText(Income.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Income.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

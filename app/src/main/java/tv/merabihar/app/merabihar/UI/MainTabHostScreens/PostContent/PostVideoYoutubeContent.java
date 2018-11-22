@@ -253,7 +253,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<SubCategories>> call, Throwable t) {
 
 
-                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -415,7 +415,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -470,7 +470,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -521,7 +521,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -573,7 +573,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -624,7 +624,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<Interest>> call, Throwable t) {
 
 
-                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

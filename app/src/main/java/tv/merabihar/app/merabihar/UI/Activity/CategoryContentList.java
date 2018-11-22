@@ -197,7 +197,7 @@ public class CategoryContentList extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(CategoryContentList.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(CategoryContentList.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

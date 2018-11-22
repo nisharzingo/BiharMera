@@ -117,7 +117,7 @@ public class YouTubeListScreen extends AppCompatActivity {
 
 
 
-                        Toast.makeText(YouTubeListScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(YouTubeListScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

@@ -984,7 +984,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
 
-                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -1024,7 +1024,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
 
-                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -1074,7 +1074,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         mLikeLayout.setEnabled(true);
                     }
                 });
@@ -1130,7 +1130,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         mLikeLayout.setEnabled(true);
 
                     }
@@ -1188,7 +1188,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         mDislikeLayout.setEnabled(true);
 
 
@@ -1241,7 +1241,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
-                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentImageDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         mDislikeLayout.setEnabled(true);
                     }
                 });

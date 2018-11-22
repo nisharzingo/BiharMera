@@ -137,8 +137,11 @@ public class TabVideoNewDesign extends AppCompatActivity {
                     ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
                     ArrayList<Contents> contents = new ArrayList<>();
                     int count = 0;
-                    Collections.shuffle(db.getContentByType("Video"));
-                    for (Contents content : db.getContentByType("Video")) {
+
+                    ArrayList<Contents> contentsList = db.getContentByType("Video");
+                    Collections.shuffle(contentsList);
+
+                    for (Contents content : contentsList) {
 
 
                         //if(content.getContentType().equalsIgnoreCase("Image")){
@@ -155,6 +158,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
                     }
 
                     if (contentList != null && contentList.size() != 0) {
+
                         loadNextPageDb(contentList);
                     }
 
@@ -252,7 +256,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(TabVideoNewDesign.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(TabVideoNewDesign.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -305,7 +309,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
 
-                        Toast.makeText(TabVideoNewDesign.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(TabVideoNewDesign.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         mCategoryLayout.setVisibility(View.GONE);
                     }
                 });
@@ -405,7 +409,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(TabVideoNewDesign.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(TabVideoNewDesign.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -509,7 +513,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(TabVideoNewDesign.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(TabVideoNewDesign.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

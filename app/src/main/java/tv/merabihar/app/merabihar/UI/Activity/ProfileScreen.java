@@ -511,7 +511,7 @@ public class ProfileScreen extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(ProfileScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ProfileScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -649,7 +649,7 @@ public class ProfileScreen extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(ProfileScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ProfileScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -702,7 +702,7 @@ public class ProfileScreen extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(ProfileScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ProfileScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });

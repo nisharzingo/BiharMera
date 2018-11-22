@@ -206,7 +206,7 @@ public class CategoryFollowingList extends RecyclerView.Adapter<CategoryFollowin
                         }
 
 
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         tv.setEnabled(true);
                     }
                 });
@@ -260,7 +260,7 @@ public class CategoryFollowingList extends RecyclerView.Adapter<CategoryFollowin
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });

@@ -1163,7 +1163,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         like.setEnabled(true);
 
                     }
@@ -1236,7 +1236,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                             dialog.dismiss();
                         }
 
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         like.setEnabled(true);
 
                     }
@@ -1308,7 +1308,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         like.setEnabled(true);
 
                     }
@@ -1379,7 +1379,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                             dialog.dismiss();
                         }
 
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         like.setEnabled(true);
 
                     }
@@ -1583,7 +1583,7 @@ public class ContentRecyclerAdapter extends RecyclerView.Adapter {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         tv.setEnabled(true);
                     }
                 });

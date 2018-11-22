@@ -18,6 +18,7 @@ import tv.merabihar.app.merabihar.Adapter.MainContentScreenAdapter;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.VideoPlayerScreen;
 import tv.merabihar.app.merabihar.UI.YoutubePlayList.YouTubeListScreen;
+import tv.merabihar.app.merabihar.Util.Util;
 
 public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
@@ -57,9 +58,20 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
                 @Override
                 public void onClick(View view) {
 
-                    Intent video  = new Intent(TabHomeNewDesign.this, VideoCategoryScreens.class);
-                    //Intent video  = new Intent(TabHomeNewDesign.this, YouTubeListScreen.class);
-                    startActivity(video);
+                    if(Util.isNetworkAvailable(TabHomeNewDesign.this)){
+
+                        Intent video  = new Intent(TabHomeNewDesign.this, VideoCategoryScreens.class);
+                        //Intent video  = new Intent(TabHomeNewDesign.this, YouTubeListScreen.class);
+                        startActivity(video);
+
+                    }else {
+
+                        Toast.makeText(TabHomeNewDesign.this, "Please check your intternet connection", Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+
                 }
             });
 

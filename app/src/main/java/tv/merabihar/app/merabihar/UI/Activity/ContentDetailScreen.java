@@ -964,7 +964,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
 
-                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -1005,7 +1005,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onFailure(Call<ProfileFollowMapping> call, Throwable t) {
 
-                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -1258,9 +1258,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
 
 
-
-
-                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -1306,7 +1304,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     public void onFailure(Call<SubscribedGoals> call, Throwable t) {
 
 
-                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -1355,7 +1353,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         mLikeLayout.setEnabled(true);
 
 
@@ -1414,7 +1412,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         mLikeLayout.setEnabled(true);
 
 
@@ -1474,7 +1472,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                         mDislikeLayout.setEnabled(false);
 
-                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         like.setEnabled(true);
 
                     }
@@ -1527,7 +1525,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onFailure(Call<Likes> call, Throwable t) {
 
-                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                         mDislikeLayout.setEnabled(true);
 
 

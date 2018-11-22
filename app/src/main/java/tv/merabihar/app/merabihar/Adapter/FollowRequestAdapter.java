@@ -190,7 +190,7 @@ public class FollowRequestAdapter   extends RecyclerView.Adapter<FollowRequestAd
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -244,7 +244,7 @@ public class FollowRequestAdapter   extends RecyclerView.Adapter<FollowRequestAd
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });

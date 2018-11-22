@@ -445,7 +445,7 @@ public class PostContentScreen extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<SubCategories>> call, Throwable t) {
 
 
-                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -889,7 +889,7 @@ public class PostContentScreen extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -993,7 +993,7 @@ public class PostContentScreen extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -1042,7 +1042,7 @@ public class PostContentScreen extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -1092,7 +1092,7 @@ public class PostContentScreen extends AppCompatActivity {
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -1143,7 +1143,7 @@ public class PostContentScreen extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<Interest>> call, Throwable t) {
 
 
-                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PostContentScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

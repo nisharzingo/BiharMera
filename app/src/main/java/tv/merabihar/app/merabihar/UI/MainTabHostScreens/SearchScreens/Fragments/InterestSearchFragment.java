@@ -220,7 +220,7 @@ public class InterestSearchFragment extends Fragment {
                     public void onFailure(Call<ArrayList<Interest>> call, Throwable t) {
                         mProgressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

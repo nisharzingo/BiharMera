@@ -182,7 +182,7 @@ public class InterestFollowAdapter   extends RecyclerView.Adapter<InterestFollow
                             dialog.dismiss();
                         }
 
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                         tv.setEnabled(true);
                     }
                 });
@@ -236,7 +236,7 @@ public class InterestFollowAdapter   extends RecyclerView.Adapter<InterestFollow
                         {
                             dialog.dismiss();
                         }
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });

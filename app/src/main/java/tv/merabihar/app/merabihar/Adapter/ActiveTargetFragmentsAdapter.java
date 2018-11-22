@@ -619,7 +619,7 @@ public class ActiveTargetFragmentsAdapter extends RecyclerView.Adapter<ActiveTar
                     public void onFailure(Call<Goals> call, Throwable t) {
 
 
-                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

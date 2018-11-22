@@ -194,7 +194,7 @@ public class ForYouFragment extends Fragment {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -247,7 +247,7 @@ public class ForYouFragment extends Fragment {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

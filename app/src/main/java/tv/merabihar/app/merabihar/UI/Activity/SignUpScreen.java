@@ -730,7 +730,7 @@ public class SignUpScreen extends AppCompatActivity {
                         }
                         mCreateAccount.setEnabled(true);
 //                        Toast.makeText(SignUpScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
-                        SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), t.getMessage() );
+                        SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), "Something went wrong !" );
 
                     }
                 });

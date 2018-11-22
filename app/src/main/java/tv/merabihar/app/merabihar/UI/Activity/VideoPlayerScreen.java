@@ -249,7 +249,7 @@ public class VideoPlayerScreen extends AppCompatActivity implements YouTubePlaye
 
 
 
-                        Toast.makeText(VideoPlayerScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(VideoPlayerScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 

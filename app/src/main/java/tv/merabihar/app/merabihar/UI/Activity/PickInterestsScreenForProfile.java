@@ -172,7 +172,7 @@ public class PickInterestsScreenForProfile extends AppCompatActivity {
                             dialog.dismiss();
                         }
                         //System.out.println(TAG+" thread inside on fail");
-                        Toast.makeText(PickInterestsScreenForProfile.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PickInterestsScreenForProfile.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -216,7 +216,7 @@ public class PickInterestsScreenForProfile extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<InterestProfileMapping>> call, Throwable t) {
 
-                        Toast.makeText(PickInterestsScreenForProfile.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(PickInterestsScreenForProfile.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
                 });

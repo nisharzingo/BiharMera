@@ -140,7 +140,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                         if(urlString1!=null){
                             Picasso.with(context)
                                     .load(Uri.parse(urlString1))
-                                   // .resize(targetWidth,targetHeight)
+                                    // .resize(targetWidth,targetHeight)
                                     .error(R.drawable.no_image)
                                     .placeholder(R.drawable.no_image)
                                     .into(holder.iv1);
@@ -161,7 +161,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     final String img = "https://img.youtube.com/vi/"+content.get(1).getContentURL()+"/0.jpg";
                     if(img!=null&&!img.isEmpty()){
 
-                       Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
                                 error(R.drawable.no_image).into(holder.iv2);
 /*
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
@@ -292,7 +292,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                         urlString1 = urlString1.replaceAll(" ","%20");
                         if(urlString1!=null){
                             Picasso.with(context).load(urlString1)
-                                   // .resize(targetWidth,targetHeight)
+                                    // .resize(targetWidth,targetHeight)
                                     .placeholder(R.drawable.no_image).
                                     error(R.drawable.no_image).into(holder.iv3);
                         }
@@ -377,7 +377,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                         if(urlString1!=null){
 
                             Picasso.with(context).load(urlString1)
-                                 //   .resize(targetWidth,targetHeight)
+                                    //   .resize(targetWidth,targetHeight)
                                     .placeholder(R.drawable.no_image).
                                     error(R.drawable.no_image).into(holder.iv4);
 
@@ -451,7 +451,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                         urlString1 = urlString1.replaceAll(" ","%20");
                         if(urlString1!=null){
                             Picasso.with(context).load(urlString1)
-                                 //   .resize(targetWidth,targetHeight)
+                                    //   .resize(targetWidth,targetHeight)
                                     .placeholder(R.drawable.no_image).
                                     error(R.drawable.no_image).into(holder.iv5);
                         }
@@ -529,7 +529,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                         urlString1 = urlString1.replaceAll(" ","%20");
                         if(urlString1!=null){
                             Picasso.with(context).load(urlString1)
-                                  //  .resize(targetWidth,targetHeight)
+                                    //  .resize(targetWidth,targetHeight)
                                     .placeholder(R.drawable.no_image).
                                     error(R.drawable.no_image).into(holder.iv6);
 //                        iv6.setImageURI(Uri.parse(urlString1));
@@ -603,7 +603,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                         urlString1 = urlString1.replaceAll(" ","%20");
                         if(urlString1!=null){
                             Picasso.with(context).load(urlString1)
-                                   // .resize(targetWidth,targetHeight)
+                                    // .resize(targetWidth,targetHeight)
                                     .placeholder(R.drawable.no_image).
                                     error(R.drawable.no_image).into(holder.iv7);
                         }
@@ -611,7 +611,7 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                         if(urlString1!=null){
 
                             Picasso.with(context).load(urlString1)
-                                   // .resize(targetWidth,targetHeight)
+                                    // .resize(targetWidth,targetHeight)
                                     .placeholder(R.drawable.no_image).
                                     error(R.drawable.no_image).into(holder.iv7);
 
