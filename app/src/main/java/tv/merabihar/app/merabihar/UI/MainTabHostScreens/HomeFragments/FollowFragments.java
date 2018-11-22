@@ -4,8 +4,10 @@ package tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.CategoryGridAdapter;
+import tv.merabihar.app.merabihar.Adapter.ContentImageAdapter;
+import tv.merabihar.app.merabihar.Adapter.ContentSearchPaginationAdapter;
 import tv.merabihar.app.merabihar.Adapter.FollowFragmentCategoriesAdapter;
 import tv.merabihar.app.merabihar.Adapter.FollowFragmentContentAdapter;
+import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabVideoNewDesign;
 import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
@@ -46,6 +52,15 @@ public class FollowFragments extends Fragment {
     RecyclerView categoryRecyclerView, contentRecyclerView ;
     LinearLayoutManager horizontalLinearLayoutManager,verticalLinearLayoutManager;
 
+    ContentSearchPaginationAdapter adapter;
+
+    private static final int PAGE_START = 1;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int TOTAL_PAGES ;
+    private int currentPage = PAGE_START;
+
+    private String TAG="BlogList";
 
 
     public FollowFragments() {
@@ -80,7 +95,14 @@ public class FollowFragments extends Fragment {
         verticalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
         getCategories();
-        loadFirstSetOfContents();
+
+        contentRecyclerView.setLayoutManager(verticalLinearLayoutManager);
+
+        contentRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter = new ContentSearchPaginationAdapter(getActivity());
+        contentRecyclerView.setAdapter(adapter);
+
+        loadFirstSetOfBlogs();
        /* if (Util.isNetworkAvailable(getActivity())) {
 
 
@@ -94,6 +116,38 @@ public class FollowFragments extends Fragment {
         }*/
 
         // content recyclerview will be vertical
+
+        contentRecyclerView.addOnScrollListener(new PageScrollListener(verticalLinearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+
+                currentPage = currentPage+1;
+
+                if (Util.isNetworkAvailable(getActivity())) {
+                    loadNextSetOfItems();
+
+                }else{
+                    Toast.makeText(context, "You are offline", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                return currentPage;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
         return mFragmentView;
     }
 
@@ -255,6 +309,220 @@ public class FollowFragments extends Fragment {
 
         });
 
+    }
+
+    public void loadFirstSetOfBlogs() {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
+
+                Call<ArrayList<Contents>> getAllBookings = bookingApi.
+                        getContentByVideoAndCity(Constants.CITY_ID,"Video",currentPage,9);
+
+                getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
+
+                        mContentProgressBar.setVisibility(View.GONE);
+                        try {
+                            if (response.code() == 200 && response.body() != null) {
+                                if (response.body().size() != 0) {
+                                    Log.d(TAG, "loadFirstPage: " + response.message());
+                                    ArrayList<Contents> approvedBlogs = response.body();
+
+                                    if (approvedBlogs != null && approvedBlogs.size() != 0) {
+
+
+                                        ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                                        ArrayList<Contents> contents = new ArrayList<>();
+                                        if (response.body().size() != 0) {
+
+                                            System.out.println("Content inside");
+
+                                            int count = 0;
+
+                                            for (Contents content : response.body()) {
+
+
+                                                //if(content.getContentType().equalsIgnoreCase("Image")){
+                                                contents.add(content);
+                                                count = count + 1;
+                                                if (count == 9) {
+                                                    contentList.add(contents);
+                                                    count = 0;
+                                                    contents = new ArrayList<>();
+                                                }
+                                                // }
+
+
+                                            }
+
+
+
+                                            if (contentList != null && contentList.size() != 0) {
+                                                loadFirstPage(contentList);
+                                            }
+
+
+
+                                        } else {
+                                            isLoading = true;
+
+                                            currentPage = currentPage + 1;
+                                            loadNextSetOfItems();
+                                        }
+
+                                    } else {
+                                        adapter.removeLoadingFooter();
+                                        isLastPage = true;
+                                        isLoading = true;
+                                        mContentProgressBar.setVisibility(View.GONE);
+                                    }
+
+                                } else {
+
+                                }
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
+                    }
+                });
+
+                //WebService.getAllBookings(PreferenceHandler.getInstance(getActivity()).getHotelID());
+            }
+        });
+
+    }
+
+    private void loadFirstPage(ArrayList<ArrayList<Contents>> list) {
+        Log.d(TAG, "loadFirstPage: "+list.size());
+        //Collections.reverse(list);
+        mContentProgressBar.setVisibility(View.GONE);
+        adapter.addAll(list);
+
+        if (list != null && list.size() !=0)
+            adapter.addLoadingFooter();
+        else
+            isLastPage = true;
+
+    }
+
+    public void loadNextSetOfItems() {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
+
+                Call<ArrayList<Contents>> getAllBookings = bookingApi.
+                        getContentByVideoAndCity(Constants.CITY_ID,"Video",currentPage,9);
+
+                getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
+
+
+                        try{
+                            if(response.code() == 200 && response.body()!= null)
+                            {
+                                if(response.body().size() != 0) {
+
+                                    ArrayList<Contents> approvedBlogs = response.body();
+
+
+                                    if(approvedBlogs!=null&&approvedBlogs.size()!=0){
+
+                                        ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                                        ArrayList<Contents> contents = new ArrayList<>();
+                                        if (response.body().size() != 0) {
+
+                                            System.out.println("Content inside");
+
+                                            int count = 0;
+
+                                            for (Contents content : response.body()) {
+
+
+                                                //if(content.getContentType().equalsIgnoreCase("Image")){
+                                                contents.add(content);
+                                                count = count + 1;
+                                                if (count == 9) {
+                                                    contentList.add(contents);
+                                                    count = 0;
+                                                    contents = new ArrayList<>();
+                                                }
+                                                // }
+
+
+                                            }
+
+                                            if (contentList != null && contentList.size() != 0) {
+                                                loadNextPage(contentList);
+                                            }
+                                        }
+                                    }else{
+                                        isLoading = true;
+
+                                        currentPage = currentPage+1;
+                                        loadNextSetOfItems();
+                                    }
+
+                                }
+                                else
+                                {
+                                    Log.d(TAG, "loadNextPage: " + currentPage+" == "+"FALSE = "+response.body().size());
+                                    adapter.removeLoadingFooter();
+                                    isLastPage = true;
+                                }
+
+                            }
+                            else
+                            {
+
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
+                    }
+                });
+                //WebService.getAllBookings(PreferenceHandler.getInstance(getActivity()).getHotelID());
+            }
+        });
+
+    }
+
+    private void loadNextPage(ArrayList<ArrayList<Contents>> list) {
+        //Collections.reverse(list);
+        adapter.removeLoadingFooter();
+        isLoading = false;
+
+        adapter.addAll(list);
+
+        if (list != null && list.size() !=0)
+        {
+            adapter.addLoadingFooter();
+            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
+        }
+        else
+        {
+            isLastPage = true;
+            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
+        }
     }
 
 
