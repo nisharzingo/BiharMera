@@ -117,10 +117,11 @@ public class TabSearchActivity2 extends AppCompatActivity {
                 ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
                 ArrayList<Contents> contents = new ArrayList<>();
                 int count = 0;
+                ArrayList<Contents> contentsList = db.getContents();
 
-                Collections.shuffle(db.getContents());
+                Collections.shuffle(contentsList);
 
-                for (Contents content :db.getContents()) {
+                for (Contents content :contentsList) {
 
 
                     //if(content.getContentType().equalsIgnoreCase("Image")){
@@ -242,7 +243,7 @@ public class TabSearchActivity2 extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Toast.makeText(TabSearchActivity2.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(TabSearchActivity2.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -333,7 +334,7 @@ public class TabSearchActivity2 extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
 
                         mCategoryProgressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(TabSearchActivity2.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(TabSearchActivity2.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
                 //System.out.println(TAG+" thread started");
