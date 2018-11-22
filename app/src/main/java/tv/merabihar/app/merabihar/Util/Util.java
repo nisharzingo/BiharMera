@@ -22,9 +22,14 @@ import java.io.ByteArrayOutputStream;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import tv.merabihar.app.merabihar.Cache.CacheInterceptor;
+import tv.merabihar.app.merabihar.Cache.CacheManager;
+import tv.merabihar.app.merabihar.Cache.Reachability;
 
 /**
  * Created by ZingoHotels Tech on 31-10-2018.
@@ -34,6 +39,41 @@ public class Util {
 
     private static Retrofit retrofit = null;
     private static final int PERMISSION_RESULT = 1;
+
+    public static Retrofit getRetrofit( CacheManager cacheManager, Reachability reachability) {
+        return new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .client(createClient(cacheManager, reachability))
+                .addConverterFactory(getConverterFactory())
+                .build();
+    }
+
+    public static OkHttpClient createClient(CacheManager cacheManager, Reachability reachability) {
+        return new OkHttpClient.Builder().addInterceptor(new CacheInterceptor(cacheManager, reachability)).build();
+    }
+
+    public static Retrofit getRetrofit() {
+        return new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .client(createClient())
+                .addConverterFactory(getConverterFactory()).build();
+    }
+
+    public static Retrofit getPlainRetrofit() {
+        return new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .client(new OkHttpClient.Builder().build())
+                .addConverterFactory(getConverterFactory())
+                .build();
+    }
+
+    public static Converter.Factory getConverterFactory() {
+        return GsonConverterFactory.create();
+    }
+
+    public static OkHttpClient createClient() {
+        return new OkHttpClient.Builder().build();
+    }
 
     public static Retrofit getClient() {
         OkHttpClient client = new OkHttpClient.Builder()

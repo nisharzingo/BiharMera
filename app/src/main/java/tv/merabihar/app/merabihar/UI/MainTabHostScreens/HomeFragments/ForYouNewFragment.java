@@ -189,6 +189,7 @@ public class ForYouNewFragment extends Fragment {
                 System.out.println("Db size"+db.getContents().size());
                 if(db.getContents()!=null&&db.getContents().size()!=0){
                     loadNextPageDb(db.getContents());
+                    progressBar.setVisibility(View.GONE);
                 }else{
                     Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
                 }
@@ -209,7 +210,7 @@ public class ForYouNewFragment extends Fragment {
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
-                ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
+                ContentAPI bookingApi = Util.getRetrofit().create(ContentAPI.class);
 
                 Call<ArrayList<Contents>> getAllBookings = bookingApi.
                         getContentPageByCityId(Constants.CITY_ID,currentPage,3);
@@ -231,10 +232,10 @@ public class ForYouNewFragment extends Fragment {
 
                                         if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                            /*Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
                                             Bundle bundle = new Bundle();
                                             bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);*/
+                                            getActivity().startService(intent);
 
                                             for (Contents content:approvedBlogs) {
 
@@ -254,10 +255,10 @@ public class ForYouNewFragment extends Fragment {
                                         }else{
 
                                             //db.addContents();
-                                           /* Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
                                             Bundle bundle = new Bundle();
                                             bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);*/
+                                            getActivity().startService(intent);
 
                                             for (Contents content:approvedBlogs) {
                                                 db.addContents(content);
@@ -321,7 +322,7 @@ public class ForYouNewFragment extends Fragment {
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
-                ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
+                ContentAPI bookingApi = Util.getRetrofit().create(ContentAPI.class);
 
                 Call<ArrayList<Contents>> getAllBookings = bookingApi.
                         getContentPageByCityId(Constants.CITY_ID,currentPage,3);
@@ -343,10 +344,10 @@ public class ForYouNewFragment extends Fragment {
 
                                         if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                            /*Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
                                             Bundle bundle = new Bundle();
                                             bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);*/
+                                            getActivity().startService(intent);
 
                                             for (Contents content:approvedBlogs) {
 
@@ -368,10 +369,10 @@ public class ForYouNewFragment extends Fragment {
                                             for (Contents content:approvedBlogs) {
                                                 db.addContents(content);
                                             }
-                                           /* Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
                                             Bundle bundle = new Bundle();
                                             bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);*/
+                                            getActivity().startService(intent);
                                         }
 
                                     }else{

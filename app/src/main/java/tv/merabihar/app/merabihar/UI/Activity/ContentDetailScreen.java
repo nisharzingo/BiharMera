@@ -539,7 +539,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 
 
-                if (contents.getSubCategories() == null) {
+                if (contents.getSubCategories() != null) {
                    mSubCategory.setText(""+contents.getSubCategories().getSubCategoriesName());
                 } else {
 

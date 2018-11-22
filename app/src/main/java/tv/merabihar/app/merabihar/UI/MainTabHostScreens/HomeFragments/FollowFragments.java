@@ -94,7 +94,7 @@ public class FollowFragments extends Fragment {
         horizontalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         verticalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
-        getCategories();
+
 
         contentRecyclerView.setLayoutManager(verticalLinearLayoutManager);
 
@@ -102,10 +102,10 @@ public class FollowFragments extends Fragment {
         adapter = new ContentSearchPaginationAdapter(getActivity());
         contentRecyclerView.setAdapter(adapter);
 
-        loadFirstSetOfBlogs();
-       /* if (Util.isNetworkAvailable(getActivity())) {
 
-
+        if (Util.isNetworkAvailable(getActivity())) {
+            loadFirstSetOfBlogs();
+            getCategories();
 
         }else{
 
@@ -113,7 +113,7 @@ public class FollowFragments extends Fragment {
 //            Toast.makeText(context, "No internet Connection", Toast.LENGTH_SHORT).show();
             mContentProgressBar.setVisibility(View.GONE);
             mCategoryProgressBar.setVisibility(View.GONE);
-        }*/
+        }
 
         // content recyclerview will be vertical
 
