@@ -178,7 +178,12 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
                                     String urlString1 = content.get(1).getContentImage().get(0).getImages();
 
                                     if(urlString1!=null){
-                                        iv2.setImageURI(Uri.parse(urlString1));
+                                        Picasso.with(context)
+                                                .load(Uri.parse(urlString1))
+                                                .error(R.drawable.no_image)
+                                                .placeholder(R.drawable.no_image)
+                                                .into(holder.iv2);
+                                        //iv2.setImageURI(Uri.parse(urlString1));
                                     }
 
                                 }
@@ -209,7 +214,12 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
                                     String urlString1 = content.get(2).getContentImage().get(0).getImages();
 
                                     if(urlString1!=null){
-                                        iv3.setImageURI(Uri.parse(urlString1));
+                                        Picasso.with(context)
+                                                .load(Uri.parse(urlString1))
+                                                .error(R.drawable.no_image)
+                                                .placeholder(R.drawable.no_image)
+                                                .into(holder.iv3);
+                                        //iv3.setImageURI(Uri.parse(urlString1));
                                     }
 
                                 }
@@ -240,7 +250,13 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
                                     String urlString1 = content.get(3).getContentImage().get(0).getImages();
 
                                     if(urlString1!=null){
-                                        iv4.setImageURI(Uri.parse(urlString1));
+
+                                        Picasso.with(context)
+                                                .load(Uri.parse(urlString1))
+                                                .error(R.drawable.no_image)
+                                                .placeholder(R.drawable.no_image)
+                                                .into(holder.iv4);
+                                        //iv4.setImageURI(Uri.parse(urlString1));
                                     }
 
                                 }
@@ -272,7 +288,12 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
                                     String urlString1 = content.get(4).getContentImage().get(0).getImages();
 
                                     if(urlString1!=null){
-                                        iv5.setImageURI(Uri.parse(urlString1));
+                                        Picasso.with(context)
+                                                .load(Uri.parse(urlString1))
+                                                .error(R.drawable.no_image)
+                                                .placeholder(R.drawable.no_image)
+                                                .into(holder.iv5);
+                                        //iv5.setImageURI(Uri.parse(urlString1));
                                     }
 
                                 }
@@ -304,7 +325,12 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
                                     String urlString1 = content.get(5).getContentImage().get(0).getImages();
 
                                     if(urlString1!=null){
-                                        iv6.setImageURI(Uri.parse(urlString1));
+                                        Picasso.with(context)
+                                                .load(Uri.parse(urlString1))
+                                                .error(R.drawable.no_image)
+                                                .placeholder(R.drawable.no_image)
+                                                .into(holder.iv6);
+                                        //iv6.setImageURI(Uri.parse(urlString1));
                                     }
 
                                 }
@@ -326,6 +352,7 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
                                                 .placeholder(R.drawable.no_image)
                                                 .into(holder.iv7);
                                     }else{
+
                                         holder.iv7.setImageResource(R.drawable.no_image);
                                     }
                                 }
@@ -336,7 +363,12 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
                                     String urlString1 = content.get(6).getContentImage().get(0).getImages();
 
                                     if(urlString1!=null){
-                                        iv7.setImageURI(Uri.parse(urlString1));
+                                        Picasso.with(context)
+                                                .load(Uri.parse(urlString1))
+                                                .error(R.drawable.no_image)
+                                                .placeholder(R.drawable.no_image)
+                                                .into(holder.iv7);
+                                        //iv7.setImageURI(Uri.parse(urlString1));
                                     }
 
                                 }
@@ -368,7 +400,12 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
                                     String urlString1 = content.get(7).getContentImage().get(0).getImages();
 
                                     if(urlString1!=null){
-                                        iv8.setImageURI(Uri.parse(urlString1));
+                                        Picasso.with(context)
+                                                .load(Uri.parse(urlString1))
+                                                .error(R.drawable.no_image)
+                                                .placeholder(R.drawable.no_image)
+                                                .into(holder.iv8);
+                                       // iv8.setImageURI(Uri.parse(urlString1));
                                     }
 
                                 }
@@ -401,7 +438,13 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
                                     String urlString1 = content.get(8).getContentImage().get(0).getImages();
 
                                     if(urlString1!=null){
-                                        iv9.setImageURI(Uri.parse(urlString1));
+
+                                        Picasso.with(context)
+                                                .load(Uri.parse(urlString1))
+                                                .error(R.drawable.no_image)
+                                                .placeholder(R.drawable.no_image)
+                                                .into(holder.iv9);
+                                        //iv9.setImageURI(Uri.parse(urlString1));
                                     }
 
                                 }

@@ -2,7 +2,9 @@ package tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,9 +32,12 @@ import tv.merabihar.app.merabihar.Adapter.FollowFragmentCategoriesAdapter;
 import tv.merabihar.app.merabihar.Adapter.FollowFragmentContentAdapter;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
+import tv.merabihar.app.merabihar.DataBase.DataBaseHelper;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Service.ContentDataBaseService;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabSearchActivity2;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabVideoNewDesign;
 import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
@@ -62,7 +68,7 @@ public class FollowFragments extends Fragment {
 
     private String TAG="BlogList";
 
-
+    DataBaseHelper db ;
     public FollowFragments() {
         // Required empty public constructor
     }
@@ -76,6 +82,11 @@ public class FollowFragments extends Fragment {
         categoryList = new ArrayList<>();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        db = new DataBaseHelper(getActivity());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -113,6 +124,37 @@ public class FollowFragments extends Fragment {
 //            Toast.makeText(context, "No internet Connection", Toast.LENGTH_SHORT).show();
             mContentProgressBar.setVisibility(View.GONE);
             mCategoryProgressBar.setVisibility(View.GONE);
+
+            if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                ArrayList<Contents> contents = new ArrayList<>();
+                int count = 0;
+
+                for (Contents content : db.getContents()) {
+
+
+                    //if(content.getContentType().equalsIgnoreCase("Image")){
+                    contents.add(content);
+                    count = count + 1;
+                    if (count == 9) {
+                        contentList.add(contents);
+                        count = 0;
+                        contents = new ArrayList<>();
+                    }
+                    // }
+
+
+                }
+
+                if (contentList != null && contentList.size() != 0) {
+                    loadNextPageDb(contentList);
+                }
+
+                mContentProgressBar.setVisibility(View.GONE);
+            }else{
+                Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
+            }
         }
 
         // content recyclerview will be vertical
@@ -367,6 +409,40 @@ public class FollowFragments extends Fragment {
                                             }
 
 
+                                            if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                                Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                getActivity().startService(intent);
+
+                                                for (Contents content:approvedBlogs) {
+
+                                                    if(db.getContentById(content.getContentId())!=null){
+
+                                                        db.updateContents(content);
+                                                        System.out.println("Data Base Update Service");
+
+                                                    }else{
+                                                        db.addContents(content);
+                                                        System.out.println("Data Base add Service");
+
+                                                    }
+
+                                                }
+
+                                            }else{
+
+                                                for (Contents content:approvedBlogs) {
+                                                    db.addContents(content);
+                                                }
+                                                Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                getActivity().startService(intent);
+                                            }
+
+
 
                                         } else {
                                             isLoading = true;
@@ -469,6 +545,39 @@ public class FollowFragments extends Fragment {
                                             if (contentList != null && contentList.size() != 0) {
                                                 loadNextPage(contentList);
                                             }
+                                            if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                                Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                getActivity().startService(intent);
+
+                                                for (Contents content:approvedBlogs) {
+
+                                                    if(db.getContentById(content.getContentId())!=null){
+
+                                                        db.updateContents(content);
+                                                        System.out.println("Data Base Update Service");
+
+                                                    }else{
+                                                        db.addContents(content);
+                                                        System.out.println("Data Base add Service");
+
+                                                    }
+
+                                                }
+
+                                            }else{
+
+                                                for (Contents content:approvedBlogs) {
+                                                    db.addContents(content);
+                                                }
+                                                Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                getActivity().startService(intent);
+                                            }
+
                                         }
                                     }else{
                                         isLoading = true;
@@ -525,5 +634,20 @@ public class FollowFragments extends Fragment {
         }
     }
 
+    private void loadNextPageDb(ArrayList<ArrayList<Contents>> list) {
+        //Collections.reverse(list);
+        adapter.removeLoadingFooter();
+        isLoading = false;
+
+        Collections.reverse(list);
+        adapter.addAll(list);
+
+        if (list != null && list.size() !=0)
+        {
+            //adapter.addLoadingFooter();
+            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
+        }
+
+    }
 
 }

@@ -28,9 +28,11 @@ import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
 import tv.merabihar.app.merabihar.CustomViews.CustomGridView;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
+import tv.merabihar.app.merabihar.DataBase.DataBaseHelper;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.InterestContentMapping;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Service.ContentDataBaseService;
 import tv.merabihar.app.merabihar.UI.Activity.ContentListScreen;
 import tv.merabihar.app.merabihar.UI.Activity.InterestListScreen;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.SearchScreens.SearchActivity;
@@ -61,6 +63,8 @@ public class TabSearchActivity2 extends AppCompatActivity {
 
     private String TAG="BlogList";
 
+    DataBaseHelper db ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,13 +91,15 @@ public class TabSearchActivity2 extends AppCompatActivity {
         adapter = new ContentSearchPaginationAdapter(TabSearchActivity2.this);
         contentsView.setAdapter(adapter);
 
+        db = new DataBaseHelper(TabSearchActivity2.this);
+
         Thread interest = new Thread() {
             public void run() {
                 getTrendingInterest();
             }
         };
 
-        Thread contents = new Thread() {
+        Thread contentss = new Thread() {
             public void run() {
                 loadFirstSetOfBlogs();
             }
@@ -101,12 +107,42 @@ public class TabSearchActivity2 extends AppCompatActivity {
 
         if (Util.isNetworkAvailable(TabSearchActivity2.this)) {
             interest.start();
-            contents.start();
+            contentss.start();
         }
         else{
-                progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
             mCategoryProgressBar.setVisibility(View.GONE);
             SnackbarViewer.showSnackbar(findViewById(R.id.tab_search_activity_ll),"No Internet connection");
+            if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                ArrayList<Contents> contents = new ArrayList<>();
+                int count = 0;
+
+                for (Contents content : db.getContents()) {
+
+
+                    //if(content.getContentType().equalsIgnoreCase("Image")){
+                    contents.add(content);
+                    count = count + 1;
+                    if (count == 9) {
+                        contentList.add(contents);
+                        count = 0;
+                        contents = new ArrayList<>();
+                    }
+                    // }
+
+
+                }
+
+                if (contentList != null && contentList.size() != 0) {
+                    loadNextPageDb(contentList);
+                }
+
+                progressBar.setVisibility(View.GONE);
+            }else{
+                Toast.makeText(TabSearchActivity2.this, "No Contents in db", Toast.LENGTH_SHORT).show();
+            }
 //            Toast.makeText(this, "no connection", Toast.LENGTH_SHORT).show();
 //            Log.e("NO Connection found", "xxxxxxxxxxx");
         }
@@ -141,7 +177,7 @@ public class TabSearchActivity2 extends AppCompatActivity {
                     loadNextSetOfItems();
 
                 }else{
-                    SnackbarViewer.showSnackbar(findViewById(R.id.content_list_screen_ll),"No Internet connection");
+                    Toast.makeText(TabSearchActivity2.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -381,6 +417,39 @@ public class TabSearchActivity2 extends AppCompatActivity {
                                                 loadFirstPage(contentList);
                                             }
 
+                                            if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                                Intent intent = new Intent(TabSearchActivity2.this, ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                startService(intent);
+
+                                                for (Contents content:approvedBlogs) {
+
+                                                    if(db.getContentById(content.getContentId())!=null){
+
+                                                        db.updateContents(content);
+                                                        System.out.println("Data Base Update Service");
+
+                                                    }else{
+                                                        db.addContents(content);
+                                                        System.out.println("Data Base add Service");
+
+                                                    }
+
+                                                }
+
+                                            }else{
+
+                                                for (Contents content:approvedBlogs) {
+                                                    db.addContents(content);
+                                                }
+                                                Intent intent = new Intent(TabSearchActivity2.this, ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                startService(intent);
+                                            }
+
                                         } else {
                                             isLoading = true;
 
@@ -482,6 +551,39 @@ public class TabSearchActivity2 extends AppCompatActivity {
                                             if (contentList != null && contentList.size() != 0) {
                                                 loadNextPage(contentList);
                                             }
+
+                                            if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                                Intent intent = new Intent(TabSearchActivity2.this, ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                startService(intent);
+
+                                                for (Contents content:approvedBlogs) {
+
+                                                    if(db.getContentById(content.getContentId())!=null){
+
+                                                        db.updateContents(content);
+                                                        System.out.println("Data Base Update Service");
+
+                                                    }else{
+                                                        db.addContents(content);
+                                                        System.out.println("Data Base add Service");
+
+                                                    }
+
+                                                }
+
+                                            }else{
+
+                                                for (Contents content:approvedBlogs) {
+                                                    db.addContents(content);
+                                                }
+                                                Intent intent = new Intent(TabSearchActivity2.this, ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                startService(intent);
+                                            }
                                         }
                                     }else{
                                         isLoading = true;
@@ -537,4 +639,19 @@ public class TabSearchActivity2 extends AppCompatActivity {
             Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
         }
     }
+    private void loadNextPageDb(ArrayList<ArrayList<Contents>> list) {
+        //Collections.reverse(list);
+        adapter.removeLoadingFooter();
+        isLoading = false;
+
+        adapter.addAll(list);
+
+        if (list != null && list.size() !=0)
+        {
+            //adapter.addLoadingFooter();
+            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
+        }
+
+    }
+
 }

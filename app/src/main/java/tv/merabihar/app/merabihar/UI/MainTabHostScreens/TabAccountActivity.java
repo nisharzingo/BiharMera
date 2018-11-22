@@ -60,10 +60,12 @@ import tv.merabihar.app.merabihar.Adapter.ImagePorifleContentAdapter;
 import tv.merabihar.app.merabihar.Adapter.ProfileListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
+import tv.merabihar.app.merabihar.DataBase.DataBaseHelper;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowersWithProfileData;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Service.ContentDataBaseService;
 import tv.merabihar.app.merabihar.UI.Activity.FollowOptions.FollowOptionsActivity;
 import tv.merabihar.app.merabihar.UI.Activity.FollowersListScreen;
 import tv.merabihar.app.merabihar.UI.Activity.FollowingProfileListScreen;
@@ -116,7 +118,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
     ArrayList<Contents> profileContents;
 
-
+    DataBaseHelper db ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +130,8 @@ public class TabAccountActivity extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
             setContentView(R.layout.activity_tab_account);
+
+            db = new DataBaseHelper(TabAccountActivity.this);
 
             mLogin = (AppCompatButton) findViewById(R.id.loginAccount);
             mSignUp = (TextView) findViewById(R.id.link_signup);
@@ -298,6 +302,14 @@ public class TabAccountActivity extends AppCompatActivity {
 
                             SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
                             progressBar.setVisibility(View.GONE);
+
+                            if(db.getContentByProfileId(profileId)!=null&&db.getContentByProfileId(profileId).size()!=0){
+                                adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,db.getContentByProfileId(profileId));
+                                mPostsList.setAdapter(adapters);
+                                progressBar.setVisibility(View.GONE);
+                            }else{
+                                Toast.makeText(TabAccountActivity.this, "No Contents in db", Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                     }else{
@@ -341,6 +353,19 @@ public class TabAccountActivity extends AppCompatActivity {
                         }else{
 
                             SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
+
+                            if(db.getContentByProfileId(profileId)!=null&&db.getContentByProfileId(profileId).size()!=0){
+                                adapter = new ContentAdapterVertical(TabAccountActivity.this);
+
+                                mFollowingPeoples.setAdapter(adapter);
+                                progressBar.setVisibility(View.GONE);
+                                adapter.addAll(db.getContentByProfileId(profileId));
+
+
+
+                            }else{
+                                Toast.makeText(TabAccountActivity.this, "No Contents in db", Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                     }else{
@@ -371,6 +396,9 @@ public class TabAccountActivity extends AppCompatActivity {
 
                     SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
                     progressBar.setVisibility(View.GONE);
+                    if(PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName()!=null&&!PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName().isEmpty()){
+                        mProfileName.setText(""+PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName());
+                    }
                 }
 
             }else{
@@ -483,6 +511,41 @@ public class TabAccountActivity extends AppCompatActivity {
                                 profileContents = profile.getContents();
                                 adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,profile.getContents());
                                 mPostsList.setAdapter(adapters);
+
+                                if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                    Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("ContentList",response.body());
+                                    startService(intent);
+
+                                    for (Contents content:profileContents) {
+
+                                        if(db.getContentById(content.getContentId())!=null){
+
+                                            db.updateContents(content);
+                                            System.out.println("Data Base Update Service");
+
+                                        }else{
+                                            db.addContents(content);
+                                            System.out.println("Data Base add Service");
+
+                                        }
+
+                                    }
+
+                                }else{
+
+                                    //db.addContents();
+                                    Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("ContentList",response.body());
+                                    startService(intent);
+
+                                    for (Contents content:profileContents) {
+                                        db.addContents(content);
+                                    }
+                                }
                             }else{
                                 if(Util.isNetworkAvailable(TabAccountActivity.this)){
                                     getProfileContent(id);
@@ -564,7 +627,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Log.e("TAG", t.toString());
+                        Log.e("Network TAG", t.toString());
                     }
                 });
             }
@@ -624,7 +687,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        Log.e("TAG", t.toString());
+                        Log.e("Network  TAG", t.toString());
                     }
                 });
             }
@@ -724,6 +787,41 @@ public class TabAccountActivity extends AppCompatActivity {
                                 profileContents = response.body();
                                 adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,response.body());
                                 mPostsList.setAdapter(adapters);
+
+                                if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                    Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("ContentList",response.body());
+                                    startService(intent);
+
+                                    for (Contents content:response.body()) {
+
+                                        if(db.getContentById(content.getContentId())!=null){
+
+                                            db.updateContents(content);
+                                            System.out.println("Data Base Update Service");
+
+                                        }else{
+                                            db.addContents(content);
+                                            System.out.println("Data Base add Service");
+
+                                        }
+
+                                    }
+
+                                }else{
+
+                                    //db.addContents();
+                                    Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("ContentList",response.body());
+                                    startService(intent);
+
+                                    for (Contents content:response.body()) {
+                                        db.addContents(content);
+                                    }
+                                }
                             }
 
                         }else{
@@ -796,6 +894,41 @@ public class TabAccountActivity extends AppCompatActivity {
 
                                     if(approvedBlogs!=null&&approvedBlogs.size()!=0){
                                         loadFirstPage(approvedBlogs);
+
+                                        if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                            Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("ContentList",response.body());
+                                            startService(intent);
+
+                                            for (Contents content:response.body()) {
+
+                                                if(db.getContentById(content.getContentId())!=null){
+
+                                                    db.updateContents(content);
+                                                    System.out.println("Data Base Update Service");
+
+                                                }else{
+                                                    db.addContents(content);
+                                                    System.out.println("Data Base add Service");
+
+                                                }
+
+                                            }
+
+                                        }else{
+
+                                            //db.addContents();
+                                            Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("ContentList",response.body());
+                                            startService(intent);
+
+                                            for (Contents content:response.body()) {
+                                                db.addContents(content);
+                                            }
+                                        }
                                     }else{
                                         isLoading = true;
 

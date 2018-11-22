@@ -35,11 +35,13 @@ import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
 import tv.merabihar.app.merabihar.CustomViews.CustomGridView;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
+import tv.merabihar.app.merabihar.DataBase.DataBaseHelper;
 import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.ContentImages;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.InterestContentMapping;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Service.ContentDataBaseService;
 import tv.merabihar.app.merabihar.UI.Activity.InterestListScreen;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.SearchScreens.SearchActivity;
 import tv.merabihar.app.merabihar.UI.YoutubePlayList.YouTubeFragment;
@@ -74,7 +76,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
     private String TAG="BlogList";
 
-
+    DataBaseHelper db ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +106,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
             adapter = new ContentSearchPaginationAdapter(TabVideoNewDesign.this);
             mImagesList.setAdapter(adapter);
 
-
+            db = new DataBaseHelper(TabVideoNewDesign.this);
 
             Thread category = new Thread() {
                 public void run() {
@@ -129,6 +131,37 @@ public class TabVideoNewDesign extends AppCompatActivity {
             }else{
 
                 SnackbarViewer.showSnackbar(findViewById(R.id.tab_new_design_ll),"No Internet connection");
+                if(db.getContentByType("Video")!=null&&db.getContentByType("Video").size()!=0){
+
+                    ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                    ArrayList<Contents> contents = new ArrayList<>();
+                    int count = 0;
+
+                    for (Contents content : db.getContentByType("Video")) {
+
+
+                        //if(content.getContentType().equalsIgnoreCase("Image")){
+                        contents.add(content);
+                        count = count + 1;
+                        if (count == 9) {
+                            contentList.add(contents);
+                            count = 0;
+                            contents = new ArrayList<>();
+                        }
+                        // }
+
+
+                    }
+
+                    if (contentList != null && contentList.size() != 0) {
+                        loadNextPageDb(contentList);
+                    }
+
+
+                    progressBar.setVisibility(View.GONE);
+                }else{
+                    Toast.makeText(TabVideoNewDesign.this, "No Contents in db", Toast.LENGTH_SHORT).show();
+                }
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -150,7 +183,8 @@ public class TabVideoNewDesign extends AppCompatActivity {
                         loadNextSetOfItems();
 
                     }else{
-                        SnackbarViewer.showSnackbar(findViewById(R.id.content_list_screen_ll),"No Internet connection");
+                       // SnackbarViewer.showSnackbar(findViewById(R.id.content_list_screen_ll),"No Internet connection");
+                        Toast.makeText(TabVideoNewDesign.this, "You are offline", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -588,6 +622,39 @@ public class TabVideoNewDesign extends AppCompatActivity {
                                                 loadFirstPage(contentList);
                                             }
 
+                                            if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                                Intent intent = new Intent(TabVideoNewDesign.this, ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                startService(intent);
+
+                                                for (Contents content:approvedBlogs) {
+
+                                                    if(db.getContentById(content.getContentId())!=null){
+
+                                                        db.updateContents(content);
+                                                        System.out.println("Data Base Update Service");
+
+                                                    }else{
+                                                        db.addContents(content);
+                                                        System.out.println("Data Base add Service");
+
+                                                    }
+
+                                                }
+
+                                            }else{
+
+                                                for (Contents content:approvedBlogs) {
+                                                    db.addContents(content);
+                                                }
+                                                Intent intent = new Intent(TabVideoNewDesign.this, ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                startService(intent);
+                                            }
+
 
 
                                         } else {
@@ -691,6 +758,39 @@ public class TabVideoNewDesign extends AppCompatActivity {
                                             if (contentList != null && contentList.size() != 0) {
                                                 loadNextPage(contentList);
                                             }
+
+                                            if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                                Intent intent = new Intent(TabVideoNewDesign.this, ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                startService(intent);
+
+                                                for (Contents content:approvedBlogs) {
+
+                                                    if(db.getContentById(content.getContentId())!=null){
+
+                                                        db.updateContents(content);
+                                                        System.out.println("Data Base Update Service");
+
+                                                    }else{
+                                                        db.addContents(content);
+                                                        System.out.println("Data Base add Service");
+
+                                                    }
+
+                                                }
+
+                                            }else{
+
+                                                for (Contents content:approvedBlogs) {
+                                                    db.addContents(content);
+                                                }
+                                                Intent intent = new Intent(TabVideoNewDesign.this, ContentDataBaseService.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("ContentList",approvedBlogs);
+                                                startService(intent);
+                                            }
                                         }
                                     }else{
                                         isLoading = true;
@@ -745,6 +845,21 @@ public class TabVideoNewDesign extends AppCompatActivity {
             isLastPage = true;
             Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
         }
+    }
+
+    private void loadNextPageDb(ArrayList<ArrayList<Contents>> list) {
+        //Collections.reverse(list);
+        adapter.removeLoadingFooter();
+        isLoading = false;
+
+        adapter.addAll(list);
+
+        if (list != null && list.size() !=0)
+        {
+            //adapter.addLoadingFooter();
+            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
+        }
+
     }
 
 }

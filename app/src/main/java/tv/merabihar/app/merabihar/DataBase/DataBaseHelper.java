@@ -246,6 +246,55 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     }
 
+    public ArrayList<Contents> getContentByProfileId(int profileId) {
+
+        try{
+            String selectQuery = "SELECT  * FROM " + CONTENT_TABLE+" WHERE ProfileId ="+profileId;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.query(CONTENT_TABLE, null, "ProfileId = "+profileId, null, null, null, null);
+
+
+            ArrayList<Contents> data = new ArrayList<>();
+            cursor.moveToFirst();
+            while (cursor.isAfterLast() == false) {
+
+
+                Contents contents = new Contents();
+                String id = ""+cursor.getInt(cursor.getColumnIndex("ID"));
+
+                contents.setContentId(cursor.getInt(1));
+                contents.setTitle(cursor.getString(2));
+                contents.setDescription(cursor.getString(3));
+                contents.setContentType(cursor.getString(4));
+                contents.setContentURL(cursor.getString(5));
+                contents.setThumbnail(cursor.getString(6));
+                contents.setCreatedBy(cursor.getString(7));
+                contents.setCreatedDate(cursor.getString(8));
+                contents.setUpdatedBy(cursor.getString(9));
+                contents.setUpdatedDate(cursor.getString(10));
+                contents.setViews(cursor.getString(11));
+                contents.setWatchTime(cursor.getString(12));
+                contents.setCreditName(cursor.getString(13));
+                contents.setOriginalURL(cursor.getString(14));
+                contents.setProfileId(cursor.getInt(15));
+                contents.setSubCategoriesId(cursor.getInt(16));
+
+                data.add(contents);
+                cursor.moveToNext();
+            }
+            cursor.close();
+            return data;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+
+
+    }
+
     public void updateContents(Contents contents)
     {
 
