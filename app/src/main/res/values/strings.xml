@@ -12,6 +12,9 @@
     <string name="invite">Invite Friends</string>
     <string name="friend">Friends List</string>
 
+    <string name="daily">Watch Time</string>
+    <string name="target">Target Watch Time</string>
+
     <string name="for_you">For You</string>
     <string name="follow">Follow</string>
 

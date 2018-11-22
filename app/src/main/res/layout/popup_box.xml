@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:layout_width="350dp"
-    android:layout_height="160dp"
+<android.support.v7.widget.CardView
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="15dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -30,7 +31,7 @@
         android:padding="10dp"
         android:id="@+id/popup_msg_txt"
         android:textSize="17sp"
-        android:layout_height="60dp" />
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

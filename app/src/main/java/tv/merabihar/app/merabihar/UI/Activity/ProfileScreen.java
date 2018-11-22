@@ -119,11 +119,21 @@ public class ProfileScreen extends AppCompatActivity {
                 if(profile!=null){
 
                     profileId = profile.getProfileId();
+                    if(PreferenceHandler.getInstance(ProfileScreen.this).getUserId()!=0){
+                        if(profileId==PreferenceHandler.getInstance(ProfileScreen.this).getUserId()){
+                            mFollowOption.setVisibility(View.GONE);
+                        }else{
+                            mFollowOption.setVisibility(View.VISIBLE);
+                            getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profile.getProfileId());
+                        }
+                    }else{
+                        mFollowOption.setVisibility(View.GONE);
+                    }
                     getProfile(profile.getProfileId());
                     getProfileContent(profile.getProfileId());
                     getFollowingByProfileId(profile.getProfileId());
                     getFollowersByProfileId(profile.getProfileId());
-                    getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profile.getProfileId());
+
 
 
                 }else if(profileId!=0){
@@ -131,7 +141,16 @@ public class ProfileScreen extends AppCompatActivity {
                     getProfileContent(profileId);
                     getFollowingByProfileId(profileId);
                     getFollowersByProfileId(profileId);
-                    getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profileId);
+                    if(PreferenceHandler.getInstance(ProfileScreen.this).getUserId()!=0){
+                        if(profileId==PreferenceHandler.getInstance(ProfileScreen.this).getUserId()){
+                            mFollowOption.setVisibility(View.GONE);
+                        }else{
+                            mFollowOption.setVisibility(View.VISIBLE);
+                            getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profile.getProfileId());
+                        }
+                    }else{
+                        mFollowOption.setVisibility(View.GONE);
+                    }
                 }else{
 
                     SnackbarViewer.showSnackbar(findViewById(R.id.activity_profile_main),"Something went wrong");

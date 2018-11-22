@@ -112,7 +112,7 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             tabStay.setIndicator(tabIndicatorStayView);
 
             Intent tabSearchIntent = new Intent(this, TabSearchActivity2.class);
-            tabSearchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //tabSearchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             tabStay.setContent(tabSearchIntent);
 
             //labelStory.setText(getResources().getString(R.string.story));
@@ -126,7 +126,7 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             tabVideo.setIndicator(tabIndicatorVideo);
             //tabNotification.setContent(new Intent(this, NotificationOptionsActivity.class));
             Intent tabVideoIntent = new Intent(this, TabVideoNewDesign.class);
-            tabVideoIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+           // tabVideoIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             tabVideo.setContent(tabVideoIntent);
 
 
@@ -134,7 +134,7 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             imgAccount.setImageResource(R.drawable.account_icon);
             tabMenu.setIndicator(tabIndicatorMenu);
             Intent tabAccountIntent = new Intent(this, TabAccountActivity.class);
-            tabAccountIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //tabAccountIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             tabMenu.setContent(tabAccountIntent);
 
 
@@ -272,25 +272,6 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        int page = getIntent().getIntExtra("ARG_PAGE", defaultValue);
-
-
-
-        int pageno = getIntent().getIntExtra("TABNAME",0);
-        if(pageno != 0)
-        {
-            tabHost.setCurrentTab(pageno-1);
-        }
-        else
-        {
-            tabHost.setCurrentTab(page);
-        }
-
-    }
 
     @Override
     public void onTabChanged(String tabId) {

@@ -33,8 +33,9 @@ import tv.merabihar.app.merabihar.WebAPI.GoalAPI;
 public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
     TextView viewMOre,mGoalTc,mGoalName,mExpDate;
-    TextView mTv1,mTv2,mTv3,mTv4,mTv5;
+    TextView mTv1,mTv2,mTv3,mTv4,mTv5,mPenalty;
     SubscribedGoals targetDesc;
+    LinearLayout mOfferExpireLay;
     ImageView mCircle1,mCircle2,mCircle3,mCircle4,mCircle5;
     View mCircleView1,mCircleView2,mCircleView3,mCircleView4;
 
@@ -61,11 +62,14 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
             mTv3 = findViewById(R.id.tv3);
             mTv4 = findViewById(R.id.tv4);
             mTv5 = findViewById(R.id.tv5);
+            mPenalty = findViewById(R.id.penalty_amount);
 
             mCircleView1 = findViewById(R.id.view1);
             mCircleView2 = findViewById(R.id.view2);
             mCircleView3 = findViewById(R.id.view3);
             mCircleView4 = findViewById(R.id.view4);
+
+            mOfferExpireLay = findViewById(R.id.offer_expire_lay);
 
             Bundle bundle = getIntent().getExtras();
 
@@ -117,9 +121,24 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
                 if ( new Date().getTime() > past.getTime()) {
 
-                    mExpDate.setText("Offer Expired");
+                    mOfferExpireLay.setVisibility(View.GONE);
 
                     if(targetDesc.getGoalId()==3){
+
+                        int penalty = Integer.parseInt(targetDesc.getExtraDescription());
+                        if(penalty==0){
+
+                            mPenalty.setVisibility(View.GONE);
+                        }else{
+                            mPenalty.setVisibility(View.VISIBLE);
+
+                            int[] vale = splitToComponentTimes(penalty);
+
+                            if(vale.length!=0&&vale.length==2){
+                                mPenalty.setText("Last Week Penalty "+vale[0]+" hr "+vale[1]+" min" );
+                            }
+
+                        }
 
                         mTv1.setText("3 hours watched");
                         mTv2.setText("6 hours watched");
@@ -131,7 +150,8 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
                         int value = Integer.parseInt(rewards);
 
-                        if (value >= 10800) {
+
+                        if (value >= (10800+penalty) && value <= (21600+penalty)) {
                             mCircle1.setImageResource(R.drawable.ovel_tick);
                             mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
 
@@ -147,7 +167,7 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                             mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
 
                             mCircle5.setImageResource(R.drawable.oval_cross);
-                        } else if (value >= 21600) {
+                        } else if (value >= (21600+penalty) && value <= (32400+penalty)) {
                             mCircle2.setImageResource(R.drawable.ovel_tick);
                             mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
 
@@ -158,7 +178,7 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                             mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
 
                             mCircle5.setImageResource(R.drawable.oval_cross);
-                        } else if (value >= 32400) {
+                        } else if (value >= (32400+penalty) && value <= (43200+penalty)) {
                             mCircle3.setImageResource(R.drawable.ovel_tick);
                             mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
 
@@ -166,12 +186,12 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                             mCircleView4.setBackgroundColor(Color.parseColor("#FF0000"));
 
                             mCircle5.setImageResource(R.drawable.oval_cross);
-                        } else if (value >= 43200) {
+                        } else if (value >= (43200+penalty) && value <= (54000+penalty)) {
                             mCircle4.setImageResource(R.drawable.ovel_tick);
                             mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
 
                             mCircle5.setImageResource(R.drawable.oval_cross);
-                        } else if (value >= 54000) {
+                        } else if (value >= (54000+penalty)) {
                             mCircle5.setImageResource(R.drawable.ovel_tick);
                         }else{
                             mCircle1.setImageResource(R.drawable.oval_cross);
@@ -365,6 +385,7 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                     }
 
                 }else {
+                    mOfferExpireLay.setVisibility(View.VISIBLE);
 
                     if (duration != null) {
                         mExpDate.setText(duration + " Days left");
@@ -381,24 +402,40 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                         mTv4.setText("12 hours watched");
                         mTv5.setText("15 hours watched");
 
+                        int penalty = Integer.parseInt(targetDesc.getExtraDescription());
+                        if(penalty==0){
 
-                        if (targetDesc.getStatus().equalsIgnoreCase("Activated")||targetDesc.getStatus().equalsIgnoreCase("Completed")) {
+                            mPenalty.setVisibility(View.GONE);
+                        }else{
+                            mPenalty.setVisibility(View.VISIBLE);
+
+                            int[] vale = splitToComponentTimes(penalty);
+
+                            if(vale.length!=0&&vale.length==2){
+                                mPenalty.setText("Last Week Penalty "+vale[0]+" hr "+vale[1]+" min" );
+                            }
+
+                        }
+
+
+                        if (targetDesc.getStatus().equalsIgnoreCase("Activated")) {
 
                             String rewards = targetDesc.getRewardsEarned();
+                            int penaltyAmount = Integer.parseInt(targetDesc.getExtraDescription());
 
                             int value = Integer.parseInt(rewards);
 
-                            if (value >= 10800 && value < 21600 ) {
+                            if (value >= (10800+penaltyAmount) && value < (21600+penaltyAmount) ) {
                                 mCircle1.setImageResource(R.drawable.ovel_tick);
                                 mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
-                            } else if (value >= 21600 && value < 32400) {
+                            } else if (value >= (21600+penaltyAmount) && value < (32400+penaltyAmount)) {
 
                                 mCircle1.setImageResource(R.drawable.ovel_tick);
                                 mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
 
                                 mCircle2.setImageResource(R.drawable.ovel_tick);
                                 mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
-                            } else if (value >= 32400 && value < 43200) {
+                            } else if (value >= (32400+penaltyAmount) && value < (43200+penaltyAmount)) {
                                 mCircle1.setImageResource(R.drawable.ovel_tick);
                                 mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
 
@@ -407,7 +444,7 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
                                 mCircle3.setImageResource(R.drawable.ovel_tick);
                                 mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
-                            } else if (value >= 43200 && value < 54000) {
+                            } else if (value >= (43200+penaltyAmount) && value < (54000+penaltyAmount)) {
 
                                 mCircle1.setImageResource(R.drawable.ovel_tick);
                                 mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
@@ -420,7 +457,119 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
                                 mCircle4.setImageResource(R.drawable.ovel_tick);
                                 mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
-                            } else if (value >= 54000 ) {
+                            } else if (value >= (54000+penaltyAmount) ) {
+
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle3.setImageResource(R.drawable.ovel_tick);
+                                mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle4.setImageResource(R.drawable.ovel_tick);
+                                mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle5.setImageResource(R.drawable.ovel_tick);
+                            }
+
+                        }else if (targetDesc.getStatus().equalsIgnoreCase("Completed")) {
+
+                            String rewards = targetDesc.getRewardsEarned();
+                            int penaltyAmount = Integer.parseInt(targetDesc.getExtraDescription());
+
+                            int value = Integer.parseInt(rewards);
+
+                            if (value >= (10800+penaltyAmount) && value < (21600+penaltyAmount) ) {
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+                            } else if (value >= (21600+penaltyAmount) && value < (32400+penaltyAmount)) {
+
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+                            } else if (value >= (32400+penaltyAmount) && value < (43200+penaltyAmount)) {
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle3.setImageResource(R.drawable.ovel_tick);
+                                mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+                            } else if (value >= (43200+penaltyAmount) && value < (54000+penaltyAmount)) {
+
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle3.setImageResource(R.drawable.ovel_tick);
+                                mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle4.setImageResource(R.drawable.ovel_tick);
+                                mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+                            } else if (value >= (54000+penaltyAmount) ) {
+
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle3.setImageResource(R.drawable.ovel_tick);
+                                mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle4.setImageResource(R.drawable.ovel_tick);
+                                mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle5.setImageResource(R.drawable.ovel_tick);
+                            }
+
+                        }else if (targetDesc.getStatus().equalsIgnoreCase("Penalty")) {
+
+                            String rewards = targetDesc.getRewardsEarned();
+                            int penaltyAmount = Integer.parseInt(targetDesc.getExtraDescription());
+
+                            int value = Integer.parseInt(rewards);
+
+                            if (value >= (10800+penaltyAmount) && value < (21600+penaltyAmount) ) {
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+                            } else if (value >= (21600+penaltyAmount) && value < (32400+penaltyAmount)) {
+
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+                            } else if (value >= (32400+penaltyAmount) && value < (43200+penaltyAmount)) {
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle3.setImageResource(R.drawable.ovel_tick);
+                                mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+                            } else if (value >= (43200+penaltyAmount) && value < (54000+penaltyAmount)) {
+
+                                mCircle1.setImageResource(R.drawable.ovel_tick);
+                                mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle2.setImageResource(R.drawable.ovel_tick);
+                                mCircleView2.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle3.setImageResource(R.drawable.ovel_tick);
+                                mCircleView3.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                mCircle4.setImageResource(R.drawable.ovel_tick);
+                                mCircleView4.setBackgroundColor(Color.parseColor("#176e0b"));
+                            } else if (value >= (54000+penaltyAmount) ) {
 
                                 mCircle1.setImageResource(R.drawable.ovel_tick);
                                 mCircleView1.setBackgroundColor(Color.parseColor("#176e0b"));
@@ -698,5 +847,18 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
             return null;
         }
 
+    }
+
+    public static int[] splitToComponentTimes(int time)
+    {
+
+        int hours = (int) time / 3600;
+        int remainder = (int) time - hours * 3600;
+        int mins = remainder / 60;
+        remainder = remainder - mins * 60;
+        int secs = remainder;
+
+        int[] ints = {hours , mins };
+        return ints;
     }
 }

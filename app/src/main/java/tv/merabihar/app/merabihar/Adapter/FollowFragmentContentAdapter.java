@@ -122,15 +122,32 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                     String urlString1 = content.get(0).getContentImage().get(0).getImages();
 
-                    if(urlString1!=null){
-                        Picasso.with(context)
-                                .load(Uri.parse(urlString1))
-                                .resize(targetWidth,targetHeight)
-                                .error(R.drawable.no_image)
-                                .placeholder(R.drawable.no_image)
-                                .into(holder.iv1);
+
+                    if(urlString1.contains(" ")){
+
+                        urlString1 = urlString1.replaceAll(" ","%20");
+                        if(urlString1!=null){
+                            Picasso.with(context)
+                                    .load(Uri.parse(urlString1))
+                                    //.resize(targetWidth,targetHeight)
+                                    .error(R.drawable.no_image)
+                                    .placeholder(R.drawable.no_image)
+                                    .into(holder.iv1);
 //                        iv1.setImageURI(Uri.parse(urlString1));
+                        }
+                    }else{
+
+                        if(urlString1!=null){
+                            Picasso.with(context)
+                                    .load(Uri.parse(urlString1))
+                                   // .resize(targetWidth,targetHeight)
+                                    .error(R.drawable.no_image)
+                                    .placeholder(R.drawable.no_image)
+                                    .into(holder.iv1);
+//                        iv1.setImageURI(Uri.parse(urlString1));
+                        }
                     }
+
 
                 }
             }
@@ -188,12 +205,29 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                     String urlString1 = content.get(1).getContentImage().get(0).getImages();
 
-                    if(urlString1!=null){
+                    if(urlString1.contains(" ")){
 
-                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv2);
+                        urlString1 = urlString1.replaceAll(" ","%20");
+                        if(urlString1!=null){
 
+                            Picasso.with(context).load(urlString1)
+                                    //.resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv2);
+
+                        }
+                    }else{
+                        if(urlString1!=null){
+
+                            Picasso.with(context).load(urlString1)
+                                    //.resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv2);
+
+                        }
                     }
+
+
 
                 }
             }
@@ -253,10 +287,27 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                     String urlString1 = content.get(2).getContentImage().get(0).getImages();
 
-                    if(urlString1!=null){
-                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv3);
+                    if(urlString1.contains(" ")){
+
+                        urlString1 = urlString1.replaceAll(" ","%20");
+                        if(urlString1!=null){
+                            Picasso.with(context).load(urlString1)
+                                   // .resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv3);
+                        }
+
+                    }else{
+                        if(urlString1!=null){
+
+                            Picasso.with(context).load(urlString1)
+                                    //.resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv3);
+
+                        }
                     }
+
 
                 }
             }
@@ -313,10 +364,27 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                     String urlString1 = content.get(3).getContentImage().get(0).getImages();
 
-                    if(urlString1!=null){
-                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv4);
+                    if(urlString1.contains(" ")){
+
+                        urlString1 = urlString1.replaceAll(" ","%20");
+                        if(urlString1!=null){
+                            Picasso.with(context).load(urlString1)
+                                    //.resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv4);
+                        }
+                    }else{
+                        if(urlString1!=null){
+
+                            Picasso.with(context).load(urlString1)
+                                 //   .resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv4);
+
+                        }
                     }
+
+
 
                 }
             }
@@ -331,7 +399,9 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     if(img!=null&&!img.isEmpty()){
 
 
-                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                        Picasso.with(context).load(img)
+                                .resize(targetWidth,targetHeight)
+                                .placeholder(R.drawable.no_image).
                                 error(R.drawable.no_image).into(holder.iv5);
 /*
                         Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
@@ -376,10 +446,27 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                     String urlString1 = content.get(4).getContentImage().get(0).getImages();
 
-                    if(urlString1!=null){
-                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv5);
+                    if(urlString1.contains(" ")){
+
+                        urlString1 = urlString1.replaceAll(" ","%20");
+                        if(urlString1!=null){
+                            Picasso.with(context).load(urlString1)
+                                 //   .resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv5);
+                        }
+                    }else{
+                        if(urlString1!=null){
+
+                            Picasso.with(context).load(urlString1)
+                                    //.resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv5);
+
+                        }
                     }
+
+
 
                 }
             }
@@ -437,11 +524,26 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                     String urlString1 = content.get(5).getContentImage().get(0).getImages();
 
-                    if(urlString1!=null){
-                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv6);
+                    if(urlString1.contains(" ")){
+
+                        urlString1 = urlString1.replaceAll(" ","%20");
+                        if(urlString1!=null){
+                            Picasso.with(context).load(urlString1)
+                                  //  .resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv6);
 //                        iv6.setImageURI(Uri.parse(urlString1));
+                        }
+                    }else{
+                        if(urlString1!=null){
+
+                            Picasso.with(context).load(urlString1).placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv6);
+
+                        }
                     }
+
+
 
                 }
             }
@@ -496,10 +598,27 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                     String urlString1 = content.get(6).getContentImage().get(0).getImages();
 
-                    if(urlString1!=null){
-                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv7);
+                    if(urlString1.contains(" ")){
+
+                        urlString1 = urlString1.replaceAll(" ","%20");
+                        if(urlString1!=null){
+                            Picasso.with(context).load(urlString1)
+                                   // .resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv7);
+                        }
+                    }else{
+                        if(urlString1!=null){
+
+                            Picasso.with(context).load(urlString1)
+                                   // .resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv7);
+
+                        }
                     }
+
+
 
                 }
             }
@@ -514,7 +633,8 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
                     if(img!=null&&!img.isEmpty()){
 
 
-                        Picasso.with(context).load(img).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
+                        Picasso.with(context).load(img)
+                                .resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
                                 error(R.drawable.no_image).into(holder.iv8);
 
                         /*
@@ -558,12 +678,29 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                     String urlString1 = content.get(7).getContentImage().get(0).getImages();
 
-                    if(urlString1!=null){
-                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv8);
+                    if(urlString1.contains(" ")){
+
+                        urlString1 = urlString1.replaceAll(" ","%20");
+                        if(urlString1!=null){
+                            Picasso.with(context).load(urlString1)
+                                    //.resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv8);
 
 //                        iv8.setImageURI(Uri.parse(urlString1));
+                        }
+                    }else{
+                        if(urlString1!=null){
+
+                            Picasso.with(context).load(urlString1)
+                                    //.resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv8);
+
+                        }
                     }
+
+
 
                 }
             }
@@ -621,11 +758,27 @@ public class FollowFragmentContentAdapter extends RecyclerView.Adapter<FollowFra
 
                     String urlString1 = content.get(8).getContentImage().get(0).getImages();
 
-                    if(urlString1!=null){
-                        Picasso.with(context).load(urlString1).resize(targetWidth,targetHeight).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.iv9);
-//                        iv9.setImageURI(Uri.parse(urlString1));
+                    if(urlString1.contains(" ")){
+
+                        urlString1 = urlString1.replaceAll(" ","%20");
+                        if(urlString1!=null){
+                            Picasso.with(context).load(urlString1)
+                                    //.resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv9);
+                        }
+                    }else{
+                        if(urlString1!=null){
+
+                            Picasso.with(context).load(urlString1)
+                                    //.resize(targetWidth,targetHeight)
+                                    .placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.iv9);
+
+                        }
                     }
+
+
 
                 }
             }

@@ -27,6 +27,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
+import tv.merabihar.app.merabihar.Model.TransactionHistroy;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.SettingScreen;
@@ -36,6 +37,7 @@ import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 import tv.merabihar.app.merabihar.WebAPI.SubscribedGoalsAPI;
+import tv.merabihar.app.merabihar.WebAPI.TransactionHistroyAPI;
 
 public class Income extends AppCompatActivity {
 
@@ -46,89 +48,127 @@ public class Income extends AppCompatActivity {
     String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+ PreferenceHandler.getInstance(Income.this).getUserId()+"\n http://bit.ly/2JXcOnw";
 
     int profileId=0,wallet=0,coinsUsed=0;
+    String coins,nonReed,type;
+    TransactionHistroy transactionHistroy;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_income);
-        mIncomeToolbar = findViewById(R.id.income_toolbar);
 
-        setSupportActionBar(mIncomeToolbar);
-        getSupportActionBar().setTitle(R.string.income);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
 
-        profileId = PreferenceHandler.getInstance(Income.this).getUserId();
+            setContentView(R.layout.activity_income);
+            mIncomeToolbar = findViewById(R.id.income_toolbar);
 
-        withDrawBtn = findViewById(R.id.income_withdraw_btn);
-        earnMoreBtn = findViewById(R.id.income_earn_more_btn);
-        shareBtn = findViewById(R.id.income_share_btn);
-        coinTxt = findViewById(R.id.income_totalcoins_txt);
-        rupeesTxt = findViewById(R.id.income_totalrupees_txt);
-        mReedem = findViewById(R.id.redeemable);
-        mNon = findViewById(R.id.non_redeemable);
+            setSupportActionBar(mIncomeToolbar);
+            getSupportActionBar().setTitle(R.string.income);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mIncomeToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // perform whatever you want on back arrow click
-                Intent settingIntent = new Intent(Income.this, SettingScreen.class);
-                settingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(settingIntent);
-            }
-        });
+            profileId = PreferenceHandler.getInstance(Income.this).getUserId();
 
+            withDrawBtn = findViewById(R.id.income_withdraw_btn);
+            earnMoreBtn = findViewById(R.id.income_earn_more_btn);
+            shareBtn = findViewById(R.id.income_share_btn);
+            coinTxt = findViewById(R.id.income_totalcoins_txt);
+            rupeesTxt = findViewById(R.id.income_totalrupees_txt);
+            mReedem = findViewById(R.id.redeemable);
+            mNon = findViewById(R.id.non_redeemable);
 
-
-        // fetch rupees from SettingScreen Activity
-       //  String rupessString = "199.65222555";
-
-        String coins = getIntent().getStringExtra("coins_value");
-        String rupessString = getIntent().getStringExtra("rupees_value");
+            mIncomeToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // perform whatever you want on back arrow click
+                    Intent settingIntent = new Intent(Income.this, SettingScreen.class);
+                    settingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(settingIntent);
+                }
+            });
 
 
-        final float totalRupees = Float.parseFloat(rupessString);
-        final String formatedRupee = String.format("%.02f", totalRupees);
-        rupeesTxt.setText("₹" + formatedRupee);
-        coinTxt.setText(coins);
 
-        withDrawBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isWithDrawPossible(formatedRupee);
-            }
-        });
+            // fetch rupees from SettingScreen Activity
+            //  String rupessString = "199.65222555";
+
+            coins = getIntent().getStringExtra("coins_value");
+            nonReed = getIntent().getStringExtra("non_reed");
+            type = getIntent().getStringExtra("type");
 
 
-        shareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
-                sendIntent.setType("text/plain");
-                startActivity(Intent.createChooser(sendIntent, "Send to"));
-            }
-        });
+            final float totalRupees = Float.parseFloat(coins);
+            final String formatedRupee = String.format("%.02f", (totalRupees/100.0));
+            rupeesTxt.setText("₹" + formatedRupee);
+            coinTxt.setText(coins);
 
-        earnMoreBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent sendIntent = new Intent(Income.this, InfluencerProgramViewScreen.class);
-                startActivity(sendIntent);
-                Income.this.finish();
+            if(type!=null && nonReed!=null){
 
-            }
-        });
+                if(type.equalsIgnoreCase("Completed")){
 
-        if(profileId!=0){
+                    mNon.setText("0");
+                    mReedem.setText(""+coins);
 
-            if (Util.isNetworkAvailable(Income.this)) {
-                getProfile(profileId);
-            }else{
-                Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+                }else if(type.equalsIgnoreCase("Activated")){
+
+                    mNon.setText(""+nonReed);
+                    mReedem.setText(""+coins);
+
+                }else{
+                    mNon.setText("0");
+                    mReedem.setText(""+coins);
+
+                }
             }
 
+            withDrawBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(Util.isNetworkAvailable(Income.this)){
+
+                        isWithDrawPossible(formatedRupee);
+
+                    }else{
+                        Toast.makeText(Income.this, "You are offline", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+
+
+            shareBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
+                    sendIntent.setType("text/plain");
+                    startActivity(Intent.createChooser(sendIntent, "Send to"));
+                }
+            });
+
+            earnMoreBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent sendIntent = new Intent(Income.this, InfluencerProgramViewScreen.class);
+                    startActivity(sendIntent);
+                    Income.this.finish();
+
+                }
+            });
+
+            if(profileId!=0){
+
+                if (Util.isNetworkAvailable(Income.this)) {
+                    getProfile(profileId);
+                }else{
+                    Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
 
@@ -142,10 +182,13 @@ public class Income extends AppCompatActivity {
 
 
         if(rupees < 200 ){
+            //getDirectReferCount("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),totalRupees);
             showPopUp(rupees);
         }
         else {
-            showSnackbar("Withdrawal possible");
+
+            getDirectReferCount("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),totalRupees);
+           // showSnackbar("Withdrawal possible");
         }
 
     }
@@ -161,6 +204,34 @@ public class Income extends AppCompatActivity {
 
 
         String msg =  "Sorry! Insufficient balance. You need    ₹ "  +  required_money +  "  more to withdraw money." ;
+        popupTxt.setText(msg);
+
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //close the popup
+                mPopupDialog.dismiss();
+
+            }
+        });
+        mPopupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mPopupDialog.show();
+
+    }
+
+    private void showPopUpForReferal(int size) {
+        final Dialog mPopupDialog;
+        mPopupDialog = new Dialog(this);
+        mPopupDialog.setContentView(R.layout.popup_box);
+
+        TextView closePopup = mPopupDialog.findViewById(R.id.popupclose_txt);
+        TextView popupTxt = mPopupDialog.findViewById(R.id.popup_msg_txt);
+
+
+        String required_money = ""+(15-size);
+
+
+        String msg =  "The Amount is Redeemable after completing "+required_money+" New Signup using Your Referral Code within goal Expired period" ;
         popupTxt.setText(msg);
 
         closePopup.setOnClickListener(new View.OnClickListener() {
@@ -221,19 +292,8 @@ public class Income extends AppCompatActivity {
                             UserProfile profile = response.body();
 
 
-
-
-
-
-
-
                             coinsUsed = profile.getUsedAmount();
                             wallet = profile.getWalletBalance();
-
-
-
-
-
 
 
 
@@ -262,6 +322,88 @@ public class Income extends AppCompatActivity {
     }
 
 
+
+    private void getDirectReferCount(final String code,final String formatedRupee){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
+                Call<ArrayList<UserProfile>> call = apiService.getDirectReferedProfile(code);
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+//                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
+                        int statusCode = response.code();
+
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfile = response.body();
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+
+
+                                if(responseProfile.size()>=400){
+                                    //isWithDrawPossible(formatedRupee);
+                                    showSnackbar("Withdrawal possible");
+                                }else{
+
+                                    TransactionHistroy tc = new TransactionHistroy();
+                                    tc.setTitle("NewSignUp");
+                                    tc.setProfileId(PreferenceHandler.getInstance(Income.this).getUserId());
+                                    tc.setDescription("New SignUp for withdraw money");
+                                    tc.setValue(responseProfile.size()+15);
+                                    tc.setTransactionHistoryDate(new SimpleDateFormat("MM/dd/yyyy hh:mm:ss").format(new Date()));
+                                   // profileVideoWatched(tc);
+                                   // showPopUpForReferal(responseProfile.size());
+
+                                    getTransactionsByIdType(PreferenceHandler.getInstance(Income.this).getUserId(),"NewSignUp",tc,formatedRupee);
+
+                                }
+
+                            }
+                            else
+                            {
+                                TransactionHistroy tc = new TransactionHistroy();
+                                tc.setTitle("NewSignUp");
+                                tc.setProfileId(PreferenceHandler.getInstance(Income.this).getUserId());
+                                tc.setDescription("New SignUp for withdraw money");
+                                tc.setValue(15);
+                                tc.setTransactionHistoryDate(new SimpleDateFormat("MM/dd/yyyy hh:mm:ss").format(new Date()));
+
+                                // showPopUpForReferal(responseProfile.size());
+
+                                getTransactionsByIdType(PreferenceHandler.getInstance(Income.this).getUserId(),"NewSignUp",tc,formatedRupee);
+                            }
+                        }
+                        else
+                        {
+
+                            //mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
+
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+                        // Log error here since request failed
+                        //mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
+
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
     private void getDirectRefer(final String code,final double coinsValue){
 
         new ThreadExecuter().execute(new Runnable() {
@@ -531,32 +673,71 @@ public class Income extends AppCompatActivity {
                                         }
                                     }
 
-                                    if ( new Date().getTime() > past.getTime()) {
+                                    double valuea = (Double.parseDouble(sg.getRewardsEarned()))*.20;
+                                    if ( new Date().getTime() < past.getTime()) {
 
                                         double amount = profile.getReferralAmount();
-                                        double valuea = (Double.parseDouble(sg.getRewardsEarned()))*.20;
 
-                                        mNon.setText(""+(int)valuea);
 
-                                        getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),valuea);
 
+
+                                        if(sg.getStatus().equalsIgnoreCase("Completed")){
+
+                                            final Double totalRupees = Double.parseDouble(coins)+valuea;
+                                            final String formatedRupee = String.format("%.02f", ((totalRupees)/100.0));
+
+                                            mNon.setText("0");
+                                            mReedem.setText(""+""+String.format("%.02f", ((totalRupees))));
+                                            rupeesTxt.setText("₹" + formatedRupee);
+                                            coinTxt.setText(""+String.format("%.02f", ((totalRupees))));
+
+                                        }else  if(sg.getStatus().equalsIgnoreCase("Activated")){
+                                            mNon.setText(""+(int)valuea);
+                                            mReedem.setText(""+coins);
+                                        }else  if(sg.getStatus().equalsIgnoreCase("Penalty")){
+                                            mNon.setText(""+(int)valuea);
+                                            mReedem.setText(""+coins);
+                                        }
+
+
+
+                                        //getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),valuea);
+
+                                    }else{
+                                        if(sg.getStatus().equalsIgnoreCase("Completed")){
+
+                                            final Double totalRupees = Double.parseDouble(coins)+valuea;
+                                            final String formatedRupee = String.format("%.02f", ((totalRupees)/100.0));
+
+                                            mNon.setText("0");
+                                            mReedem.setText(""+""+String.format("%.02f", ((totalRupees))));
+                                            rupeesTxt.setText("₹" + formatedRupee);
+                                            coinTxt.setText(""+String.format("%.02f", ((totalRupees))));
+
+                                        }else  if(sg.getStatus().equalsIgnoreCase("Activated")){
+                                            mNon.setText(""+(int)valuea);
+                                            mReedem.setText(""+coins);
+                                        }else  if(sg.getStatus().equalsIgnoreCase("Penalty")){
+                                            mNon.setText(""+(int)valuea);
+                                            mReedem.setText(""+coins);
+                                        }
                                     }
 
 
 
                                 }else{
-                                    getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
+                                   // getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
                                 }
 
 
                             }else{
-                                getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
+                                //getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
                             }
 
 
                         }else{
 
-                            getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
+                           // getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
 
                         }
                     }
@@ -565,7 +746,7 @@ public class Income extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
 
 
-                        getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
+                       // getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
 
                         Toast.makeText(Income.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }
@@ -605,5 +786,117 @@ public class Income extends AppCompatActivity {
 
     }
 
+    public void profileVideoWatched(final TransactionHistroy sg) {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                TransactionHistroyAPI mapApi = Util.getClient().create(TransactionHistroyAPI.class);
+                Call<TransactionHistroy> response = mapApi.postTransactionHistories(sg);
+                response.enqueue(new Callback<TransactionHistroy>() {
+                    @Override
+                    public void onResponse(Call<TransactionHistroy> call, Response<TransactionHistroy> response) {
+
+                        System.out.println(response.code());
+
+
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+                            showPopUpForReferal(0);
+
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TransactionHistroy> call, Throwable t) {
+
+
+
+
+                    }
+                });
+            }
+        });
+    }
+
+    public void getTransactionsByIdType(final int id,final String type,final TransactionHistroy tc,final String formatedRupee)
+    {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final TransactionHistroyAPI categoryAPI = Util.getClient().create(TransactionHistroyAPI.class);
+                Call<ArrayList<TransactionHistroy>> getCat = categoryAPI.getTransactionHistoriesByProfileIdAndGoal(id,type);
+                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                getCat.enqueue(new Callback<ArrayList<TransactionHistroy>>() {
+
+                    @Override
+                    public void onResponse(Call<ArrayList<TransactionHistroy>> call, Response<ArrayList<TransactionHistroy>> response) {
+
+
+
+                        if(response.code() == 200 && response.body()!= null&&response.body().size()!=0)
+                        {
+
+                            transactionHistroy = response.body().get(0);
+
+                            if(transactionHistroy!=null){
+
+                                TransactionHistroy tcs = transactionHistroy;
+
+                                if((tc.getValue()-tcs.getValue())>=15){
+
+                                    isWithDrawPossible(formatedRupee);
+                                }else{
+
+
+                                    showPopUpForReferal((tc.getValue()-tcs.getValue()));
+                                }
+
+
+                            }else{
+
+
+                                profileVideoWatched(tc);
+                            }
+
+
+
+                        }else{
+
+
+                            profileVideoWatched(tc);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<TransactionHistroy>> call, Throwable t) {
+
+
+
+                        //System.out.println(TAG+" thread started");
+
+                    }
+                });
+
+
+
+
+            }
+
+        });
+
+    }
 
 }

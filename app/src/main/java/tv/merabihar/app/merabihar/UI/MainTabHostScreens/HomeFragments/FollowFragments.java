@@ -79,8 +79,19 @@ public class FollowFragments extends Fragment {
         horizontalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         verticalLinearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 
+        getCategories();
+        loadFirstSetOfContents();
+       /* if (Util.isNetworkAvailable(getActivity())) {
 
 
+
+        }else{
+
+            SnackbarViewer.showSnackbar(mFragmentView.findViewById(R.id.follow_frag_ll_main),"No Internet connection");
+//            Toast.makeText(context, "No internet Connection", Toast.LENGTH_SHORT).show();
+            mContentProgressBar.setVisibility(View.GONE);
+            mCategoryProgressBar.setVisibility(View.GONE);
+        }*/
 
         // content recyclerview will be vertical
         return mFragmentView;
@@ -111,7 +122,7 @@ public class FollowFragments extends Fragment {
                             dialog.dismiss();
                         }*/
 
-
+                        mCategoryProgressBar.setVisibility(View.GONE);
                         if(response.code() == 200)
                         {
 
@@ -175,7 +186,7 @@ public class FollowFragments extends Fragment {
 
                     @Override
                     public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
-
+                        mContentProgressBar.setVisibility(View.GONE);
 
                         System.out.println("Content inside"+response.code());
                         if(response.code() == 200 && response.body()!= null)
@@ -246,21 +257,5 @@ public class FollowFragments extends Fragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
-        if (Util.isNetworkAvailable(getActivity())) {
-
-            getCategories();
-            loadFirstSetOfContents();
-
-        }else{
-
-            SnackbarViewer.showSnackbar(mFragmentView.findViewById(R.id.follow_frag_ll_main),"No Internet connection");
-//            Toast.makeText(context, "No internet Connection", Toast.LENGTH_SHORT).show();
-            mContentProgressBar.setVisibility(View.GONE);
-            mCategoryProgressBar.setVisibility(View.GONE);
-        }
-    }
 }

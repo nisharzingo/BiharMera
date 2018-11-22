@@ -45,6 +45,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -105,6 +106,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
     String fileNames;
     String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId()+"\n http://bit.ly/2JXcOnw";
+    String shareContents = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n http://bit.ly/2JXcOnw";
 
     long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L ;
     Handler handler;
@@ -655,8 +657,19 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 }
 
 
-                mContentTitle.setText(blogName + "");
-                mContentDesc.setText(blogShort + "");
+                if(blogName!=null&&!blogName.isEmpty()){
+                    mContentTitle.setText(blogName + "");
+                    mContentTitle.setVisibility(View.VISIBLE);
+                }else {
+                    mContentTitle.setVisibility(View.GONE);
+                }
+
+                if(blogShort!=null&&!blogShort.isEmpty()){
+                    mContentDesc.setText(blogShort + "");
+                    mContentDesc.setVisibility(View.VISIBLE);
+                }else {
+                    mContentDesc.setVisibility(View.GONE);
+                }
 
 
             }
@@ -1050,6 +1063,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             if(sg!=null){
 
                 int value = Integer.parseInt(sg.getRewardsEarned());
+                int penaltyAmount = Integer.parseInt(sg.getExtraDescription());
 
                 sg.setRewardsEarned(""+(youtubeWatcheTime+value));
                 if(sg.getStatus().equals("Activated")){
@@ -1066,15 +1080,29 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                                 if(new Date().getTime()-date.getTime()>0){
 
-                                    sg.setExtraDescription(""+(54000-(youtubeWatcheTime+value)));
+                                    sg.setExtraDescription(""+(((54000+penaltyAmount)-(youtubeWatcheTime+value))*2));
                                     sg.setStatus("Penalty");
+                                    sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
-                                    double amount = currentProfile.getReferralAmount();
+                                    Calendar c = Calendar.getInstance();
+                                    c.setTime(new Date()); // Now use today date.
+                                    c.add(Calendar.DATE, 7); // Adding 5 days
+                                    sg.setEndDate(new SimpleDateFormat("MM/dd/yyyy").format(c.getTime()));
+                                    sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+
+                                   //double amount = currentProfile.getReferralAmount();
                                     double valuea = (youtubeWatcheTime+value)*.20;
-                                    currentProfile.setReferralAmount(valuea);
+                                  //  currentProfile.setReferralAmount(valuea);
+                                    sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                                    profileSubScribed(sg);
                                 }else{
-                                    if((youtubeWatcheTime+value)>=54000){
+                                    if((youtubeWatcheTime+value)>=(54000+penaltyAmount)){
                                         sg.setStatus("Completed");
+                                        sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                                        profileSubScribed(sg);
+                                    }else{
+                                        sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                                        profileSubScribed(sg);
                                     }
                                 }
                             } catch (ParseException e) {
@@ -1082,9 +1110,98 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                             }
                         }
                     }
+                }else if(sg.getStatus().equals("Penalty")){
+
+                    String endDate = sg.getEndDate();
+
+                    if(endDate!=null&&!endDate.isEmpty()){
+
+                        if(endDate.contains("T")){
+
+                            String dats[] = endDate.split("T");
+                            try {
+                                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dats[0]);
+
+                                if(new Date().getTime()-date.getTime()>0){
+
+                                    sg.setExtraDescription(""+(((54000+penaltyAmount)-(youtubeWatcheTime+value))*2));
+                                    sg.setStatus("Penalty");
+                                    sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+
+                                    Calendar c = Calendar.getInstance();
+                                    c.setTime(new Date()); // Now use today date.
+                                    c.add(Calendar.DATE, 7); // Adding 5 days
+                                    sg.setEndDate(new SimpleDateFormat("MM/dd/yyyy").format(c.getTime()));
+                                    sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+
+//                                    double amount = currentProfile.getReferralAmount();
+                                    double valuea = (youtubeWatcheTime+value)*.20;
+//                                    currentProfile.setReferralAmount(valuea);
+                                    sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                                    profileSubScribed(sg);
+                                }else{
+                                    if((youtubeWatcheTime+value)>=(54000+penaltyAmount)){
+                                        sg.setStatus("Completed");
+                                        sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                                        profileSubScribed(sg);
+                                    }else{
+                                        sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                                        profileSubScribed(sg);
+                                    }
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                }else if(sg.getStatus().equals("Completed")){
+
+                    String endDate = sg.getEndDate();
+
+                    if(endDate!=null&&!endDate.isEmpty()){
+
+                        if(endDate.contains("T")){
+
+                            String dats[] = endDate.split("T");
+                            try {
+                                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dats[0]);
+
+                                if(new Date().getTime()-date.getTime()>0){
+
+                                    sg.setExtraDescription(""+(((54000+penaltyAmount)-(youtubeWatcheTime+value))*2));
+                                    sg.setStatus("Penalty");
+                                    sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+
+                                    Calendar c = Calendar.getInstance();
+                                    c.setTime(new Date()); // Now use today date.
+                                    c.add(Calendar.DATE, 7); // Adding 5 days
+                                    sg.setEndDate(new SimpleDateFormat("MM/dd/yyyy").format(c.getTime()));
+                                    sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+
+                                   // double amount = currentProfile.getReferralAmount();
+                                    double valuea = (youtubeWatcheTime+value)*.20;
+                                   //currentProfile.setReferralAmount(valuea);
+                                    sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                                    profileSubScribed(sg);
+                                }else{
+                                    if((youtubeWatcheTime+value)>=(54000+penaltyAmount)){
+                                        sg.setStatus("Completed");
+                                        sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                                        profileSubScribed(sg);
+                                    }else{
+                                        sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                                        profileSubScribed(sg);
+                                    }
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
                 }
-                sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
-                profileSubScribed(sg);
+
             }
             super.finish();
 
@@ -1544,8 +1661,12 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     shareIntent.setPackage("com.whatsapp");
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
-                    shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
-                    shareIntent.setType("image/png");
+                    if(PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId()!=0){
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                    }else{
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContents);
+                    }
+                    shareIntent.setType("image/*");
                     try{
 
                         startActivity(shareIntent);
@@ -1691,8 +1812,12 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
-                    shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
-                    shareIntent.setType("image/png");
+                    if(PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId()!=0){
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                    }else{
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContents);
+                    }
+                    shareIntent.setType("image/*");
                    /* try{
 
                         context.startActivity(shareIntent);
@@ -1729,7 +1854,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     // Custom method to save a bitmap into internal storage
     public Bitmap mark(Bitmap src) {
 
-        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.app_logo);
+        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.app_logo_home);
         int w = src.getWidth();
         int h = src.getHeight();
         int pw=w-w;

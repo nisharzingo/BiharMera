@@ -81,6 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:id="@+id/offer_expire_lay"
                 android:layout_marginTop="40dp">
 
                 <ImageView
@@ -94,6 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#c76a22"
+                    android:layout_marginLeft="5dp"
                     android:id="@+id/expire_days_left_txt"
                     android:text="  150 days left to expire"/>
             </LinearLayout>
@@ -147,12 +149,20 @@
                 android:orientation="vertical"
                 android:layout_marginTop="25dp">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FF0000"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/penalty_amount"
+                    android:text="  "/>
 
                 <!-- stage1 -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/influncer_stage1"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
                     <!--1st month-->

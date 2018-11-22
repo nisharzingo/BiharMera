@@ -3,12 +3,9 @@ package tv.merabihar.app.merabihar.UI.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,27 +18,26 @@ import retrofit2.Response;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.TransactionHistroy;
 import tv.merabihar.app.merabihar.R;
-import tv.merabihar.app.merabihar.UI.Activity.Influencer.Income;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.SubscribedGoalsAPI;
 import tv.merabihar.app.merabihar.WebAPI.TransactionHistroyAPI;
 
-public class TimeWatchedScreen extends AppCompatActivity {
+public class TargetWatchTime extends AppCompatActivity {
 
     TextView mDailyAvgWatchedTime,
             mPastWeekWatchedTime, mYesterdayWatchedTime, mTodayWatchedTime,mHistroy,
-                    mThisWeek,mThisMonth;
-   // Toolbar mToolbar;
+            mThisWeek,mThisMonth;
+    int penalty=0;
+    // Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         try{
-
-            setContentView(R.layout.activity_time_watched_screen);
+            setContentView(R.layout.activity_target_watch_time);
 
             //  mToolbar = findViewById(R.id.time_watched_toolbar);
             mDailyAvgWatchedTime = findViewById(R.id.daily_average_watched_time);
@@ -53,25 +49,18 @@ public class TimeWatchedScreen extends AppCompatActivity {
             mHistroy = findViewById(R.id.watch_history);
 
 
-       /* setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Time watched");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
-            getTransactionsByIdType(PreferenceHandler.getInstance(TimeWatchedScreen.this).getUserId(),"VideoWatched");
 
-       /* mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // perform whenever back arrow click
-                TimeWatchedScreen.this.finish();
-            }
-        });*/
+            getGoalsByProfileId(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId());
+            //getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
+
+
 
             mHistroy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    Intent wh = new Intent(TimeWatchedScreen.this,WatchHistroyScreen.class);
+                    Intent wh = new Intent(TargetWatchTime.this,WatchHistroyScreen.class);
                     startActivity(wh);
 
                 }
@@ -170,10 +159,16 @@ public class TimeWatchedScreen extends AppCompatActivity {
 
                                 if(tc.getTransactionHistoryDate().contains(todayDate)){
 
-                                    int[] vale = splitToComponentTimes(tc.getValue());
+                                    int[] vale = splitToComponentTimes(7800-tc.getValue());
 
                                     if(vale.length!=0&&vale.length==2){
-                                        mTodayWatchedTime.setText(vale[0]+" hr "+vale[1]+" min" );
+
+                                        if(vale[0]<=0&&vale[1]<=0){
+                                            mTodayWatchedTime.setText("0 hr "+"0 min" );
+                                        }else{
+                                            mTodayWatchedTime.setText(vale[0]+" hr "+vale[1]+" min" );
+                                        }
+
                                     }
 
 
@@ -181,11 +176,14 @@ public class TimeWatchedScreen extends AppCompatActivity {
 
                                 if(tc.getTransactionHistoryDate().contains(yesterdate)){
 
-                                    int[] vale = splitToComponentTimes(tc.getValue());
+                                    int[] vale = splitToComponentTimes(7800-tc.getValue());
 
-                                    if(vale.length!=0&&vale.length==2){
+                                    if(vale[0]<=0&&vale[1]<=0){
+                                        mYesterdayWatchedTime.setText("0 hr "+"0 min" );
+                                    }else{
                                         mYesterdayWatchedTime.setText(vale[0]+" hr "+vale[1]+" min" );
                                     }
+
 
 
                                 }
@@ -210,32 +208,44 @@ public class TimeWatchedScreen extends AppCompatActivity {
 
                             }
 
-                            int[] vale = splitToComponentTimes(totalWeek);
+                            int[] vale = splitToComponentTimes(penalty);
 
                             if(vale.length!=0&&vale.length==2){
                                 mPastWeekWatchedTime.setText(vale[0]+" hr "+vale[1]+" min" );
                             }
 
-                            int[] valet = splitToComponentTimes(thisweekWatch);
+                            int[] valet = splitToComponentTimes((54000+penalty)-thisweekWatch);
 
-                            if(valet.length!=0&&valet.length==2){
+                            if(valet[0]<=0&&valet[1]<=0){
+                                mThisWeek.setText("0 hr "+"0 min" );
+                            }else{
                                 mThisWeek.setText(valet[0]+" hr "+valet[1]+" min" );
                             }
 
+                            /*if(valet.length!=0&&valet.length==2){
+                                mThisWeek.setText(valet[0]+" hr "+valet[1]+" min" );
+                            }*/
 
-                            int[] valetm = splitToComponentTimes(thisMonthWatch);
 
-                            if(valetm.length!=0&&valetm.length==2){
+                            int[] valetm = splitToComponentTimes((216000+penalty)-thisMonthWatch);
+
+                            if(valetm[0]<=0&&valetm[1]<=0){
+                                mThisMonth.setText("0 hr "+"0 min" );
+                            }else{
                                 mThisMonth.setText(valetm[0]+" hr "+valetm[1]+" min" );
                             }
 
+                           /* if(valetm.length!=0&&valetm.length==2){
+                                mThisMonth.setText(valetm[0]+" hr "+valetm[1]+" min" );
+                            }*/
+
 
                             int[] vales = splitToComponentTimes(totalWatch/response.body().size());
 
                             if(vales.length!=0&&vales.length==2){
 
 
-                                mDailyAvgWatchedTime.setText(vales[0]+" hr "+vales[1]+" min" );
+                                //mDailyAvgWatchedTime.setText(vales[0]+" hr "+vales[1]+" min" );
                             }
                         }else{
 
@@ -263,143 +273,7 @@ public class TimeWatchedScreen extends AppCompatActivity {
 
     }
 
-    public void getTransactionsByIdTypeByGoal(final int id,final String type)
-    {
 
-
-        new ThreadExecuter().execute(new Runnable() {
-            @Override
-            public void run() {
-
-                final TransactionHistroyAPI categoryAPI = Util.getClient().create(TransactionHistroyAPI.class);
-                Call<ArrayList<TransactionHistroy>> getCat = categoryAPI.getTransactionHistoriesByProfileIdAndGoal(id,type);
-                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
-
-                getCat.enqueue(new Callback<ArrayList<TransactionHistroy>>() {
-
-                    @Override
-                    public void onResponse(Call<ArrayList<TransactionHistroy>> call, Response<ArrayList<TransactionHistroy>> response) {
-
-
-
-                        if(response.code() == 200 && response.body()!= null&&response.body().size()!=0)
-                        {
-                            int totalWeek = 0;
-                            int totalWatch = 0;
-
-                            for (TransactionHistroy tc:response.body()) {
-
-                                String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-
-                                totalWatch = totalWatch+tc.getValue();
-
-                                final Calendar cal = Calendar.getInstance();
-                                cal.add(Calendar.DATE, -1);
-
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                String yesterdate = dateFormat.format(cal.getTime());
-
-                                final Calendar cals = Calendar.getInstance();
-                                cals.add(Calendar.DATE, -7);
-                                String passweek = dateFormat.format(cals.getTime());
-
-                                Date past = null;
-                                Date pastDay = null;
-                                Date tDay = null;
-                                try {
-                                    pastDay = new SimpleDateFormat("yyyy-MM-dd").parse(passweek);
-                                    tDay = new SimpleDateFormat("yyyy-MM-dd").parse(todayDate);
-                                    System.out.println("Pass "+passweek);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-
-                                String tdate = tc.getTransactionHistoryDate();
-
-                                if(tdate.contains("T")){
-
-                                    String[] tDates = tdate.split("T");
-                                    try {
-                                        past = dateFormat.parse(tDates[0]);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                if(tc.getTransactionHistoryDate().contains(todayDate)){
-
-                                    int[] vale = splitToComponentTimes(tc.getValue());
-
-                                    if(vale.length!=0&&vale.length==2){
-                                        mTodayWatchedTime.setText(vale[0]+" hr "+vale[1]+" min" );
-                                    }
-
-
-                                }
-
-                                if(tc.getTransactionHistoryDate().contains(yesterdate)){
-
-                                    int[] vale = splitToComponentTimes(tc.getValue());
-
-                                    if(vale.length!=0&&vale.length==2){
-                                        mYesterdayWatchedTime.setText(vale[0]+" hr "+vale[1]+" min" );
-                                    }
-
-
-                                }
-
-                                System.out.println("PastDay "+pastDay.getTime());
-                                System.out.println("PastDay "+past.getTime());
-                                System.out.println("PastDay "+ new Date().getTime());
-                                System.out.println("PastDay "+pastDay);
-                                System.out.println("PastDay "+past);
-
-                                if ((pastDay.getTime() <= past.getTime() && tDay.getTime() > past.getTime())) {
-                                    totalWeek = totalWeek+tc.getValue();
-                                }
-
-                            }
-
-                            int[] vale = splitToComponentTimes(totalWeek);
-
-                            if(vale.length!=0&&vale.length==2){
-                                mPastWeekWatchedTime.setText(vale[0]+" hr "+vale[1]+" min" );
-                            }
-
-
-                            int[] vales = splitToComponentTimes(totalWatch/response.body().size());
-
-                            if(vales.length!=0&&vales.length==2){
-
-
-                                mDailyAvgWatchedTime.setText(vales[0]+" hr "+vales[1]+" min" );
-                            }
-                        }else{
-
-
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<TransactionHistroy>> call, Throwable t) {
-
-
-
-
-
-                    }
-                });
-
-
-                //System.out.println(TAG+" thread started");
-
-            }
-
-        });
-
-    }
 
 
     public static int[] splitToComponentTimes(int time)
@@ -445,20 +319,22 @@ public class TimeWatchedScreen extends AppCompatActivity {
 
                                     String startDate = sg.getStartDate();
                                     String endDate = sg.getEndDate();
+                                    penalty = Integer.parseInt(sg.getExtraDescription());
+                                    getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
 
                                 }else{
-                                    getTransactionsByIdType(PreferenceHandler.getInstance(TimeWatchedScreen.this).getUserId(),"VideoWatched");
+                                    getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
                                 }
 
 
                             }else{
-                                getTransactionsByIdType(PreferenceHandler.getInstance(TimeWatchedScreen.this).getUserId(),"VideoWatched");
+                                getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
                             }
 
 
                         }else{
 
-                            getTransactionsByIdType(PreferenceHandler.getInstance(TimeWatchedScreen.this).getUserId(),"VideoWatched");
+                            getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
 
                         }
                     }
@@ -467,7 +343,7 @@ public class TimeWatchedScreen extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
 
 
-                        getTransactionsByIdType(PreferenceHandler.getInstance(TimeWatchedScreen.this).getUserId(),"VideoWatched");
+                        getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
 
                         //Toast.makeText(TimeWatchedScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }

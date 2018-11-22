@@ -56,6 +56,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+//import java.net.HttpURLConnection;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -121,6 +122,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
     String url,fileNames;
     boolean isFirstTimePressed = false;
     String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(context).getUserId()+"\n http://bit.ly/2JXcOnw";
+    String shareContents = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n http://bit.ly/2JXcOnw";
 
     OnBottomReachedListener onBottomReachedListener;
 
@@ -128,6 +130,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
         this.context = context;
         mList = new ArrayList<>();
+        setHasStableIds(true);
 
 
     }
@@ -184,6 +187,8 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                         if(contents!=null){
 
+                            holder.mProfilePhoto.setImageResource(R.drawable.profile_image);
+
                             String contentTitle =contents.getTitle();
                             final String contentDesc =contents.getDescription();
                             String createdBy =contents.getCreatedBy();
@@ -191,13 +196,127 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                             holder.mProfileName.setText(""+createdBy);
                             holder.mContentTitle.setText(""+contentTitle);
-                            holder.mContentDesc.setText(""+contentDesc);
 
-                            int countLine= holder.mContentDesc.getLineHeight();
-//                            System.out.println("LineCount " + countLine);
-                            if (countLine>=25){
-                                holder.mMore.setVisibility(View.VISIBLE);
+                            if(contents.getContentType().equalsIgnoreCase("Video")){
+
+                                //url = contents.getContentURL();
+
+                               // holder.mContentPic.setScaleType(ImageView.ScaleType.FIT_XY);
+                                holder.mIcon.setVisibility(View.VISIBLE);
+                                if(contents.getContentURL()!=null&&!contents.getContentURL().isEmpty()){
+                                    String img = "https://img.youtube.com/vi/"+contents.getContentURL()+"/0.jpg";
+                                    if(img!=null&&!img.isEmpty()){
+                                        /*Picasso.with(context).load(img).fit().placeholder(R.drawable.no_image).
+                                                error(R.drawable.no_image).into(holder.mContentPic);*/
+
+                                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
+                                            @Override
+                                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                                                // Cropping the image
+                                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
+
+                                                GlideApp.with(context)
+                                                        .load(customBitMap)
+                                                        .apply(new RequestOptions()
+                                                                .placeholder(R.drawable.no_image)
+                                                                .error(R.drawable.no_image))
+                                                        .into(holder.mContentPic);
+
+                                            }
+
+                                            @Override
+                                            public void onBitmapFailed(Drawable errorDrawable) {
+                                            }
+
+                                            @Override
+                                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                            }
+                                        });
+                                    }else{
+                                        holder.mContentPic.setImageResource(R.drawable.no_image);
+                                    }
+                                }else{
+                                    holder.mContentPic.setImageResource(R.drawable.no_image);
+                                }
+
+
+
+
+
+                            }else{
+
+
+                                holder.mIcon.setVisibility(View.GONE);
+                                if(contents.getContentImage() != null && contents.getContentImage().size()!=0)
+                                {
+
+                                    String img = contents.getContentImage().get(0).getImages();
+
+                                    if(img!=null&&!img.isEmpty()){
+
+                                        /*URL url = new URL(img);
+                                        Bitmap loadedImage = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+
+                                        // Gets the width you want it to be
+                                        int intendedWidth = holder.mContentPic.getWidth();
+
+                                        // Gets the downloaded image dimensions
+                                        int originalWidth = loadedImage.getWidth();
+                                        int originalHeight = loadedImage.getHeight();
+
+                                        // Calculates the new dimensions
+                                        float scale = (float) intendedWidth / originalWidth;
+                                        int newHeight = (int) Math.round(originalHeight * scale);
+
+                                        // Resizes mImageView. Change "FrameLayout" to whatever layout mImageView is located in.
+                                        holder.mContentPic.setLayoutParams(new FrameLayout.LayoutParams(
+                                                FrameLayout.LayoutParams.WRAP_CONTENT,
+                                                FrameLayout.LayoutParams.WRAP_CONTENT));
+                                        holder.mContentPic.getLayoutParams().width = intendedWidth;
+                                        holder.mContentPic.getLayoutParams().height = newHeight;*/
+
+                                        Picasso.with(context)
+                                                .load(img)
+
+                                                .placeholder(R.drawable.no_image)
+                                                .error(R.drawable.no_image)
+                                                .into(holder.mContentPic);
+                                        holder.mContentPic.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+
+                                    }else{
+                                        holder.mContentPic.setImageResource(R.drawable.no_image);
+                                    }
+
+
+
+                                }else{
+                                    holder.mContentPic.setImageResource(R.drawable.no_image);
+                                }
+
                             }
+
+                            if(contentDesc!=null&&!contentDesc.isEmpty()){
+
+                                holder.mContentDesc.setText(""+contentDesc);
+
+                                int countLine= holder.mContentDesc.getLineHeight();
+//                            System.out.println("LineCount " + countLine);
+                                if (countLine>=25){
+                                    holder.mReadOption.setVisibility(View.VISIBLE);
+                                    holder.mMore.setVisibility(View.VISIBLE);
+                                }else{
+                                    holder.mReadOption.setVisibility(View.GONE);
+                                }
+
+                            }else{
+                                holder.mContentDesc.setVisibility(View.GONE);
+                                holder.mReadOption.setVisibility(View.GONE);
+                            }
+
                             // holder.mProfileName.setText(""+createdBy);
 
 
@@ -398,106 +517,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 }
                             }
 
-                            if(contents.getContentType().equalsIgnoreCase("Video")){
 
-                                //url = contents.getContentURL();
-
-                                holder.mContentPic.setScaleType(ImageView.ScaleType.FIT_XY);
-                                holder.mIcon.setVisibility(View.VISIBLE);
-                                if(contents.getContentURL()!=null&&!contents.getContentURL().isEmpty()){
-                                    String img = "https://img.youtube.com/vi/"+contents.getContentURL()+"/0.jpg";
-                                    if(img!=null&&!img.isEmpty()){
-                                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                                error(R.drawable.no_image).into(holder.mContentPic);
-
-                                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
-                                            @Override
-                                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-                                                // Cropping the image
-                                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
-
-                                                Glide.with(context)
-                                                        .load(customBitMap)
-                                                        .apply(new RequestOptions()
-                                                                .placeholder(R.drawable.no_image)
-                                                                .error(R.drawable.no_image))
-                                                        .into(holder.mContentPic);
-
-//                mCustomLoader.setVisibility(View.INVISIBLE);
-                                            }
-
-                                            @Override
-                                            public void onBitmapFailed(Drawable errorDrawable) {
-                                                // Log.e("Cropping Failed", errorDrawable.toString());
-//                mCustomLoader.setVisibility(View.INVISIBLE);
-                                            }
-
-                                            @Override
-                                            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                                            }
-                                        });
-                                    }else{
-                                        holder.mContentPic.setImageResource(R.drawable.no_image);
-                                    }
-                                }else{
-                                    holder.mContentPic.setImageResource(R.drawable.no_image);
-                                }
-
-
-
-
-
-                            }else{
-
-
-                                holder.mIcon.setVisibility(View.GONE);
-                                if(contents.getContentImage() != null && contents.getContentImage().size()!=0)
-                                {
-
-                                    String img = contents.getContentImage().get(0).getImages();
-
-                                    if(img!=null&&!img.isEmpty()){
-
-                                        /*URL url = new URL(img);
-                                        Bitmap loadedImage = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
-
-                                        // Gets the width you want it to be
-                                        int intendedWidth = holder.mContentPic.getWidth();
-
-                                        // Gets the downloaded image dimensions
-                                        int originalWidth = loadedImage.getWidth();
-                                        int originalHeight = loadedImage.getHeight();
-
-                                        // Calculates the new dimensions
-                                        float scale = (float) intendedWidth / originalWidth;
-                                        int newHeight = (int) Math.round(originalHeight * scale);
-
-                                        // Resizes mImageView. Change "FrameLayout" to whatever layout mImageView is located in.
-                                        holder.mContentPic.setLayoutParams(new FrameLayout.LayoutParams(
-                                                FrameLayout.LayoutParams.WRAP_CONTENT,
-                                                FrameLayout.LayoutParams.WRAP_CONTENT));
-                                        holder.mContentPic.getLayoutParams().width = intendedWidth;
-                                        holder.mContentPic.getLayoutParams().height = newHeight;*/
-
-                                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                                error(R.drawable.no_image).into(holder.mContentPic);
-                                        holder.mContentPic.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-
-                                    }else{
-                                        holder.mContentPic.setImageResource(R.drawable.no_image);
-                                    }
-
-
-
-                                }else{
-                                    holder.mContentPic.setImageResource(R.drawable.no_image);
-                                }
-
-                            }
 
 
 
@@ -1017,6 +1037,11 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
     }
 
     @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
     }
@@ -1030,7 +1055,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         TextViewSFProDisplaySemibold mTags;
         RoundedImageView mContentPic;
         ImageView mIcon;
-        LinearLayout mProfileContent;
+        LinearLayout mProfileContent,mReadOption;
         FrameLayout mContentDetail;
         TextView mMore,mLess,mMoreExtnd,mMoreLine;
 
@@ -1063,6 +1088,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
             mLess = (TextView) view.findViewById(R.id.read_less);
             mContentDetail = (FrameLayout) view.findViewById(R.id.content_detail);
             mProfileContent = (LinearLayout) view.findViewById(R.id.profile_lay_content);
+            mReadOption = (LinearLayout) view.findViewById(R.id.read_option);
             mLikeLayout = (LinearLayout) view.findViewById(R.id.like_ll);
             mDislikeLayout = (LinearLayout) view.findViewById(R.id.disLike_ll);
             mCommentLayout = (LinearLayout) view.findViewById(R.id.comment_ll);
@@ -1699,6 +1725,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                 Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
 
                 // Return the downloaded bitmap
+                connection.disconnect();
                 return bmp;
 
             }catch(IOException e){
@@ -1706,6 +1733,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
             }finally{
                 // Disconnect the http url connection
                 connection.disconnect();
+                //connection.
             }
             return null;
         }
@@ -1769,9 +1797,15 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
-                    shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+
+                    if(PreferenceHandler.getInstance(context).getUserId()!=0){
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                    }else{
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContents);
+                    }
+
                     shareIntent.setPackage("com.whatsapp");
-                    shareIntent.setType("image/png");
+                    shareIntent.setType("image/*");
                     try{
 
                         context.startActivity(shareIntent);
@@ -1827,8 +1861,12 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
-                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
-                        shareIntent.setType("image/png");
+                        if(PreferenceHandler.getInstance(context).getUserId()!=0){
+                            shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                        }else{
+                            shareIntent.putExtra(Intent.EXTRA_TEXT,shareContents);
+                        }
+                        shareIntent.setType("image/*");
                    /* try{
 
                         context.startActivity(shareIntent);
@@ -1850,6 +1888,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
             }else {
                 // Notify user that an error occurred while downloading image
                 //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
+
             }
         }
     }
@@ -1907,6 +1946,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                 Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
 
                 // Return the downloaded bitmap
+                connection.disconnect();
                 return bmp;
 
             }catch(IOException e){
@@ -1977,8 +2017,12 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
-                    shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
-                    shareIntent.setType("image/png");
+                    if(PreferenceHandler.getInstance(context).getUserId()!=0){
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                    }else{
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContents);
+                    }
+                    shareIntent.setType("image/*");
                    /* try{
 
                         context.startActivity(shareIntent);
@@ -2031,6 +2075,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                 Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
 
                 // Return the downloaded bitmap
+                connection.disconnect();
                 return bmp;
 
             }catch(IOException e){
@@ -2125,7 +2170,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         int nh = (h * 10)/100;
         Bitmap result = Bitmap.createBitmap(w, h, icon.getConfig());
         Canvas canvas = new Canvas(result);
-        Bitmap resized = Bitmap.createScaledBitmap(icon, 25, 25, true);
+        Bitmap resized = Bitmap.createScaledBitmap(icon, 40, 40, true);
 
         canvas.drawBitmap(src, 0, 0, null);
         Paint paint = new Paint();

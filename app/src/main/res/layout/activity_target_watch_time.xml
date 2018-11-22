@@ -6,16 +6,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-   <!-- <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:id="@+id/time_watched_toolbar"
-        />
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="#60030303"
-        />-->
+    <!-- <android.support.v7.widget.Toolbar
+         android:layout_width="match_parent"
+         android:layout_height="?attr/actionBarSize"
+         android:id="@+id/time_watched_toolbar"
+         />
+     <View
+         android:layout_width="wrap_content"
+         android:layout_height="1dp"
+         android:background="#60030303"
+         />-->
 
 
     <LinearLayout
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="15dp"
-                android:text="Today"
+                android:text="Today Remaining"
                 android:gravity="left"
                 android:textSize="17sp"
                 android:layout_weight="1"/>
@@ -90,7 +90,7 @@
                 android:paddingLeft="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Yesterday"
+                android:text="Yesterday Remaining"
                 android:gravity="left"
                 android:textSize="17sp"
                 android:layout_weight="1"/>
@@ -117,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:paddingLeft="15dp"
                 android:layout_height="match_parent"
-                android:text="This week"
+                android:text="This week Remaining"
                 android:gravity="left"
                 android:textSize="17sp"
                 android:layout_weight="1"/>
@@ -144,7 +144,7 @@
                 android:layout_width="match_parent"
                 android:paddingLeft="15dp"
                 android:layout_height="match_parent"
-                android:text="Last week"
+                android:text="Last week Remaining"
                 android:gravity="left"
                 android:textSize="17sp"
                 android:layout_weight="1"/>
@@ -171,7 +171,7 @@
                 android:layout_width="match_parent"
                 android:paddingLeft="15dp"
                 android:layout_height="match_parent"
-                android:text="This Month"
+                android:text="This Month Remaining"
                 android:gravity="left"
                 android:textSize="17sp"
                 android:layout_weight="1"/>
@@ -209,7 +209,7 @@
                 android:paddingRight="15dp"
                 android:layout_height="match_parent"
                 android:gravity="right"
-                android:text="0 hr 0 min"
+                android:text="2 hr 10 min"
                 android:id="@+id/daily_average_watched_time"
                 android:layout_weight="1"/>
 

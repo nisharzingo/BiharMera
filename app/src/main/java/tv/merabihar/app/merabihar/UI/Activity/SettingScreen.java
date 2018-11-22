@@ -35,7 +35,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import tv.merabihar.app.merabihar.Adapter.NavigationListAdapter;
-import tv.merabihar.app.merabihar.Adapter.ReferalPeopleListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.NavBarItems;
@@ -49,7 +48,6 @@ import tv.merabihar.app.merabihar.UI.Activity.Influencer.InviteFriendsScreen;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.InviteScreen;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.Records;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.WithdrawMoney;
-import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabAccountActivity;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
@@ -77,7 +75,7 @@ public class SettingScreen extends AppCompatActivity {
 
     UserProfile profiles;
 
-    String shareContent;
+    String shareContent,type,nonreed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +108,9 @@ public class SettingScreen extends AppCompatActivity {
             coints_txt_btn = findViewById(R.id.coins_txt_btn);
             bal_txt_btn = findViewById(R.id.bal_txt_btn);
             invite_txt_btn = findViewById(R.id.invite_txt_btn);
+            income_btn = findViewById(R.id.income_ll_btn);
+
+            withdraw_btn = findViewById(R.id.withdraw_ll_btn);
 
 
             records_btn.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +129,47 @@ public class SettingScreen extends AppCompatActivity {
                 }
             });
 
+
+
+            income_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    openIncome(mCoins.getText().toString());
+                }
+            });
+
+            coints_txt_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    openIncome(mCoins.getText().toString());
+
+                }
+            });
+
+
+            bal_txt_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    openIncome(mCoins.getText().toString());
+
+                }
+            });
+
+
+
+            withdraw_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent withDrawIntent = new Intent(SettingScreen.this, WithdrawMoney.class);
+                    //get data from api
+                    withDrawIntent.putExtra("rupees_value", mCoins.getText().toString());
+                    startActivity(withDrawIntent);
+                }
+            });
 
             profileId = PreferenceHandler.getInstance(SettingScreen.this).getUserId();
             if(profileId!=0){
@@ -322,8 +364,8 @@ public class SettingScreen extends AppCompatActivity {
                             wallet = profile.getWalletBalance();
 
                             // open income activity
-                            openIncomeActivity( String.valueOf(coinsUsed), String.valueOf( (coinsUsed*1.0)/100  ) );
-                            openWithDrawActivity(String.valueOf( (coinsUsed*1.0)/100  ) );
+                           // openIncomeActivity( String.valueOf(coinsUsed), String.valueOf( (coinsUsed*1.0)/100  ) );
+                            //openWithDrawActivity(String.valueOf( (coinsUsed*1.0)/100  ) );
 
                             referCodeProfile = "MBR"+profile.getProfileId();
                             if(profile.getProfilePhoto()!=null){
@@ -478,7 +520,7 @@ public class SettingScreen extends AppCompatActivity {
 
             case "Time Watched":
 
-                Intent tw = new Intent(SettingScreen.this, TimeWatchedScreen.class);
+                Intent tw = new Intent(SettingScreen.this, WatchedHistroyScreen.class);
                 startActivity(tw);
                 break;
 
@@ -717,17 +759,20 @@ public class SettingScreen extends AppCompatActivity {
                             }
                             else
                             {
+
+                                double amount =(directCount*50)+coinsValue;
                                 mInvite.setText(""+directCount);
-                                mCoins.setText(""+(int)coinsValue);
-                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
+                                mCoins.setText(""+(int)amount);
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
 
                             }
                         }
                         else
                         {
+                            double amount =(directCount*50)+coinsValue;
                             mInvite.setText(""+directCount);
-                            mCoins.setText(""+(int)coinsValue);
-                            mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
+                            mCoins.setText(""+(int)amount);
+                            mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
 
                         }
 //                callGetStartEnd();
@@ -736,11 +781,10 @@ public class SettingScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
+                        double amount =(directCount*50)+coinsValue;
                         mInvite.setText(""+directCount);
-                        mCoins.setText(""+(int)coinsValue);
-                        mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
-
-
+                        mCoins.setText(""+(int)amount);
+                        mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
                         Log.e("TAG", t.toString());
                     }
                 });
@@ -807,44 +851,18 @@ public class SettingScreen extends AppCompatActivity {
     // opening the incomeActivity
     private void openIncomeActivity( final String coins, final String rupees) {
 
-        income_btn = findViewById(R.id.income_ll_btn);
 
-        income_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               openIncome(coins, rupees);
-            }
-        });
-
-        coints_txt_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                openIncome(coins, rupees);
-
-            }
-        });
-
-
-        bal_txt_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                openIncome(coins, rupees);
-
-            }
-        });
 
 
 
     }
 
-    private void openIncome(String coins, String rupees) {
+    private void openIncome(String coins) {
         Intent incomeIntent = new Intent(SettingScreen.this, Income.class);
         //get data from api
         incomeIntent.putExtra("coins_value", coins);
-        incomeIntent.putExtra("rupees_value", rupees);
+        incomeIntent.putExtra("non_reed", nonreed);
+        incomeIntent.putExtra("type", type);
         startActivity(incomeIntent);
 
     }
@@ -896,6 +914,9 @@ public class SettingScreen extends AppCompatActivity {
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                                     String expdate = sg.getEndDate();
+                                    type = sg.getStatus();
+                                    double valuer = (int)(Integer.parseInt(sg.getRewardsEarned()))*.20;
+                                    nonreed = ""+(int)valuer;
                                     Date past = null;
 
 
@@ -917,33 +938,77 @@ public class SettingScreen extends AppCompatActivity {
                                     if ( new Date().getTime() < past.getTime()) {
 
                                         double amount = profiles.getReferralAmount();
-                                        double valuea = (Double.parseDouble(sg.getRewardsEarned()))*.20;
+                                        double valuea = (int)(Integer.parseInt(sg.getRewardsEarned()))*.20;
 
                                         if(sg.getStatus().equalsIgnoreCase("Activated")){
 
-                                            mVideoCoins.setText("Non Redeemable Coins : "+valuea);
+                                            mVideoCoins.setText("Non Redeemable Coins : "+(int)valuea);
 
-                                        }else if(sg.getStatus().equalsIgnoreCase("Activated")){
-
-                                            mVideoCoins.setText("Non Redeemable Coins : "+valuea);
                                             if(referalCode!=null&&!referalCode.isEmpty()){
-                                                getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
                                             }else{
                                                 referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
-                                                getDirectRefer(referalCode,profile.getReferralAmount()+valuea,profile.getReferralAmountForOtherProfile());
+                                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                            }
+
+                                        }else if(sg.getStatus().equalsIgnoreCase("Completed")){
+
+                                            mVideoCoins.setText("Non Redeemable Coins : 0");
+                                            if(referalCode!=null&&!referalCode.isEmpty()){
+                                                getDirectRefer(referalCode,profile.getReferralAmount()+(int)valuea,profile.getReferralAmountForOtherProfile());
+                                            }else{
+                                                referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                                getDirectRefer(referalCode,profile.getReferralAmount()+(int)valuea,profile.getReferralAmountForOtherProfile());
+                                            }
+                                        }else if(sg.getStatus().equalsIgnoreCase("Penalty")){
+
+                                            mVideoCoins.setText("Non Redeemable Coins : "+(int)valuea);
+
+                                            if(referalCode!=null&&!referalCode.isEmpty()){
+                                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                            }else{
+                                                referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
                                             }
                                         }
 
                                     }else{
 
-                                        mVideoCoins.setText("Non Redeemable Coins : 0");
+                                        double amount = profiles.getReferralAmount();
+                                        double valuea = (int)(Integer.parseInt(sg.getRewardsEarned()))*.20;
 
-                                        if(referalCode!=null&&!referalCode.isEmpty()){
-                                            getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
-                                        }else{
-                                            referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
-                                            getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                        if(sg.getStatus().equalsIgnoreCase("Activated")){
+
+                                            mVideoCoins.setText("Non Redeemable Coins : "+(int)valuea);
+
+                                            if(referalCode!=null&&!referalCode.isEmpty()){
+                                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                            }else{
+                                                referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                            }
+
+                                        }else if(sg.getStatus().equalsIgnoreCase("Completed")){
+
+                                            mVideoCoins.setText("Non Redeemable Coins : 0");
+                                            if(referalCode!=null&&!referalCode.isEmpty()){
+                                                getDirectRefer(referalCode,profile.getReferralAmount()+(int)valuea,profile.getReferralAmountForOtherProfile());
+                                            }else{
+                                                referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                                getDirectRefer(referalCode,profile.getReferralAmount()+(int)valuea,profile.getReferralAmountForOtherProfile());
+                                            }
+                                        }else if(sg.getStatus().equalsIgnoreCase("Penalty")){
+
+                                            mVideoCoins.setText("Non Redeemable Coins : "+(int)valuea);
+
+                                            if(referalCode!=null&&!referalCode.isEmpty()){
+                                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                            }else{
+                                                referalCode = "MBR"+PreferenceHandler.getInstance(SettingScreen.this).getUserId();
+                                                getDirectRefer(referalCode,profile.getReferralAmount(),profile.getReferralAmountForOtherProfile());
+                                            }
                                         }
+
                                     }
 
 

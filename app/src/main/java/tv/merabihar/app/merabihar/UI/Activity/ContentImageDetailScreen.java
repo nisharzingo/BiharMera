@@ -47,6 +47,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tv.merabihar.app.merabihar.Adapter.ActivityAdapter;
+import tv.merabihar.app.merabihar.Adapter.AutoScrollAdapter;
 import tv.merabihar.app.merabihar.Adapter.CommentsListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_SF_Pro_Light;
@@ -68,7 +70,8 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 
 public class ContentImageDetailScreen extends AppCompatActivity {
 
-    RoundedImageView mContentPic;
+    //RoundedImageView mContentPic;
+    AutoScrollAdapter mContentPic;
     ImageView mback;
     TextViewSFProDisplayRegular mSubCategory,mReadTime,mNocomments;
     MyTextView_SF_Pro_Light mContentTitle,mContentDesc;
@@ -92,6 +95,13 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
 
     String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId()+"\n http://bit.ly/2JXcOnw";
+    String shareContents = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n http://bit.ly/2JXcOnw";
+
+    //auto slide
+    int currentPage = 0,start = 0,end = 0;
+    Timer timer;
+    final long DELAY_MS = 5000;
+    final long PERIOD_MS = 3500;
 
 
 
@@ -105,7 +115,9 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
             profileId = PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId();
 
-            mContentPic = (RoundedImageView)findViewById(R.id.content_pic);
+            //mContentPic = (RoundedImageView)findViewById(R.id.content_pic);
+            mContentPic = (AutoScrollAdapter) findViewById(R.id.content_pic);
+            mContentPic.setStopScrollWhenTouch(true);
             mback = (ImageView)findViewById(R.id.back_view);
             mSubCategory = (TextViewSFProDisplayRegular)findViewById(R.id.subcategory_of_content);
             mReadTime = (TextViewSFProDisplayRegular)findViewById(R.id.read_time);
@@ -669,6 +681,20 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 String blogShort = contents.getDescription();
                 String createdDate = contents.getCreatedDate();
 
+                if(blogName!=null&&!blogName.isEmpty()){
+                    mContentTitle.setText(blogName + "");
+                    mContentTitle.setVisibility(View.VISIBLE);
+                }else {
+                    mContentTitle.setVisibility(View.GONE);
+                }
+
+                if(blogShort!=null&&!blogShort.isEmpty()){
+                    mContentDesc.setText(blogShort + "");
+                    mContentDesc.setVisibility(View.VISIBLE);
+                }else {
+                    mContentDesc.setVisibility(View.GONE);
+                }
+
                 if(createdDate!=null||!createdDate.isEmpty()){
 
                     if(createdDate.contains("T")){
@@ -689,7 +715,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                 if (blogImages != null && blogImages.size() != 0) {
 
-                    String base = blogImages.get(0).getImages();
+                  /*  String base = blogImages.get(0).getImages();
 
                     if(base != null && !base.isEmpty()){
                         Picasso.with(ContentImageDetailScreen.this).load(base).placeholder(R.drawable.no_image).
@@ -700,13 +726,64 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     }else{
 
                         mContentPic.setImageResource(R.drawable.no_image);
+                    }*/
+
+                    ArrayList<String> blogImage = new ArrayList<>();
+
+                    //  URL url = new URL(blogImages.get(0).getImage());
+                    // thumbnail = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+
+                    for (int i=0;i<blogImages.size();i++)
+                    {
+                        blogImage.add(blogImages.get(i).getImages());
+
                     }
+
+                    ActivityAdapter activityImagesadapter = new ActivityAdapter(ContentImageDetailScreen.this,blogImage);
+                    mContentPic.setAdapter(activityImagesadapter);
+
+                   /* final int size = blogImage.size();
+
+                    final Handler handler = new Handler();
+                    final Runnable Update = new Runnable() {
+                        public void run() {
+                            if (currentPage == (size - 1)&& start == 0) {
+                                currentPage = --currentPage;
+                                start = 1;
+                                end = 0;
+                            }else if(currentPage < (size - 1) && currentPage != 0 && end == 0&& start == 1){
+                                currentPage = --currentPage;
+                            }else if(currentPage == 0 && end == 0 && start == 1){
+                                currentPage = 0;
+                                end = 1;
+                                start = 0;
+                            }else if(currentPage <= (size - 1) && start == 0){
+
+                                currentPage = ++currentPage;
+                            }else if(currentPage == 0&& start == 0){
+
+                                currentPage = ++currentPage;
+                            }else{
+
+                            }
+                            mContentPic.setCurrentItem(currentPage, true);
+                        }
+                    };
+
+                    timer = new Timer(); // This will create a new Thread
+                    timer .schedule(new TimerTask() { // task to be scheduled
+
+                        @Override
+                        public void run() {
+                            handler.post(Update);
+                        }
+                    }, DELAY_MS, PERIOD_MS);*/
 
                 }
 
 
-                mContentTitle.setText(blogName + "");
-                mContentDesc.setText(blogShort + "");
+
 
 
             }
@@ -1296,8 +1373,12 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     shareIntent.setPackage("com.whatsapp");
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
-                    shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
-                    shareIntent.setType("image/png");
+                    if(PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId()!=0){
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                    }else{
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContents);
+                    }
+                    shareIntent.setType("image/*");
                     try{
 
                         startActivity(shareIntent);
@@ -1443,8 +1524,12 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
-                    shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
-                    shareIntent.setType("image/png");
+                    if(PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId()!=0){
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                    }else{
+                        shareIntent.putExtra(Intent.EXTRA_TEXT,shareContents);
+                    }
+                    shareIntent.setType("image/*");
                    /* try{
 
                         context.startActivity(shareIntent);
@@ -1481,7 +1566,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     // Custom method to save a bitmap into internal storage
     public Bitmap mark(Bitmap src) {
 
-        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.app_logo);
+        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.app_logo_home);
         int w = src.getWidth();
         int h = src.getHeight();
         int pw=w-w;

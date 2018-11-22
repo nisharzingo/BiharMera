@@ -1,6 +1,7 @@
 package tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,11 +26,16 @@ import retrofit2.Response;
 import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 import tv.merabihar.app.merabihar.CustomInterface.PageScrollListener;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
+import tv.merabihar.app.merabihar.DataBase.DataBaseHelper;
 import tv.merabihar.app.merabihar.Model.CategoryAndContentList;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Service.ContentDataBaseService;
+import tv.merabihar.app.merabihar.Service.VideoWatchedService;
+import tv.merabihar.app.merabihar.UI.Activity.ContentDetailScreen;
 import tv.merabihar.app.merabihar.UI.Activity.ContentListScreen;
 import tv.merabihar.app.merabihar.Util.Constants;
+import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
@@ -36,7 +43,7 @@ import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
 
 public class ForYouNewFragment extends Fragment {
 
-    SwipeRefreshLayout pullToRefresh;
+   // SwipeRefreshLayout pullToRefresh;
     View view;
     private static RecyclerView mtopBlogs;
     ProgressBar progressBar;
@@ -54,6 +61,8 @@ public class ForYouNewFragment extends Fragment {
 
     private String TAG="BlogList";
 
+ //  DataBaseHelper db ;
+
     public ForYouNewFragment() {
         // Required empty public constructor
     }
@@ -67,7 +76,10 @@ public class ForYouNewFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+      //  db = new DataBaseHelper(getActivity());
     }
 
 
@@ -82,7 +94,7 @@ public class ForYouNewFragment extends Fragment {
 
             mtopBlogs = (RecyclerView) view.findViewById(R.id.top_blogs_viewpager);
             progressBar = (ProgressBar) view.findViewById(R.id.blog_progress);
-            pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
+          //  pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
 
             linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
             mtopBlogs.setLayoutManager(linearLayoutManager);
@@ -91,24 +103,25 @@ public class ForYouNewFragment extends Fragment {
             adapter = new ContentAdapterVertical(getActivity());
             mtopBlogs.setAdapter(adapter);
 
+
             /*SnapHelper snapHelper = new PagerSnapHelper();
             snapHelper.attachToRecyclerView(mtopBlogs);*/
 
-            mtopBlogs.addOnScrollListener(new PageScrollListener(linearLayoutManager) {
+            mtopBlogs.setOnScrollListener(new PageScrollListener(linearLayoutManager) {
                 @Override
                 protected void loadMoreItems() {
                     isLoading = true;
 
                     currentPage = currentPage+1;
+                    loadNextSetOfItems();
 
-
-                    if (Util.isNetworkAvailable(getActivity())) {
+                  /*  if (Util.isNetworkAvailable(getActivity())) {
                         loadNextSetOfItems();
 
                     }else{
                         SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
                         progressBar.setVisibility(View.GONE);
-                    }
+                    }*/
                 }
 
                 @Override
@@ -131,7 +144,7 @@ public class ForYouNewFragment extends Fragment {
 
 
 
-            pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            /*pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 int Refreshcounter = 1; //Counting how many times user have refreshed the layout
 
                 @Override
@@ -139,16 +152,36 @@ public class ForYouNewFragment extends Fragment {
 
                     if (Util.isNetworkAvailable(getActivity())) {
 
+                        //adapter.re
+                        mtopBlogs.removeAllViews();
+                        adapter = new ContentAdapterVertical(getActivity());
+                        currentPage = PAGE_START;
                         loadFirstSetOfBlogs();
                     }else{
                         progressBar.setVisibility(View.GONE);
                         SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
+
+                        //System.out.println("Database Size = "+db.getContents().size());
+
+                       *//* if(db.getContents()!=null&&db.getContents().size()!=0){
+                            progressBar.setVisibility(View.GONE);
+                            adapter.addAll(db.getContents());
+
+                            if (db.getContents() != null && db.getContents().size() !=0)
+                                adapter.addLoadingFooter();
+                            else
+                                isLastPage = true;
+                        }else{
+
+                        }*//*
                     }
 
                     pullToRefresh.setRefreshing(false);
                 }
             });
+*/
 
+            loadFirstSetOfBlogs();
             return view;
 
         }catch (Exception e){
@@ -167,13 +200,13 @@ public class ForYouNewFragment extends Fragment {
                 ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
 
                 Call<ArrayList<Contents>> getAllBookings = bookingApi.
-                        getContentPageByCityId(Constants.CITY_ID,currentPage,5);
+                        getContentPageByCityId(Constants.CITY_ID,currentPage,3);
 
                 getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
 
-
+                        progressBar.setVisibility(View.GONE);
                         try{
                             if(response.code() == 200 && response.body()!= null)
                             {
@@ -183,6 +216,22 @@ public class ForYouNewFragment extends Fragment {
 
                                     if(approvedBlogs!=null&&approvedBlogs.size()!=0){
                                         loadFirstPage(approvedBlogs);
+
+                                        /*if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("ContentList",approvedBlogs);
+                                            getActivity().startService(intent);
+
+                                        }else{
+
+                                            //db.addContents();
+                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("ContentList",approvedBlogs);
+                                            getActivity().startService(intent);
+                                        }*/
                                     }else{
                                         isLoading = true;
 
@@ -212,6 +261,7 @@ public class ForYouNewFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
 
@@ -243,7 +293,7 @@ public class ForYouNewFragment extends Fragment {
                 ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
 
                 Call<ArrayList<Contents>> getAllBookings = bookingApi.
-                        getContentPageByCityId(Constants.CITY_ID,currentPage,5);
+                        getContentPageByCityId(Constants.CITY_ID,currentPage,3);
 
                 getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
                     @Override
@@ -259,6 +309,23 @@ public class ForYouNewFragment extends Fragment {
 
                                     if(approvedBlogs!=null&&approvedBlogs.size()!=0){
                                         loadNextPage(approvedBlogs);
+
+                                        /*if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("ContentList",approvedBlogs);
+                                            getActivity().startService(intent);
+
+                                        }else{
+
+                                            //db.addContents();
+                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("ContentList",approvedBlogs);
+                                            getActivity().startService(intent);
+                                        }*/
+
                                     }else{
                                         isLoading = true;
 
@@ -314,17 +381,4 @@ public class ForYouNewFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (Util.isNetworkAvailable(getActivity())) {
-
-            loadFirstSetOfBlogs();
-        }else{
-            SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
-            progressBar.setVisibility(View.GONE);
-
-        }
-    }
 }

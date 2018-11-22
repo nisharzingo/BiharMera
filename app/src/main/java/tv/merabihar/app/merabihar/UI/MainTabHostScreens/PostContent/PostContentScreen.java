@@ -300,6 +300,8 @@ public class PostContentScreen extends AppCompatActivity {
                 onSelectImageFromGalleryResult(data,"Camera");
             }
 
+        }else{
+            System.out.println("Result code "+resultCode);
         }
     }
 
@@ -471,11 +473,12 @@ public class PostContentScreen extends AppCompatActivity {
             Toast.makeText(PostContentScreen.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
         }*//*else if(shortDesc==null||shortDesc.isEmpty()){
             Toast.makeText(PostContentScreen.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
-        }*/if(longDesc==null||longDesc.isEmpty()){
+        }*//*if(longDesc==null||longDesc.isEmpty()){
             Toast.makeText(PostContentScreen.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
-        }/*else if(tags==null||tags.isEmpty()){
+        }*//*else if(tags==null||tags.isEmpty()){
             Toast.makeText(PostContentScreen.this, "Tag should not be Empty", Toast.LENGTH_SHORT).show();
-        }*/else{
+        }*/
+        //else{
 
             try
             {
@@ -518,7 +521,7 @@ public class PostContentScreen extends AppCompatActivity {
                 ex.printStackTrace();
             }
 
-        }
+        //}
     }
 
     public String getFilename(String filePath) {
@@ -760,7 +763,13 @@ public class PostContentScreen extends AppCompatActivity {
 
                 Contents blogs = new Contents();
                 blogs.setTitle("");
-                blogs.setDescription(mLong.getText().toString());
+
+                if(mLong.getText().toString()!=null&&!mLong.getText().toString().isEmpty()){
+                    blogs.setDescription(mLong.getText().toString());
+                }else{
+                    blogs.setDescription("");
+                }
+
                 blogs.setContentType("Image");
                 blogs.setContentURL(blogImagesArrayList.get(0).getImages());
                 blogs.setCreatedBy(PreferenceHandler.getInstance(PostContentScreen.this).getUserFullName());

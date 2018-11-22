@@ -175,7 +175,7 @@ public class SplashScreen extends AppCompatActivity {
     public void callNextActivity()
     {
 
-        mVersionName.setText("Version code : "+ BuildConfig.VERSION_NAME+"");
+        mVersionName.setText("Version "+ BuildConfig.VERSION_NAME+"");
 
         Animation fade_in = AnimationUtils.loadAnimation(this,R.anim.fade_in);
 

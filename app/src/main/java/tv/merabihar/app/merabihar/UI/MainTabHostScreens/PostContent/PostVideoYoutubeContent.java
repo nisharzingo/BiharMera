@@ -281,9 +281,9 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
         }else*/ if(url==null||url.isEmpty()){
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
-        }else if(longDesc==null||longDesc.isEmpty()){
+        }/*else if(longDesc==null||longDesc.isEmpty()){
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
-        }/*else if(tags==null||tags.isEmpty()){
+        }*//*else if(tags==null||tags.isEmpty()){
             Toast.makeText(PostVideoYoutubeContent.this, "Tags Should not be Empty", Toast.LENGTH_SHORT).show();
         }*/else{
 
@@ -294,7 +294,12 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
 
                 Contents blogs = new Contents();
                 blogs.setTitle("");
-                blogs.setDescription(mLong.getText().toString());
+                if(mLong.getText().toString()!=null&&!mLong.getText().toString().isEmpty()){
+                    blogs.setDescription(mLong.getText().toString());
+                }else{
+                    blogs.setDescription("");
+                }
+
                 blogs.setContentType("Video");
                 blogs.setContentURL(extractYTId(mURL.getText().toString()));
                 blogs.setCreatedBy(PreferenceHandler.getInstance(PostVideoYoutubeContent.this).getUserFullName());

@@ -94,7 +94,13 @@
                 android:id="@+id/content_detail_like_enabler"
                 android:layout_height="wrap_content">
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <tv.merabihar.app.merabihar.Adapter.AutoScrollAdapter
+                    android:id="@+id/content_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    />
+
+                <!--<com.makeramen.roundedimageview.RoundedImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/content_pic"
                     android:layout_width="match_parent"
@@ -102,7 +108,7 @@
                     android:src="@drawable/no_image"
                     android:scaleType="centerCrop"
                     app:riv_corner_radius="3dip"
-                    app:riv_oval="false" />
+                    app:riv_oval="false" />-->
 
                 <ImageView
                     android:layout_width="12dp"
@@ -324,7 +330,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12sp"
+                android:layout_marginLeft="12sp"
+                android:layout_marginRight="12sp"
                 android:orientation="vertical">
 
                 <tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplayRegular
@@ -332,6 +339,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#a0a0a0"
                     android:textSize="14sp"
+                    android:visibility="gone"
                     android:id="@+id/subcategory_of_content"
                     android:text=""/>
 

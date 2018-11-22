@@ -95,7 +95,7 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
                             // crop the image & load
 //                            loadCroppedImage(img,holder.mContentImage);
 
-                            Glide.with(context)
+                            GlideApp.with(context)
                                     .load(img)
                                     .apply(new RequestOptions()
                                             .placeholder(R.drawable.no_image)
@@ -195,7 +195,7 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
                 // Cropping the image
                 Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
 
-                Glide.with(context)
+                GlideApp.with(context)
                         .load(customBitMap)
                         .apply(new RequestOptions()
                                 .placeholder(R.drawable.no_image)
