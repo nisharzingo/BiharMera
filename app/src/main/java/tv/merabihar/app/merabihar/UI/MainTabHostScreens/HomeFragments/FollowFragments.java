@@ -153,8 +153,24 @@ public class FollowFragments extends Fragment {
                     }
                 }
                 mContentProgressBar.setVisibility(View.GONE);
+
+                if(db.getCategories()!=null&&db.getCategories().size()!=0){
+
+                }
             }else{
                 Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
+            }
+
+            if(db.getCategories()!=null&&db.getCategories().size()!=0){
+
+                FollowFragmentCategoriesAdapter followCategoriesAdapter = new FollowFragmentCategoriesAdapter(context, db.getCategories());
+                categoryRecyclerView.setLayoutManager(horizontalLinearLayoutManager);
+                categoryRecyclerView.setHasFixedSize(true);
+                categoryRecyclerView.setAdapter(followCategoriesAdapter);
+
+                mCategoryProgressBar.setVisibility(View.INVISIBLE);
+            }else{
+                Toast.makeText(getActivity(), "No Category in db", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -233,6 +249,33 @@ public class FollowFragments extends Fragment {
                                 categoryRecyclerView.setAdapter(followCategoriesAdapter);
 
                                 mCategoryProgressBar.setVisibility(View.INVISIBLE);
+
+                                if(db.getCategories()!=null&&db.getCategories().size()!=0){
+
+
+
+                                    for (Category category:response.body()) {
+
+                                        if(db.getContentById(category.getCategoriesId())!=null){
+
+                                            db.updateCategory(category);
+                                            System.out.println("Data Base Update Service");
+
+                                        }else{
+                                            db.addCategories(category);
+                                            System.out.println("Data Base add Service");
+
+                                        }
+
+                                    }
+
+                                }else{
+
+                                    for (Category category:response.body()) {
+                                        db.addCategories(category);
+                                    }
+
+                                }
 
 
                             }

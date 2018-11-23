@@ -272,6 +272,7 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
         String longDesc = mLong.getText().toString();
         String tags = mTags.getText().toString();
         String url = mURL.getText().toString();
+        String validurl = extractYTId(url);
 
         System.out.println(" Tags id = "+tags);
         System.out.println(" Tags id = "+interestList.contains(tags));
@@ -281,6 +282,8 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
         }else*/ if(url==null||url.isEmpty()){
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
+        }else if(validurl==null||validurl.isEmpty()){
+            Toast.makeText(PostVideoYoutubeContent.this, "It is not valid youtube url", Toast.LENGTH_SHORT).show();
         }/*else if(longDesc==null||longDesc.isEmpty()){
             Toast.makeText(PostVideoYoutubeContent.this, "Should not be Empty", Toast.LENGTH_SHORT).show();
         }*//*else if(tags==null||tags.isEmpty()){

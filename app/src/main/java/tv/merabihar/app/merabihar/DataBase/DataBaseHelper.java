@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
+import tv.merabihar.app.merabihar.Model.Category;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 
@@ -21,6 +22,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     private static final String DATABASENAME  = "MeraBiharDB.db";
     private static final String CONTENT_TABLE = "ContentTables";
     private static final String PROFILE_TABLE = "ProfileTables";
+    private static final String CATEGORY_TABLE = "CategoryTables";
     private Context context;
 
     public DataBaseHelper(Context context) {
@@ -43,6 +45,11 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 "SubCategoriesId INTEGER,"+
                 " FOREIGN KEY(ProfileId) REFERENCES "+PROFILE_TABLE+"(ProfileId))";
 
+        String categoryDetails = "CREATE TABLE "+CATEGORY_TABLE+"(ID INTEGER,CategoriesId INTEGER PRIMARY KEY,CategoriesName TEXT," +
+                "CityId INTEGER,"+
+                "Description TEXT,CategoriesImage TEXT,Reviews TEXT,StarRating REAL,OrderNo INTEGER)";
+
+
         String profileDetails = "CREATE TABLE "+PROFILE_TABLE+"(ID INTEGER,ProfileId INTEGER PRIMARY KEY,Prefix TEXT," +
                 "FullName TEXT,"+
                 "Password TEXT,Gender TEXT,Email TEXT,PhoneNumber TEXT,UserRoleId INTEGER,"+
@@ -53,6 +60,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
         db.execSQL(contentDetails);
         db.execSQL(profileDetails);
+        db.execSQL(categoryDetails);
 
     }
 
@@ -61,6 +69,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         System.out.println("inside onUpgrade db");
         db.execSQL("DROP TABLE IF EXISTS " + CONTENT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + PROFILE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
         onCreate(db);
     }
 
@@ -323,6 +332,91 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void addCategories(Category category) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("CategoriesId", category.getCategoriesId());
+        values.put("CategoriesName", category.getCategoriesName());
+        values.put("CityId", category.getCityId());
+        values.put("Description", category.getDescription());
+        values.put("CategoriesImage", category.getCategoriesImage());
+        values.put("Reviews", category.getReviews());
+        values.put("StarRating", category.getStarRating());
+        values.put("OrderNo", category.getOrderNo());
+
+
+        // Inserting Row
+        db.insert(CATEGORY_TABLE, null, values);
+        db.close(); // Closing database connection
+    }
+
+    public ArrayList<Category> getCategories() {
+        System.out.println("getContents");
+        try{
+            String selectQuery = "SELECT  * FROM " + CATEGORY_TABLE;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            ArrayList<Category> data = null;
+
+            if(cursor != null && cursor.moveToFirst())
+            {
+                data = new ArrayList<>();
+
+                while (cursor.isAfterLast() == false) {
+
+                    Category category = new Category();
+                    String id = ""+cursor.getInt(0);
+
+
+                    category.setCategoriesId(cursor.getInt(1));
+                    category.setCategoriesName(cursor.getString(2));
+                    category.setCityId(cursor.getInt(3));
+                    category.setDescription(cursor.getString(4));
+                    category.setCategoriesImage(cursor.getString(5));
+                    category.setReviews(cursor.getString(6));
+                    category.setStarRating(cursor.getDouble(7));
+                    category.setOrderNo(cursor.getInt(8));
+
+
+                    data.add(category);
+                    cursor.moveToNext();
+                }
+                cursor.close();
+            }
+
+            return data;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+
+
+    }
+
+    public void updateCategory(Category category)
+    {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("CategoriesId", category.getCategoriesId());
+        values.put("CategoriesName", category.getCategoriesName());
+        values.put("CityId", category.getCityId());
+        values.put("Description", category.getDescription());
+        values.put("CategoriesImage", category.getCategoriesImage());
+        values.put("Reviews", category.getReviews());
+        values.put("StarRating", category.getStarRating());
+        values.put("OrderNo", category.getOrderNo());
+
+        db.update(CONTENT_TABLE, values,  "CategoriesId="+category.getCategoriesId(), null);
+        db.close();
+    }
 
     public boolean exists(String table) {
 
