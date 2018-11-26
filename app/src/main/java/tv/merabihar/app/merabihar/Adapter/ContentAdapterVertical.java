@@ -918,6 +918,9 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 }
                             });
 
+                           /*
+                                    Youtube download
+
                             holder.mDownLoad.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -937,11 +940,11 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                                         }else{
 
-                                       /* if (checkPermission()) {
+                                       *//* if (checkPermission()) {
                                             startImageDownload(""+contents.getContentImage().get(0).getImages());
                                         } else {
                                             requestPermission();
-                                        }*/
+                                        }*//*
                                             mMyTask = new DownloadImage()
                                                     .execute(stringToURL(
                                                             ""+contents.getContentImage().get(0).getImages()
@@ -955,7 +958,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                     }
                                 }
                             });
-
+*/
                             holder.mShare.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
