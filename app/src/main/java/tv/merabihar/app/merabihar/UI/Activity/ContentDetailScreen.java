@@ -14,7 +14,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
@@ -67,12 +66,12 @@ import tv.merabihar.app.merabihar.Model.ProfileFollowMapping;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
-import tv.merabihar.app.merabihar.Service.BackgroundNotificationService;
 import tv.merabihar.app.merabihar.Service.VideoWatchedService;
 import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
 import tv.merabihar.app.merabihar.WebAPI.LikeAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
@@ -88,9 +87,11 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     CircleImageView mProfilePhoto;
     LinearLayout mProfileContent;
     RecyclerView mCommentsList;
-    MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId;
+    MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId,mWhatsappShareCount,postWatchedCount;;
     ImageView mLike,mDislike,mComment;
     LinearLayout mWhatsapp, mShare, mLikeLayout, mDislikeLayout, mCommentLayout ;
+
+    int REQUEST_CODE = 101 ;
 
     private YouTubePlayerFragment playerFragmentTop;
     private YouTubePlayer mPlayer;
@@ -101,7 +102,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     long videoTime = 0;
     SubscribedGoals sg;
     int profileId = 0,youtubeWatcheTime=0;
-
+    int totalPostView = 0;
     UserProfile currentProfile;
 
     String fileNames;
@@ -134,12 +135,14 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             mProfilePhoto = (CircleImageView) findViewById(R.id.profile_photo);
             mProfileContent = (LinearLayout) findViewById(R.id.profile_lay_content);
             playerFragmentTop = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player_fragment_top);
+            mWhatsappShareCount = (MyTextView_Lato_Regular) findViewById(R.id.whatsapp_share_count);
 
             mCommentsCount = (MyTextView_Lato_Regular) findViewById(R.id.comments_count);
             mLikesCount = (MyTextView_Lato_Regular) findViewById(R.id.likes_count);
             mDislikesCount = (MyTextView_Lato_Regular) findViewById(R.id.unlikes_count);
             mLikedId = (MyTextView_Lato_Regular) findViewById(R.id.like_id);
             mDislikedId = (MyTextView_Lato_Regular) findViewById(R.id.dislike_id);
+            postWatchedCount = (MyTextView_Lato_Regular) findViewById(R.id.post_total_watched_count);
             mLike = (ImageView) findViewById(R.id.likes_image);
             mDislike = (ImageView) findViewById(R.id.unlikes_image);
             mComment = (ImageView) findViewById(R.id.comments_image);
@@ -535,8 +538,19 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 //                }
 
+                if(contents.getViews()==null){
 
+                        postWatchedCount.setText("1");
+                        contents.setViews(1+"");
+                        updateContent(contents);
 
+                }else{
+                        int total = Integer.parseInt(contents.getViews());
+                        postWatchedCount.setText(++total + "");
+                        contents.setViews(total+"");
+                        updateContent(contents);
+
+                }
 
 
                 if (contents.getSubCategories() != null) {
@@ -1273,6 +1287,48 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
     }
 
+
+
+    private void updateContent(final Contents content) {
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ContentAPI contentAPI = Util.getClient().create(ContentAPI.class);
+                Call<Contents> response = contentAPI.updateContent(content.getContentId(),content);
+                response.enqueue(new Callback<Contents>() {
+                    @Override
+                    public void onResponse(Call<Contents> call, Response<Contents> response) {
+
+                        System.out.println(response.code());
+
+
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Contents> call, Throwable t) {
+
+
+                        // Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
+    }
+
+
     private void profileSubScribed(final SubscribedGoals sg) {
 
 
@@ -1540,10 +1596,18 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
     private class DownloadTask extends AsyncTask<URL,Void,Bitmap> {
         // Before the tasks execution
+        ProgressDialog progressDialog = new ProgressDialog(ContentDetailScreen.this);
+
         protected void onPreExecute(){
+
             // Display the progress dialog on async task start
             //mProgressDialog.show();
             //Toast.makeText(context, "Downloading image...", Toast.LENGTH_SHORT).show();
+
+            progressDialog.setTitle("please wait..");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
         }
 
         // Do the task in background/non UI thread
@@ -1606,7 +1670,6 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
         protected void onPostExecute(Bitmap result){
             // Hide the progress dialog
             // mProgressDialog.dismiss();
-
             if(result!=null){
                 // Display the downloaded image into ImageView
                 //mImageView.setImageBitmap(result);
@@ -1669,7 +1732,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     shareIntent.setType("image/*");
                     try{
 
-                        startActivity(shareIntent);
+                        startActivityForResult(shareIntent, REQUEST_CODE); // REQUEST_CODE = 101
 
                     }catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(ContentDetailScreen.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
@@ -1686,7 +1749,33 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 // Notify user that an error occurred while downloading image
                 //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
             }
+
+            progressDialog.dismiss();
+
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        /*Toast.makeText(this, ""+ requestCode, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, ""+ resultCode, Toast.LENGTH_SHORT).show();
+        */
+
+        if(resultCode==RESULT_OK) {
+            Toast.makeText(this, ""+ requestCode, Toast.LENGTH_SHORT).show();
+            if (requestCode == REQUEST_CODE) {
+                // Increase the whatsapp count and update api
+                int count = Integer.parseInt(mWhatsappShareCount.getText().toString()) ;
+                mWhatsappShareCount.setText("Increased");
+
+            }
+        }else{
+            Toast.makeText(this, "Response invalid", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private class DownloadTasks extends AsyncTask<URL,Void,Bitmap> {

@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import tv.merabihar.app.merabihar.Model.Contents;
@@ -36,6 +37,9 @@ public interface ContentAPI {
 
     @POST("Contents")
     Call<Contents> postContent(@Body Contents body);
+
+    @PUT("Contents/{id}")
+    Call<Contents> updateContent(@Path("id") int id,@Body Contents body);
 
     @GET("Contents/GetContentByProfileId/{ProfileId}")
     Call<ArrayList<Contents>> getContentByProfileId(@Path("ProfileId") int id);

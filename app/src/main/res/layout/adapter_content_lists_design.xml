@@ -133,6 +133,35 @@
                     app:srcCompat="@drawable/ic_play1"
                     android:scaleType="fitXY"/>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="bottom|left"
+                    android:layout_height="30dp">
+
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:src="@drawable/eye"/>
+
+                    <com.rey.material.widget.TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/total_watched_post"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"
+                        android:gravity="center"/>
+
+
+
+
+                </LinearLayout>
+
 
 
 
@@ -163,6 +192,16 @@
 
                     />
 
+                <tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular
+                    android:id="@+id/whatsapp_share_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_gravity="center"
+                    />
 
                 </LinearLayout>
 

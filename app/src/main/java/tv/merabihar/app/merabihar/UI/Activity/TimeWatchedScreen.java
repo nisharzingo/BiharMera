@@ -32,7 +32,7 @@ public class TimeWatchedScreen extends AppCompatActivity {
 
     TextView mDailyAvgWatchedTime,
             mPastWeekWatchedTime, mYesterdayWatchedTime, mTodayWatchedTime,mHistroy,
-                    mThisWeek,mThisMonth;
+                    mThisWeek,mThisMonth, mLifeTimeWatchedTime;
    // Toolbar mToolbar;
 
     @Override
@@ -51,6 +51,7 @@ public class TimeWatchedScreen extends AppCompatActivity {
             mYesterdayWatchedTime = findViewById(R.id.yesterday_watched_time);
             mTodayWatchedTime = findViewById(R.id.today_watched_time);
             mHistroy = findViewById(R.id.watch_history);
+            mLifeTimeWatchedTime = findViewById(R.id.lifetime_watched_time);
 
 
        /* setSupportActionBar(mToolbar);
@@ -237,6 +238,16 @@ public class TimeWatchedScreen extends AppCompatActivity {
 
                                 mDailyAvgWatchedTime.setText(vales[0]+" hr "+vales[1]+" min" );
                             }
+
+                            int[] lifeTimeWatch = splitToComponentTimes(totalWatch);
+
+                            if(lifeTimeWatch.length!=0&&lifeTimeWatch.length==2){
+
+
+                                mLifeTimeWatchedTime.setText(lifeTimeWatch[0]+" hr "+lifeTimeWatch[1]+" min" );
+                            }
+
+
                         }else{
 
 

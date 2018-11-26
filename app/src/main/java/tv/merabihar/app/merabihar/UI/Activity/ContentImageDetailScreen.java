@@ -64,6 +64,7 @@ import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
 import tv.merabihar.app.merabihar.WebAPI.LikeAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
@@ -78,7 +79,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     MyTextView_Lato_Regular mProfileName,mFollow;
     CircleImageView mProfilePhoto;
     LinearLayout mProfileContent;
-    MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId;
+    MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId,mWhatsappShareCount,postWatchedCount;
     ImageView mLike,mDislike,mComment;
     RecyclerView mCommentsList;
     RelativeLayout mParentRelativeLayout;
@@ -128,12 +129,14 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             mProfilePhoto = (CircleImageView) findViewById(R.id.profile_photo);
             mProfileContent = (LinearLayout) findViewById(R.id.profile_lay_content);
             mParentRelativeLayout = (RelativeLayout) findViewById(R.id.content_img_detail_main);
+            mWhatsappShareCount = (MyTextView_Lato_Regular) findViewById(R.id.whatsapp_share_count);
 
             mCommentsCount = (MyTextView_Lato_Regular) findViewById(R.id.comments_count);
             mLikesCount = (MyTextView_Lato_Regular) findViewById(R.id.likes_count);
             mDislikesCount = (MyTextView_Lato_Regular) findViewById(R.id.unlikes_count);
             mLikedId = (MyTextView_Lato_Regular) findViewById(R.id.like_id);
             mDislikedId = (MyTextView_Lato_Regular) findViewById(R.id.dislike_id);
+            postWatchedCount = (MyTextView_Lato_Regular) findViewById(R.id.post_total_watched_count);
 
             mLike = (ImageView) findViewById(R.id.likes_image);
             mDislike = (ImageView) findViewById(R.id.unlikes_image);
@@ -148,7 +151,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             //mMoreShare = (ImageView) findViewById(R.id.more_icons);
 
             mCommentsList = (RecyclerView) findViewById(R.id.comments_list);
-            mCOntentDetailScreen = (FrameLayout) findViewById(R.id.content_detail_like_enabler);
+            mCOntentDetailScreen = (FrameLayout) findViewById(R.id.content_detail_like_enabler_img_detail_screen);
 
             final Bundle bundle = getIntent().getExtras();
             if(bundle!=null){
@@ -275,6 +278,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+                    Toast.makeText(ContentImageDetailScreen.this, "triggered", Toast.LENGTH_SHORT).show();
 
                     new CountDownTimer(300, 300) {
                         @Override
@@ -286,6 +290,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                             }
                             else
                             {
+                                Toast.makeText(ContentImageDetailScreen.this, "working", Toast.LENGTH_SHORT).show();
                                 //System.out.println("isFirstTimePressed = "+isFirstTimePressed);
                                 isFirstTimePressed = false;
                                 if(profileId!=0 && mLike.getDrawable().getConstantState()!= getResources().getDrawable(R.drawable.liked_icon).getConstantState()){
@@ -472,29 +477,34 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                     if(Util.isNetworkAvailable(ContentImageDetailScreen.this)){
 
-                        fileNames = contents.getContentId()+""+contents.getProfileId();
+                        try{
+                            fileNames = contents.getContentId()+""+contents.getProfileId();
 
-                        AsyncTask mMyTask;
-                        if(contents.getContentType().equalsIgnoreCase("Video")) {
+                            AsyncTask mMyTask;
+                            if(contents.getContentType().equalsIgnoreCase("Video")) {
 
-                            url = contents.getContentURL();
+                                url = contents.getContentURL();
 
 
-                            if (url != null && !url.isEmpty()) {
+                                if (url != null && !url.isEmpty()) {
+
+                                    mMyTask = new ContentImageDetailScreen.DownloadTask()
+                                            .execute(stringToURL(
+                                                    "https://img.youtube.com/vi/"+url+"/0.jpg"
+                                            ));
+
+                                }
+
+                            }else{
 
                                 mMyTask = new ContentImageDetailScreen.DownloadTask()
                                         .execute(stringToURL(
-                                                "https://img.youtube.com/vi/"+url+"/0.jpg"
+                                                ""+contents.getContentImage().get(0).getImages()
                                         ));
-
                             }
 
-                        }else{
-
-                            mMyTask = new ContentImageDetailScreen.DownloadTask()
-                                    .execute(stringToURL(
-                                            ""+contents.getContentImage().get(0).getImages()
-                                    ));
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
 
                         //shareApplication();
@@ -566,6 +576,24 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                 String vWatch = "W" + contents.getContentId();
                 getFollowingsByProfileId(profileId,contents.getProfileId());
+
+
+                if(contents.getViews()==null){
+
+                    postWatchedCount.setText("1");
+                    contents.setViews(1+"");
+                    updateContent(contents);
+
+                }else{
+                    int total = Integer.parseInt(contents.getViews());
+                    postWatchedCount.setText(++total + "");
+                    contents.setViews(total+"");
+                    updateContent(contents);
+
+                }
+
+
+
 
                 if(contents.getCommentsList()!=null&&contents.getCommentsList().size()!=0){
 
@@ -799,6 +827,47 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
 
     }
+
+
+    private void updateContent(final Contents content) {
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ContentAPI contentAPI = Util.getClient().create(ContentAPI.class);
+                Call<Contents> response = contentAPI.updateContent(content.getContentId(),content);
+                response.enqueue(new Callback<Contents>() {
+                    @Override
+                    public void onResponse(Call<Contents> call, Response<Contents> response) {
+
+                        System.out.println(response.code());
+
+
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Contents> call, Throwable t) {
+
+
+                        // Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
+    }
+
 
     public void getProfile(final int id){
 
@@ -1252,10 +1321,17 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
     private class DownloadTask extends AsyncTask<URL,Void,Bitmap> {
         // Before the tasks execution
+
+        ProgressDialog progressDialog = new ProgressDialog(ContentImageDetailScreen.this);
+
+
         protected void onPreExecute(){
             // Display the progress dialog on async task start
             //mProgressDialog.show();
             //Toast.makeText(context, "Downloading image...", Toast.LENGTH_SHORT).show();
+            progressDialog.setTitle("please wait..");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
         }
 
         // Do the task in background/non UI thread
@@ -1381,7 +1457,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     shareIntent.setType("image/*");
                     try{
 
-                        startActivity(shareIntent);
+                        startActivityForResult(shareIntent, 101);
 
                     }catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(ContentImageDetailScreen.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
@@ -1398,8 +1474,37 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 // Notify user that an error occurred while downloading image
                 //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
             }
-        }
+            progressDialog.dismiss();
+            }
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        /*Toast.makeText(this, ""+ requestCode, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, ""+ resultCode, Toast.LENGTH_SHORT).show();
+        */
+
+        if(resultCode==RESULT_OK) {
+            Toast.makeText(this, ""+ requestCode, Toast.LENGTH_SHORT).show();
+            if (requestCode == 101) {
+                // Increase the whatsapp count and update api
+                int count = Integer.parseInt(mWhatsappShareCount.getText().toString()) ;
+                mWhatsappShareCount.setText("Increased");
+
+            }
+        }else{
+            Toast.makeText(this, "Response invalid", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
+
+
 
     private class DownloadTasks extends AsyncTask<URL,Void,Bitmap> {
         // Before the tasks execution
