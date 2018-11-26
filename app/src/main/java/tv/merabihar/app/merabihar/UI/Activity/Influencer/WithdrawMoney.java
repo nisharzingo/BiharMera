@@ -23,14 +23,19 @@ import java.util.Date;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tv.merabihar.app.merabihar.Model.Comments;
+import tv.merabihar.app.merabihar.Model.Email;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.TransactionHistroy;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.CommentsScreen;
 import tv.merabihar.app.merabihar.UI.Activity.SettingScreen;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.CommentAPI;
+import tv.merabihar.app.merabihar.WebAPI.EmailApi;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 import tv.merabihar.app.merabihar.WebAPI.SubscribedGoalsAPI;
@@ -39,24 +44,42 @@ import tv.merabihar.app.merabihar.WebAPI.TransactionHistroyAPI;
 public class WithdrawMoney extends AppCompatActivity {
 
     Button withdrawBtn;
-    LinearLayout withdrawToPaytm;
-    TextView currBal, withdraw_tc_txt;
+    LinearLayout withdrawToPaytmLayout;
+    TextView currBal, withdraw_tc_txt, option_selector;
     Toolbar mIncomeToolbar;
     String termsCondition =  "Cash withdrawal rules : \n 1.Only 200 rupees can be withdrawn at a time. \n 2. The maximum daily withdrawal limit is 5. \n 3. You will get the money within 72 hours in    your paytm account.";
 
-    TransactionHistroy transactionHistroy;
+    String emailAdress = "merabihar.tv@gmail.com" ;
+    String messageBody ;
+    String subject = "Money Withdrawal to Paytm";
+    String fromName = "MeraBihar";
+    String userName = "nishant@zingohotels.com";
+    String password = "zingo@123";
+    String sucessResponse  = "Withdrawal successful. Money will be credited in 72 hours" ;
 
+
+    TransactionHistroy transactionHistroy;
+    public String formatedRupee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_withdraw_money);
-        
-        currBal = findViewById(R.id.curr_bal_withdrawpage);
+
+        String name = PreferenceHandler.getInstance(this).getUserFullName();
+        String id = ""+PreferenceHandler.getInstance(this).getUserId();
+        messageBody = name + "( " + id + ")" + "  is requesting for withdrawal..." ;
+
+
+
+                currBal = findViewById(R.id.curr_bal_withdrawpage);
         withdraw_tc_txt = findViewById(R.id.t_c_withdraw_paytm);
-        withdrawToPaytm = findViewById(R.id.ll_to_paytm);
+        withdrawToPaytmLayout = findViewById(R.id.ll_to_paytm);
         withdrawBtn = findViewById(R.id.withdraw_btn_withdrawpage);
         mIncomeToolbar = findViewById(R.id.withdraw_btn_toolbar);
+        option_selector = findViewById(R.id.paytm_option_selector);
+
+
 
 
         setSupportActionBar(mIncomeToolbar);
@@ -68,21 +91,23 @@ public class WithdrawMoney extends AppCompatActivity {
 
             final String rupessString = getIntent().getStringExtra("rupees_value");
             final float totalRupees = Float.parseFloat(rupessString);
-            final String formatedRupee = String.format("%.02f", (totalRupees/100.0));
+            formatedRupee = String.format("%.02f", (totalRupees/100.0));
             currBal.setText("Balance ₹" + formatedRupee);
             withdraw_tc_txt.setText(termsCondition);
 
-            withdrawToPaytm.setOnClickListener(new View.OnClickListener() {
+            withdrawToPaytmLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    option_selector.setBackground(getResources().getDrawable(R.drawable.circle_image_blue));
                     // check whether user is valid paytm user. if valid give option to change the paytm account
-                    validatePaytmUser(formatedRupee);
+                    //  validatePaytmUser(formatedRupee);
                 }
             });
 
             withdrawBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
 
                     if(Util.isNetworkAvailable(WithdrawMoney.this)){
                         //getDirectReferCount("MBR"+PreferenceHandler.getInstance(WithdrawMoney.this).getUserId(),formatedRupee);
@@ -99,7 +124,7 @@ public class WithdrawMoney extends AppCompatActivity {
                     }else{
                         Toast.makeText(WithdrawMoney.this, "You are offline", Toast.LENGTH_SHORT).show();
                     }
-                  //  isWithDrawPossible(rupessString);
+                    isWithDrawPossible(rupessString);
                 }
             });
 
@@ -133,10 +158,70 @@ public class WithdrawMoney extends AppCompatActivity {
             showPopUp(rupees);
         }
         else {
-            showSnackbar("Withdrawal possible");
+
+            sendEmail();
+
         }
 
     }
+
+    private void sendEmail() {
+        Email email = new Email();
+        email.setRecieverEmail(emailAdress);
+        email.setUserName(userName);
+        email.setEmailBody(messageBody);
+        email.setEmailSubject(subject);
+        email.setFromName(fromName);
+        email.setPassword(password);
+        email.setFromEmail(userName);
+
+        withdrawToPaytm(email);
+    }
+
+    private void withdrawToPaytm(final Email email) {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                EmailApi emailApi = Util.getClient().create(EmailApi.class);
+                Call<String> response = emailApi.sendEmail(email);
+                response.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                        System.out.println(response.code());
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+                            formatedRupee = String.format("%.02f", (0/100.0));
+                            currBal.setText("Balance ₹" + formatedRupee);
+//                            System.out.println(response.body());
+                            Toast.makeText(WithdrawMoney.this, sucessResponse, Toast.LENGTH_SHORT).show();
+
+                        }
+                        else
+                        {
+                            Log.e("Response Fail : ", response.body() + "" +  response.message());
+
+                            Toast.makeText(WithdrawMoney.this,"Something went wrong...",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                            Toast.makeText(WithdrawMoney.this,"Something went wrong...",Toast.LENGTH_SHORT).show();
+                            Log.e("Response Fail : ", t.getMessage() + "" +  t.getLocalizedMessage());
+                        }
+//                        Toast.makeText(CommentsScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+
+                });
+            }
+        });
+    }
+
 
     private void showPopUp(float totalRupees) {
         final Dialog mPopupDialog;
@@ -186,7 +271,7 @@ public class WithdrawMoney extends AppCompatActivity {
     }
 
     private void validatePaytmUser(String formatedRupee) {
-        Toast.makeText(this, "In development Mode...", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "In development Mode...", Toast.LENGTH_SHORT).show();
     }
 
     private void getDirectReferCount(final String code,final String formatedRupee){
@@ -218,7 +303,14 @@ public class WithdrawMoney extends AppCompatActivity {
 
                                 if(responseProfile.size()>=400){
                                     //isWithDrawPossible(formatedRupee);
-                                    showSnackbar("Withdrawal possible");
+                                    showSnackbar("Sending Email....");
+                                    sendEmail();
+
+
+
+
+
+
                                 }else{
 
                                     TransactionHistroy tc = new TransactionHistroy();
@@ -582,7 +674,9 @@ public class WithdrawMoney extends AppCompatActivity {
 
                                 if(responseProfile.size()>=400){
                                     //isWithDrawPossible(formatedRupee);
-                                    showSnackbar("Withdrawal possible");
+                                    showSnackbar("Sending Email....");
+                                    sendEmail();
+
                                 }else{
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -673,7 +767,8 @@ public class WithdrawMoney extends AppCompatActivity {
 
                                                 if(targetDesc.getStatus().equalsIgnoreCase("Completed")){
 
-                                                    showSnackbar("Withdrawal possible");
+                                                    showSnackbar("Sending Email....");
+                                                    sendEmail();
 
                                                 }else  if(targetDesc.getStatus().equalsIgnoreCase("Activated")){
 
@@ -692,7 +787,8 @@ public class WithdrawMoney extends AppCompatActivity {
                                             }else{
                                                 if(targetDesc.getStatus().equalsIgnoreCase("Completed")){
 
-                                                    showSnackbar("Withdrawal possible");
+                                                    showSnackbar("Sending Email....");
+                                                    sendEmail();
 
                                                 }else  if(targetDesc.getStatus().equalsIgnoreCase("Activated")){
 

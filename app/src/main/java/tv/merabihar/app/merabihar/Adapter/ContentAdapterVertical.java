@@ -3,6 +3,7 @@ package tv.merabihar.app.merabihar.Adapter;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -87,16 +88,17 @@ import tv.merabihar.app.merabihar.Model.Likes;
 import tv.merabihar.app.merabihar.Model.ProfileFollowMapping;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
-import tv.merabihar.app.merabihar.Service.BackgroundNotificationService;
 import tv.merabihar.app.merabihar.UI.Activity.CommentsScreen;
 import tv.merabihar.app.merabihar.UI.Activity.ContentDetailScreen;
 import tv.merabihar.app.merabihar.UI.Activity.ContentImageDetailScreen;
 import tv.merabihar.app.merabihar.UI.Activity.LoginScreen;
 import tv.merabihar.app.merabihar.UI.Activity.ProfileScreen;
 import tv.merabihar.app.merabihar.UI.Activity.SignUpScreen;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForYouNewFragment;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
 import tv.merabihar.app.merabihar.WebAPI.LikeAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
@@ -121,7 +123,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
     String url,fileNames;
     boolean isFirstTimePressed = false;
-    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(context).getUserId()+"\n http://bit.ly/2JXcOnw";
+    String shareContent = "Save time. Download Memra Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(context).getUserId()+"\n http://bit.ly/2JXcOnw";
     String shareContents = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n http://bit.ly/2JXcOnw";
 
     OnBottomReachedListener onBottomReachedListener;
@@ -205,6 +207,24 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 holder.mIcon.setVisibility(View.VISIBLE);
                                 if(contents.getContentURL()!=null&&!contents.getContentURL().isEmpty()){
                                     String img = "https://img.youtube.com/vi/"+contents.getContentURL()+"/0.jpg";
+
+                                    if(contents.getViews()==null){
+
+                                        // We are updating like multiple times
+
+                                        holder.mTotalWatchedPost.setText(1 + "");
+                                        contents.setViews( 1 +"");
+
+                                        updateContent(contents);
+                                    }else{
+                                        int total = Integer.parseInt(contents.getViews());
+                                        holder.mTotalWatchedPost.setText(++total + "");
+
+                                        contents.setViews(++total + "");
+                                        updateContent(contents);
+                                    }
+
+
                                     if(img!=null&&!img.isEmpty()){
                                         /*Picasso.with(context).load(img).fit().placeholder(R.drawable.no_image).
                                                 error(R.drawable.no_image).into(holder.mContentPic);*/
@@ -881,6 +901,9 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                             holder.mWhatsapp.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+
+
+
                                     fileNames = contents.getContentId()+""+contents.getProfileId();
 
                                     AsyncTask mMyTask;
@@ -1054,13 +1077,13 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
         CircleImageView mProfilePhoto;
         MyTextView_Lato_Regular mProfileName,mDuration,mFollow,mContentTitle,mContentDesc
-                ,mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId;
+                ,mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId, mWhatsappShareCount;
         TextViewSFProDisplaySemibold mTags;
         RoundedImageView mContentPic;
         ImageView mIcon;
         LinearLayout mProfileContent,mReadOption;
         FrameLayout mContentDetail;
-        TextView mMore,mLess,mMoreExtnd,mMoreLine;
+        TextView mMore,mLess,mMoreExtnd,mMoreLine,mTotalWatchedPost;
 
         ImageView mMoreShare,mLike,mDislike,mComment;
 
@@ -1078,6 +1101,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
             mContentTitle = (MyTextView_Lato_Regular) view.findViewById(R.id.content_title);
             mContentDesc = (MyTextView_Lato_Regular) view.findViewById(R.id.content_desc);
             mCommentsCount = (MyTextView_Lato_Regular) view.findViewById(R.id.comments_count);
+            mWhatsappShareCount = (MyTextView_Lato_Regular) view.findViewById(R.id.whatsapp_share_count);
             mLikesCount = (MyTextView_Lato_Regular) view.findViewById(R.id.likes_count);
             mDislikesCount = (MyTextView_Lato_Regular) view.findViewById(R.id.unlikes_count);
             mLikedId = (MyTextView_Lato_Regular) view.findViewById(R.id.like_id);
@@ -1089,6 +1113,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
             mMoreExtnd = (TextView) view.findViewById(R.id.read_more_extend);
             mMoreLine = (TextView) view.findViewById(R.id.read_more_extend_line);
             mLess = (TextView) view.findViewById(R.id.read_less);
+            mTotalWatchedPost = (TextView) view.findViewById(R.id.total_watched_post);
             mContentDetail = (FrameLayout) view.findViewById(R.id.content_detail);
             mProfileContent = (LinearLayout) view.findViewById(R.id.profile_lay_content);
             mReadOption = (LinearLayout) view.findViewById(R.id.read_option);
@@ -1676,11 +1701,14 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
     }
 
     private class DownloadTask extends AsyncTask<URL,Void,Bitmap> {
+        ProgressDialog progressDialog = new ProgressDialog(context);
         // Before the tasks execution
         protected void onPreExecute(){
             // Display the progress dialog on async task start
-            //mProgressDialog.show();
-            //Toast.makeText(context, "Downloading image...", Toast.LENGTH_SHORT).show();
+//            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle("please wait..");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
         }
 
         // Do the task in background/non UI thread
@@ -1741,11 +1769,12 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
             return null;
         }
 
+
+
+
         // When all async task done
         protected void onPostExecute(Bitmap result){
             // Hide the progress dialog
-            // mProgressDialog.dismiss();
-
             if(result!=null){
                 // Display the downloaded image into ImageView
                 //mImageView.setImageBitmap(result);
@@ -1822,7 +1851,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     try{
 
 
-
                         File sd = Environment.getExternalStorageDirectory();
                         String fileName = fileNames+ ".png";
 
@@ -1893,6 +1921,8 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                 //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
 
             }
+            progressDialog.dismiss();
+
         }
     }
 
@@ -2388,7 +2418,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         return result == PackageManager.PERMISSION_GRANTED;
     }
 
-    private void startImageDownload(final String url,final String fileNames) {
+  /*  private void startImageDownload(final String url,final String fileNames) {
 
 
         Intent intent = new Intent(context, BackgroundNotificationService.class);
@@ -2396,12 +2426,54 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         intent.putExtra("File",fileNames);
         context.startService(intent);
 
-    }
+    }*/
 
     private void requestPermission() {
 
         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
     }
+
+    private void updateContent(final Contents content) {
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ContentAPI contentAPI = Util.getClient().create(ContentAPI.class);
+                Call<Contents> response = contentAPI.updateContent(content.getContentId(),content);
+                response.enqueue(new Callback<Contents>() {
+                    @Override
+                    public void onResponse(Call<Contents> call, Response<Contents> response) {
+
+                        System.out.println(response.code());
+
+
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Contents> call, Throwable t) {
+
+
+                        // Toast.makeText(ContentDetailScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
+    }
+
+
+
 
 }

@@ -44,6 +44,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
+            android:id="@+id/paytm_option_selector"
             android:background="@drawable/circle_image" />
         <TextView
             android:layout_width="wrap_content"

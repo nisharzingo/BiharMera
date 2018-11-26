@@ -60,7 +60,6 @@ public class VideoWatchedService extends IntentService {
 
         }
 
-
     }
 
     public void getTransactionsByIdType(final int id,final String type,final int time)
