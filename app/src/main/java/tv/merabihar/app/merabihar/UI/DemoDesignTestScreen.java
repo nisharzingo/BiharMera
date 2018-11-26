@@ -12,24 +12,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.rey.material.widget.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
-import at.huber.youtubeExtractor.YouTubeUriExtractor;
-import at.huber.youtubeExtractor.YtFile;
-import tv.merabihar.app.merabihar.CustomInterface.DownloadTaskVideo;
 import tv.merabihar.app.merabihar.R;
-import tv.merabihar.app.merabihar.Service.BackgroundNotificationService;
 
 public class DemoDesignTestScreen extends AppCompatActivity {
 
@@ -50,7 +42,7 @@ public class DemoDesignTestScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (checkPermission()) {
-                    startImageDownload();
+                    //startImageDownload();
                 } else {
                     requestPermission();
                 }
@@ -99,13 +91,7 @@ public class DemoDesignTestScreen extends AppCompatActivity {
         return result == PackageManager.PERMISSION_GRANTED;
     }
 
-    private void startImageDownload() {
 
-
-        Intent intent = new Intent(this, BackgroundNotificationService.class);
-        startService(intent);
-
-    }
 
     private void requestPermission() {
 
@@ -119,7 +105,7 @@ public class DemoDesignTestScreen extends AppCompatActivity {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    startImageDownload();
+                  //  startImageDownload();
                 } else {
 
                     Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();

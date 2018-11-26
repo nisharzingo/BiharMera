@@ -107,38 +107,7 @@ public class ForYouNewFragment extends Fragment {
             /*SnapHelper snapHelper = new PagerSnapHelper();
             snapHelper.attachToRecyclerView(mtopBlogs);*/
 
-            mtopBlogs.setOnScrollListener(new PageScrollListener(linearLayoutManager) {
-                @Override
-                protected void loadMoreItems() {
-                    isLoading = true;
 
-                    currentPage = currentPage+1;
-                    loadNextSetOfItems();
-
-                  /*  if (Util.isNetworkAvailable(getActivity())) {
-                        loadNextSetOfItems();
-
-                    }else{
-                        SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
-                        progressBar.setVisibility(View.GONE);
-                    }*/
-                }
-
-                @Override
-                public int getTotalPageCount() {
-                    return currentPage;
-                }
-
-                @Override
-                public boolean isLastPage() {
-                    return isLastPage;
-                }
-
-                @Override
-                public boolean isLoading() {
-                    return isLoading;
-                }
-            });
 
             //getBlogs();
 
@@ -195,6 +164,38 @@ public class ForYouNewFragment extends Fragment {
                 }
             }
 
+            mtopBlogs.setOnScrollListener(new PageScrollListener(linearLayoutManager) {
+                @Override
+                protected void loadMoreItems() {
+                    isLoading = true;
+
+                    currentPage = currentPage+1;
+                    loadNextSetOfItems();
+
+                  /*  if (Util.isNetworkAvailable(getActivity())) {
+                        loadNextSetOfItems();
+
+                    }else{
+                        SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
+                        progressBar.setVisibility(View.GONE);
+                    }*/
+                }
+
+                @Override
+                public int getTotalPageCount() {
+                    return currentPage;
+                }
+
+                @Override
+                public boolean isLastPage() {
+                    return isLastPage;
+                }
+
+                @Override
+                public boolean isLoading() {
+                    return isLoading;
+                }
+            });
             return view;
 
         }catch (Exception e){
@@ -210,10 +211,10 @@ public class ForYouNewFragment extends Fragment {
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
-                ContentAPI bookingApi = Util.getRetrofit().create(ContentAPI.class);
+                ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
 
                 Call<ArrayList<Contents>> getAllBookings = bookingApi.
-                        getContentPageByCityId(Constants.CITY_ID,currentPage,3);
+                        getContentPageByCityId(Constants.CITY_ID,currentPage,5);
 
                 getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
                     @Override
@@ -232,10 +233,7 @@ public class ForYouNewFragment extends Fragment {
 
                                         if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
-                                            Bundle bundle = new Bundle();
-                                            bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);
+
 
                                             for (Contents content:approvedBlogs) {
 
@@ -254,11 +252,7 @@ public class ForYouNewFragment extends Fragment {
 
                                         }else{
 
-                                            //db.addContents();
-                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
-                                            Bundle bundle = new Bundle();
-                                            bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);
+
 
                                             for (Contents content:approvedBlogs) {
                                                 db.addContents(content);
@@ -322,10 +316,10 @@ public class ForYouNewFragment extends Fragment {
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
-                ContentAPI bookingApi = Util.getRetrofit().create(ContentAPI.class);
+                ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
 
                 Call<ArrayList<Contents>> getAllBookings = bookingApi.
-                        getContentPageByCityId(Constants.CITY_ID,currentPage,3);
+                        getContentPageByCityId(Constants.CITY_ID,currentPage,5);
 
                 getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
                     @Override
@@ -340,14 +334,12 @@ public class ForYouNewFragment extends Fragment {
 
 
                                     if(approvedBlogs!=null&&approvedBlogs.size()!=0){
+
                                         loadNextPage(approvedBlogs);
 
                                         if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
-                                            Bundle bundle = new Bundle();
-                                            bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);
+
 
                                             for (Contents content:approvedBlogs) {
 
@@ -369,10 +361,7 @@ public class ForYouNewFragment extends Fragment {
                                             for (Contents content:approvedBlogs) {
                                                 db.addContents(content);
                                             }
-                                            Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
-                                            Bundle bundle = new Bundle();
-                                            bundle.putSerializable("ContentList",approvedBlogs);
-                                            getActivity().startService(intent);
+
                                         }
 
                                     }else{

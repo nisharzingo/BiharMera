@@ -152,7 +152,6 @@
         <activity android:name=".UI.Activity.Influencer.Records" />
         <activity android:name=".UI.Activity.TimeWatchedScreen" />
 
-        <service android:name=".Service.BackgroundNotificationService" />
         <service android:name=".Service.VideoWatchedService" />
         <service android:name=".Service.ContentDataBaseService" />
 
