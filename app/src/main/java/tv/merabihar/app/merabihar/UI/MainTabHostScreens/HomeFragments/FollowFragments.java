@@ -406,7 +406,7 @@ public class FollowFragments extends Fragment {
                 ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
 
                 Call<ArrayList<Contents>> getAllBookings = bookingApi.
-                        getContentByVideoAndCity(Constants.CITY_ID,"Video",currentPage,9);
+                        getContentPageByCityId(Constants.CITY_ID,currentPage,9);
 
                 getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
                     @Override
@@ -455,10 +455,7 @@ public class FollowFragments extends Fragment {
 
                                             if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                                Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
-                                                Bundle bundle = new Bundle();
-                                                bundle.putSerializable("ContentList",approvedBlogs);
-                                                getActivity().startService(intent);
+
 
                                                 for (Contents content:approvedBlogs) {
 
@@ -480,10 +477,7 @@ public class FollowFragments extends Fragment {
                                                 for (Contents content:approvedBlogs) {
                                                     db.addContents(content);
                                                 }
-                                                Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
-                                                Bundle bundle = new Bundle();
-                                                bundle.putSerializable("ContentList",approvedBlogs);
-                                                getActivity().startService(intent);
+
                                             }
 
 
@@ -545,7 +539,7 @@ public class FollowFragments extends Fragment {
                 ContentAPI bookingApi = Util.getClient().create(ContentAPI.class);
 
                 Call<ArrayList<Contents>> getAllBookings = bookingApi.
-                        getContentByVideoAndCity(Constants.CITY_ID,"Video",currentPage,9);
+                        getContentPageByCityId(Constants.CITY_ID,currentPage,9);
 
                 getAllBookings.enqueue(new Callback<ArrayList<Contents>>() {
                     @Override
@@ -591,10 +585,7 @@ public class FollowFragments extends Fragment {
                                             }
                                             if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                                Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
-                                                Bundle bundle = new Bundle();
-                                                bundle.putSerializable("ContentList",approvedBlogs);
-                                                getActivity().startService(intent);
+
 
                                                 for (Contents content:approvedBlogs) {
 
@@ -616,10 +607,7 @@ public class FollowFragments extends Fragment {
                                                 for (Contents content:approvedBlogs) {
                                                     db.addContents(content);
                                                 }
-                                                Intent intent = new Intent(getActivity(), ContentDataBaseService.class);
-                                                Bundle bundle = new Bundle();
-                                                bundle.putSerializable("ContentList",approvedBlogs);
-                                                getActivity().startService(intent);
+
                                             }
 
                                         }

@@ -50,7 +50,7 @@ public class FollowersListScreen extends AppCompatActivity {
             mProgressBar = (ProgressBar) findViewById(R.id.progressBar_following);
 
             setSupportActionBar(mRecordsToolbar);
-            getSupportActionBar().setTitle("Follwing");
+            getSupportActionBar().setTitle("Follwers");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             mSearchText.addTextChangedListener(new TextWatcher() {

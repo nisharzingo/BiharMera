@@ -55,7 +55,7 @@ public class FollowingProfileListScreen extends AppCompatActivity {
             mProgressBar = (ProgressBar) findViewById(R.id.progressBar_following);
 
             setSupportActionBar(mRecordsToolbar);
-            getSupportActionBar().setTitle("Follwing");
+            getSupportActionBar().setTitle("Following");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             mRecordsToolbar.setNavigationOnClickListener(new View.OnClickListener() {

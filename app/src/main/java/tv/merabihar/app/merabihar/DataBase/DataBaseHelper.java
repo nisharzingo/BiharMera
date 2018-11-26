@@ -45,7 +45,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
                 "SubCategoriesId INTEGER,"+
                 " FOREIGN KEY(ProfileId) REFERENCES "+PROFILE_TABLE+"(ProfileId))";
 
-        String categoryDetails = "CREATE TABLE "+CATEGORY_TABLE+"(ID INTEGER,CategoriesId INTEGER PRIMARY KEY,CategoriesName TEXT," +
+        String categoryDetails = "CREATE TABLE "+CATEGORY_TABLE+"(ID INTEGER PRIMARY KEY,CategoriesId INTEGER,CategoriesName TEXT," +
                 "CityId INTEGER,"+
                 "Description TEXT,CategoriesImage TEXT,Reviews TEXT,StarRating REAL,OrderNo INTEGER)";
 

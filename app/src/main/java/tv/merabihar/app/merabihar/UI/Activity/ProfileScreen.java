@@ -146,7 +146,7 @@ public class ProfileScreen extends AppCompatActivity {
                             mFollowOption.setVisibility(View.GONE);
                         }else{
                             mFollowOption.setVisibility(View.VISIBLE);
-                            getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profile.getProfileId());
+                            getFollowingsByProfileId(PreferenceHandler.getInstance(ProfileScreen.this).getUserId(),profileId);
                         }
                     }else{
                         mFollowOption.setVisibility(View.GONE);
