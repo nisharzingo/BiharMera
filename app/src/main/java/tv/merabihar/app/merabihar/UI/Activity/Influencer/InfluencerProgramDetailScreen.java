@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -25,19 +27,26 @@ import retrofit2.Response;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
 import tv.merabihar.app.merabihar.Model.Goals;
 import tv.merabihar.app.merabihar.Model.SubscribedGoals;
+import tv.merabihar.app.merabihar.Model.TransactionHistroy;
+import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.GoalAPI;
+import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 
 public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
     TextView viewMOre,mGoalTc,mGoalName,mExpDate;
     TextView mTv1,mTv2,mTv3,mTv4,mTv5,mPenalty;
     SubscribedGoals targetDesc;
-    LinearLayout mOfferExpireLay;
+    LinearLayout mOfferExpireLay,mInPgmStage2;
     ImageView mCircle1,mCircle2,mCircle3,mCircle4,mCircle5;
     View mCircleView1,mCircleView2,mCircleView3,mCircleView4;
+
+    ImageView mCircle21,mCircle22,mCircle23,mCircle24,mCircle25,mCircle26,mCircle27;
+    View mCircleView21,mCircleView22,mCircleView23,mCircleView24,mCircleView25,mCircleView26;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +66,14 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
             mCircle4 = findViewById(R.id.circle4);
             mCircle5 = findViewById(R.id.circle5);
 
+            mCircle21 = findViewById(R.id.circle21);
+            mCircle22 = findViewById(R.id.circle22);
+            mCircle23 = findViewById(R.id.circle23);
+            mCircle24 = findViewById(R.id.circle24);
+            mCircle25 = findViewById(R.id.circle25);
+            mCircle26 = findViewById(R.id.circle26);
+            mCircle27 = findViewById(R.id.circle27);
+
             mTv1 = findViewById(R.id.tv1);
             mTv2 = findViewById(R.id.tv2);
             mTv3 = findViewById(R.id.tv3);
@@ -69,7 +86,15 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
             mCircleView3 = findViewById(R.id.view3);
             mCircleView4 = findViewById(R.id.view4);
 
+            mCircleView21 = findViewById(R.id.view21);
+            mCircleView22 = findViewById(R.id.view22);
+            mCircleView23 = findViewById(R.id.view23);
+            mCircleView24 = findViewById(R.id.view24);
+            mCircleView25 = findViewById(R.id.view25);
+            mCircleView26 = findViewById(R.id.view26);
+
             mOfferExpireLay = findViewById(R.id.offer_expire_lay);
+            mInPgmStage2 = findViewById(R.id.influncer_stage2);
 
             Bundle bundle = getIntent().getExtras();
 
@@ -125,6 +150,9 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
                     if(targetDesc.getGoalId()==3){
 
+                        getDirectReferCount("MBR"+PreferenceHandler.getInstance(InfluencerProgramDetailScreen.this).getUserId(),targetDesc);
+
+                        mInPgmStage2.setVisibility(View.VISIBLE);
                         int penalty = Integer.parseInt(targetDesc.getExtraDescription());
                         if(penalty==0){
 
@@ -219,6 +247,8 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                         mTv4.setText("4th Month");
                         mTv5.setText("5th Month");
 
+                        mInPgmStage2.setVisibility(View.GONE);
+
                         mCircle1.setImageResource(R.drawable.oval_cross);
                         mCircleView1.setBackgroundColor(Color.parseColor("#FF0000"));
 
@@ -304,6 +334,8 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                         mTv3.setText("3rd Day");
                         mTv4.setText("4th Day");
                         mTv5.setText("5th Day");
+
+                        mInPgmStage2.setVisibility(View.GONE);
 
                         mCircle1.setImageResource(R.drawable.oval_cross);
                         mCircleView1.setBackgroundColor(Color.parseColor("#FF0000"));
@@ -401,7 +433,8 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                         mTv3.setText("9 hours watched");
                         mTv4.setText("12 hours watched");
                         mTv5.setText("15 hours watched");
-
+                        getDirectReferCount("MBR"+PreferenceHandler.getInstance(InfluencerProgramDetailScreen.this).getUserId(),targetDesc);
+                        mInPgmStage2.setVisibility(View.VISIBLE);
                         int penalty = Integer.parseInt(targetDesc.getExtraDescription());
                         if(penalty==0){
 
@@ -596,6 +629,8 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                         mTv4.setText("4th Month");
                         mTv5.setText("5th Month");
 
+                        mInPgmStage2.setVisibility(View.GONE);
+
                         String rewards = targetDesc.getRewardsEarned();
                         if (rewards.contains(",")) {
 
@@ -668,7 +703,7 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                         mTv3.setText("3rd Day");
                         mTv4.setText("4th Day");
                         mTv5.setText("5th Day");
-
+                        mInPgmStage2.setVisibility(View.GONE);
                         if (targetDesc.getStatus().equalsIgnoreCase("Activated")) {
 
                             String rewards = targetDesc.getRewardsEarned();
@@ -860,5 +895,204 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
         int[] ints = {hours , mins };
         return ints;
+    }
+
+    private void getDirectReferCount(final String code,final SubscribedGoals targetDesc){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
+                Call<ArrayList<UserProfile>> call = apiService.getDirectReferedProfile(code);
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+                        int statusCode = response.code();
+
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfile = response.body();
+                            ArrayList<UserProfile> targetProfiles = new ArrayList<>();
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                                String expdate = targetDesc.getEndDate();
+                                String startdate = targetDesc.getStartDate();
+                                Date exp = null;
+                                Date start = null;
+
+                                if(expdate.contains("T")){
+
+                                    String[] tDates = expdate.split("T");
+                                    try {
+                                        exp = dateFormat.parse(tDates[0]);
+
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                if(startdate.contains("T")){
+
+                                    String[] tDates = startdate.split("T");
+                                    try {
+                                        start = dateFormat.parse(tDates[0]);
+
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+
+                                for (UserProfile target:responseProfile) {
+                                    Date sign=null;
+                                    if(target.getSignUpDate().contains("T")){
+
+                                        String[] tDates = target.getSignUpDate().split("T");
+
+                                        try {
+                                            sign = dateFormat.parse(tDates[0]);
+
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    if(sign.getTime()>=start.getTime()&&sign.getTime()<=exp.getTime()){
+
+                                        targetProfiles.add(target);
+                                    }
+
+                                }
+
+
+                                if(targetProfiles!=null&&targetProfiles.size()!=0){
+
+                                    int value = targetProfiles.size();
+
+                                    if (value ==1 ) {
+                                        mCircle21.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView21.setBackgroundColor(Color.parseColor("#176e0b"));
+                                    } else if (value ==2) {
+
+                                        mCircle21.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView21.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle22.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView22.setBackgroundColor(Color.parseColor("#176e0b"));
+                                    } else if (value ==3) {
+                                        mCircle21.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView21.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle22.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView22.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle23.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView23.setBackgroundColor(Color.parseColor("#176e0b"));
+                                    } else if (value == 4) {
+
+                                        mCircle21.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView21.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle22.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView22.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle23.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView23.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle24.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView24.setBackgroundColor(Color.parseColor("#176e0b"));
+                                    } else if (value ==5 ) {
+
+                                        mCircle21.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView21.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle22.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView22.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle23.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView23.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle24.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView24.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle25.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView25.setBackgroundColor(Color.parseColor("#176e0b"));
+                                    } else if (value ==6 ) {
+
+                                        mCircle21.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView21.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle22.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView22.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle23.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView23.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle24.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView24.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle25.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView25.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle26.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView26.setBackgroundColor(Color.parseColor("#176e0b"));
+                                    } else if (value>=7 ) {
+
+                                        mCircle21.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView21.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle22.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView22.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle23.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView23.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle24.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView24.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle25.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView25.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle26.setImageResource(R.drawable.ovel_tick);
+                                        mCircleView26.setBackgroundColor(Color.parseColor("#176e0b"));
+
+                                        mCircle27.setImageResource(R.drawable.ovel_tick);
+                                    }
+                                }
+
+
+                            }
+                            else
+                            {
+                            }
+                        }
+                        else
+                        {
+
+
+
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
     }
 }

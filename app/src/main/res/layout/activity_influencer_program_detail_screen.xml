@@ -328,7 +328,243 @@
                 <!--stage 1 end-->
 
 
+                <!-- stage2-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/influncer_stage2"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
 
+                    <!--1st month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/circle21"
+                                android:src="@drawable/oval"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:id="@+id/view21"
+                                android:layout_height="match_parent"
+                                android:background="#D9DBE4"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="1st Signup"
+                            android:id="@+id/tv21"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--2nd month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/circle22"
+                                android:src="@drawable/oval"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/view22"
+                                android:background="#D9DBE4"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:id="@+id/tv22"
+                            android:text="2nd Signup"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--3rd month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/circle23"
+                                android:src="@drawable/oval"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:id="@+id/view23"
+                                android:layout_height="match_parent"
+                                android:background="#D9DBE4"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="3rd Signup"
+                            android:id="@+id/tv23"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--4th month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/circle24"
+                                android:src="@drawable/oval"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:id="@+id/view24"
+                                android:layout_height="match_parent"
+                                android:background="#D9DBE4"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="4th Signup"
+                            android:id="@+id/tv24"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--5th month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/circle25"
+                                android:src="@drawable/oval"/>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:id="@+id/view25"
+                                android:layout_height="match_parent"
+                                android:background="#D9DBE4"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="5th Signup"
+                            android:id="@+id/tv25"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--4th month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/circle26"
+                                android:src="@drawable/oval"/>
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_marginLeft="10dp"
+                                android:id="@+id/view26"
+                                android:layout_height="match_parent"
+                                android:background="#D9DBE4"
+                                />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="6th Signup"
+                            android:id="@+id/tv26"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--5th month-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="40dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/circle27"
+                                android:src="@drawable/oval"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:text="7th Signup"
+                            android:id="@+id/tv27"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!--stage 2 end-->
 
             </LinearLayout>
 
