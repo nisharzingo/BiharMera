@@ -187,7 +187,15 @@ public class Income extends AppCompatActivity {
         }
         else {
 
-            getDirectReferCount("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),totalRupees);
+            if(profileId!=0){
+
+                if (Util.isNetworkAvailable(Income.this)) {
+                    getProfile(profileId);
+                }else{
+                    Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+                }
+
+            }
            // showSnackbar("Withdrawal possible");
         }
 
@@ -652,77 +660,8 @@ public class Income extends AppCompatActivity {
 
                                 if(sg!=null){
 
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-                                    String expdate = sg.getEndDate();
-                                    Date past = null;
-
-
-                                    String duration = null;
-
-                                    if(expdate.contains("T")){
-
-                                        String[] tDates = expdate.split("T");
-                                        try {
-                                            past = dateFormat.parse(tDates[0]);
-                                            duration = duration(tDates[0]);
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                    double valuea = (Double.parseDouble(sg.getRewardsEarned()))*.20;
-                                    if ( new Date().getTime() < past.getTime()) {
-
-                                        double amount = profile.getReferralAmount();
-
-
-
-
-                                        if(sg.getStatus().equalsIgnoreCase("Completed")){
-
-                                            final Double totalRupees = Double.parseDouble(coins)+valuea;
-                                            final String formatedRupee = String.format("%.02f", ((totalRupees)/100.0));
-
-                                            mNon.setText("0");
-                                            mReedem.setText(""+""+String.format("%.02f", ((totalRupees))));
-                                            rupeesTxt.setText("₹" + formatedRupee);
-                                            coinTxt.setText(""+String.format("%.02f", ((totalRupees))));
-
-                                        }else  if(sg.getStatus().equalsIgnoreCase("Activated")){
-                                            mNon.setText(""+(int)valuea);
-                                            mReedem.setText(""+coins);
-                                        }else  if(sg.getStatus().equalsIgnoreCase("Penalty")){
-                                            mNon.setText(""+(int)valuea);
-                                            mReedem.setText(""+coins);
-                                        }
-
-
-
-                                        //getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),valuea);
-
-                                    }else{
-                                        if(sg.getStatus().equalsIgnoreCase("Completed")){
-
-                                            final Double totalRupees = Double.parseDouble(coins)+valuea;
-                                            final String formatedRupee = String.format("%.02f", ((totalRupees)/100.0));
-
-                                            mNon.setText("0");
-                                            mReedem.setText(""+""+String.format("%.02f", ((totalRupees))));
-                                            rupeesTxt.setText("₹" + formatedRupee);
-                                            coinTxt.setText(""+String.format("%.02f", ((totalRupees))));
-
-                                        }else  if(sg.getStatus().equalsIgnoreCase("Activated")){
-                                            mNon.setText(""+(int)valuea);
-                                            mReedem.setText(""+coins);
-                                        }else  if(sg.getStatus().equalsIgnoreCase("Penalty")){
-                                            mNon.setText(""+(int)valuea);
-                                            mReedem.setText(""+coins);
-                                        }
-                                    }
-
+                                    getDirectReferCounts("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),sg,profile);
 
 
                                 }else{
@@ -899,4 +838,214 @@ public class Income extends AppCompatActivity {
 
     }
 
+    private void getDirectReferCounts(final String code,final SubscribedGoals targetDesc,final UserProfile profile){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
+                Call<ArrayList<UserProfile>> call = apiService.getDirectReferedProfile(code);
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+                        int statusCode = response.code();
+
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfile = response.body();
+                            ArrayList<UserProfile> targetProfiles = new ArrayList<>();
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                                String expdate = targetDesc.getEndDate();
+                                String startdate = targetDesc.getStartDate();
+                                Date exp = null;
+                                Date start = null;
+
+                                if(expdate.contains("T")){
+
+                                    String[] tDates = expdate.split("T");
+                                    try {
+                                        exp = dateFormat.parse(tDates[0]);
+
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                if(startdate.contains("T")){
+
+                                    String[] tDates = startdate.split("T");
+                                    try {
+                                        start = dateFormat.parse(tDates[0]);
+
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+
+                                for (UserProfile target:responseProfile) {
+                                    Date sign=null;
+                                    if(target.getSignUpDate().contains("T")){
+
+                                        String[] tDates = target.getSignUpDate().split("T");
+
+                                        try {
+                                            sign = dateFormat.parse(tDates[0]);
+
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    if(sign.getTime()>=start.getTime()&&sign.getTime()<=exp.getTime()){
+
+                                        targetProfiles.add(target);
+                                    }
+
+                                }
+
+
+                                if(targetProfiles!=null&&targetProfiles.size()!=0){
+
+                                    int value = targetProfiles.size();
+
+                                    if(value>=7){
+
+                                        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                                        expdate = targetDesc.getEndDate();
+                                        Date past = null;
+
+
+                                        String duration = null;
+
+                                        if(expdate.contains("T")){
+
+                                            String[] tDates = expdate.split("T");
+                                            try {
+                                                past = dateFormat.parse(tDates[0]);
+                                                duration = duration(tDates[0]);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+                                        double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+                                        if ( new Date().getTime() < past.getTime()) {
+
+                                            double amount = profile.getReferralAmount();
+
+
+
+
+                                            if(targetDesc.getStatus().equalsIgnoreCase("Completed")){
+
+                                                final Double totalRupees = Double.parseDouble(coins)+valuea;
+                                                final String formatedRupee = String.format("%.02f", ((totalRupees)/100.0));
+
+                                                mNon.setText("0");
+                                                mReedem.setText(""+""+String.format("%.02f", ((totalRupees))));
+                                                rupeesTxt.setText("₹" + formatedRupee);
+                                                coinTxt.setText(""+String.format("%.02f", ((totalRupees))));
+
+                                            }else  if(targetDesc.getStatus().equalsIgnoreCase("Activated")){
+                                                mNon.setText(""+(int)valuea);
+                                                mReedem.setText(""+coins);
+                                            }else  if(targetDesc.getStatus().equalsIgnoreCase("Penalty")){
+                                                mNon.setText(""+(int)valuea);
+                                                mReedem.setText(""+coins);
+                                            }
+
+
+
+                                            //getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),valuea);
+
+                                        }else{
+                                            if(targetDesc.getStatus().equalsIgnoreCase("Completed")){
+
+                                                final Double totalRupees = Double.parseDouble(coins)+valuea;
+                                                final String formatedRupee = String.format("%.02f", ((totalRupees)/100.0));
+
+                                                mNon.setText("0");
+                                                mReedem.setText(""+""+String.format("%.02f", ((totalRupees))));
+                                                rupeesTxt.setText("₹" + formatedRupee);
+                                                coinTxt.setText(""+String.format("%.02f", ((totalRupees))));
+
+                                            }else  if(targetDesc.getStatus().equalsIgnoreCase("Activated")){
+                                                mNon.setText(""+(int)valuea);
+                                                mReedem.setText(""+coins);
+                                            }else  if(targetDesc.getStatus().equalsIgnoreCase("Penalty")){
+                                                mNon.setText(""+(int)valuea);
+                                                mReedem.setText(""+coins);
+                                            }
+                                        }
+
+
+                                    }else{
+                                        double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+
+                                        mNon.setText(""+(int)valuea);
+                                        mReedem.setText(""+coins);
+                                    }
+
+
+
+
+
+
+                                }else{
+                                    double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+
+                                    mNon.setText(""+(int)valuea);
+                                    mReedem.setText(""+coins);
+                                }
+
+
+                            }
+                            else
+                            {
+                                double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+
+                                mNon.setText(""+(int)valuea);
+                                mReedem.setText(""+coins);
+                            }
+                        }
+                        else
+                        {
+                            double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+
+                            mNon.setText(""+(int)valuea);
+                            mReedem.setText(""+coins);
+
+
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+
+                        double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+
+                        mNon.setText(""+(int)valuea);
+                        mReedem.setText(""+coins);
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
 }

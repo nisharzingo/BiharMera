@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,7 @@ import java.util.Date;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.TransactionHistroy;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
@@ -29,7 +31,9 @@ import tv.merabihar.app.merabihar.UI.Activity.SettingScreen;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
+import tv.merabihar.app.merabihar.WebAPI.SubscribedGoalsAPI;
 import tv.merabihar.app.merabihar.WebAPI.TransactionHistroyAPI;
 
 public class WithdrawMoney extends AppCompatActivity {
@@ -81,7 +85,17 @@ public class WithdrawMoney extends AppCompatActivity {
                 public void onClick(View v) {
 
                     if(Util.isNetworkAvailable(WithdrawMoney.this)){
-                        getDirectReferCount("MBR"+PreferenceHandler.getInstance(WithdrawMoney.this).getUserId(),formatedRupee);
+                        //getDirectReferCount("MBR"+PreferenceHandler.getInstance(WithdrawMoney.this).getUserId(),formatedRupee);
+
+                        if(PreferenceHandler.getInstance(WithdrawMoney.this).getUserId()!=0){
+
+                            if (Util.isNetworkAvailable(WithdrawMoney.this)) {
+                                getProfile(PreferenceHandler.getInstance(WithdrawMoney.this).getUserId());
+                            }else{
+                                Toast.makeText(WithdrawMoney.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
                     }else{
                         Toast.makeText(WithdrawMoney.this, "You are offline", Toast.LENGTH_SHORT).show();
                     }
@@ -264,7 +278,8 @@ public class WithdrawMoney extends AppCompatActivity {
 
         TextView closePopup = mPopupDialog.findViewById(R.id.popupclose_txt);
         TextView popupTxt = mPopupDialog.findViewById(R.id.popup_msg_txt);
-        String required_money = String.format("%.02f",15-size);
+        String required_money = ""+size;
+        //String required_money = String.format("",size);
 
 
         String msg =  "The Amount is Redeemable after completing "+required_money+" New Signup using Your Referral Code within goal Expired period" ;
@@ -394,4 +409,353 @@ public class WithdrawMoney extends AppCompatActivity {
 
     }
 
+    public void getProfile(final int id){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final ProfileAPI subCategoryAPI = Util.getClient().create(ProfileAPI.class);
+                Call<UserProfile> getProf = subCategoryAPI.getProfileById(id);
+                //Call<ArrayList<Blogs>> getBlog = blogApi.getBlogs();
+
+                getProf.enqueue(new Callback<UserProfile>() {
+
+                    @Override
+                    public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
+
+
+
+                        if (response.code() == 200)
+                        {
+                            System.out.println("Inside api");
+
+                            UserProfile profile = response.body();
+
+
+                           /* coinsUsed = profile.getUsedAmount();
+                            wallet = profile.getWalletBalance();*/
+
+
+
+                            if (Util.isNetworkAvailable(WithdrawMoney.this)) {
+                                getGoalsByProfileId(profile.getProfileId(),profile);
+                            }else{
+                                Toast.makeText(WithdrawMoney.this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                            }
+
+
+
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserProfile> call, Throwable t) {
+
+                    }
+                });
+
+            }
+
+        });
+    }
+    public void getGoalsByProfileId(final int id,final UserProfile profile)
+    {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final SubscribedGoalsAPI categoryAPI = Util.getClient().create(SubscribedGoalsAPI.class);
+                Call<ArrayList<SubscribedGoals>> getCat = categoryAPI.getSubscribedGoalsByProfileIdAndGoal(id,3);
+                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                getCat.enqueue(new Callback<ArrayList<SubscribedGoals>>() {
+
+                    @Override
+                    public void onResponse(Call<ArrayList<SubscribedGoals>> call, Response<ArrayList<SubscribedGoals>> response) {
+
+
+
+                        if(response.code() == 200 && response.body()!= null)
+                        {
+
+                            if(response.body().size()!=0){
+
+                                SubscribedGoals sg = response.body().get(0);
+
+                                if(sg!=null){
+
+
+                                    getDirectReferCounts("MBR"+PreferenceHandler.getInstance(WithdrawMoney.this).getUserId(),sg,profile);
+
+
+                                }else{
+                                    // getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
+                                }
+
+
+                            }else{
+                                //getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
+                            }
+
+
+                        }else{
+
+                            // getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
+
+
+                        // getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
+
+//                        Toast.makeText(Income.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //System.out.println(TAG+" thread started");
+
+            }
+
+        });
+
+    }
+    public String duration(String fromm) throws Exception{
+
+        String from = fromm;
+
+
+
+
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date d1 = null;
+        Date d2 = null;
+        try {
+
+            d1 = format1.parse(from);
+
+
+            long diff = d1.getTime()-new Date().getTime();
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+            return  String.valueOf(diffDays);
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    private void getDirectReferCounts(final String code,final SubscribedGoals targetDesc,final UserProfile profile){
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                ProfileFollowAPI apiService =
+                        Util.getClient().create(ProfileFollowAPI.class);
+
+                Call<ArrayList<UserProfile>> call = apiService.getDirectReferedProfile(code);
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+                        int statusCode = response.code();
+
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfile = response.body();
+                            ArrayList<UserProfile> targetProfiles = new ArrayList<>();
+
+                            if(responseProfile != null && responseProfile.size()!=0 )
+                            {
+
+                                if(responseProfile.size()>=400){
+                                    //isWithDrawPossible(formatedRupee);
+                                    showSnackbar("Withdrawal possible");
+                                }else{
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                                    String expdate = targetDesc.getEndDate();
+                                    String startdate = targetDesc.getStartDate();
+                                    Date exp = null;
+                                    Date start = null;
+
+                                    if(expdate.contains("T")){
+
+                                        String[] tDates = expdate.split("T");
+                                        try {
+                                            exp = dateFormat.parse(tDates[0]);
+
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    if(startdate.contains("T")){
+
+                                        String[] tDates = startdate.split("T");
+                                        try {
+                                            start = dateFormat.parse(tDates[0]);
+
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+
+                                    for (UserProfile target:responseProfile) {
+                                        Date sign=null;
+                                        if(target.getSignUpDate().contains("T")){
+
+                                            String[] tDates = target.getSignUpDate().split("T");
+
+                                            try {
+                                                sign = dateFormat.parse(tDates[0]);
+
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+                                        if(sign.getTime()>=start.getTime()&&sign.getTime()<=exp.getTime()){
+
+                                            targetProfiles.add(target);
+                                        }
+
+                                    }
+
+
+                                    if(targetProfiles!=null&&targetProfiles.size()!=0){
+
+                                        int value = targetProfiles.size();
+
+                                        if(value>=7){
+
+                                            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                                            expdate = targetDesc.getEndDate();
+                                            Date past = null;
+
+
+                                            String duration = null;
+
+                                            if(expdate.contains("T")){
+
+                                                String[] tDates = expdate.split("T");
+                                                try {
+                                                    past = dateFormat.parse(tDates[0]);
+                                                    duration = duration(tDates[0]);
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+                                            if ( new Date().getTime() < past.getTime()) {
+
+                                                double amount = profile.getReferralAmount();
+
+
+
+
+                                                if(targetDesc.getStatus().equalsIgnoreCase("Completed")){
+
+                                                    showSnackbar("Withdrawal possible");
+
+                                                }else  if(targetDesc.getStatus().equalsIgnoreCase("Activated")){
+
+                                                    Toast.makeText(WithdrawMoney.this, "Goals is not completed", Toast.LENGTH_SHORT).show();
+
+                                                }else  if(targetDesc.getStatus().equalsIgnoreCase("Penalty")){
+
+                                                    Toast.makeText(WithdrawMoney.this, "Goals is not completed", Toast.LENGTH_SHORT).show();
+
+                                                }
+
+
+
+                                                //getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),valuea);
+
+                                            }else{
+                                                if(targetDesc.getStatus().equalsIgnoreCase("Completed")){
+
+                                                    showSnackbar("Withdrawal possible");
+
+                                                }else  if(targetDesc.getStatus().equalsIgnoreCase("Activated")){
+
+                                                    Toast.makeText(WithdrawMoney.this, "Goals is not completed", Toast.LENGTH_SHORT).show();
+
+                                                }else  if(targetDesc.getStatus().equalsIgnoreCase("Penalty")){
+
+                                                    Toast.makeText(WithdrawMoney.this, "Goals is not completed", Toast.LENGTH_SHORT).show();
+
+                                                }
+                                            }
+
+
+                                        }else{
+                                            double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+                                            showPopUpForReferal(7-targetProfiles.size());
+                                            //Toast.makeText(WithdrawMoney.this, "Goals is not completed", Toast.LENGTH_SHORT).show();
+                                        }
+
+
+
+
+
+
+                                    }else{
+                                        double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+
+                                        Toast.makeText(WithdrawMoney.this, "Goals is not completed", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+
+
+
+                            }
+                            else
+                            {
+                                double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+                                Toast.makeText(WithdrawMoney.this, "Goals is not completed", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                        else
+                        {
+                            double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+
+                            Toast.makeText(WithdrawMoney.this, "Goals is not completed", Toast.LENGTH_SHORT).show();
+
+
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+
+                        double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
+                        Toast.makeText(WithdrawMoney.this, "Goals is not completed", Toast.LENGTH_SHORT).show();
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
 }
