@@ -117,6 +117,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
             Thread video = new Thread() {
                 public void run() {
+
                     loadFirstSetOfBlogs();
                 }
             };
@@ -126,7 +127,47 @@ public class TabVideoNewDesign extends AppCompatActivity {
             if (Util.isNetworkAvailable(this)) {
 
                 //video.start();
+                progressBar.setVisibility(View.GONE);
+                if(db.getContentByType("Video")!=null&&db.getContentByType("Video").size()!=0){
+
+                    ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                    ArrayList<Contents> contents = new ArrayList<>();
+                    int count = 0;
+
+                    ArrayList<Contents> contentsList = db.getContentByType("Video");
+                    Collections.shuffle(contentsList);
+
+                    for (Contents content : contentsList) {
+
+
+                        //if(content.getContentType().equalsIgnoreCase("Image")){
+                        contents.add(content);
+                        count = count + 1;
+                        if (count == 9) {
+                            contentList.add(contents);
+                            ContentImageAdapter blogAdapters = new ContentImageAdapter(TabVideoNewDesign.this,contents);//,pagerModelArrayList);
+                            mTrendingInterest.setAdapter(blogAdapters);
+                            mTrendingInterest.requestFocus();
+                            count = 0;
+                            contents = new ArrayList<>();
+                        }
+                        // }
+
+
+                    }
+
+                    if (contentList != null && contentList.size() != 0) {
+
+                        loadNextPageDb(contentList);
+
+
+                    }
+
+
+                    progressBar.setVisibility(View.GONE);
+                }
                 loadFirstSetOfBlogs();
+
                 //category.start();
 
             }else{
@@ -582,7 +623,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
 
-                        progressBar.setVisibility(View.GONE);
+
                         try {
                             if (response.code() == 200 && response.body() != null) {
                                 if (response.body().size() != 0) {
@@ -616,6 +657,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
                                             }
 
+                                            mTrendingInterest.removeAllViews();
                                             ContentImageAdapter blogAdapters = new ContentImageAdapter(TabVideoNewDesign.this,response.body());//,pagerModelArrayList);
                                             mTrendingInterest.setAdapter(blogAdapters);
                                             mTrendingInterest.requestFocus();
@@ -698,7 +740,7 @@ public class TabVideoNewDesign extends AppCompatActivity {
         Log.d(TAG, "loadFirstPage: "+list.size());
         //Collections.reverse(list);
         progressBar.setVisibility(View.GONE);
-        adapter.addAll(list);
+        adapter.addAlls(list);
 
         if (list != null && list.size() !=0)
             adapter.addLoadingFooter();
@@ -850,17 +892,15 @@ public class TabVideoNewDesign extends AppCompatActivity {
     }
 
     private void loadNextPageDb(ArrayList<ArrayList<Contents>> list) {
+        Log.d(TAG, "loadFirstPage: "+list.size());
         //Collections.reverse(list);
-        adapter.removeLoadingFooter();
-        isLoading = false;
-
+        progressBar.setVisibility(View.GONE);
         adapter.addAll(list);
 
         if (list != null && list.size() !=0)
-        {
-            //adapter.addLoadingFooter();
-            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
-        }
+            adapter.addLoadingFooter();
+        else
+            isLastPage = true;
 
     }
 

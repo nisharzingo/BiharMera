@@ -94,6 +94,17 @@
                     android:id="@+id/follow_profile"
                     android:textColor="#dd3e3e"/>
 
+                <ImageView
+                    android:id="@+id/edit_option_icon"
+                    android:layout_width="50px"
+                    android:visibility="gone"
+                    android:layout_height="40px"
+                    android:layout_gravity="center"
+                    android:src="@drawable/more"
+                    android:scaleType="fitXY"
+
+                    />
+
             </LinearLayout>
 
 

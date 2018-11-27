@@ -601,16 +601,31 @@ public class SettingScreen extends AppCompatActivity {
                             }
                             else
                             {
-                                mCoins.setText(""+(int)coinsValue);
-                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
+                                double coinsValues = coinsValue -wallet;
+
+                                if(coinsValues>0){
+                                    mCoins.setText(""+(int)coinsValues);
+                                    mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValues*1.0)/100.0)));
+                                }else{
+                                    mCoins.setText(""+(int)coinsValue);
+                                    mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
+                                }
+
 
                             }
                         }
                         else
                         {
 
-                            mCoins.setText(""+(int)coinsValue);
-                            mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
+                            double coinsValues = coinsValue -wallet;
+
+                            if(coinsValues>0){
+                                mCoins.setText(""+(int)coinsValues);
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValues*1.0)/100.0)));
+                            }else{
+                                mCoins.setText(""+(int)coinsValue);
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
+                            }
 
                         }
 //                callGetStartEnd();
@@ -619,9 +634,15 @@ public class SettingScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
-                        mCoins.setText(""+(int)coinsValue);
-                        mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
+                        double coinsValues = coinsValue -wallet;
 
+                        if(coinsValues>0){
+                            mCoins.setText(""+(int)coinsValues);
+                            mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValues*1.0)/100.0)));
+                        }else{
+                            mCoins.setText(""+(int)coinsValue);
+                            mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((coinsValue*1.0)/100.0)));
+                        }
 
                         Log.e("TAG", t.toString());
                     }
@@ -665,12 +686,20 @@ public class SettingScreen extends AppCompatActivity {
                                 int balance = (indirectCount - directCount);
 
 
-                                double amount = (balance * 10)+(directCount*50)+coinsValue;
+                                double amount = (balance * 10)+(directCount*50)+coinsValue-wallet;
 
 
 
-                                mCoins.setText(""+(int)amount);
-                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+
+                                if(amount>0){
+                                    mCoins.setText(""+(int)amount);
+                                    mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                                }else{
+                                    mCoins.setText("0");
+                                    mBalance.setText("Rs 0");
+                                }
+
+
                                 //mBalance.setText("Rs "+((amount*1.0)/100.0));
 
 
@@ -747,12 +776,17 @@ public class SettingScreen extends AppCompatActivity {
                                 int balance = (indirectCount);
 
 
-                                double amount = (balance * 10)+(directCount*50)+coinsValue;
+                                double amount = (balance * 10)+(directCount*50)+coinsValue-wallet;
 
 
 
-                                mCoins.setText(""+(int)amount);
-                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                                if(amount>0){
+                                    mCoins.setText(""+(int)amount);
+                                    mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                                }else{
+                                    mCoins.setText("0");
+                                    mBalance.setText("Rs 0");
+                                }
                                 //mBalance.setText("Rs "+((amount*1.0)/100.0));
 
 
@@ -760,19 +794,29 @@ public class SettingScreen extends AppCompatActivity {
                             else
                             {
 
-                                double amount =(directCount*50)+coinsValue;
+                                double amount =(directCount*50)+coinsValue-wallet;
                                 mInvite.setText(""+directCount);
-                                mCoins.setText(""+(int)amount);
-                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                                if(amount>0){
+                                    mCoins.setText(""+(int)amount);
+                                    mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                                }else{
+                                    mCoins.setText("0");
+                                    mBalance.setText("Rs 0");
+                                }
 
                             }
                         }
                         else
                         {
-                            double amount =(directCount*50)+coinsValue;
+                            double amount =(directCount*50)+coinsValue-wallet;
                             mInvite.setText(""+directCount);
-                            mCoins.setText(""+(int)amount);
-                            mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                            if(amount>0){
+                                mCoins.setText(""+(int)amount);
+                                mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                            }else{
+                                mCoins.setText("0");
+                                mBalance.setText("Rs 0");
+                            }
 
                         }
 //                callGetStartEnd();
@@ -781,10 +825,15 @@ public class SettingScreen extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
                         // Log error here since request failed
-                        double amount =(directCount*50)+coinsValue;
+                        double amount =(directCount*50)+coinsValue-wallet;
                         mInvite.setText(""+directCount);
-                        mCoins.setText(""+(int)amount);
-                        mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                        if(amount>0){
+                            mCoins.setText(""+(int)amount);
+                            mBalance.setText("Rs "+new DecimalFormat("#,###.##").format(((amount*1.0)/100.0)));
+                        }else{
+                            mCoins.setText("0");
+                            mBalance.setText("Rs 0");
+                        }
                         Log.e("TAG", t.toString());
                     }
                 });
@@ -829,12 +878,7 @@ public class SettingScreen extends AppCompatActivity {
 
             }
 
-            if(wallet!=(int)balance){
 
-                profiles.setWalletBalance((int)balance);
-                update = true;
-
-            }
 
 
             if(update){

@@ -60,6 +60,7 @@ import tv.merabihar.app.merabihar.Model.SubscribedGoals;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.Service.VideoWatchedService;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.PostContent.UpdateContentUrlScreen;
 import tv.merabihar.app.merabihar.Util.Constants;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
@@ -81,7 +82,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     LinearLayout mProfileContent;
     RecyclerView mCommentsList;
     MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId,mWhatsappShareCount,postWatchedCount;;
-    ImageView mLike,mDislike,mComment;
+    ImageView mLike,mDislike,mComment,mEditOption;
     LinearLayout mWhatsapp, mShare, mLikeLayout, mDislikeLayout, mCommentLayout ;
 
     int REQUEST_CODE = 101 ;
@@ -98,7 +99,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     int totalPostView = 0;
     UserProfile currentProfile;
 
-    String fileNames;
+    String fileNames,type;
     String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId()+"\n http://bit.ly/2JXcOnw";
     String shareContents = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n http://bit.ly/2JXcOnw";
 
@@ -139,6 +140,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             mLike = (ImageView) findViewById(R.id.likes_image);
             mDislike = (ImageView) findViewById(R.id.unlikes_image);
             mComment = (ImageView) findViewById(R.id.comments_image);
+            mEditOption = (ImageView) findViewById(R.id.edit_option_icon);
             mWhatsapp = (LinearLayout) findViewById(R.id.whatsapp_share);
             mShare = (LinearLayout) findViewById(R.id.share_image);
             mLikeLayout = (LinearLayout) findViewById(R.id.like_ll_cds);
@@ -151,8 +153,29 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             final Bundle bundle = getIntent().getExtras();
             if(bundle!=null){
                 contents = (Contents) bundle.getSerializable("Contents");
+                type = bundle.getString("Edit");
             }
 
+            if(type!=null&&type.equalsIgnoreCase("Edit")){
+
+                mEditOption.setVisibility(View.VISIBLE);
+            }else{
+
+                mEditOption.setVisibility(View.GONE);
+            }
+
+            mEditOption.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(contents!=null){
+                        showAlertBox();
+                    }else{
+                        Toast.makeText(ContentDetailScreen.this, "Not valid content", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
 
             if(contents!=null){
 
@@ -1088,7 +1111,18 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                                 if(new Date().getTime()-date.getTime()>0){
 
-                                    sg.setExtraDescription(""+(((54000+penaltyAmount)-(youtubeWatcheTime+value))*2));
+                                    int updateValue =((54000+penaltyAmount)-(youtubeWatcheTime+value));
+
+                                    if(updateValue>0){
+
+                                        updateValue = updateValue*2;
+                                        sg.setExtraDescription(""+updateValue);
+                                    }else{
+                                        updateValue = 54000;
+                                        sg.setExtraDescription("+"+value);
+                                    }
+
+
                                     sg.setStatus("Penalty");
                                     sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
@@ -1132,7 +1166,19 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                                 if(new Date().getTime()-date.getTime()>0){
 
-                                    sg.setExtraDescription(""+(((54000+penaltyAmount)-(youtubeWatcheTime+value))*2));
+                                    int updateValue =((54000+penaltyAmount)-(youtubeWatcheTime+value));
+
+                                    if(updateValue>0){
+
+                                        updateValue = updateValue*2;
+                                        sg.setExtraDescription(""+updateValue);
+                                    }else{
+                                        updateValue = 54000;
+                                        sg.setExtraDescription("+"+value);
+                                    }
+
+
+
                                     sg.setStatus("Penalty");
                                     sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
@@ -1177,7 +1223,17 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                                 if(new Date().getTime()-date.getTime()>0){
 
-                                    sg.setExtraDescription(""+(((54000+penaltyAmount)-(youtubeWatcheTime+value))*2));
+                                    int updateValue =((54000+penaltyAmount)-(youtubeWatcheTime+value));
+
+                                    if(updateValue>0){
+
+                                        updateValue = updateValue*2;
+                                        sg.setExtraDescription(""+updateValue);
+                                    }else{
+                                        updateValue = 54000;
+                                        sg.setExtraDescription("+"+value);
+                                    }
+
                                     sg.setStatus("Penalty");
                                     sg.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
@@ -2030,5 +2086,134 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
     };
 
+    public void showAlertBox(){
 
+        try{
+
+            final String[] imageSelectionArray = {"Edit","Delete","Cancel"};
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(ContentDetailScreen.this);
+
+            builder.setCancelable(false);
+            builder.setItems(imageSelectionArray, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    if(imageSelectionArray[which].equals("Edit"))
+                    {
+
+                        Intent intent = new Intent(ContentDetailScreen.this, UpdateContentUrlScreen.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("UpdateContents",contents);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+
+                    }else  if(imageSelectionArray[which].equals("Delete"))
+                    {
+                        deleteAlertBox();
+
+                    }else
+                    {
+                        dialog.dismiss();
+                    }
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteAlertBox(){
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(this)
+                //set icon
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                //set title
+                .setTitle("Are you sure to Delete your post?")
+                //set message
+                .setMessage("After delete it will not be longer anywhere")
+                //set positive button
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        deleteContents(contents.getContentId());
+                    }
+                })
+                //set negative button
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what should happen when negative button is clicked
+
+                    }
+                })
+                .show();
+    }
+
+    public void deleteContents(final int id)
+    {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final ContentAPI categoryAPI = Util.getClient().create(ContentAPI.class);
+                Call<Contents> getCat = categoryAPI.deleteContentsById(id);
+                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                getCat.enqueue(new Callback<Contents>() {
+
+                    @Override
+                    public void onResponse(Call<Contents> call, Response<Contents> response) {
+
+
+
+                        if(response.code() == 200||response.code()==201||response.code()==204)
+                        {
+
+                            Contents contents = response.body();
+
+                            if(contents != null )
+                            {
+
+                                ContentDetailScreen.this.finish();
+
+
+
+                            }
+                            else
+                            {
+                                ContentDetailScreen.this.finish();
+
+
+                            }
+                        }else{
+
+                            Toast.makeText(ContentDetailScreen.this, "Unable to delete due to "+response.code(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Contents> call, Throwable t) {
+
+                        Toast.makeText(ContentDetailScreen.this, "Unable to delete", Toast.LENGTH_SHORT).show();
+
+
+//                        Toast.makeText(CommentsScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //System.out.println(TAG+" thread started");
+
+            }
+
+        });
+
+    }
 }

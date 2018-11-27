@@ -170,7 +170,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UI.YoutubeSearch.YoutubeSearchScreenMain" />
         <activity android:name=".UI.Activity.WatchedHistroyScreen" />
-        <activity android:name=".UI.Activity.TargetWatchTime"></activity>
+        <activity android:name=".UI.Activity.TargetWatchTime" />
+        <activity android:name=".UI.MainTabHostScreens.PostContent.UpdateContentUrlScreen" />
+        <activity android:name=".UI.MainTabHostScreens.PostContent.UpdateImageContentScreen"></activity>
     </application>
 
 </manifest>

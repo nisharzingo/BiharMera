@@ -117,6 +117,7 @@ public class TabAccountActivity extends AppCompatActivity {
     String status,selectedImage;
 
     ArrayList<Contents> profileContents;
+    int profileId;
 
     DataBaseHelper db ;
     @Override
@@ -167,7 +168,7 @@ public class TabAccountActivity extends AppCompatActivity {
             mPostsList.setLayoutManager(layoutManager);
             mPostsList.setItemAnimator(new DefaultItemAnimator());
 
-           final int profileId = PreferenceHandler.getInstance(TabAccountActivity.this).getUserId();
+           profileId = PreferenceHandler.getInstance(TabAccountActivity.this).getUserId();
 
            if(profileId!=0){
 
@@ -779,6 +780,7 @@ public class TabAccountActivity extends AppCompatActivity {
                             if(response.body().size()!=0){
 
                                 mPosts.setText(""+response.body().size());
+                                Collections.reverse(response.body());
                                 profileContents = response.body();
                                 adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,response.body());
                                 mPostsList.setAdapter(adapters);
@@ -1360,5 +1362,34 @@ public class TabAccountActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(profileId!=0){
+
+            if (Util.isNetworkAvailable(TabAccountActivity.this)) {
+
+                profileContents = new ArrayList<>();
+                getProfileContent(profileId);
+
+
+            }else{
+
+                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
+                progressBar.setVisibility(View.GONE);
+                if(PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName()!=null&&!PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName().isEmpty()){
+                    mProfileName.setText(""+PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName());
+                }
+            }
+
+        }else{
+
+//                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
+
+
+        }
+
     }
 }

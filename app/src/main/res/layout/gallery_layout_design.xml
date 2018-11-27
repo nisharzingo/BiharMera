@@ -14,6 +14,15 @@
             android:id="@+id/blog_images"
             android:background="@drawable/no_image"
             android:scaleType="fitXY"/>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/close"
+            android:layout_gravity="right"
+            android:layout_margin="5dp"
+            android:background="@drawable/close_button"
+            android:scaleType="fitXY"/>
+
 
         <TextView
             android:layout_width="match_parent"

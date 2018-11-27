@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/post_content_main"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".UI.MainTabHostScreens.PostContent.UpdateImageContentScreen">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appBar"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/appBarLayout"
+                android:background="#FFFFFF"
+                >
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@id/toolbar"
+
+                    android:fitsSystemWindows="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="?android:actionBarSize"
+                    app:contentInsetStartWithNavigation="0.0dip"
+                    app:layout_scrollFlags="enterAlways|scroll|snap"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/back"
+                            android:layout_width="50dp"
+                            android:layout_height="25dp"
+                            android:layout_weight="1"
+                            android:layout_marginTop="3dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/left_arrow"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:gravity="end"
+                            android:visibility="gone"
+                            android:layout_marginRight="10dp"
+
+                            android:textStyle="bold"
+                            android:layout_marginTop="5dp"
+                            android:text="Post"
+                            android:textColor="@color/colorPrimary"
+                            />
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.Toolbar>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_large_margin"
+                    android:layout_marginTop="10.0dip"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginRight="@dimen/activity_large_margin"
+                    android:text="Title"/>
+
+                <EditText
+                    android:id="@+id/blog_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="start"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:hint="Title of Story..."
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
+                    android:keepScreenOn="true"
+                    android:layout_marginLeft="@dimen/activity_large_margin"
+                    android:layout_marginRight="@dimen/activity_large_margin"
+                    android:lines="2"
+                    android:background="@drawable/rect_grayoutline1"
+                    android:maxLines="2"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_large_margin"
+                    android:layout_marginTop="10.0dip"
+                    android:textSize="18dp"
+                    android:visibility="gone"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginRight="@dimen/activity_large_margin"
+                    android:text="Short Description"/>
+
+                <EditText
+                    android:id="@+id/short_desc_blog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="start"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:hint="Short Description about your story..."
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
+                    android:keepScreenOn="true"
+                    android:layout_marginLeft="@dimen/activity_large_margin"
+                    android:layout_marginRight="@dimen/activity_large_margin"
+                    android:lines="3"
+                    android:background="@drawable/rect_grayoutline1"
+                    android:maxLines="3"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_large_margin"
+                    android:layout_marginTop="10.0dip"
+                    android:textSize="18dp"
+                    android:visibility="gone"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginRight="@dimen/activity_large_margin"
+                    android:text="Story"/>
+
+                <EditText
+                    android:id="@+id/long_desc_blog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="start"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:hint="Say something..."
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
+                    android:keepScreenOn="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:lines="8"
+                    android:background="@drawable/rect_grayoutline1"
+
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10.0dip"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginRight="10dp"
+                    android:text="Tag with"/>
+
+                <tv.merabihar.app.merabihar.CustomViews.CustomAutoComplete
+                    android:id="@+id/tagss_blog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="start"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:hint="#tags"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
+                    android:keepScreenOn="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:lines="1"
+                    android:background="@drawable/rect_grayoutline1"
+                    android:maxLines="1"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tag_layout"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10.0dip"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginRight="@dimen/activity_large_margin"
+                    android:text="Please Select One Collection"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/activity_list"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
+
+                    <tv.merabihar.app.merabihar.CustomViews.CustomGridView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:numColumns="2"
+                        android:layout_margin="5dp"
+                        android:choiceMode="singleChoice"
+                        android:id="@+id/interest_grid_view"
+
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="15dp"
+                android:id="@+id/image_layout"
+                android:layout_margin="15dp"
+                android:orientation="horizontal"
+                android:background="@drawable/dotted_rect">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="15dp"
+                    android:src="@drawable/upload_images"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_large_margin"
+                    android:layout_marginTop="10.0dip"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginRight="@dimen/activity_large_margin"
+                    android:text="Upload Pictures"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/dotted_rect"
+                android:padding="10dp">
+
+                <FrameLayout
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+
+                        android:background="@drawable/follow_add"
+                        android:scaleType="fitXY"/>
+
+
+
+                </FrameLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/blog_images">
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/create_blogs"
+                android:layout_gravity="bottom"
+                android:ems="15"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="12dp"
+                android:background="@color/colorPrimary"
+                android:text="Post Story"
+                android:textColor="#fff"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+

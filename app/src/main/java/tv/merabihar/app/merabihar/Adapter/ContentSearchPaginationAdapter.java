@@ -738,6 +738,19 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
             add(mc);
         }
     }
+    public void adds(ArrayList<Contents> mc) {
+        //System.out.println("BookingAndTraveller = "+mc.getRoomBooking().getTotalAmount());
+        mContentList.add(0,mc);
+        //System.out.println("BookingAndTraveller = "+list.size());
+        notifyItemInserted(0);
+    }
+
+    public void addAlls(ArrayList<ArrayList<Contents>>mcList) {
+        for (ArrayList<Contents> mc : mcList) {
+            adds(mc);
+        }
+    }
+
 
     public void remove(ArrayList<Contents> city) {
         int position = mContentList.indexOf(city);

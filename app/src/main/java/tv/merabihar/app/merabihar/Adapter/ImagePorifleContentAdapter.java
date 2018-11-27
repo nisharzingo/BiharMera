@@ -106,6 +106,7 @@ public class ImagePorifleContentAdapter extends RecyclerView.Adapter<ImagePorifl
                         Intent intent = new Intent(context, ContentDetailScreen.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("Contents",contents);
+                        bundle.putString("Edit","Edit");
                         intent.putExtras(bundle);
                         context.startActivity(intent);
 
@@ -114,6 +115,7 @@ public class ImagePorifleContentAdapter extends RecyclerView.Adapter<ImagePorifl
                         Intent intent = new Intent(context, ContentImageDetailScreen.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("Contents",contents);
+                        bundle.putString("Edit","Edit");
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                     }

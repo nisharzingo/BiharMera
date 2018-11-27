@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -34,9 +35,8 @@ public interface ContentAPI {
     @GET("Contents/{id}")
     Call<Contents> getContentsById(@Path("id") int id);
 
-    @PUT("Contents/{id}")
-    Call<Contents> updateContentsById(@Path("id") int id,@Body Contents body);
-
+    @DELETE("Contents/{id}")
+    Call<Contents> deleteContentsById(@Path("id") int id);
 
     @POST("Contents")
     Call<Contents> postContent(@Body Contents body);
