@@ -388,7 +388,9 @@ public class TabAccountActivity extends AppCompatActivity {
 
                 if (Util.isNetworkAvailable(TabAccountActivity.this)) {
 
+                    getProfileContent(profileId);
                     getProfile(profileId);
+
 
                     //getFollowingByProfileId(profileId);
 
@@ -505,7 +507,7 @@ public class TabAccountActivity extends AppCompatActivity {
                                 }
                             }
 
-                            if(profile.getContents()!=null&&profile.getContents().size()!=0){
+                            /*if(profile.getContents()!=null&&profile.getContents().size()!=0){
 
                                 mPosts.setText(""+data.getNoOfPost());
                                 profileContents = profile.getContents();
@@ -514,10 +516,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
                                 if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                    Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable("ContentList",response.body());
-                                    startService(intent);
+
 
                                     for (Contents content:profileContents) {
 
@@ -536,11 +535,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
                                 }else{
 
-                                    //db.addContents();
-                                    Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable("ContentList",response.body());
-                                    startService(intent);
+
 
                                     for (Contents content:profileContents) {
                                         db.addContents(content);
@@ -553,7 +548,7 @@ public class TabAccountActivity extends AppCompatActivity {
                                     Toast.makeText(TabAccountActivity.this, "You are offline", Toast.LENGTH_SHORT).show();
                                 }
 
-                            }
+                            }*/
 
 
 
@@ -790,10 +785,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
                                 if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                    Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable("ContentList",response.body());
-                                    startService(intent);
+
 
                                     for (Contents content:response.body()) {
 
@@ -813,10 +805,7 @@ public class TabAccountActivity extends AppCompatActivity {
                                 }else{
 
                                     //db.addContents();
-                                    Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable("ContentList",response.body());
-                                    startService(intent);
+
 
                                     for (Contents content:response.body()) {
                                         db.addContents(content);
@@ -897,10 +886,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
                                         if(db.getContents()!=null&&db.getContents().size()!=0){
 
-                                            Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
-                                            Bundle bundle = new Bundle();
-                                            bundle.putSerializable("ContentList",response.body());
-                                            startService(intent);
+
 
                                             for (Contents content:response.body()) {
 
@@ -920,10 +906,7 @@ public class TabAccountActivity extends AppCompatActivity {
                                         }else{
 
                                             //db.addContents();
-                                            Intent intent = new Intent(TabAccountActivity.this, ContentDataBaseService.class);
-                                            Bundle bundle = new Bundle();
-                                            bundle.putSerializable("ContentList",response.body());
-                                            startService(intent);
+
 
                                             for (Contents content:response.body()) {
                                                 db.addContents(content);

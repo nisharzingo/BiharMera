@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by ZingoHotels Tech on 31-10-2018.
@@ -241,4 +242,13 @@ public class Contents implements Serializable {
     public void setContentImage(ArrayList<ContentImages> contentImage) {
         this.contentImage = contentImage;
     }
+
+    public static Comparator compareContent = new Comparator() {
+        @Override
+        public int compare(Object o, Object t1) {
+            Contents profile = (Contents) o;
+            Contents profile1 = (Contents) t1;
+            return profile.getContentId()- profile1.getContentId();
+        }
+    };
 }

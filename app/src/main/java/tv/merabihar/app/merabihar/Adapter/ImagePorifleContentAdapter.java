@@ -75,8 +75,15 @@ public class ImagePorifleContentAdapter extends RecyclerView.Adapter<ImagePorifl
                     String img = contents.getContentImage().get(0).getImages();
 
                     if(img!=null&&!img.isEmpty()){
-                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                error(R.drawable.no_image).into(holder.accountpic);
+
+                        if(img.contains(" ")){
+                            Picasso.with(context).load(img.replaceAll(" ","%20")).placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.accountpic);
+                        }else{
+                            Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                    error(R.drawable.no_image).into(holder.accountpic);
+                        }
+
                     }else{
                         holder.accountpic.setImageResource(R.drawable.no_image);
                     }

@@ -17,7 +17,6 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -26,23 +25,19 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.commit451.youtubeextractor.YouTubeExtractionResult;
 import com.commit451.youtubeextractor.YouTubeExtractor;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -68,7 +63,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Timer;
 
 import at.huber.youtubeExtractor.YouTubeUriExtractor;
@@ -81,7 +75,7 @@ import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplaySemibold;
 import tv.merabihar.app.merabihar.CustomInterface.DownloadTaskVideo;
 import tv.merabihar.app.merabihar.CustomInterface.OnBottomReachedListener;
-import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
+import tv.merabihar.app.merabihar.Model.ContentImages;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
 import tv.merabihar.app.merabihar.Model.Likes;
@@ -226,40 +220,15 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
 
                                     if(img!=null&&!img.isEmpty()){
-                                        /*Picasso.with(context).load(img).fit().placeholder(R.drawable.no_image).
-                                                error(R.drawable.no_image).into(holder.mContentPic);*/
-
-                                        Picasso.with(context).load(img).into(new com.squareup.picasso.Target() {
-                                            @Override
-                                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-                                                // Cropping the image
-                                                Bitmap customBitMap =  Bitmap.createBitmap(bitmap, 0, 45, bitmap.getWidth(), bitmap.getHeight()-90);
-
-                                                Glide.with(context)
-                                                        .load(customBitMap)
-                                                        .apply(new RequestOptions()
-                                                                .placeholder(R.drawable.no_image)
-                                                                .error(R.drawable.no_image))
-                                                        .into(holder.mContentPic);
-
-                                            }
-
-                                            @Override
-                                            public void onBitmapFailed(Drawable errorDrawable) {
-                                            }
-
-                                            @Override
-                                            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                                            }
-                                        });
+                                        Picasso.with(context).load(img).placeholder(R.drawable.no_image).
+                                                error(R.drawable.no_image).into(holder.mContentPic);
                                     }else{
                                         holder.mContentPic.setImageResource(R.drawable.no_image);
                                     }
                                 }else{
                                     holder.mContentPic.setImageResource(R.drawable.no_image);
                                 }
+
 
 
 
@@ -298,12 +267,23 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                         holder.mContentPic.getLayoutParams().width = intendedWidth;
                                         holder.mContentPic.getLayoutParams().height = newHeight;*/
 
-                                        Picasso.with(context)
-                                                .load(img)
+                                        if(img.contains(" ")){
+                                            Picasso.with(context)
+                                                    .load(img.replaceAll(" ","%20"))
 
-                                                .placeholder(R.drawable.no_image)
-                                                .error(R.drawable.no_image)
-                                                .into(holder.mContentPic);
+                                                    .placeholder(R.drawable.no_image)
+                                                    .error(R.drawable.no_image)
+                                                    .into(holder.mContentPic);
+                                        }else{
+                                            Picasso.with(context)
+                                                    .load(img)
+
+                                                    .placeholder(R.drawable.no_image)
+                                                    .error(R.drawable.no_image)
+                                                    .into(holder.mContentPic);
+                                        }
+
+
                                         holder.mContentPic.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
 
@@ -314,7 +294,9 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
 
                                 }else{
-                                    holder.mContentPic.setImageResource(R.drawable.no_image);
+
+                                    getContents(contents.getContentId(),holder.mContentPic);
+
                                 }
 
                             }
@@ -923,10 +905,17 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                                     }else{
 
-                                        mMyTask = new DownloadTask()
-                                                .execute(stringToURL(
-                                                        ""+contents.getContentImage().get(0).getImages()
-                                                ));
+                                        if(contents.getContentImage()!=null&&contents.getContentImage().size()!=0){
+                                            mMyTask = new DownloadTask()
+                                                    .execute(stringToURL(
+                                                            ""+contents.getContentImage().get(0).getImages()
+                                                    ));
+                                        }else{
+
+                                            Toast.makeText(context, "No Image Resources", Toast.LENGTH_SHORT).show();
+                                        }
+
+
                                     }
 
                                     //shareApplication();
@@ -941,47 +930,8 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 }
                             });
 
-                           /*
-                                    Youtube download
 
-                            holder.mDownLoad.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
 
-                                    if (Util.isNetworkAvailable(context)) {
-
-                                        fileNames = contents.getContentId()+""+contents.getProfileId();
-
-                                        AsyncTask mMyTask;
-                                        if(contents.getContentType().equalsIgnoreCase("Video")) {
-
-                                            url = contents.getContentURL();
-
-                                            if (url != null && !url.isEmpty()) {
-                                                startImageDownload(url,fileNames);
-                                            }
-
-                                        }else{
-
-                                       *//* if (checkPermission()) {
-                                            startImageDownload(""+contents.getContentImage().get(0).getImages());
-                                        } else {
-                                            requestPermission();
-                                        }*//*
-                                            mMyTask = new DownloadImage()
-                                                    .execute(stringToURL(
-                                                            ""+contents.getContentImage().get(0).getImages()
-                                                    ));
-                                        }
-
-                                    }else{
-
-                                        Toast.makeText(context, "Please check your internet connection !", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                }
-                            });
-*/
                             holder.mShare.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -1150,6 +1100,19 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
     public void addAll(List<Contents> mcList) {
         for (Contents mc : mcList) {
             add(mc);
+        }
+    }
+
+    public void adds(Contents mc) {
+        //System.out.println("BookingAndTraveller = "+mc.getRoomBooking().getTotalAmount());
+        mList.add(0,mc);
+        //System.out.println("BookingAndTraveller = "+list.size());
+        notifyItemInserted(0);
+    }
+
+    public void addAlls(List<Contents> mcList) {
+        for (Contents mc : mcList) {
+            adds(mc);
         }
     }
 
@@ -2418,19 +2381,138 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         return result == PackageManager.PERMISSION_GRANTED;
     }
 
-  /*  private void startImageDownload(final String url,final String fileNames) {
 
-
-        Intent intent = new Intent(context, BackgroundNotificationService.class);
-        intent.putExtra("Url",url);
-        intent.putExtra("File",fileNames);
-        context.startService(intent);
-
-    }*/
 
     private void requestPermission() {
 
         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+    }
+
+    public void getContents(final int id,final ImageView iv)
+    {
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final ContentAPI categoryAPI = Util.getClient().create(ContentAPI.class);
+                Call<Contents> getCat = categoryAPI.getContentsById(id);
+                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                getCat.enqueue(new Callback<Contents>() {
+
+                    @Override
+                    public void onResponse(Call<Contents> call, Response<Contents> response) {
+
+
+
+                        if(response.code() == 200)
+                        {
+
+                            Contents contents = response.body();
+
+                            if(contents != null )
+                            {
+
+                                if(contents.getContentImage()!=null&&contents.getContentImage().size()!=0){
+
+                                    ArrayList<ContentImages> blogImages = contents.getContentImage();
+
+
+                                    if (blogImages != null && blogImages.size() != 0) {
+
+
+
+                                        String img = contents.getContentImage().get(0).getImages();
+
+                                        if(img!=null&&!img.isEmpty()){
+
+                                        /*URL url = new URL(img);
+                                        Bitmap loadedImage = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+
+                                        // Gets the width you want it to be
+                                        int intendedWidth = holder.mContentPic.getWidth();
+
+                                        // Gets the downloaded image dimensions
+                                        int originalWidth = loadedImage.getWidth();
+                                        int originalHeight = loadedImage.getHeight();
+
+                                        // Calculates the new dimensions
+                                        float scale = (float) intendedWidth / originalWidth;
+                                        int newHeight = (int) Math.round(originalHeight * scale);
+
+                                        // Resizes mImageView. Change "FrameLayout" to whatever layout mImageView is located in.
+                                        holder.mContentPic.setLayoutParams(new FrameLayout.LayoutParams(
+                                                FrameLayout.LayoutParams.WRAP_CONTENT,
+                                                FrameLayout.LayoutParams.WRAP_CONTENT));
+                                        holder.mContentPic.getLayoutParams().width = intendedWidth;
+                                        holder.mContentPic.getLayoutParams().height = newHeight;*/
+
+                                            if(img.contains(" ")){
+                                                Picasso.with(context)
+                                                        .load(img.replaceAll(" ","%20"))
+
+                                                        .placeholder(R.drawable.no_image)
+                                                        .error(R.drawable.no_image)
+                                                        .into(iv);
+                                            }else{
+                                                Picasso.with(context)
+                                                        .load(img)
+
+                                                        .placeholder(R.drawable.no_image)
+                                                        .error(R.drawable.no_image)
+                                                        .into(iv);
+                                            }
+
+
+                                            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+
+                                        }else{
+                                            iv.setImageResource(R.drawable.no_image);
+                                        }
+
+
+
+
+
+                                    }
+
+
+                                }
+
+
+
+                            }
+                            else
+                            {
+
+
+                            }
+                        }else{
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Contents> call, Throwable t) {
+
+
+
+
+//                        Toast.makeText(CommentsScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //System.out.println(TAG+" thread started");
+
+            }
+
+        });
 
     }
 

@@ -278,7 +278,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(ContentImageDetailScreen.this, "triggered", Toast.LENGTH_SHORT).show();
+
 
                     new CountDownTimer(300, 300) {
                         @Override
@@ -575,7 +575,19 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             if(contents!=null) {
 
                 String vWatch = "W" + contents.getContentId();
-                getFollowingsByProfileId(profileId,contents.getProfileId());
+
+                if(profileId!=0){
+
+                    if(profileId==contents.getProfileId()){
+
+                        mFollow.setVisibility(View.GONE);
+                    }else{
+                        getFollowingsByProfileId(profileId,contents.getProfileId());
+
+                    }
+
+                }
+
 
 
                 if(contents.getViews()==null){
@@ -665,6 +677,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
 
                 if (contents.getProfile() == null) {
+                    mProfileName.setText(""+contents.getCreatedBy());
                      getProfile(contents.getProfileId());
                 } else {
 
@@ -771,43 +784,9 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     ActivityAdapter activityImagesadapter = new ActivityAdapter(ContentImageDetailScreen.this,blogImage);
                     mContentPic.setAdapter(activityImagesadapter);
 
-                   /* final int size = blogImage.size();
+                }else{
 
-                    final Handler handler = new Handler();
-                    final Runnable Update = new Runnable() {
-                        public void run() {
-                            if (currentPage == (size - 1)&& start == 0) {
-                                currentPage = --currentPage;
-                                start = 1;
-                                end = 0;
-                            }else if(currentPage < (size - 1) && currentPage != 0 && end == 0&& start == 1){
-                                currentPage = --currentPage;
-                            }else if(currentPage == 0 && end == 0 && start == 1){
-                                currentPage = 0;
-                                end = 1;
-                                start = 0;
-                            }else if(currentPage <= (size - 1) && start == 0){
-
-                                currentPage = ++currentPage;
-                            }else if(currentPage == 0&& start == 0){
-
-                                currentPage = ++currentPage;
-                            }else{
-
-                            }
-                            mContentPic.setCurrentItem(currentPage, true);
-                        }
-                    };
-
-                    timer = new Timer(); // This will create a new Thread
-                    timer .schedule(new TimerTask() { // task to be scheduled
-
-                        @Override
-                        public void run() {
-                            handler.post(Update);
-                        }
-                    }, DELAY_MS, PERIOD_MS);*/
-
+                    getContents(contents.getContentId());
                 }
 
 
@@ -1691,7 +1670,93 @@ public class ContentImageDetailScreen extends AppCompatActivity {
         canvas.drawBitmap(resized,pw,ph,paint);
         return result;
     }
+    public void getContents(final int id)
+    {
 
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                final ContentAPI categoryAPI = Util.getClient().create(ContentAPI.class);
+                Call<Contents> getCat = categoryAPI.getContentsById(id);
+                //Call<ArrayList<Category>> getCat = categoryAPI.getCategories();
+
+                getCat.enqueue(new Callback<Contents>() {
+
+                    @Override
+                    public void onResponse(Call<Contents> call, Response<Contents> response) {
+
+
+
+                        if(response.code() == 200)
+                        {
+
+                            contents = response.body();
+
+                            if(contents != null )
+                            {
+
+                                if(contents.getContentImage()!=null&&contents.getContentImage().size()!=0){
+
+                                    ArrayList<ContentImages> blogImages = contents.getContentImage();
+
+
+                                    if (blogImages != null && blogImages.size() != 0) {
+
+
+
+                                        ArrayList<String> blogImage = new ArrayList<>();
+
+                                        //  URL url = new URL(blogImages.get(0).getImage());
+                                        // thumbnail = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+
+                                        for (int i=0;i<blogImages.size();i++)
+                                        {
+                                            blogImage.add(blogImages.get(i).getImages());
+
+                                        }
+
+                                        ActivityAdapter activityImagesadapter = new ActivityAdapter(ContentImageDetailScreen.this,blogImage);
+                                        mContentPic.setAdapter(activityImagesadapter);
+
+                                    }
+
+
+                                }
+
+
+
+                            }
+                            else
+                            {
+
+
+                            }
+                        }else{
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Contents> call, Throwable t) {
+
+
+
+
+//                        Toast.makeText(CommentsScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                //System.out.println(TAG+" thread started");
+
+            }
+
+        });
+
+    }
 
 }
 

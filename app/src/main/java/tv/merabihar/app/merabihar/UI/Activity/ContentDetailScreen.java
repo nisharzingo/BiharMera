@@ -15,13 +15,11 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.content.FileProvider;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -29,7 +27,6 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
@@ -51,14 +48,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tv.merabihar.app.merabihar.Adapter.ActiveTargetFragmentsAdapter;
 import tv.merabihar.app.merabihar.Adapter.CommentsListAdapter;
-import tv.merabihar.app.merabihar.Adapter.ContentAdapterVertical;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_SF_Pro_Light;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplayRegular;
-import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
-import tv.merabihar.app.merabihar.Model.ContentImages;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
 import tv.merabihar.app.merabihar.Model.Likes;
@@ -163,17 +156,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
             if(contents!=null){
 
-                if(profileId!=0){
 
-                    if(profileId==contents.getProfileId()){
-
-                        mFollow.setVisibility(View.GONE);
-                    }else{
-                        //getFollowingByProfileId(profileId,mFollowLay,blogDataModel.getProfileId());
-
-                    }
-
-                }
                 setViewPager();
             }else{
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -520,7 +503,18 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 //                if (Util.isNetworkAvailable(ContentDetailScreen.this)) {
 
-                    getFollowingsByProfileId(profileId,contents.getProfileId());
+
+                    if(profileId!=0){
+
+                        if(profileId==contents.getProfileId()){
+
+                            mFollow.setVisibility(View.GONE);
+                        }else{
+                            getFollowingsByProfileId(profileId,contents.getProfileId());
+
+                        }
+
+                    }
                     getGoalsByProfileId(profileId);
 
                     if (contents.getProfile() == null) {

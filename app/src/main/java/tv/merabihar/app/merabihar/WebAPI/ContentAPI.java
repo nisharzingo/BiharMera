@@ -34,6 +34,9 @@ public interface ContentAPI {
     @GET("Contents/{id}")
     Call<Contents> getContentsById(@Path("id") int id);
 
+    @PUT("Contents/{id}")
+    Call<Contents> updateContentsById(@Path("id") int id,@Body Contents body);
+
 
     @POST("Contents")
     Call<Contents> postContent(@Body Contents body);
