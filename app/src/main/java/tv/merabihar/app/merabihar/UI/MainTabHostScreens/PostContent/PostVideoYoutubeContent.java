@@ -143,45 +143,13 @@ public class PostVideoYoutubeContent extends AppCompatActivity {
                 public void onClick(View view) {
 
                     //  System.out.println("Selected Image List "+selectedImageList.size());
+                    if (Util.isNetworkAvailable(PostVideoYoutubeContent.this)) {
 
-                    if(activities!=null&&activities.size()!=0){
-                        int i = adapter.getCount();
-                        String selected = "";
+                        validate();
 
-                        activity = new SubCategories();
-                        /*for (int j=0;j<i;j++)
-                        {
-                            //System.out.println();
-                            if(((LinearLayout)customGridView.getChildAt(j)).isActivated())
-                            {
+                    }else{
 
-                                activity = activities.get(j);
-                                activityId = activities.get(j).getSubCategoriesId();
-                                break;
-
-                            }
-                        }*/
-
-                        activityId = 101;
-                        if(activityId!=0){
-
-                            System.out.println("URL VIdeo = "+extractYTId(mURL.getText().toString()));
-
-                            if (Util.isNetworkAvailable(PostVideoYoutubeContent.this)) {
-
-                                validate();
-
-                            }else{
-
-                                SnackbarViewer.showSnackbar(findViewById(R.id.post_youtube_con_main),"No Internet connection");
-                            }
-
-                        }else{
-
-                            SnackbarViewer.showSnackbar(findViewById(R.id.post_youtube_con_main),"Please select atleast only one tags !");
-
-                        }
-
+                        SnackbarViewer.showSnackbar(findViewById(R.id.post_youtube_con_main),"No Internet connection");
                     }
 
                 }

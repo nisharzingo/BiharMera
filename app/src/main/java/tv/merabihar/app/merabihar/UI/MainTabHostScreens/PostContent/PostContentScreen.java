@@ -183,38 +183,7 @@ public class PostContentScreen extends AppCompatActivity {
 
                     //  System.out.println("Selected Image List "+selectedImageList.size());
 
-                    if(activities!=null&&activities.size()!=0){
-                        int i = adapter.getCount();
-                        String selected = "";
-
-                        activity = new SubCategories();
-                       /* for (int j=0;j<i;j++)
-                        {
-                            //System.out.println();
-                            if(((LinearLayout)customGridView.getChildAt(j)).isActivated())
-                            {
-
-                                activity = activities.get(j);
-                                activityId = activities.get(j).getSubCategoriesId();
-                                break;
-
-                            }
-                        }*/
-
-                       activityId = 101;
-                        if(activityId!=0){
-
-                            validate();
-                        }else{
-
-                            Toast.makeText(PostContentScreen.this, "Please Select atleast one tags", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-
-
-
+                    validate();
 
 
                 }
@@ -462,11 +431,7 @@ public class PostContentScreen extends AppCompatActivity {
         String title = mTitle.getText().toString();
         // String shortDesc = mShort.getText().toString();
         String longDesc = mLong.getText().toString();
-        String tags = mTags.getText().toString();
 
-
-        System.out.println(" Tags id = "+tags);
-        System.out.println(" Tags id = "+interestList.contains(tags));
 
 
        /* if(title==null||title.isEmpty()){
