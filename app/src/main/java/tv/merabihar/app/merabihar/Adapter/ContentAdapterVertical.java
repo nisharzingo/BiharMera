@@ -194,7 +194,15 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                             holder.mContentTitle.setText(""+contentTitle);
                             String total_views = contents.getViews();
                             if(total_views!=null){
-                                holder.mTotalWatchedPost.setText(total_views);
+                                int no  = Integer.parseInt(total_views);
+                                if(no>=1000){
+                                    Double newformat = (no*1.0)/1000  ;
+                                    holder.mTotalWatchedPost.setText(String.format("%.2f", newformat) + "k");
+                                }else {
+                                    holder.mTotalWatchedPost.setText(total_views);
+                                }
+                            }else {
+                                holder.mTotalWatchedPost.setText("0");
                             }
 
 
