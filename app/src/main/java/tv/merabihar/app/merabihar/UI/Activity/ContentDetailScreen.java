@@ -52,6 +52,7 @@ import tv.merabihar.app.merabihar.Adapter.CommentsListAdapter;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_SF_Pro_Light;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplayRegular;
+import tv.merabihar.app.merabihar.DataBase.DataBaseHelper;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
 import tv.merabihar.app.merabihar.Model.Likes;
@@ -107,6 +108,8 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     Handler handler;
     int Seconds, Minutes, MilliSeconds ;
 
+    DataBaseHelper db ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +119,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             setContentView(R.layout.activity_content_detail_screen);
             //GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
             profileId = PreferenceHandler.getInstance(ContentDetailScreen.this).getUserId();
-
+            db = new DataBaseHelper(ContentDetailScreen.this);
             handler = new Handler() ;
             mback = (ImageView)findViewById(R.id.back_view);
             mSubCategory = (TextViewSFProDisplayRegular)findViewById(R.id.subcategory_of_content);
@@ -186,13 +189,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             }
 
 
-            mback.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
-                    ContentDetailScreen.this.finish();
-                }
-            });
 
             mProfileContent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -455,42 +452,40 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 @Override
                 public void onClick(View view) {
 
-                    if(Util.isNetworkAvailable(ContentDetailScreen.this)){
+                    if (Util.isNetworkAvailable(ContentDetailScreen.this)) {
 
-                        fileNames = contents.getContentId()+""+contents.getProfileId();
+                        fileNames = contents.getContentId() + "" + contents.getProfileId();
 
                         AsyncTask mMyTask;
-                        if(contents.getContentType().equalsIgnoreCase("Video")) {
+                        if (contents.getContentType().equalsIgnoreCase("Video")) {
 
                             urls = contents.getContentURL();
-
 
                             if (urls != null && !urls.isEmpty()) {
 
                                 mMyTask = new DownloadTasks()
                                         .execute(stringToURL(
-                                                "https://img.youtube.com/vi/"+urls+"/0.jpg"
+                                                "https://img.youtube.com/vi/" + urls + "/0.jpg"
                                         ));
 
+
+                            } else {
+
+                                mMyTask = new DownloadTasks()
+                                        .execute(stringToURL(
+                                                "" + contents.getContentImage().get(0).getImages()
+                                        ));
                             }
 
-                        }else{
+                            //shareApplication();
 
-                            mMyTask = new DownloadTasks()
-                                    .execute(stringToURL(
-                                            ""+contents.getContentImage().get(0).getImages()
-                                    ));
+                        } else {
+
+                            Toast.makeText(ContentDetailScreen.this, "No Internet connection", Toast.LENGTH_SHORT).show();
                         }
 
-                        //shareApplication();
 
-                    }else{
-
-                        Toast.makeText(ContentDetailScreen.this, "No Internet connection", Toast.LENGTH_SHORT).show();
                     }
-
-
-
                 }
             });
 
@@ -526,6 +521,13 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 //                if (Util.isNetworkAvailable(ContentDetailScreen.this)) {
 
+                if(contents.getCreatedBy()!=null){
+                    mProfileName.setText(""+contents.getCreatedBy());
+                }else{
+
+                    mProfileName.setText("Guest");
+                }
+
 
                     if(profileId!=0){
 
@@ -555,43 +557,112 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 //                }
 
-                String contentCurrDate = contents.getCreditName();
-                String today = new SimpleDateFormat("dd/mm/yyyy").format(new Date());
+                if(contents.getCreditName()==null){
 
-                if(contentCurrDate!=null&&contentCurrDate.equals(today)){
+                    contents.setCreditName(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
                     if(contents.getViews()==null){
 
                         postWatchedCount.setText("1");
-                        contents.setViews(1+"");
+                        contents.setViews(200+"");
+                        if(db.getContentById(contents.getContentId())!=null){
+
+                            db.updateContents(contents);
+                            System.out.println("Data Base Update Service");
+
+                        }
                         updateContent(contents);
 
                     }else{
+
                         int total = Integer.parseInt(contents.getViews());
                         postWatchedCount.setText(++total + "");
                         contents.setViews(total+"");
+                        if(db.getContentById(contents.getContentId())!=null){
+
+                            db.updateContents(contents);
+                            System.out.println("Data Base Update Service");
+
+                        }
                         updateContent(contents);
+
                     }
 
                 }else{
 
-                    if(contents.getViews()==null){
+                    String creditDate = contents.getCreditName();
+                    if(creditDate!=null){
+                        String todayDate = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+                        try{
 
-                        postWatchedCount.setText("200");
-                        contents.setViews("200");
-                        contents.setCreditName(today);
-                        updateContent(contents);
+                            if(todayDate.equals(creditDate)){
 
-                    }else{
+                                if(contents.getViews()==null){
 
-                        int total = Integer.parseInt(contents.getViews());
-                        postWatchedCount.setText(String.valueOf(total+200));
-                        contents.setViews(String.valueOf(total+200));
-                        contents.setCreditName(today);
-                        updateContent(contents);
+                                    postWatchedCount.setText("1");
+                                    contents.setViews(200+"");
+                                    if(db.getContentById(contents.getContentId())!=null){
+
+                                        db.updateContents(contents);
+                                        System.out.println("Data Base Update Service");
+
+                                    }
+                                    updateContent(contents);
+
+                                }else{
+                                    int total = Integer.parseInt(contents.getViews());
+                                    postWatchedCount.setText(++total + "");
+                                    contents.setViews(total+"");
+                                    if(db.getContentById(contents.getContentId())!=null){
+
+                                        db.updateContents(contents);
+                                        System.out.println("Data Base Update Service");
+
+                                    }
+                                    updateContent(contents);
+
+                                }
+                            }else{
+                                contents.setCreditName(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+
+                                if(contents.getViews()==null){
+
+                                    postWatchedCount.setText("1");
+                                    contents.setViews(200+"");
+                                    if(db.getContentById(contents.getContentId())!=null){
+
+                                        db.updateContents(contents);
+                                        System.out.println("Data Base Update Service");
+
+                                    }
+                                    updateContent(contents);
+
+                                }else{
+                                    int total = Integer.parseInt(contents.getViews());
+                                    postWatchedCount.setText(++total + "");
+                                    contents.setViews(total+"");
+                                    if(db.getContentById(contents.getContentId())!=null){
+
+                                        db.updateContents(contents);
+                                        System.out.println("Data Base Update Service");
+
+                                    }
+                                    updateContent(contents);
+
+                                }
+
+
+                            }
+
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
 
                 }
+
+
 
                 if (contents.getSubCategories() != null) {
                    mSubCategory.setText(""+contents.getSubCategories().getSubCategoriesName());
@@ -2016,7 +2087,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     // Custom method to save a bitmap into internal storage
     public Bitmap mark(Bitmap src) {
 
-        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.app_logo_home);
+        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.logo_mbtv);
         int w = src.getWidth();
         int h = src.getHeight();
         int pw=w-w;

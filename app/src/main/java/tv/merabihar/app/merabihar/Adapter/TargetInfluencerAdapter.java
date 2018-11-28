@@ -93,11 +93,16 @@ public class TargetInfluencerAdapter extends RecyclerView.Adapter<TargetInfluenc
                 }
 
             }else{
-                holder.mActivateOffer.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
 
+            }
 
+            holder.mActivateOffer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(holder.mActivateOffer.getText().toString().equalsIgnoreCase("Activated")){
+
+                    }else{
                         SubscribedGoals sg = new SubscribedGoals();
                         sg.setGoalId(targetDes.getGoalId());
                         sg.setStatus("Activated");
@@ -144,13 +149,16 @@ public class TargetInfluencerAdapter extends RecyclerView.Adapter<TargetInfluenc
 
 
                         }
-
-
-
-
                     }
-                });
-            }
+
+
+
+
+
+
+
+                }
+            });
 
 
 

@@ -115,6 +115,51 @@ public class FollowFragments extends Fragment {
 
 
         if (Util.isNetworkAvailable(getActivity())) {
+
+            if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                ArrayList<Contents> contents = db.getContents();
+
+                if(contents!=null && contents.size()!=0) {
+
+                    ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+
+                    int count = contents.size();
+                    int init = count - 1;
+
+                    while (count >= 9) {
+
+                        ArrayList<Contents> list = new ArrayList<>();
+
+                        for (int i = 0; i < 9; i++) {
+                            list.add(contents.get(init));
+                            init--;
+                        }
+                        contentList.add(list);
+                        count = count - 9;
+                    }
+
+                    if (contentList.size() != 0) {
+                        loadNextPageDb(contentList);
+                    }
+                }
+
+
+
+
+            }
+
+            if(db.getCategories()!=null&&db.getCategories().size()!=0){
+
+                FollowFragmentCategoriesAdapter followCategoriesAdapter = new FollowFragmentCategoriesAdapter(context, db.getCategories());
+                categoryRecyclerView.setLayoutManager(horizontalLinearLayoutManager);
+                categoryRecyclerView.setHasFixedSize(true);
+                categoryRecyclerView.setAdapter(followCategoriesAdapter);
+
+                mCategoryProgressBar.setVisibility(View.INVISIBLE);
+            }
+            mContentProgressBar.setVisibility(View.GONE);
+            mCategoryProgressBar.setVisibility(View.GONE);
             loadFirstSetOfBlogs();
             getCategories();
 
@@ -154,9 +199,7 @@ public class FollowFragments extends Fragment {
                 }
                 mContentProgressBar.setVisibility(View.GONE);
 
-                if(db.getCategories()!=null&&db.getCategories().size()!=0){
 
-                }
             }else{
                 Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
             }
@@ -358,6 +401,7 @@ public class FollowFragments extends Fragment {
                                 }
 
                                 if(contentList!=null&&contentList.size()!=0){
+                                    categoryRecyclerView.removeAllViews();
                                     FollowFragmentContentAdapter followFragmentContentAdapter = new FollowFragmentContentAdapter(context, contentList);
                                     contentRecyclerView.setLayoutManager(verticalLinearLayoutManager);
                                     contentRecyclerView.setHasFixedSize(true);
@@ -521,7 +565,7 @@ public class FollowFragments extends Fragment {
         Log.d(TAG, "loadFirstPage: "+list.size());
         //Collections.reverse(list);
         mContentProgressBar.setVisibility(View.GONE);
-        adapter.addAll(list);
+        adapter.addAlls(list);
 
         if (list != null && list.size() !=0)
             adapter.addLoadingFooter();
@@ -668,16 +712,15 @@ public class FollowFragments extends Fragment {
 
     private void loadNextPageDb(ArrayList<ArrayList<Contents>> list) {
         //Collections.reverse(list);
-        adapter.removeLoadingFooter();
-        isLoading = false;
-
+        Log.d(TAG, "loadFirstPage: "+list.size());
+        //Collections.reverse(list);
+        mContentProgressBar.setVisibility(View.GONE);
         adapter.addAll(list);
 
         if (list != null && list.size() !=0)
-        {
-            //adapter.addLoadingFooter();
-            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
-        }
+            adapter.addLoadingFooter();
+        else
+            isLastPage = true;
 
     }
 

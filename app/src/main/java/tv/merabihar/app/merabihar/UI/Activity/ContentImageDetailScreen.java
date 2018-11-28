@@ -58,6 +58,7 @@ import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_SF_Pro_Light;
 import tv.merabihar.app.merabihar.CustomFonts.TextViewSFProDisplayRegular;
 import tv.merabihar.app.merabihar.CustomViews.SnackbarViewer;
+import tv.merabihar.app.merabihar.DataBase.DataBaseHelper;
 import tv.merabihar.app.merabihar.Model.ContentImages;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.FollowsWithMapping;
@@ -111,6 +112,9 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     final long DELAY_MS = 5000;
     final long PERIOD_MS = 3500;
 
+    DataBaseHelper db ;
+
+
 
 
     @Override
@@ -124,6 +128,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             profileId = PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId();
 
             //mContentPic = (RoundedImageView)findViewById(R.id.content_pic);
+            db = new DataBaseHelper(ContentImageDetailScreen.this);
             mContentPic = (AutoScrollAdapter) findViewById(R.id.content_pic);
             mContentPic.setStopScrollWhenTouch(true);
             mback = (ImageView)findViewById(R.id.back_view);
@@ -615,50 +620,117 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                 }
 
+                if(contents.getCreatedBy()!=null){
+                    mProfileName.setText(""+contents.getCreatedBy());
+                }else{
 
-                String contentCurrDate = contents.getCreditName();
-                String today = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+                    mProfileName.setText("Guest");
+                }
 
-                if(contentCurrDate.equals(today)){
+                if(contents.getCreditName()==null){
+
+                    contents.setCreditName(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
                     if(contents.getViews()==null){
 
                         postWatchedCount.setText("1");
-                        contents.setViews(1+"");
+                        contents.setViews(200+"");
+                        if(db.getContentById(contents.getContentId())!=null){
+
+                            db.updateContents(contents);
+                            System.out.println("Data Base Update Service");
+
+                        }
                         updateContent(contents);
 
                     }else{
+
                         int total = Integer.parseInt(contents.getViews());
                         postWatchedCount.setText(++total + "");
                         contents.setViews(total+"");
+                        if(db.getContentById(contents.getContentId())!=null){
+
+                            db.updateContents(contents);
+                            System.out.println("Data Base Update Service");
+
+                        }
                         updateContent(contents);
 
                     }
 
                 }else{
 
-                    if(contents.getViews()==null){
+                    String creditDate = contents.getCreditName();
+                    if(creditDate!=null){
+                        String todayDate = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+                        try{
 
-                        postWatchedCount.setText("200");
-                        contents.setViews("200");
-                        contents.setCreditName(today);
-                        updateContent(contents);
+                            if(todayDate.equals(creditDate)){
 
-                    }else{
+                                if(contents.getViews()==null){
 
-                        int total = Integer.parseInt(contents.getViews());
-                        postWatchedCount.setText(String.valueOf(total+200));
-                        contents.setViews(String.valueOf(total+200));
-                        contents.setCreditName(today);
-                        updateContent(contents);
+                                    postWatchedCount.setText("1");
+                                    contents.setViews(200+"");
+                                    if(db.getContentById(contents.getContentId())!=null){
+
+                                        db.updateContents(contents);
+                                        System.out.println("Data Base Update Service");
+
+                                    }
+                                    updateContent(contents);
+
+                                }else{
+                                    int total = Integer.parseInt(contents.getViews());
+                                    postWatchedCount.setText(++total + "");
+                                    contents.setViews(total+"");
+                                    if(db.getContentById(contents.getContentId())!=null){
+
+                                        db.updateContents(contents);
+                                        System.out.println("Data Base Update Service");
+
+                                    }
+                                    updateContent(contents);
+
+                                }
+                            }else{
+                                contents.setCreditName(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+
+                                if(contents.getViews()==null){
+
+                                    postWatchedCount.setText("1");
+                                    contents.setViews(200+"");
+                                    if(db.getContentById(contents.getContentId())!=null){
+
+                                        db.updateContents(contents);
+                                        System.out.println("Data Base Update Service");
+
+                                    }
+                                    updateContent(contents);
+
+                                }else{
+                                    int total = Integer.parseInt(contents.getViews());
+                                    postWatchedCount.setText(++total + "");
+                                    contents.setViews(total+"");
+                                    if(db.getContentById(contents.getContentId())!=null){
+
+                                        db.updateContents(contents);
+                                        System.out.println("Data Base Update Service");
+
+                                    }
+                                    updateContent(contents);
+
+                                }
+
+
+                            }
+
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
 
-
                 }
-
-
-
-
 
 
 
@@ -1706,7 +1778,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     // Custom method to save a bitmap into internal storage
     public Bitmap mark(Bitmap src) {
 
-        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.app_logo_home);
+        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.logo_mbtv);
         int w = src.getWidth();
         int h = src.getHeight();
         int pw=w-w;

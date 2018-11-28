@@ -144,9 +144,16 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                     }
                 }
 
-                if ( new Date().getTime() > past.getTime()) {
+                if ( new Date().getTime() >= past.getTime()) {
 
-                    mOfferExpireLay.setVisibility(View.GONE);
+                    mOfferExpireLay.setVisibility(View.VISIBLE);
+
+                    if (duration != null&&!duration.isEmpty()) {
+                        mExpDate.setText((duration) + " Days left");
+                    } else {
+                        mExpDate.setText("Offer Activated");
+                    }
+
 
                     if(targetDesc.getGoalId()==3){
 
@@ -419,7 +426,7 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
                 }else {
                     mOfferExpireLay.setVisibility(View.VISIBLE);
 
-                    if (duration != null) {
+                    if (duration != null&&!duration.isEmpty()) {
                         mExpDate.setText((duration) + " Days left");
                     } else {
                         mExpDate.setText("Offer Activated");
@@ -950,7 +957,13 @@ public class InfluencerProgramDetailScreen extends AppCompatActivity {
 
             long diff = d1.getTime()-new Date().getTime();
             long diffDays = diff / (24 * 60 * 60 * 1000);
-            return  String.valueOf(diffDays+1);
+
+            if(diffDays>=0){
+                return  String.valueOf(diffDays+1);
+            }else{
+                return  "";
+            }
+
         }catch(Exception e){
             e.printStackTrace();
             return null;
