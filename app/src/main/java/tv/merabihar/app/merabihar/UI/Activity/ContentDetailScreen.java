@@ -523,6 +523,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             if(contents!=null) {
 
                 String vWatch = "W" + contents.getContentId();
+                mProfileName.setText(""+contents.getCreatedBy());
 
 //                if (Util.isNetworkAvailable(ContentDetailScreen.this)) {
 
@@ -688,6 +689,17 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 String blogShort = contents.getDescription();
                 String createdDate = contents.getCreatedDate();
 
+/*                String uName = PreferenceHandler.getInstance(ContentDetailScreen.this).getUserFullName();
+                if(uName!=null){
+                    mProfileName.setText(uName);
+                }else {
+                    mProfileName.setText("Guest");
+
+                }*/
+
+
+
+
                 if(createdDate!=null||!createdDate.isEmpty()){
 
                     if(createdDate.contains("T")){
@@ -724,6 +736,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 }else {
                     mContentDesc.setVisibility(View.GONE);
                 }
+
 
 
             }
@@ -772,7 +785,8 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                             UserProfile profile = response.body();
 
-                            mProfileName.setText(""+profile.getFullName());
+
+//                            mProfileName.setText(""+profile.getFullName());
 
                             if(profile.getProfilePhoto()!=null){
 

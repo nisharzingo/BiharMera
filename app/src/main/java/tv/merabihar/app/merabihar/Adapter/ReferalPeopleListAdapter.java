@@ -76,8 +76,8 @@ public class ReferalPeopleListAdapter extends RecyclerView.Adapter<ReferalPeople
             double  balance = coinsUsed+coinsValue;
             double amount = ((balance*1.0)/100.0);
 
-            holder.total_earning_value.setText("Rs "+amount);
-            getDirectRefer("MBR"+profile.getProfileId(),holder.total_invite_value);
+            TextView earn_textview = holder.total_earning_value;
+            getDirectRefer("MBR"+profile.getProfileId(),holder.total_invite_value, earn_textview);
 
            /* String date = profile.getSignUpDate();
 
@@ -145,7 +145,7 @@ public class ReferalPeopleListAdapter extends RecyclerView.Adapter<ReferalPeople
 
     }
 
-    private void getDirectRefer(final String code,final TextView tv){
+    private void getDirectRefer(final String code, final TextView tv, final TextView earn_textview){
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -173,15 +173,19 @@ public class ReferalPeopleListAdapter extends RecyclerView.Adapter<ReferalPeople
                             {
                                 //Collections.shuffle(responseProfile);
 
+                               int size =  response.body().size();
 
-                                tv.setText(""+response.body().size());
+                                tv.setText(""+size);
 
+                                earn_textview.setText( String.valueOf(((size*0.5)+0.5)) );
 
 
                             }
                             else
                             {
 
+                                tv.setText(""+0);
+                                earn_textview.setText( String.valueOf(0.5) );
 
                             }
                         }
