@@ -623,7 +623,6 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 if(contents.getCreatedBy()!=null){
                     mProfileName.setText(""+contents.getCreatedBy());
                 }else{
-
                     mProfileName.setText("Guest");
                 }
 
@@ -646,8 +645,18 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     }else{
 
                         int total = Integer.parseInt(contents.getViews());
-                        postWatchedCount.setText(++total + "");
-                        contents.setViews(total+"");
+//                        postWatchedCount.setText(++total + "");
+
+                        contents.setViews(++total+"");
+
+                        if(total+1>=1000){
+                            Double newformat = ( (total+1) * 1.0)/1000  ;
+                            postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                        }else {
+                            postWatchedCount.setText(++total +"");
+                        }
+
+
                         if(db.getContentById(contents.getContentId())!=null){
 
                             db.updateContents(contents);
@@ -670,6 +679,8 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                                 if(contents.getViews()==null){
 
                                     postWatchedCount.setText("1");
+
+
                                     contents.setViews(200+"");
                                     if(db.getContentById(contents.getContentId())!=null){
 
@@ -681,7 +692,15 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                                 }else{
                                     int total = Integer.parseInt(contents.getViews());
-                                    postWatchedCount.setText(++total + "");
+//                                    postWatchedCount.setText(++total + "");
+                                    if(total+1>=1000){
+                                        Double newformat = ( (total+1) * 1.0)/1000  ;
+                                        postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                                    }else {
+                                        postWatchedCount.setText(++total +"");
+                                    }
+
+
                                     contents.setViews(total+"");
                                     if(db.getContentById(contents.getContentId())!=null){
 
@@ -709,7 +728,15 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                                 }else{
                                     int total = Integer.parseInt(contents.getViews());
-                                    postWatchedCount.setText(++total + "");
+//                                    postWatchedCount.setText(++total + "");
+                                    if(total+1>=1000){
+                                        Double newformat = ( (total+1) * 1.0)/1000  ;
+                                        postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                                    }else {
+                                        postWatchedCount.setText(++total +"");
+                                    }
+
+
                                     contents.setViews(total+"");
                                     if(db.getContentById(contents.getContentId())!=null){
 

@@ -1,17 +1,24 @@
 package tv.merabihar.app.merabihar.UI.Activity;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -190,8 +197,6 @@ public class SettingScreen extends AppCompatActivity {
 
             navBarListView = findViewById(R.id.settings_list);
 
-            setUpNavbarBasedOnRole();
-
             navBarListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -215,8 +220,6 @@ public class SettingScreen extends AppCompatActivity {
                 }
             });
 
-
-
             mWhatsapp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -229,7 +232,6 @@ public class SettingScreen extends AppCompatActivity {
                     } catch (android.content.ActivityNotFoundException ex) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.whatsapp")));
                     }
-
                 }
             });
 
@@ -383,6 +385,22 @@ public class SettingScreen extends AppCompatActivity {
 
                             referalCode = PreferenceHandler.getInstance(SettingScreen.this).getReferalcode();
 
+                            if(profile.getReferralCodeUsed()!=null&&!profile.getReferralCodeUsed().isEmpty()){
+
+                                try {
+                                    setUpNavbarBasedOnRole("ReferCode");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }else{
+                                try {
+                                    setUpNavbarBasedOnRole(null);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
 
                             if (Util.isNetworkAvailable(SettingScreen.this)) {
                                 getGoalsByProfileId(profile.getProfileId(),profile);
@@ -409,7 +427,7 @@ public class SettingScreen extends AppCompatActivity {
         });
     }
 
-    public void UpdateProfile(final UserProfile userProfile){
+    public void UpdateProfile(final UserProfile userProfile, final String isFinish){
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -461,7 +479,13 @@ public class SettingScreen extends AppCompatActivity {
 
 
 */
-                            SettingScreen.this.finish();
+
+                            if(isFinish!=null&&isFinish.equalsIgnoreCase("false")){
+
+                            }else if(isFinish!=null&&isFinish.equalsIgnoreCase("Finish")){
+                                SettingScreen.this.finish();
+                            }
+
 
                         }
                     }
@@ -477,12 +501,17 @@ public class SettingScreen extends AppCompatActivity {
         });
     }
 
-    private void setUpNavbarBasedOnRole() throws Exception{
+    private void setUpNavbarBasedOnRole(final String referCodeUsed) throws Exception{
 
 
 
+        if(referCodeUsed!=null){
+            title = getResources().getStringArray(R.array.nav_user);
+        }else {
+            title = getResources().getStringArray(R.array.nav_user_refer);
+        }
 
-        title = getResources().getStringArray(R.array.nav_user);
+
 
 
         if(title != null)
@@ -512,6 +541,15 @@ public class SettingScreen extends AppCompatActivity {
             case "Check-In":
                 break;
 
+
+            case "Redeem Referral Code":
+
+                showPopUp();
+
+                break;
+
+
+
             case "Influencer Program":
 
                 Intent influencer = new Intent(SettingScreen.this, InfluencerProgramViewScreen.class);
@@ -532,6 +570,7 @@ public class SettingScreen extends AppCompatActivity {
 
 
 
+
             case "Logout":
 
                 PreferenceHandler.getInstance(SettingScreen.this).clear();
@@ -545,6 +584,187 @@ public class SettingScreen extends AppCompatActivity {
                 break;
         }
     }
+
+    private void showPopUp() {
+        final Dialog mPopupDialog;
+        mPopupDialog = new Dialog(this);
+        mPopupDialog.setContentView(R.layout.reedem_refrel_code_popup);
+
+        TextView closePopup = mPopupDialog.findViewById(R.id.popupclose_terms_condition_close);
+        final TextInputLayout redeem_code_til = mPopupDialog.findViewById(R.id.refrel_code_til);
+        final Button redeem_btn = mPopupDialog.findViewById(R.id.redeem_referel_code_btn);
+
+        mPopupDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT); // setting popup width to match parent
+        mPopupDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mPopupDialog.getWindow().setGravity(Gravity.BOTTOM);
+        mPopupDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+        mPopupDialog.show();
+
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //close the popup
+                mPopupDialog.dismiss();
+
+            }
+        });
+
+        redeem_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                redeem_code_til.setErrorEnabled(false);
+
+               String redeemCode =  redeem_code_til.getEditText().getText().toString();
+
+               if(redeemCode==null||redeemCode.isEmpty()){
+                   redeem_code_til.setError("Empty");
+               }else{
+
+                   if(profiles!=null){
+                       profiles.setReferralCodeUsed(redeemCode);
+                       checkUserByReferalCode(profiles, mPopupDialog, redeem_code_til);
+                   }
+
+               }
+            }
+        });
+
+    }
+
+    private void checkUserByReferalCode(final UserProfile userProfile, final Dialog mPopupDialog, final TextInputLayout redeem_code_til){
+
+
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
+        dialog.setTitle("Please wait..");
+        dialog.show();
+
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                ProfileAPI apiService =
+                        Util.getClient().create(ProfileAPI.class);
+
+                Call<ArrayList<UserProfile>> call = apiService.getUserByReferalId(userProfile.getReferralCodeUsed());
+
+                call.enqueue(new Callback<ArrayList<UserProfile>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<UserProfile>> call, Response<ArrayList<UserProfile>> response) {
+//                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
+                        int statusCode = response.code();
+
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+
+                            ArrayList<UserProfile> responseProfiles = response.body();
+                            if(responseProfiles != null && responseProfiles.size()!=0 )
+                            {
+
+                                UserProfile responseProfile = responseProfiles.get(0);
+                                if(responseProfile != null )
+                                {
+
+                                    if(responseProfile.getProfileId()==PreferenceHandler.getInstance(SettingScreen.this).getUserId()){
+
+                                        Toast.makeText(SettingScreen.this, "You can't use your own referral code", Toast.LENGTH_SHORT).show();
+                                        redeem_code_til.setError("Invalid Referral Code");
+                                        redeem_code_til.getEditText().setText(" ");
+                                        redeem_code_til.getEditText().requestFocus();
+                                    }else {
+
+                                        String referUsed = responseProfile.getReferralCodeUsed();
+                                        String referParent = responseProfile.getReferralCodeOfParents();
+                                        String referSuper = responseProfile.getReferralCodeOfSuperParents();
+
+                                        if (referUsed != null && !referUsed.isEmpty()) {
+
+                                            userProfile.setReferralCodeOfParents(referUsed);
+
+
+                                        } else {
+                                            userProfile.setReferralCodeOfParents(userProfile.getReferralCodeUsed());
+                                        }
+
+                                        if (referSuper != null && !referSuper.isEmpty()) {
+
+                                            userProfile.setReferralCodeOfSuperParents(referSuper);
+
+                                        } else {
+                                            if (referParent != null && !referParent.isEmpty()) {
+
+                                                userProfile.setReferralCodeOfSuperParents(referParent);
+
+                                            } else {
+                                                userProfile.setReferralCodeOfSuperParents(userProfile.getReferralCodeUsed());
+                                            }
+                                        }
+
+                                        try {
+                                            mPopupDialog.dismiss();
+                                            setUpNavbarBasedOnRole("ReferCode");
+                                            UpdateProfile(userProfile, "False");
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+
+                                }
+
+
+                            }
+                            else
+                            {
+
+                                Toast.makeText(SettingScreen.this, "Invalid Referel Code", Toast.LENGTH_SHORT).show();
+                                redeem_code_til.setError("Invalid Referral Code");
+                                redeem_code_til.getEditText().setText(" ");
+                                redeem_code_til.getEditText().requestFocus();
+
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(SettingScreen.this, "Something went wrong ", Toast.LENGTH_SHORT).show();
+                            redeem_code_til.setErrorEnabled(false);
+                            redeem_code_til.getEditText().setText(" ");
+                            redeem_code_til.getEditText().requestFocus();
+                            //SnackbarViewer.showSnackbar(findViewById(R.id.signup_main_screen), response.message());
+//
+                        }
+//                callGetStartEnd();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<UserProfile>> call, Throwable t) {
+                        // Log error here since request failed
+
+                        if(dialog != null)
+                        {
+                            dialog.dismiss();
+                        }
+                        Toast.makeText(SettingScreen.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        redeem_code_til.setErrorEnabled(false);
+                        redeem_code_til.getEditText().setText(" ");
+                        redeem_code_til.getEditText().requestFocus();
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
+
+
+
 
     public  void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -748,6 +968,7 @@ public class SettingScreen extends AppCompatActivity {
             public void run() {
 
 
+
                 ProfileFollowAPI apiService =
                         Util.getClient().create(ProfileFollowAPI.class);
 
@@ -883,7 +1104,7 @@ public class SettingScreen extends AppCompatActivity {
 
             if(update){
 
-                UpdateProfile(profiles);
+                UpdateProfile(profiles, "Finish");
             }
 
 

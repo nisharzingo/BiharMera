@@ -526,7 +526,6 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     mProfileName.setText(""+contents.getCreatedBy());
                 }else{
 
-                    mProfileName.setText("Guest");
                 }
 
 
@@ -577,10 +576,16 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     }else{
 
                         int total = Integer.parseInt(contents.getViews());
-                        postWatchedCount.setText(++total + "");
-                        contents.setViews(total+"");
-                        if(db.getContentById(contents.getContentId())!=null){
+//                        postWatchedCount.setText(++total + "");
+                        contents.setViews(++total+"");
+                        if(total+1>=1000){
+                            Double newformat = ( (total+1) * 1.0)/1000  ;
+                            postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                        }else {
+                            postWatchedCount.setText(++total +"");
+                        }
 
+                        if(db.getContentById(contents.getContentId())!=null){
                             db.updateContents(contents);
                             System.out.println("Data Base Update Service");
 
@@ -612,7 +617,13 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                                 }else{
                                     int total = Integer.parseInt(contents.getViews());
-                                    postWatchedCount.setText(++total + "");
+                                    if(total+1>=1000){
+                                        Double newformat = ( (total+1) * 1.0)/1000  ;
+                                        postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                                    }else {
+                                        postWatchedCount.setText(++total +"");
+                                    }
+//                                    postWatchedCount.setText(++total + "");
                                     contents.setViews(total+"");
                                     if(db.getContentById(contents.getContentId())!=null){
 
@@ -640,7 +651,13 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
                                 }else{
                                     int total = Integer.parseInt(contents.getViews());
-                                    postWatchedCount.setText(++total + "");
+                                    if(total+1>=1000){
+                                        Double newformat = ( (total+1) * 1.0)/1000  ;
+                                        postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                                    }else {
+                                        postWatchedCount.setText(++total +"");
+                                    }
+//                                    postWatchedCount.setText(++total + "");
                                     contents.setViews(total+"");
                                     if(db.getContentById(contents.getContentId())!=null){
 

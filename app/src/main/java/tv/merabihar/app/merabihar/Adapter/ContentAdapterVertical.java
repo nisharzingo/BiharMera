@@ -197,7 +197,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 int no  = Integer.parseInt(total_views);
                                 if(no>=1000){
                                     Double newformat = (no*1.0)/1000  ;
-                                    holder.mTotalWatchedPost.setText(String.format("%.2f", newformat) + "k");
+                                    holder.mTotalWatchedPost.setText(String.format("%.1f", newformat) + "k");
                                 }else {
                                     holder.mTotalWatchedPost.setText(total_views);
                                 }
