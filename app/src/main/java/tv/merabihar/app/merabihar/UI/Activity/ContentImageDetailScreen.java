@@ -40,8 +40,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -304,8 +306,6 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             mCOntentDetailScreen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
 
                     new CountDownTimer(300, 300) {
                         @Override
@@ -616,20 +616,49 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 }
 
 
+                String contentCurrDate = contents.getCreditName();
+                String today = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 
-                if(contents.getViews()==null){
+                if(contentCurrDate.equals(today)){
 
-                    postWatchedCount.setText("1");
-                    contents.setViews(1+"");
-                    updateContent(contents);
+                    if(contents.getViews()==null){
+
+                        postWatchedCount.setText("1");
+                        contents.setViews(1+"");
+                        updateContent(contents);
+
+                    }else{
+                        int total = Integer.parseInt(contents.getViews());
+                        postWatchedCount.setText(++total + "");
+                        contents.setViews(total+"");
+                        updateContent(contents);
+
+                    }
 
                 }else{
-                    int total = Integer.parseInt(contents.getViews());
-                    postWatchedCount.setText(++total + "");
-                    contents.setViews(total+"");
-                    updateContent(contents);
+
+                    if(contents.getViews()==null){
+
+                        postWatchedCount.setText("200");
+                        contents.setViews("200");
+                        contents.setCreditName(today);
+                        updateContent(contents);
+
+                    }else{
+
+                        int total = Integer.parseInt(contents.getViews());
+                        postWatchedCount.setText(String.valueOf(total+200));
+                        contents.setViews(String.valueOf(total+200));
+                        contents.setCreditName(today);
+                        updateContent(contents);
+                    }
+
 
                 }
+
+
+
+
 
 
 

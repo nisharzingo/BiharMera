@@ -117,7 +117,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
     String url,fileNames;
     boolean isFirstTimePressed = false;
-    String shareContent = "Save time. Download Memra Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(context).getUserId()+"\n http://bit.ly/2JXcOnw";
+    String shareContent = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n Use my referal code for Sign-Up MBR"+PreferenceHandler.getInstance(context).getUserId()+"\n http://bit.ly/2JXcOnw";
     String shareContents = "Save time. Download Mera Bihar,The Only App for Bihar,To Read,Share your Stories and Earn Rs 1000\n\n http://bit.ly/2JXcOnw";
 
     OnBottomReachedListener onBottomReachedListener;
@@ -189,9 +189,16 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                             final String contentDesc =contents.getDescription();
                             String createdBy =contents.getCreatedBy();
                             String createdDate =contents.getCreatedDate();
-
+                            String viewDate = contents.getCreditName();
                             holder.mProfileName.setText(""+createdBy);
                             holder.mContentTitle.setText(""+contentTitle);
+                            String total_views = contents.getViews();
+                            if(total_views!=null){
+                                holder.mTotalWatchedPost.setText(total_views);
+                            }
+
+
+
 
                             if(contents.getContentType().equalsIgnoreCase("Video")){
 
@@ -202,23 +209,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 if(contents.getContentURL()!=null&&!contents.getContentURL().isEmpty()){
                                     String img = "https://img.youtube.com/vi/"+contents.getContentURL()+"/0.jpg";
 
-                                    if(contents.getViews()==null){
-
-                                        // We are updating like multiple times
-
-                                        holder.mTotalWatchedPost.setText(1 + "");
-                                        contents.setViews( 1 +"");
-
-                                        updateContent(contents);
-                                    }else{
-                                        int total = Integer.parseInt(contents.getViews());
-                                        holder.mTotalWatchedPost.setText(++total + "");
-
-                                        contents.setViews(++total + "");
-                                        updateContent(contents);
-                                    }
-
-
                                     if(img!=null&&!img.isEmpty()){
                                         Picasso.with(context).load(img).placeholder(R.drawable.no_image).
                                                 error(R.drawable.no_image).into(holder.mContentPic);
@@ -228,10 +218,6 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 }else{
                                     holder.mContentPic.setImageResource(R.drawable.no_image);
                                 }
-
-
-
-
 
 
                             }else{

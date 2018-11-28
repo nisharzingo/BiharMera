@@ -1,9 +1,12 @@
 package tv.merabihar.app.merabihar.UI.Activity.Influencer;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,9 +58,10 @@ public class WithdrawMoney extends AppCompatActivity {
     String fromName = "MeraBihar";
     String userName = "nishant@zingohotels.com";
     String password = "zingo@123";
-    String sucessResponse  = "Withdrawal successful. Money will be credited in 72 hours" ;
+    String sucessResponse  = "Withdrawal Request Successfully Accepted. Money will be credited in 72 hours." ;
 
-
+    SubscribedGoals sg1;
+    ProgressDialog mProgressDialog;
     TransactionHistroy transactionHistroy;
     public String formatedRupee;
 
@@ -72,7 +76,7 @@ public class WithdrawMoney extends AppCompatActivity {
 
 
 
-                currBal = findViewById(R.id.curr_bal_withdrawpage);
+        currBal = findViewById(R.id.curr_bal_withdrawpage);
         withdraw_tc_txt = findViewById(R.id.t_c_withdraw_paytm);
         withdrawToPaytmLayout = findViewById(R.id.ll_to_paytm);
         withdrawBtn = findViewById(R.id.withdraw_btn_withdrawpage);
@@ -90,10 +94,12 @@ public class WithdrawMoney extends AppCompatActivity {
         try{
 
             final String rupessString = getIntent().getStringExtra("rupees_value");
-            final float totalRupees = Float.parseFloat(rupessString);
+            final float totalRupees = Float.parseFloat(rupessString);    // in coins
             formatedRupee = String.format("%.02f", (totalRupees/100.0));
             currBal.setText("Balance ₹" + formatedRupee);
             withdraw_tc_txt.setText(termsCondition);
+
+
 
             withdrawToPaytmLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -107,24 +113,32 @@ public class WithdrawMoney extends AppCompatActivity {
             withdrawBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    option_selector.setBackground(getResources().getDrawable(R.drawable.circle_image_blue));
+                    if( (totalRupees/100) < 200 ){
+                        Toast.makeText(WithdrawMoney.this, "You need atleast Rs 200 to withdraw the money", Toast.LENGTH_SHORT).show();
+                    }else {
 
-
-                    if(Util.isNetworkAvailable(WithdrawMoney.this)){
-                        //getDirectReferCount("MBR"+PreferenceHandler.getInstance(WithdrawMoney.this).getUserId(),formatedRupee);
-
-                        if(PreferenceHandler.getInstance(WithdrawMoney.this).getUserId()!=0){
-
-                            if (Util.isNetworkAvailable(WithdrawMoney.this)) {
-                                getProfile(PreferenceHandler.getInstance(WithdrawMoney.this).getUserId());
-                            }else{
-                                Toast.makeText(WithdrawMoney.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                        withdrawBtn.setEnabled(false);
+                        if(Util.isNetworkAvailable(WithdrawMoney.this)){
+                            //getDirectReferCount("MBR"+PreferenceHandler.getInstance(WithdrawMoney.this).getUserId(),formatedRupee);
+                            if(PreferenceHandler.getInstance(WithdrawMoney.this).getUserId()!=0){
+                                if (Util.isNetworkAvailable(WithdrawMoney.this)) {
+                                    mProgressDialog = new ProgressDialog(WithdrawMoney.this);
+                                    mProgressDialog.setCancelable(false);
+                                    mProgressDialog.setTitle("Please wait...");
+                                    mProgressDialog.show();
+                                    getProfile(PreferenceHandler.getInstance(WithdrawMoney.this).getUserId());
+                                }else{
+                                    Toast.makeText(WithdrawMoney.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                                    withdrawBtn.setEnabled(true);
+                                }
                             }
+                        }else{
+                            Toast.makeText(WithdrawMoney.this, "You are offline", Toast.LENGTH_SHORT).show();
+                            withdrawBtn.setEnabled(true);
 
                         }
-                    }else{
-                        Toast.makeText(WithdrawMoney.this, "You are offline", Toast.LENGTH_SHORT).show();
                     }
-                    isWithDrawPossible(rupessString);
                 }
             });
 
@@ -138,10 +152,6 @@ public class WithdrawMoney extends AppCompatActivity {
                 }
             });
 
-
-
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -149,20 +159,18 @@ public class WithdrawMoney extends AppCompatActivity {
     }
 
 
-    private void isWithDrawPossible(String totalRupees) {
-
-        float rupees = Float.parseFloat(totalRupees);
-
-
-        if(rupees < 200 ){
-            showPopUp(rupees);
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+    private void removeMoney() {
+        if(sg1!=null){
+            sg1.setRewardsEarned("0");
+            sg1.setExtraDescription("0");
+            sg1.setStatus("Completed");
+            updateSubscribedGoal(sg1);
+        }else{
+            withdrawBtn.setEnabled(true);
+            Toast.makeText(this, "Something went wrong while processing request", Toast.LENGTH_SHORT).show();
+            mProgressDialog.dismiss();
         }
-        else {
-
-            sendEmail();
-
-        }
-
     }
 
     private void sendEmail() {
@@ -174,7 +182,6 @@ public class WithdrawMoney extends AppCompatActivity {
         email.setFromName(fromName);
         email.setPassword(password);
         email.setFromEmail(userName);
-
         withdrawToPaytm(email);
     }
 
@@ -195,16 +202,13 @@ public class WithdrawMoney extends AppCompatActivity {
 
                         if(response.code() == 201||response.code() == 200||response.code() == 204)
                         {
-                            formatedRupee = String.format("%.02f", (0/100.0));
-                            currBal.setText("Balance ₹" + formatedRupee);
-//                            System.out.println(response.body());
-                            Toast.makeText(WithdrawMoney.this, sucessResponse, Toast.LENGTH_SHORT).show();
+                            removeMoney();
 
                         }
                         else
                         {
-                            Log.e("Response Fail : ", response.body() + "" +  response.message());
-
+                            withdrawBtn.setEnabled(true);
+                            Log.e("Response Fail 1 : ", response.body() + "" +  response.message());
                             Toast.makeText(WithdrawMoney.this,"Something went wrong...",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -212,8 +216,9 @@ public class WithdrawMoney extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
 
+                            withdrawBtn.setEnabled(true);
                             Toast.makeText(WithdrawMoney.this,"Something went wrong...",Toast.LENGTH_SHORT).show();
-                            Log.e("Response Fail : ", t.getMessage() + "" +  t.getLocalizedMessage());
+                            Log.e("Response Fail 2 : ", t.getMessage() + "" +  t.getLocalizedMessage());
                         }
 //                        Toast.makeText(CommentsScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
 
@@ -233,8 +238,6 @@ public class WithdrawMoney extends AppCompatActivity {
         String required_money = String.format("%.02f",200-totalRupees);
 
 
-        String msg =  "Sorry! Insufficient balance. You need    ₹ "  +  required_money +  "  more to withdraw money." ;
-        popupTxt.setText(msg);
 
         closePopup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,9 +273,6 @@ public class WithdrawMoney extends AppCompatActivity {
 
     }
 
-    private void validatePaytmUser(String formatedRupee) {
-//        Toast.makeText(this, "In development Mode...", Toast.LENGTH_SHORT).show();
-    }
 
     private void getDirectReferCount(final String code,final String formatedRupee){
 
@@ -305,11 +305,6 @@ public class WithdrawMoney extends AppCompatActivity {
                                     //isWithDrawPossible(formatedRupee);
                                     showSnackbar("Sending Email....");
                                     sendEmail();
-
-
-
-
-
 
                                 }else{
 
@@ -376,6 +371,8 @@ public class WithdrawMoney extends AppCompatActivity {
 
         String msg =  "The Amount is Redeemable after completing "+required_money+" New Signup using Your Referral Code within goal Expired period" ;
         popupTxt.setText(msg);
+        mProgressDialog.dismiss();
+        withdrawBtn.setEnabled(false);
 
         closePopup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -433,7 +430,6 @@ public class WithdrawMoney extends AppCompatActivity {
     public void getTransactionsByIdType(final int id,final String type,final TransactionHistroy tc,final String formatedRupee)
     {
 
-
         new ThreadExecuter().execute(new Runnable() {
             @Override
             public void run() {
@@ -460,7 +456,6 @@ public class WithdrawMoney extends AppCompatActivity {
 
                                 if((tc.getValue()-tcs.getValue())>=15){
 
-                                    isWithDrawPossible(formatedRupee);
                                 }else{
                                     showPopUpForReferal(15-(tc.getValue()-tcs.getValue()));
                                 }
@@ -486,15 +481,11 @@ public class WithdrawMoney extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<TransactionHistroy>> call, Throwable t) {
 
 
-
+                        withdrawBtn.setEnabled(true);
                         //System.out.println(TAG+" thread started");
 
                     }
                 });
-
-
-
-
             }
 
         });
@@ -523,8 +514,6 @@ public class WithdrawMoney extends AppCompatActivity {
                             System.out.println("Inside api");
 
                             UserProfile profile = response.body();
-
-
                            /* coinsUsed = profile.getUsedAmount();
                             wallet = profile.getWalletBalance();*/
 
@@ -536,16 +525,12 @@ public class WithdrawMoney extends AppCompatActivity {
                                 Toast.makeText(WithdrawMoney.this, "No Internet connection", Toast.LENGTH_SHORT).show();
                             }
 
-
-
-
-
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserProfile> call, Throwable t) {
-
+                        withdrawBtn.setEnabled(true);
                     }
                 });
 
@@ -555,7 +540,6 @@ public class WithdrawMoney extends AppCompatActivity {
     }
     public void getGoalsByProfileId(final int id,final UserProfile profile)
     {
-
 
         new ThreadExecuter().execute(new Runnable() {
             @Override
@@ -577,15 +561,16 @@ public class WithdrawMoney extends AppCompatActivity {
 
                             if(response.body().size()!=0){
 
-                                SubscribedGoals sg = response.body().get(0);
+                                sg1 = response.body().get(0);
 
-                                if(sg!=null){
+                                if(sg1!=null){
 
-
-                                    getDirectReferCounts("MBR"+PreferenceHandler.getInstance(WithdrawMoney.this).getUserId(),sg,profile);
+                                    withdrawBtn.setEnabled(true);
+                                    getDirectReferCounts("MBR"+PreferenceHandler.getInstance(WithdrawMoney.this).getUserId(),sg1,profile);
 
 
                                 }else{
+
                                     // getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
                                 }
 
@@ -596,7 +581,6 @@ public class WithdrawMoney extends AppCompatActivity {
 
 
                         }else{
-
                             // getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
 
                         }
@@ -605,10 +589,10 @@ public class WithdrawMoney extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
 
-
                         // getDirectRefer("MBR"+PreferenceHandler.getInstance(Income.this).getUserId(),0);
 
 //                        Toast.makeText(Income.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
@@ -620,6 +604,50 @@ public class WithdrawMoney extends AppCompatActivity {
         });
 
     }
+
+    private void updateSubscribedGoal(final SubscribedGoals sg) {
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                SubscribedGoalsAPI mapApi = Util.getClient().create(SubscribedGoalsAPI.class);
+                Call<SubscribedGoals> response = mapApi.updateSubscribedGoals(sg.getSubscribedGoalId(),sg);
+                response.enqueue(new Callback<SubscribedGoals>() {
+                    @Override
+                    public void onResponse(Call<SubscribedGoals> call, Response<SubscribedGoals> response) {
+
+                        System.out.println(response.code());
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+                            mProgressDialog.dismiss();
+                            Toast.makeText(WithdrawMoney.this, sucessResponse, Toast.LENGTH_SHORT).show();
+
+                        }
+                        else
+                        {
+                            mProgressDialog.dismiss();
+                            withdrawBtn.setEnabled(true);
+                            Toast.makeText(WithdrawMoney.this, "Something went wrong ! Please try again..", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SubscribedGoals> call, Throwable t) {
+                        withdrawBtn.setEnabled(true);
+                        Toast.makeText(WithdrawMoney.this, "Something went wrong ! Please try again..", Toast.LENGTH_SHORT).show();
+                        mProgressDialog.dismiss();
+
+
+                    }
+                });
+            }
+        });
+    }
+
+
+
     public String duration(String fromm) throws Exception{
 
         String from = fromm;
@@ -847,7 +875,7 @@ public class WithdrawMoney extends AppCompatActivity {
 
                         double valuea = (Double.parseDouble(targetDesc.getRewardsEarned()))*.20;
                         Toast.makeText(WithdrawMoney.this, "Goals is not completed", Toast.LENGTH_SHORT).show();
-
+                        withdrawBtn.setEnabled(true);
                         Log.e("TAG", t.toString());
                     }
                 });

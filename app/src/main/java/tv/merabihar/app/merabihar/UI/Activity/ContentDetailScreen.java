@@ -555,20 +555,43 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 //                }
 
-                if(contents.getViews()==null){
+                String contentCurrDate = contents.getCreditName();
+                String today = new SimpleDateFormat("dd/mm/yyyy").format(new Date());
+
+                if(contentCurrDate!=null&&contentCurrDate.equals(today)){
+
+                    if(contents.getViews()==null){
 
                         postWatchedCount.setText("1");
                         contents.setViews(1+"");
                         updateContent(contents);
 
-                }else{
+                    }else{
                         int total = Integer.parseInt(contents.getViews());
                         postWatchedCount.setText(++total + "");
                         contents.setViews(total+"");
                         updateContent(contents);
+                    }
+
+                }else{
+
+                    if(contents.getViews()==null){
+
+                        postWatchedCount.setText("200");
+                        contents.setViews("200");
+                        contents.setCreditName(today);
+                        updateContent(contents);
+
+                    }else{
+
+                        int total = Integer.parseInt(contents.getViews());
+                        postWatchedCount.setText(String.valueOf(total+200));
+                        contents.setViews(String.valueOf(total+200));
+                        contents.setCreditName(today);
+                        updateContent(contents);
+                    }
 
                 }
-
 
                 if (contents.getSubCategories() != null) {
                    mSubCategory.setText(""+contents.getSubCategories().getSubCategoriesName());
@@ -1819,11 +1842,11 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             if (requestCode == REQUEST_CODE) {
                 // Increase the whatsapp count and update api
                 int count = Integer.parseInt(mWhatsappShareCount.getText().toString()) ;
-                mWhatsappShareCount.setText("Increased");
+//                mWhatsappShareCount.setText("Increased");
 
             }
         }else{
-            Toast.makeText(this, "Response invalid", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Response invalid", Toast.LENGTH_SHORT).show();
         }
 
     }
