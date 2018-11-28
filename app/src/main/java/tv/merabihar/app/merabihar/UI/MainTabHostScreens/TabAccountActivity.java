@@ -389,6 +389,16 @@ public class TabAccountActivity extends AppCompatActivity {
 
                 if (Util.isNetworkAvailable(TabAccountActivity.this)) {
 
+                    mProfileName.setText(""+PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName());
+
+                    if(db.getContentByProfileId(profileId)!=null&&db.getContentByProfileId(profileId).size()!=0){
+
+                        ArrayList<Contents> contentsProfile = db.getContentByProfileId(profileId);
+                        Collections.reverse(contentsProfile);
+                        adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,contentsProfile);
+                        mPostsList.setAdapter(adapters);
+                        progressBar.setVisibility(View.GONE);
+                    }
                     getProfileContent(profileId);
                     getProfile(profileId);
 
@@ -782,6 +792,7 @@ public class TabAccountActivity extends AppCompatActivity {
                                 mPosts.setText(""+response.body().size());
                                 Collections.reverse(response.body());
                                 profileContents = response.body();
+                                mPostsList.removeAllViews();
                                 adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,response.body());
                                 mPostsList.setAdapter(adapters);
 

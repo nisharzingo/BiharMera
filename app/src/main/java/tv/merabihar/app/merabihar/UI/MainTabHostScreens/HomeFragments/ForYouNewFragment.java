@@ -120,12 +120,11 @@ public class ForYouNewFragment extends Fragment {
             if(Util.isNetworkAvailable(getActivity())){
 
                 if(db.getContents()!=null&&db.getContents().size()!=0){
+                    ArrayList<Contents> contentsArrayList = db.getContents();
 
-                    Collections.sort(db.getContents(),Contents.compareContent);
-                    loadNextPage(db.getContents());
+                    Collections.shuffle(contentsArrayList);
+                    loadNextPageDb(contentsArrayList);
                     progressBar.setVisibility(View.GONE);
-                }else{
-                    //Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
                 }
 
                 loadFirstSetOfBlogs();
@@ -133,7 +132,11 @@ public class ForYouNewFragment extends Fragment {
             }else{
                 System.out.println("Db size"+db.getContents().size());
                 if(db.getContents()!=null&&db.getContents().size()!=0){
-                    loadNextPage(db.getContents());
+
+                    ArrayList<Contents> contentsArrayList = db.getContents();
+
+                    Collections.shuffle(contentsArrayList);
+                    loadNextPageDb(contentsArrayList);
                     progressBar.setVisibility(View.GONE);
                 }else{
                     Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
@@ -501,17 +504,16 @@ public class ForYouNewFragment extends Fragment {
     }
 
     private void loadNextPageDb(ArrayList<Contents> list) {
+        Log.d(TAG, "loadFirstPage: "+list.size());
         //Collections.reverse(list);
-        adapter.removeLoadingFooter();
-        isLoading = false;
-
+        progressBar.setVisibility(View.GONE);
         adapter.addAll(list);
 
         if (list != null && list.size() !=0)
-        {
-            //adapter.addLoadingFooter();
-            Log.d(TAG, "loadNextPage: " + currentPage+" == "+isLastPage);
-        }
+            adapter.addLoadingFooter();
+        else
+            isLastPage = true;
+
 
     }
 

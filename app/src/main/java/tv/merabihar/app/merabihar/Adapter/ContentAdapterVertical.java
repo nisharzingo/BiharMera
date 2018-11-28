@@ -189,7 +189,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                             final String contentDesc =contents.getDescription();
                             String createdBy =contents.getCreatedBy();
                             String createdDate =contents.getCreatedDate();
-                            String viewDate = contents.getCreditName();
+
                             holder.mProfileName.setText(""+createdBy);
                             holder.mContentTitle.setText(""+contentTitle);
                             String total_views = contents.getViews();
@@ -208,6 +208,23 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                 holder.mIcon.setVisibility(View.VISIBLE);
                                 if(contents.getContentURL()!=null&&!contents.getContentURL().isEmpty()){
                                     String img = "https://img.youtube.com/vi/"+contents.getContentURL()+"/0.jpg";
+
+                                    /*if(contents.getViews()==null){
+
+                                        // We are updating like multiple times
+
+                                        holder.mTotalWatchedPost.setText(1 + "");
+                                        contents.setViews( 1 +"");
+
+                                        updateContent(contents);
+                                    }else{
+                                        int total = Integer.parseInt(contents.getViews());
+                                        holder.mTotalWatchedPost.setText(++total + "");
+
+                                        contents.setViews(++total + "");
+                                        updateContent(contents);
+                                    }*/
+
 
                                     if(img!=null&&!img.isEmpty()){
                                         Picasso.with(context).load(img).placeholder(R.drawable.no_image).
@@ -403,7 +420,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                     holder.mDuration.setText(""+duration(date));*/
 
                                     String date[] = createdDate.split("T");
-                                    holder.mDuration.setText(""+date[0]);
+                                    holder.mDuration.setText(""+date[0]+"        "+durationDate(date[0]));
                                 }
 
                             }else{
@@ -1096,7 +1113,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         notifyItemInserted(0);
     }
 
-    public void addAlls(List<Contents> mcList) {
+    public void addAlls(ArrayList<Contents> mcList) {
         for (Contents mc : mcList) {
             adds(mc);
         }
@@ -2143,7 +2160,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
     // Custom method to save a bitmap into internal storage
     public Bitmap mark(Bitmap src) {
 
-        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.app_logo_home);
+        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.logo_mbtv);
         int w = src.getWidth();
         int h = src.getHeight();
         int pw=w-w;
@@ -2166,7 +2183,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
     public Bitmap marks(Bitmap src) {
 
-        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.app_logo);
+        Bitmap icon = BitmapFactory.decodeResource(context.getResources(),R.drawable.logo_mbtv);
         Bitmap layoutSrc = BitmapFactory.decodeResource(context.getResources(),R.drawable.layout_canvas);
         int w = layoutSrc.getWidth();
         int h = layoutSrc.getHeight();
@@ -2541,6 +2558,42 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         });
     }
 
+    public String durationDate(String notifyDate){
+        //2018-08-28T00:00:00
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdfs = new SimpleDateFormat("yyyy-MM-dd");
+        Date fd = null,td = null;
+        long diffDays=0,diffMinutes=0,diffHours=0 ;
+        String duration = "" ;
+        try {
+            if(notifyDate.contains("-")){
+                fd = sdf.parse(notifyDate);
+            }
+
+
+            //td = sdf.parse(book_to_date.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            long diff = new Date().getTime() - fd.getTime();
+            diffMinutes = diff / (60 * 1000) % 60;
+            diffHours = diff / (60 * 60 * 1000) % 24;
+            diffDays = diff / (24 * 60 * 60 * 1000);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        if(diffDays!=0){
+            duration =  diffDays+" day ago";
+        }else if(diffDays==0){
+            duration = "Today";
+        }
+
+        return duration;
+    }
 
 
 

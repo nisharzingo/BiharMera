@@ -186,6 +186,10 @@ public class PostContentScreen extends AppCompatActivity {
                     validate();
 
 
+
+
+
+
                 }
             });
 
@@ -240,7 +244,7 @@ public class PostContentScreen extends AppCompatActivity {
 
     private void gotoGallery() {
 
-        Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+        /*Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
 
         if(isAvailable(PostContentScreen.this,i)){
             startActivityForResult(i, 200);
@@ -248,10 +252,16 @@ public class PostContentScreen extends AppCompatActivity {
 
         }else{
             Intent intent = new Intent();
-            intent.setType("image/*");
+            intent.setType("image*//*");
             intent.setAction(Intent.ACTION_PICK);//
             startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
-        }
+        }*/
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);//
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),SELECT_FILE);
 }
 
 
@@ -264,6 +274,9 @@ public class PostContentScreen extends AppCompatActivity {
             if(requestCode == REQUEST_GALLERY)
             {
                 onSelectImageFromGalleryResult(data,"Multiple");
+            }else if(requestCode == 1)
+            {
+                 onSelectImageFromGalleryResult(data,"Google");
             }else if (requestCode == SELECT_FILE){
 
                 onSelectImageFromGalleryResult(data,"Camera");
@@ -291,6 +304,36 @@ public class PostContentScreen extends AppCompatActivity {
                     gotoGallery();
                 }
                 //selectedImageList = all_path;
+                mBlogImages.removeAllViews();
+                for (String s:all_path)
+                {
+                    //System.out.println(s);
+                    File imgFile = new  File(s);
+                    if(imgFile.exists()) {
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        //addView(null,Util.getResizedBitmap(myBitmap,400));
+                        addView(null,Util.getResizedBitmap(myBitmap,700));
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else if(type!=null&&type.equalsIgnoreCase("Google")){
+            try{
+                Uri selectedImageUri = data.getData( );
+                String picturePath = getPath( PostContentScreen.this, selectedImageUri );
+                Log.d("Picture Path", picturePath);
+                String[] all_path = {picturePath};
+
+                if(all_path.length!=0){
+
+                    for(int i =0;i<all_path.length;i++){
+                        selectedImageList.add(all_path[i]);
+
+                    }
+                }
+
+
                 mBlogImages.removeAllViews();
                 for (String s:all_path)
                 {
