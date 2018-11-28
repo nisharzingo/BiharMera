@@ -107,39 +107,45 @@ public class InfluencerTargetFragment extends Fragment {
                     @Override
                     public void onResponse(Call<ArrayList<SubscribedGoals>> call, Response<ArrayList<SubscribedGoals>> response) {
 
+                        try{
+
+                            if(response.code() == 200 && response.body()!= null)
+                            {
+                                targetDesArrayListId = new ArrayList<>();
+
+                                for (SubscribedGoals sg:response.body()) {
+
+                                    targetDesArrayListId.add(sg.getGoalId());
 
 
-                        if(response.code() == 200 && response.body()!= null)
-                        {
-                            targetDesArrayListId = new ArrayList<>();
-
-                            for (SubscribedGoals sg:response.body()) {
-
-                                targetDesArrayListId.add(sg.getGoalId());
+                                }
 
 
-                            }
+                                if (Util.isNetworkAvailable(getActivity())) {
+                                    getGoals(targetDesArrayListId);
+
+                                }else{
+                                    SnackbarViewer.showSnackbar(recyclerView,"No Internet connection");
+                                }
 
 
-                            if (Util.isNetworkAvailable(getActivity())) {
-                                getGoals(targetDesArrayListId);
-
-                            }else{
-                                SnackbarViewer.showSnackbar(recyclerView,"No Internet connection");
-                            }
-
-
-
-                        }else{
-
-                            if (Util.isNetworkAvailable(getActivity())) {
-                                getGoals(targetDesArrayListId);
 
                             }else{
-                                SnackbarViewer.showSnackbar(recyclerView,"No Internet connection");
+
+                                if (Util.isNetworkAvailable(getActivity())) {
+                                    getGoals(targetDesArrayListId);
+
+                                }else{
+                                    SnackbarViewer.showSnackbar(recyclerView,"No Internet connection");
+                                }
+
                             }
 
+                        }catch (Exception e){
+
+                            e.printStackTrace();
                         }
+
                     }
 
                     @Override
@@ -158,6 +164,7 @@ public class InfluencerTargetFragment extends Fragment {
             }
 
         });
+
 
     }
 
