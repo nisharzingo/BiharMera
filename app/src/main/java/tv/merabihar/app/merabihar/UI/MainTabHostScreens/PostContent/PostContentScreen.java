@@ -240,6 +240,7 @@ public class PostContentScreen extends AppCompatActivity {
 
 
 
+
     }
 
     private void gotoGallery() {
