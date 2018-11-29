@@ -107,7 +107,10 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
             String selectQuery = "SELECT  * FROM " + CONTENT_TABLE;
 
             SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
+            /*Cursor cursor = db.query(CONTENT_TABLE,null, "ContentType=?",
+                    new String[] {type}, null, null, "ContentId" + " DESC");
+*/
+            Cursor cursor = db.query(CONTENT_TABLE, null, "ContentId != 0", null, null, null, "ContentId" + " DESC");
 
             ArrayList<Contents> data = null;
 
@@ -211,7 +214,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getReadableDatabase();
 
             Cursor cursor = db.query(CONTENT_TABLE,null, "ContentType=?",
-                    new String[] {type}, null, null, null);
+                    new String[] {type}, null, null, "ContentId" + " DESC");
 
 
 
@@ -262,7 +265,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
             SQLiteDatabase db = this.getReadableDatabase();
 
-            Cursor cursor = db.query(CONTENT_TABLE, null, "ProfileId = "+profileId, null, null, null, null);
+            Cursor cursor = db.query(CONTENT_TABLE, null, "ProfileId = "+profileId, null, null, null, "ContentId" + " DESC");
 
 
             ArrayList<Contents> data = new ArrayList<>();

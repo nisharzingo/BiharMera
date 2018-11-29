@@ -49,7 +49,7 @@ public interface ContentAPI {
     @POST("Contents")
     Call<Contents> postContent(@Body Contents body);
 
-    @Streaming
+
     @PUT("Contents/{id}")
     Call<Contents> updateContent(@Path("id") int id,@Body Contents body);
 

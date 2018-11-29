@@ -394,7 +394,7 @@ public class TabAccountActivity extends AppCompatActivity {
                     if(db.getContentByProfileId(profileId)!=null&&db.getContentByProfileId(profileId).size()!=0){
 
                         ArrayList<Contents> contentsProfile = db.getContentByProfileId(profileId);
-                        Collections.reverse(contentsProfile);
+
                         adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,contentsProfile);
                         mPostsList.setAdapter(adapters);
                         progressBar.setVisibility(View.GONE);
@@ -1403,4 +1403,6 @@ public class TabAccountActivity extends AppCompatActivity {
         }
 
     }
+
+
 }

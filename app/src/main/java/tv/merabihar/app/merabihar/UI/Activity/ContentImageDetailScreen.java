@@ -44,6 +44,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -79,8 +80,8 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 
 public class ContentImageDetailScreen extends AppCompatActivity {
 
-    //RoundedImageView mContentPic;
-    AutoScrollAdapter mContentPic;
+    RoundedImageView mContentPic;
+    //AutoScrollAdapter mContentPic;
     ImageView mback;
     TextViewSFProDisplayRegular mSubCategory,mReadTime,mNocomments;
     MyTextView_SF_Pro_Light mContentTitle,mContentDesc;
@@ -127,10 +128,10 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
             profileId = PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId();
 
-            //mContentPic = (RoundedImageView)findViewById(R.id.content_pic);
+            mContentPic = (RoundedImageView)findViewById(R.id.content_pic);
             db = new DataBaseHelper(ContentImageDetailScreen.this);
-            mContentPic = (AutoScrollAdapter) findViewById(R.id.content_pic);
-            mContentPic.setStopScrollWhenTouch(true);
+           // mContentPic = (AutoScrollAdapter) findViewById(R.id.content_pic);
+            //mContentPic.setStopScrollWhenTouch(true);
             mback = (ImageView)findViewById(R.id.back_view);
             mSubCategory = (TextViewSFProDisplayRegular)findViewById(R.id.subcategory_of_content);
             mReadTime = (TextViewSFProDisplayRegular)findViewById(R.id.read_time);
@@ -322,7 +323,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                             }
                             else
                             {
-                                Toast.makeText(ContentImageDetailScreen.this, "working", Toast.LENGTH_SHORT).show();
+
                                 //System.out.println("isFirstTimePressed = "+isFirstTimePressed);
                                 isFirstTimePressed = false;
                                 if(profileId!=0 && mLike.getDrawable().getConstantState()!= getResources().getDrawable(R.drawable.liked_icon).getConstantState()){
@@ -626,138 +627,287 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     mProfileName.setText("Guest");
                 }
 
-                if(contents.getCreditName()==null){
+                if(contents.getCreatedDate().contains(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))){
 
-                    contents.setCreditName(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
-                    if(contents.getViews()==null){
 
-                        postWatchedCount.setText("1");
-                        contents.setViews(200+"");
-                        if(db.getContentById(contents.getContentId())!=null){
+                    if(contents.getCreditName()==null){
 
-                            db.updateContents(contents);
-                            System.out.println("Data Base Update Service");
+                        contents.setCreditName(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
-                        }
-                        updateContent(contents);
+                        if(contents.getViews()==null){
 
-                    }else{
 
-                        int total = Integer.parseInt(contents.getViews());
+
+                            postWatchedCount.setText("1");
+                            contents.setViews("1");
+                            if(db.getContentById(contents.getContentId())!=null){
+
+                                db.updateContents(contents);
+                                System.out.println("Data Base Update Service");
+
+                            }
+                            updateContent(contents);
+
+                        }else{
+
+                            int total = Integer.parseInt(contents.getViews());
 //                        postWatchedCount.setText(++total + "");
-
-                        contents.setViews(++total+"");
-
-                        if(total+1>=1000){
+                            contents.setViews((total+1)+"");
+                       /* if(total+1>=1000){
                             Double newformat = ( (total+1) * 1.0)/1000  ;
                             postWatchedCount.setText(String.format("%.1f", newformat) + "k");
                         }else {
-                            postWatchedCount.setText(++total +"");
+                            postWatchedCount.setText((total+1) +"");
+                        }*/
+                            postWatchedCount.setText((total+1) +"");
+                            if(db.getContentById(contents.getContentId())!=null){
+                                db.updateContents(contents);
+                                System.out.println("Data Base Update Service");
+
+                            }
+                            updateContent(contents);
+
                         }
 
+                    }else{
 
-                        if(db.getContentById(contents.getContentId())!=null){
+                        String creditDate = contents.getCreditName();
+                        if(creditDate!=null){
+                            String todayDate = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+                            try{
 
-                            db.updateContents(contents);
-                            System.out.println("Data Base Update Service");
+                                if(todayDate.equals(creditDate)){
 
+                                    if(contents.getViews()==null){
+
+                                        postWatchedCount.setText("1");
+
+
+
+                                        contents.setViews("1");
+                                        if(db.getContentById(contents.getContentId())!=null){
+
+                                            db.updateContents(contents);
+                                            System.out.println("Data Base Update Service");
+
+                                        }
+                                        updateContent(contents);
+
+                                    }else{
+                                        int total = Integer.parseInt(contents.getViews());
+                                   /* if(total+1>=1000){
+                                        Double newformat = ( (total+1) * 1.0)/1000  ;
+                                        postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                                    }else {
+                                        postWatchedCount.setText(++total +"");
+                                    }*/
+//                                    postWatchedCount.setText(++total + "");
+                                        postWatchedCount.setText(++total +"");
+                                        contents.setViews(total+"");
+                                        if(db.getContentById(contents.getContentId())!=null){
+
+                                            db.updateContents(contents);
+                                            System.out.println("Data Base Update Service");
+
+                                        }
+                                        updateContent(contents);
+
+                                    }
+                                }else{
+                                    contents.setCreditName(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+
+                                    if(contents.getViews()==null){
+
+
+
+                                        postWatchedCount.setText("1");
+                                        contents.setViews("1");
+                                        if(db.getContentById(contents.getContentId())!=null){
+
+                                            db.updateContents(contents);
+                                            System.out.println("Data Base Update Service");
+
+                                        }
+                                        updateContent(contents);
+
+                                    }else{
+                                        int total = Integer.parseInt(contents.getViews());
+                                   /* if(total+1>=1000){
+                                        Double newformat = ( (total+1) * 1.0)/1000  ;
+                                        postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                                    }else {
+                                        postWatchedCount.setText(++total +"");
+                                    }*/
+                                        postWatchedCount.setText(++total +"");
+//                                    postWatchedCount.setText(++total + "");
+                                        contents.setViews(total+"");
+                                        if(db.getContentById(contents.getContentId())!=null){
+
+                                            db.updateContents(contents);
+                                            System.out.println("Data Base Update Service");
+
+                                        }
+                                        updateContent(contents);
+
+                                    }
+
+
+                                }
+
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
-                        updateContent(contents);
 
                     }
 
                 }else{
 
-                    String creditDate = contents.getCreditName();
-                    if(creditDate!=null){
-                        String todayDate = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-                        try{
+                    if(contents.getCreditName()==null){
 
-                            if(todayDate.equals(creditDate)){
+                        contents.setCreditName(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
 
-                                if(contents.getViews()==null){
-
-                                    postWatchedCount.setText("1");
+                        if(contents.getViews()==null){
 
 
-                                    contents.setViews(200+"");
-                                    if(db.getContentById(contents.getContentId())!=null){
+                            int max = 100;
+                            int min = 1;
+                            Random randomNum = new Random();
+                            int showMe = min + randomNum.nextInt(max);
+                            postWatchedCount.setText(""+showMe);
+                            contents.setViews(showMe+"");
+                            if(db.getContentById(contents.getContentId())!=null){
 
-                                        db.updateContents(contents);
-                                        System.out.println("Data Base Update Service");
-
-                                    }
-                                    updateContent(contents);
-
-                                }else{
-                                    int total = Integer.parseInt(contents.getViews());
-//                                    postWatchedCount.setText(++total + "");
-                                    if(total+1>=1000){
-                                        Double newformat = ( (total+1) * 1.0)/1000  ;
-                                        postWatchedCount.setText(String.format("%.1f", newformat) + "k");
-                                    }else {
-                                        postWatchedCount.setText(++total +"");
-                                    }
-
-
-                                    contents.setViews(total+"");
-                                    if(db.getContentById(contents.getContentId())!=null){
-
-                                        db.updateContents(contents);
-                                        System.out.println("Data Base Update Service");
-
-                                    }
-                                    updateContent(contents);
-
-                                }
-                            }else{
-                                contents.setCreditName(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
-
-                                if(contents.getViews()==null){
-
-                                    postWatchedCount.setText("1");
-                                    contents.setViews(200+"");
-                                    if(db.getContentById(contents.getContentId())!=null){
-
-                                        db.updateContents(contents);
-                                        System.out.println("Data Base Update Service");
-
-                                    }
-                                    updateContent(contents);
-
-                                }else{
-                                    int total = Integer.parseInt(contents.getViews());
-//                                    postWatchedCount.setText(++total + "");
-                                    if(total+1>=1000){
-                                        Double newformat = ( (total+1) * 1.0)/1000  ;
-                                        postWatchedCount.setText(String.format("%.1f", newformat) + "k");
-                                    }else {
-                                        postWatchedCount.setText(++total +"");
-                                    }
-
-
-                                    contents.setViews(total+"");
-                                    if(db.getContentById(contents.getContentId())!=null){
-
-                                        db.updateContents(contents);
-                                        System.out.println("Data Base Update Service");
-
-                                    }
-                                    updateContent(contents);
-
-                                }
-
+                                db.updateContents(contents);
+                                System.out.println("Data Base Update Service");
 
                             }
+                            updateContent(contents);
 
+                        }else{
 
-                        }catch (Exception e){
-                            e.printStackTrace();
+                            int total = Integer.parseInt(contents.getViews());
+//                        postWatchedCount.setText(++total + "");
+                            contents.setViews((total+1)+"");
+                       /* if(total+1>=1000){
+                            Double newformat = ( (total+1) * 1.0)/1000  ;
+                            postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                        }else {
+                            postWatchedCount.setText((total+1) +"");
+                        }*/
+                            postWatchedCount.setText((total+1) +"");
+                            if(db.getContentById(contents.getContentId())!=null){
+                                db.updateContents(contents);
+                                System.out.println("Data Base Update Service");
+
+                            }
+                            updateContent(contents);
+
                         }
+
+                    }else{
+
+                        String creditDate = contents.getCreditName();
+                        if(creditDate!=null){
+                            String todayDate = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+                            try{
+
+                                if(todayDate.equals(creditDate)){
+
+                                    if(contents.getViews()==null){
+
+                                        postWatchedCount.setText("1");
+
+                                        int max = 100;
+                                        int min = 1;
+                                        Random randomNum = new Random();
+                                        int showMe = min + randomNum.nextInt(max);
+
+                                        contents.setViews(showMe+"");
+                                        if(db.getContentById(contents.getContentId())!=null){
+
+                                            db.updateContents(contents);
+                                            System.out.println("Data Base Update Service");
+
+                                        }
+                                        updateContent(contents);
+
+                                    }else{
+                                        int total = Integer.parseInt(contents.getViews());
+                                   /* if(total+1>=1000){
+                                        Double newformat = ( (total+1) * 1.0)/1000  ;
+                                        postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                                    }else {
+                                        postWatchedCount.setText(++total +"");
+                                    }*/
+//                                    postWatchedCount.setText(++total + "");
+                                        postWatchedCount.setText(++total +"");
+                                        contents.setViews(total+"");
+                                        if(db.getContentById(contents.getContentId())!=null){
+
+                                            db.updateContents(contents);
+                                            System.out.println("Data Base Update Service");
+
+                                        }
+                                        updateContent(contents);
+
+                                    }
+                                }else{
+                                    contents.setCreditName(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+
+                                    if(contents.getViews()==null){
+
+
+                                        int max = 100;
+                                        int min = 1;
+                                        Random randomNum = new Random();
+                                        int showMe = min + randomNum.nextInt(max);
+                                        postWatchedCount.setText(showMe+"");
+                                        contents.setViews(showMe+"");
+                                        if(db.getContentById(contents.getContentId())!=null){
+
+                                            db.updateContents(contents);
+                                            System.out.println("Data Base Update Service");
+
+                                        }
+                                        updateContent(contents);
+
+                                    }else{
+                                        int total = Integer.parseInt(contents.getViews());
+                                   /* if(total+1>=1000){
+                                        Double newformat = ( (total+1) * 1.0)/1000  ;
+                                        postWatchedCount.setText(String.format("%.1f", newformat) + "k");
+                                    }else {
+                                        postWatchedCount.setText(++total +"");
+                                    }*/
+                                        postWatchedCount.setText(++total +"");
+//                                    postWatchedCount.setText(++total + "");
+                                        contents.setViews(total+"");
+                                        if(db.getContentById(contents.getContentId())!=null){
+
+                                            db.updateContents(contents);
+                                            System.out.println("Data Base Update Service");
+
+                                        }
+                                        updateContent(contents);
+
+                                    }
+
+
+                                }
+
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+
                     }
 
                 }
+
 
 
 
@@ -911,6 +1061,23 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                 if (blogImages != null && blogImages.size() != 0) {
 
+                    String img = blogImages.get(0).getImages();
+
+                    if(img.contains(" ")){
+
+                        String imgs = img.replaceAll(" ","%20");
+                        Picasso.with(ContentImageDetailScreen.this).load(imgs).
+                                placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image)
+                                .into(mContentPic);
+
+                    }else {
+                        Picasso.with(ContentImageDetailScreen.this).load(img).
+                                placeholder(R.drawable.no_image).
+                                error(R.drawable.no_image)
+                                .into(mContentPic);
+                    }
+
                   /*  String base = blogImages.get(0).getImages();
 
                     if(base != null && !base.isEmpty()){
@@ -936,8 +1103,8 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                     }
 
-                    ActivityAdapter activityImagesadapter = new ActivityAdapter(ContentImageDetailScreen.this,blogImage);
-                    mContentPic.setAdapter(activityImagesadapter);
+                   /* ActivityAdapter activityImagesadapter = new ActivityAdapter(ContentImageDetailScreen.this,blogImage);
+                    mContentPic.setAdapter(activityImagesadapter);*/
 
                 }else{
 
@@ -1873,8 +2040,25 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                                         }
 
-                                        ActivityAdapter activityImagesadapter = new ActivityAdapter(ContentImageDetailScreen.this,blogImage);
-                                        mContentPic.setAdapter(activityImagesadapter);
+                                        /*ActivityAdapter activityImagesadapter = new ActivityAdapter(ContentImageDetailScreen.this,blogImage);
+                                        mContentPic.setAdapter(activityImagesadapter);*/
+
+                                        String img = blogImages.get(0).getImages();
+
+                                        if(img.contains(" ")){
+
+                                            String imgs = img.replaceAll(" ","%20");
+                                            Picasso.with(ContentImageDetailScreen.this).load(imgs).
+                                                    placeholder(R.drawable.no_image).
+                                                    error(R.drawable.no_image)
+                                                    .into(mContentPic);
+
+                                        }else {
+                                            Picasso.with(ContentImageDetailScreen.this).load(img).
+                                                    placeholder(R.drawable.no_image).
+                                                    error(R.drawable.no_image)
+                                                    .into(mContentPic);
+                                        }
 
                                     }
 

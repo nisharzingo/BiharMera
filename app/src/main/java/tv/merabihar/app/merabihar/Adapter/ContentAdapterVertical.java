@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 
 import at.huber.youtubeExtractor.YouTubeUriExtractor;
@@ -202,7 +203,20 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                                     holder.mTotalWatchedPost.setText(total_views);
                                 }
                             }else {
-                                holder.mTotalWatchedPost.setText("0");
+
+                                if(contents.getCreatedDate().contains(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))){
+                                    holder.mTotalWatchedPost.setText("1");
+                                }else{
+
+                                    int max = 100;
+                                    int min = 1;
+                                    Random randomNum = new Random();
+                                    int showMe = min + randomNum.nextInt(max);
+                                    holder.mTotalWatchedPost.setText(showMe+"");
+
+
+                                }
+
                             }
 
 

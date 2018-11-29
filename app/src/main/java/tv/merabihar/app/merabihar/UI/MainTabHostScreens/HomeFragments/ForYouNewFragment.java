@@ -20,6 +20,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,7 +64,9 @@ public class ForYouNewFragment extends Fragment {
     private String TAG="BlogList";
 
     DataBaseHelper db ;
-    int contentId = 0;
+    int contentId = 0,contentsId=0;
+
+    List<Contents> duplicate = new ArrayList<>();
 
     public ForYouNewFragment() {
         // Required empty public constructor
@@ -96,7 +99,7 @@ public class ForYouNewFragment extends Fragment {
 
             mtopBlogs = (RecyclerView) view.findViewById(R.id.top_blogs_viewpager);
             progressBar = (ProgressBar) view.findViewById(R.id.blog_progress);
-           pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.follow_for_u_new);
+            pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.follow_for_u_new);
 
             linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
             mtopBlogs.setLayoutManager(linearLayoutManager);
@@ -121,12 +124,13 @@ public class ForYouNewFragment extends Fragment {
 
                 if(db.getContents()!=null&&db.getContents().size()!=0){
                     ArrayList<Contents> contentsArrayList = db.getContents();
+                    duplicate = db.getContents();
 
-                    Collections.shuffle(contentsArrayList);
+                    //Collections.shuffle(contentsArrayList);
                     loadNextPageDb(contentsArrayList);
                     progressBar.setVisibility(View.GONE);
                 }
-
+                currentPage = PAGE_START;
                 loadFirstSetOfBlogs();
 //                System.out.println("Db size"+db.getContents().size());
             }else{
@@ -135,7 +139,7 @@ public class ForYouNewFragment extends Fragment {
 
                     ArrayList<Contents> contentsArrayList = db.getContents();
 
-                    Collections.shuffle(contentsArrayList);
+                    //Collections.shuffle(contentsArrayList);
                     loadNextPageDb(contentsArrayList);
                     progressBar.setVisibility(View.GONE);
                 }else{
@@ -182,7 +186,22 @@ public class ForYouNewFragment extends Fragment {
                 @Override
                 public void onRefresh() {
 
+                    currentPage = PAGE_START;
                     pullToRefresh.setRefreshing(false);
+
+                    loadFirstSetOfBlogs();
+
+                    /*if(db.getContents()!=null&&db.getContents().size()!=0){
+                        ArrayList<Contents> contentsArrayList = db.getContents();
+
+                        //Collections.shuffle(contentsArrayList);
+                        loadNextPageDb(contentsArrayList);
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    currentPage = PAGE_START;
+                    loadFirstSetOfBlogs();*/
+
                 }
             });
             return view;
@@ -216,10 +235,14 @@ public class ForYouNewFragment extends Fragment {
                                 if(response.body().size() != 0) {
                                     Log.d(TAG, "loadFirstPage: "+response.message());
                                     ArrayList<Contents> approvedBlogs = response.body();
-
+                                    ArrayList<Contents> duplicateList = new ArrayList<>();
+                                    pullToRefresh.setRefreshing(false);
                                     if(approvedBlogs!=null&&approvedBlogs.size()!=0){
-                                        loadFirstPage(approvedBlogs);
+
                                         contentId = approvedBlogs.get(0).getContentId();
+
+
+
 
                                         if(db.getContents()!=null&&db.getContents().size()!=0){
 
@@ -229,10 +252,12 @@ public class ForYouNewFragment extends Fragment {
 
                                                 if(db.getContentById(content.getContentId())!=null){
 
+
                                                     db.updateContents(content);
                                                     System.out.println("Data Base Update Service");
 
                                                 }else{
+                                                    duplicateList.add(content);
                                                     db.addContents(content);
                                                     System.out.println("Data Base add Service");
 
@@ -246,7 +271,13 @@ public class ForYouNewFragment extends Fragment {
 
                                             for (Contents content:approvedBlogs) {
                                                 db.addContents(content);
+                                                duplicateList.add(content);
                                             }
+                                        }
+
+                                        if(duplicateList!=null&&duplicateList.size()!=0){
+                                            loadFirstPage(duplicateList);
+
                                         }
                                     }else{
                                         isLoading = true;
@@ -258,6 +289,7 @@ public class ForYouNewFragment extends Fragment {
                                 }
                                 else
                                 {
+                                    pullToRefresh.setRefreshing(false);
                                     adapter.removeLoadingFooter();
                                     isLastPage = true;
                                     isLoading = true;
@@ -278,6 +310,7 @@ public class ForYouNewFragment extends Fragment {
                     @Override
                     public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
                         progressBar.setVisibility(View.GONE);
+                        pullToRefresh.setRefreshing(false);
                     }
                 });
 
@@ -303,16 +336,38 @@ public class ForYouNewFragment extends Fragment {
                     public void onResponse(Call<ArrayList<Contents>> call, Response<ArrayList<Contents>> response) {
 
                         progressBar.setVisibility(View.GONE);
+                        pullToRefresh.setRefreshing(false);
                         try{
                             if(response.code() == 200 && response.body()!= null)
                             {
                                 if(response.body().size() != 0) {
                                     Log.d(TAG, "loadFirstPage: "+response.message());
                                     ArrayList<Contents> approvedBlogs = response.body();
+                                    ArrayList<Contents> newBlogs = new ArrayList<>();
 
                                     if(approvedBlogs!=null&&approvedBlogs.size()!=0){
-                                        loadFirstPage(approvedBlogs);
-                                        contentId = approvedBlogs.get(0).getContentId();
+
+                                        contentsId = approvedBlogs.get(0).getContentId();
+
+                                        if(contentId!=contentsId){
+
+                                            for (Contents cons:approvedBlogs) {
+
+                                                if(contentId==cons.getContentId()){
+                                                    break;
+                                                }else{
+                                                    newBlogs.add(cons);
+                                                }
+
+                                            }
+
+                                            if(newBlogs!=null&&newBlogs.size()!=0){
+
+                                                loadFirstPage(newBlogs);
+
+                                            }
+
+                                        }
 
                                         if(db.getContents()!=null&&db.getContents().size()!=0){
 
@@ -371,6 +426,7 @@ public class ForYouNewFragment extends Fragment {
                     @Override
                     public void onFailure(Call<ArrayList<Contents>> call, Throwable t) {
                         progressBar.setVisibility(View.GONE);
+                        pullToRefresh.setRefreshing(false);
                     }
                 });
 
@@ -415,11 +471,11 @@ public class ForYouNewFragment extends Fragment {
                                 if(response.body().size() != 0) {
 
                                     ArrayList<Contents> approvedBlogs = response.body();
-
+                                    ArrayList<Contents> duplicateList = new ArrayList<>();
 
                                     if(approvedBlogs!=null&&approvedBlogs.size()!=0){
                                         isLoading = false;
-                                        loadNextPage(approvedBlogs);
+                                        //loadNextPage(approvedBlogs);
 
                                         if(db.getContents()!=null&&db.getContents().size()!=0){
 
@@ -434,6 +490,7 @@ public class ForYouNewFragment extends Fragment {
 
                                                 }else{
                                                     db.addContents(content);
+                                                    duplicateList.add(content);
                                                     System.out.println("Data Base add Service");
 
                                                 }
@@ -444,7 +501,13 @@ public class ForYouNewFragment extends Fragment {
 
                                             for (Contents content:approvedBlogs) {
                                                 db.addContents(content);
+                                                duplicateList.add(content);
                                             }
+
+                                        }
+
+                                        if(duplicateList!=null&&duplicateList.size()!=0){
+                                            loadNextPage(duplicateList);
 
                                         }
 
