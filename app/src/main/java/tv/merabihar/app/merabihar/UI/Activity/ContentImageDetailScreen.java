@@ -530,10 +530,19 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                             }else{
 
-                                mMyTask = new ContentImageDetailScreen.DownloadTask()
-                                        .execute(stringToURL(
-                                                ""+contents.getContentImage().get(0).getImages()
-                                        ));
+
+                                if(contents.getContentImage()!=null&&contents.getContentImage().size()!=0){
+
+                                    mMyTask = new ContentImageDetailScreen.DownloadTask()
+                                            .execute(stringToURL(
+                                                    ""+contents.getContentImage().get(0).getImages()
+                                            ));
+
+                                }else{
+                                    Toast.makeText(ContentImageDetailScreen.this, "No Image Resources", Toast.LENGTH_SHORT).show();
+
+                                }
+
                             }
 
                         }catch (Exception e){
@@ -1678,6 +1687,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 */
                 // Convert BufferedInputStream to Bitmap object
                 Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
+                connection.disconnect();
 
                 // Return the downloaded bitmap
                 return bmp;
@@ -1710,7 +1720,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
 
                     File sd = Environment.getExternalStorageDirectory();
-                    String fileName = fileNames+ ".png";
+                    String fileName = fileNames+ ".jpeg";
 
                     File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                     //create directory if not exist
@@ -1729,7 +1739,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     OutputStream out = null;
                     try {
                         out = new FileOutputStream(file);
-                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        mark(result).compress(Bitmap.CompressFormat.JPEG, 100, out);
                         out.flush();
                         out.close();
                     } catch (Exception e) {
@@ -1747,7 +1757,6 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                     shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                    shareIntent.setPackage("com.whatsapp");
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
                     if(PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId()!=0){
@@ -1755,10 +1764,12 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     }else{
                         shareIntent.putExtra(Intent.EXTRA_TEXT,shareContents);
                     }
+                    shareIntent.setPackage("com.whatsapp");
                     shareIntent.setType("image/*");
                     try{
 
-                        startActivityForResult(shareIntent, 101);
+//                         startActivityForResult(shareIntent, 101);
+                            startActivity(shareIntent);
 
                     }catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(ContentImageDetailScreen.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
@@ -1767,8 +1778,70 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
                 }catch (Exception we)
                 {
-                    we.printStackTrace();
-                    Toast.makeText(ContentImageDetailScreen.this, "Unable to send,Check Permission", Toast.LENGTH_SHORT).show();
+                    try{
+
+
+                        File sd = Environment.getExternalStorageDirectory();
+                        String fileName = fileNames+ ".png";
+
+                        File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
+                        //create directory if not exist
+                        if (!directory.exists() && !directory.isDirectory()) {
+                            directory.mkdirs();
+                        }
+
+
+                        File file = new File(directory, fileName);
+
+                        //if(file.exists())
+
+                        Intent shareIntent;
+
+
+                        OutputStream out = null;
+                        try {
+                            out = new FileOutputStream(file);
+                            mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                            out.flush();
+                            out.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        fileName=file.getPath();
+
+                        Uri bmpUri = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            bmpUri = FileProvider.getUriForFile(ContentImageDetailScreen.this, "tv.merabihar.app.merabihar.fileprovider", file);
+                        }else{
+                            bmpUri = Uri.parse("file://"+fileName);
+                        }
+                        // Uri bmpUri = Uri.parse("file://"+path);
+                        shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+
+                    /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
+                    sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
+                        if(PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId()!=0){
+                            shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                        }else{
+                            shareIntent.putExtra(Intent.EXTRA_TEXT,shareContents);
+                        }
+                        shareIntent.setType("image/*");
+                   /* try{
+
+                        context.startActivity(shareIntent);
+
+                    }catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(context, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+                    }*/
+                        startActivity(Intent.createChooser(shareIntent,"Share with"));
+
+                    }catch (Exception wes)
+                    {
+                        wes.printStackTrace();
+                        Toast.makeText(ContentImageDetailScreen.this, ""+we.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }else {
@@ -1780,27 +1853,26 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
     }
 
-    @Override
+/*    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        /*Toast.makeText(this, ""+ requestCode, Toast.LENGTH_SHORT).show();
+        *//*Toast.makeText(this, ""+ requestCode, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, ""+ resultCode, Toast.LENGTH_SHORT).show();
-        */
+        *//*
 
         if(resultCode==RESULT_OK) {
             Toast.makeText(this, ""+ requestCode, Toast.LENGTH_SHORT).show();
             if (requestCode == 101) {
                 // Increase the whatsapp count and update api
                 int count = Integer.parseInt(mWhatsappShareCount.getText().toString()) ;
-                mWhatsappShareCount.setText("Increased");
 
             }
         }else{
-            Toast.makeText(this, "Response invalid", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Response invalid", Toast.LENGTH_SHORT).show();
         }
 
-    }
+    }*/
 
 
 
@@ -1890,7 +1962,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
 
                     File sd = Environment.getExternalStorageDirectory();
-                    String fileName = fileNames+ ".png";
+                    String fileName = fileNames+ ".jpeg";
 
                     File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                     //create directory if not exist
@@ -1909,7 +1981,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     OutputStream out = null;
                     try {
                         out = new FileOutputStream(file);
-                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        mark(result).compress(Bitmap.CompressFormat.JPEG, 100, out);
                         out.flush();
                         out.close();
                     } catch (Exception e) {
@@ -1927,6 +1999,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                     shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                    shareIntent.setPackage("com.whatsapp");
 
                     /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
                     sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
@@ -1943,12 +2016,88 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                     }catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(context, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
                     }*/
-                    startActivity(Intent.createChooser(shareIntent,"Share with"));
+                    try{
+
+//                        startActivityForResult(shareIntent, REQUEST_CODE); // REQUEST_CODE = 101
+                        startActivity(shareIntent);
+
+                    }catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(ContentImageDetailScreen.this, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+                    }
 
                 }catch (Exception we)
                 {
-                    we.printStackTrace();
-                    Toast.makeText(ContentImageDetailScreen.this, "Unable to send,Check Permission", Toast.LENGTH_SHORT).show();
+                  /*  we.printStackTrace();
+                    Toast.makeText(ContentImageDetailScreen.this, "Unable to send,Check Permission", Toast.LENGTH_SHORT).show();  */
+
+
+                    try{
+
+
+                        File sd = Environment.getExternalStorageDirectory();
+                        String fileName = fileNames+ ".jpeg";
+
+                        File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
+                        //create directory if not exist
+                        if (!directory.exists() && !directory.isDirectory()) {
+                            directory.mkdirs();
+                        }
+
+
+                        File file = new File(directory, fileName);
+
+                        //if(file.exists())
+
+                        Intent shareIntent;
+
+
+                        OutputStream out = null;
+                        try {
+                            out = new FileOutputStream(file);
+                            mark(result).compress(Bitmap.CompressFormat.JPEG, 100, out);
+                            out.flush();
+                            out.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        fileName=file.getPath();
+
+                        Uri bmpUri = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            bmpUri = FileProvider.getUriForFile(ContentImageDetailScreen.this, "tv.merabihar.app.merabihar.fileprovider", file);
+                        }else{
+                            bmpUri = Uri.parse("file://"+fileName);
+                        }
+                        // Uri bmpUri = Uri.parse("file://"+path);
+                        shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+
+                    /*String sAux = "\n"+mBlogName.getText().toString()+"\n\n";
+                    sAux = sAux + "to read more click here "+shortUrl+" \n\n"+"To get the latest update about Bihar Download our Bihar Tourism official mobile app by clicking goo.gl/rZfotV";*/
+                        if(PreferenceHandler.getInstance(ContentImageDetailScreen.this).getUserId()!=0){
+                            shareIntent.putExtra(Intent.EXTRA_TEXT,shareContent);
+                        }else{
+                            shareIntent.putExtra(Intent.EXTRA_TEXT,shareContents);
+                        }
+                        shareIntent.setType("image/*");
+                   /* try{
+
+                        context.startActivity(shareIntent);
+
+                    }catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(context, "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+                    }*/
+                        startActivity(Intent.createChooser(shareIntent,"Share with"));
+
+                    }catch (Exception wes)
+                    {
+                        wes.printStackTrace();
+                        Toast.makeText(ContentImageDetailScreen.this, ""+we.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+
+
                 }
 
             }else {
