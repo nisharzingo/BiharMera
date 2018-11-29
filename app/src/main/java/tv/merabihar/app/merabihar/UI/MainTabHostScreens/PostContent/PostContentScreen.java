@@ -33,6 +33,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tangxiaolv.telegramgallery.GalleryActivity;
+import com.tangxiaolv.telegramgallery.GalleryConfig;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -61,6 +64,7 @@ import tv.merabihar.app.merabihar.Model.InterestContentMapping;
 import tv.merabihar.app.merabihar.Model.InterestContentResponse;
 import tv.merabihar.app.merabihar.Model.SubCategories;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.CustomImageGalleryActivity;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabAccountActivity;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabMainActivity;
 import tv.merabihar.app.merabihar.Util.Action;
@@ -101,6 +105,12 @@ public class PostContentScreen extends AppCompatActivity {
     int childcount = 0,count = 0,imageCount=0;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
 
+    // For custom Gallery
+    private Bitmap yourbitmap;
+    private final int PICK_IMAGE_MULTIPLE =105;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +134,9 @@ public class PostContentScreen extends AppCompatActivity {
             customGridView = (CustomGridView) findViewById(R.id.interest_grid_view);
             mTags = (CustomAutoComplete) findViewById(R.id.tagss_blog);
 
+            selectedImageList = new ArrayList<>();
 
+/*
             if (Util.isNetworkAvailable(PostContentScreen.this)) {
 
                 getActivities();
@@ -134,9 +146,12 @@ public class PostContentScreen extends AppCompatActivity {
 
                 SnackbarViewer.showSnackbar(findViewById(R.id.post_content_main),"No Internet connection");
             }
-
+*/
 
             initerestId = new ArrayList<>();
+
+
+
 
             back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -175,7 +190,13 @@ public class PostContentScreen extends AppCompatActivity {
                 }
             });*/
 
-            gotoGallery();
+//            gotoGallery();
+
+
+            gotToCustomGallery();
+
+
+
 
             mSave.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -183,11 +204,11 @@ public class PostContentScreen extends AppCompatActivity {
 
                     //  System.out.println("Selected Image List "+selectedImageList.size());
 
-                    validate();
-
-
-
-
+                    if(selectedImageList.size()>0){
+                        validate();
+                    }else {
+                        Toast.makeText(PostContentScreen.this, "Please select atleast one image ", Toast.LENGTH_SHORT).show();
+                    }
 
 
                 }
@@ -200,6 +221,28 @@ public class PostContentScreen extends AppCompatActivity {
 
     }
 
+    private void gotToCustomGallery() {
+
+        try{
+            //This is Telegram custom library
+            GalleryConfig config = new GalleryConfig.Build()
+                    .limitPickPhoto(10)
+                    .singlePhoto(false)
+                    .hintOfPick("Select multiple images ")
+                    .filterMimeTypes(new String[]{"image/jpeg"})
+                    .build();
+            GalleryActivity.openActivity(PostContentScreen.this, 111, config);
+
+        }catch (Exception e){
+            //This is custom gallery designed by us
+            Intent intent = new Intent(this,CustomImageGalleryActivity.class);
+            startActivityForResult(intent,PICK_IMAGE_MULTIPLE); // reqcode=105
+
+        }
+
+
+
+     }
 
 
     public void selectImage()
@@ -227,6 +270,7 @@ public class PostContentScreen extends AppCompatActivity {
 
                     else
                     {
+
                         dialog.dismiss();
                     }
                 }
@@ -242,6 +286,7 @@ public class PostContentScreen extends AppCompatActivity {
 
 
     }
+
 
     private void gotoGallery() {
 
@@ -263,7 +308,7 @@ public class PostContentScreen extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
         intent.setAction(Intent.ACTION_PICK);//
         startActivityForResult(Intent.createChooser(intent, "Select Picture"),SELECT_FILE);
-}
+    }
 
 
     @Override
@@ -272,25 +317,64 @@ public class PostContentScreen extends AppCompatActivity {
         if(resultCode == Activity.RESULT_OK)
         {
 
-            if(requestCode == REQUEST_GALLERY)
+            // For telegram library
+            if(requestCode == 111){
+                List<String> photos = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
+//                Toast.makeText(this, ""+ photos.size(), Toast.LENGTH_SHORT).show();
+                mBlogImages.removeAllViews();
+
+                for (int i = 0; i < photos.size(); i++) {
+                    selectedImageList.add(photos.get(i));
+                    yourbitmap = BitmapFactory.decodeFile(photos.get(i));
+                    addView(null, yourbitmap);
+                }
+
+            }
+            else if(requestCode == PICK_IMAGE_MULTIPLE){
+                try {
+
+                    String[] imagesPath = data.getStringExtra("data").split("\\|");
+
+                    mBlogImages.removeAllViews();
+
+                    for (int i = 0; i < imagesPath.length; i++) {
+                        selectedImageList.add(imagesPath[i]);
+                        yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
+                        /*ImageView imageView = new ImageView(this);
+                        imageView.setImageBitmap(yourbitmap);
+                        imageView.setAdjustViewBounds(true);
+                        lnrImages.addView(imageView);*/
+                        addView(null, yourbitmap);
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+               // previous code before implementing custom gallery
+
+            /*else if(requestCode == REQUEST_GALLERY)
             {
                 onSelectImageFromGalleryResult(data,"Multiple");
             }else if(requestCode == 1)
             {
-                 onSelectImageFromGalleryResult(data,"Google");
+                onSelectImageFromGalleryResult(data,"Google");
             }else if (requestCode == SELECT_FILE){
 
                 onSelectImageFromGalleryResult(data,"Camera");
-            }
+            }*/
 
         }else{
             System.out.println("Result code "+resultCode);
+            PostContentScreen.this.finish();
+
         }
     }
 
     private void onSelectImageFromGalleryResult(Intent data,String type) {
 
-        selectedImageList = new ArrayList<>();
+//        selectedImageList = new ArrayList<>();
 
         if(type!=null&&type.equalsIgnoreCase("Multiple")){
             try{
@@ -370,10 +454,20 @@ public class PostContentScreen extends AppCompatActivity {
             }
         }
 
+    }
 
 
+    public void  addView(Bitmap bitmap){
+
+        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = vi.inflate(R.layout.gallery_layout, null);
+        ImageView blogs =(ImageView) v.findViewById(R.id.blog_images);
+        blogs.setImageBitmap(bitmap);
+        mBlogImages.addView(v);
 
     }
+
+
 
     public void addView(String uri,Bitmap bitmap)
     {
@@ -472,10 +566,12 @@ public class PostContentScreen extends AppCompatActivity {
 
     public void  validate(){
 
+/*
         String title = mTitle.getText().toString();
         // String shortDesc = mShort.getText().toString();
         String longDesc = mLong.getText().toString();
 
+*/
 
 
        /* if(title==null||title.isEmpty()){
@@ -489,46 +585,46 @@ public class PostContentScreen extends AppCompatActivity {
         }*/
         //else{
 
-            try
+        try
+        {
+
+            if(selectedImageList != null && selectedImageList.size() !=0)
             {
-
-                if(selectedImageList != null && selectedImageList.size() !=0)
+                childcount = selectedImageList.size();
+                blogImagesArrayList = new ArrayList<>();
+                System.out.println("Image    list = "+childcount);
+                for (int i=0;i<selectedImageList.size();i++)
                 {
-                    childcount = selectedImageList.size();
-                    blogImagesArrayList = new ArrayList<>();
-                    System.out.println("Image    list = "+childcount);
-                    for (int i=0;i<selectedImageList.size();i++)
+                    LinearLayout linearLayout = (LinearLayout) mBlogImages.getChildAt(i);
+                    File file = new File(selectedImageList.get(i));
+
+                    if(file.length() <= 1*1024*1024)
                     {
-                        LinearLayout linearLayout = (LinearLayout) mBlogImages.getChildAt(i);
-                        File file = new File(selectedImageList.get(i));
+                        FileOutputStream out = null;
+                        String[] filearray = selectedImageList.get(i).split("/");
+                        final String filename = getFilename(filearray[filearray.length-1]);
 
-                        if(file.length() <= 1*1024*1024)
-                        {
-                            FileOutputStream out = null;
-                            String[] filearray = selectedImageList.get(i).split("/");
-                            final String filename = getFilename(filearray[filearray.length-1]);
+                        out = new FileOutputStream(filename);
+                        Bitmap myBitmap = BitmapFactory.decodeFile(selectedImageList.get(i));
 
-                            out = new FileOutputStream(filename);
-                            Bitmap myBitmap = BitmapFactory.decodeFile(selectedImageList.get(i));
+                        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
-                            myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-
-                            uploadImage(filename);
+                        uploadImage(filename);
 
 
 
-                        }
-                        else
-                        {
-                            compressImage(selectedImageList.get(i));
-                        }
+                    }
+                    else
+                    {
+                        compressImage(selectedImageList.get(i));
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
 
         //}
     }
@@ -570,6 +666,7 @@ public class PostContentScreen extends AppCompatActivity {
             else
             {
                 final ProgressDialog dialog = new ProgressDialog(PostContentScreen.this);
+                dialog.setTitle("Please wait ...");
                 dialog.setCancelable(false);
                 dialog.show();
 
@@ -761,50 +858,68 @@ public class PostContentScreen extends AppCompatActivity {
 
     public void uploadBlogs(final ContentImages blogImages,final int i){
 
-        imageCount = imageCount + i;
-        blogImagesArrayList.add(blogImages);
+        try{
 
-        if(imageCount==selectedImageList.size()){
+           // imageCount = imageCount + i;
+            blogImagesArrayList.add(blogImages);
 
-            if(blogImagesArrayList!=null&&blogImagesArrayList.size()!=0){
+            if((imageCount + i)==selectedImageList.size()){
 
-                SimpleDateFormat sdf  = new SimpleDateFormat("MM/dd/yyyy");
+                if(blogImagesArrayList!=null&&blogImagesArrayList.size()!=0){
 
-                Contents blogs = new Contents();
-                blogs.setTitle("");
+                    SimpleDateFormat sdf  = new SimpleDateFormat("MM/dd/yyyy");
 
-                if(mLong.getText().toString()!=null&&!mLong.getText().toString().isEmpty()){
-                    blogs.setDescription(mLong.getText().toString());
-                }else{
-                    blogs.setDescription("");
-                }
+                    Contents blogs = new Contents();
+                    blogs.setTitle("");
 
-                blogs.setContentType("Image");
-                blogs.setContentURL(blogImagesArrayList.get(0).getImages());
-                blogs.setCreatedBy(PreferenceHandler.getInstance(PostContentScreen.this).getUserFullName());
-                blogs.setCreatedDate(""+new SimpleDateFormat("MM/dd/yyyyy").format(new Date()));
-                blogs.setUpdatedDate(""+new SimpleDateFormat("MM/dd/yyyyy").format(new Date()));
-                blogs.setProfileId(PreferenceHandler.getInstance(PostContentScreen.this).getUserId());
-                blogs.setContentImage(blogImagesArrayList);
-                blogs.setSubCategoriesId(101);
+                    if(mLong.getText().toString()!=null&&!mLong.getText().toString().isEmpty()){
+                        blogs.setDescription(mLong.getText().toString());
+                    }else{
+                        blogs.setDescription("");
+                    }
+
+                    blogs.setContentType("Image");
+                    blogs.setContentURL(blogImagesArrayList.get(0).getImages());
+                    blogs.setCreatedBy(PreferenceHandler.getInstance(PostContentScreen.this).getUserFullName());
+                    blogs.setCreatedDate(""+new SimpleDateFormat("MM/dd/yyyyy").format(new Date()));
+                    blogs.setUpdatedDate(""+new SimpleDateFormat("MM/dd/yyyyy").format(new Date()));
+                    blogs.setProfileId(PreferenceHandler.getInstance(PostContentScreen.this).getUserId());
+                    blogs.setContentImage(blogImagesArrayList);
+                    blogs.setSubCategoriesId(101);
+
+                    postBlogs(blogs);
 
 
-                if(mTags.getText().toString()!=null||!mTags.getText().toString().isEmpty()){
+                    /*if(mTags.getText().toString()!=null||!mTags.getText().toString().isEmpty()){
 
-                    if(interestList.contains(mTags.getText().toString())){
+                        if(interestList.contains(mTags.getText().toString())){
 
-                        if(initerestIds!=0){
+                            if(initerestIds!=0){
 
-                            if (Util.isNetworkAvailable(PostContentScreen.this)) {
+                                if (Util.isNetworkAvailable(PostContentScreen.this)) {
 
-                                postBlogsWithInterest(blogs);
+                                    postBlogsWithInterest(blogs);
+
+                                }else{
+
+                                    SnackbarViewer.showSnackbar(findViewById(R.id.post_content_main),"No Internet connection");
+                                }
 
                             }else{
+                                ArrayList<Interest> interests = new ArrayList<>();
 
-                                SnackbarViewer.showSnackbar(findViewById(R.id.post_content_main),"No Internet connection");
+                                Interest interest = new Interest();
+                                interest.setInterestName(mTags.getText().toString().replace("#",""));
+                                interest.setDescription(mTags.getText().toString().replace("#",""));
+                                interests.add(interest);
+
+                                InterestAndContents interestAndBlogs = new InterestAndContents();
+                                interestAndBlogs.setContent(blogs);
+                                interestAndBlogs.setInterestList(interests);
+                                postBlogsAndNewInterest(interestAndBlogs);
                             }
-
                         }else{
+
                             ArrayList<Interest> interests = new ArrayList<>();
 
                             Interest interest = new Interest();
@@ -817,30 +932,20 @@ public class PostContentScreen extends AppCompatActivity {
                             interestAndBlogs.setInterestList(interests);
                             postBlogsAndNewInterest(interestAndBlogs);
                         }
+
                     }else{
+                        initerestIds = 0;
+                        postBlogs(blogs);
+                    }*/
+                    //blogs.setActivitiesId(90);
 
-                        ArrayList<Interest> interests = new ArrayList<>();
 
-                        Interest interest = new Interest();
-                        interest.setInterestName(mTags.getText().toString().replace("#",""));
-                        interest.setDescription(mTags.getText().toString().replace("#",""));
-                        interests.add(interest);
-
-                        InterestAndContents interestAndBlogs = new InterestAndContents();
-                        interestAndBlogs.setContent(blogs);
-                        interestAndBlogs.setInterestList(interests);
-                        postBlogsAndNewInterest(interestAndBlogs);
-                    }
-
-                }else{
-                    initerestIds = 0;
-                    postBlogs(blogs);
                 }
-                //blogs.setActivitiesId(90);
-
 
             }
-
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("uploading error", e.getLocalizedMessage());
         }
 
     }
@@ -883,11 +988,12 @@ public class PostContentScreen extends AppCompatActivity {
                             emailModel.setFromEmail("merabihar.tv@gmail.com");
                             postEmail(emailModel);*/
 
-                            Toast.makeText(PostContentScreen.this,"Story created Successfull",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PostContentScreen.this,"Story successfully created",Toast.LENGTH_SHORT).show();
                             success();
                         }
                         else
                         {
+                            Log.e("uploading story", response.message());
                             Toast.makeText(PostContentScreen.this,response.message(),Toast.LENGTH_SHORT).show();
                         }
                     }
