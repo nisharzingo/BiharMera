@@ -1720,7 +1720,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
 
                     File sd = Environment.getExternalStorageDirectory();
-                    String fileName = fileNames+ ".jpeg";
+                    String fileName = fileNames+ ".jpg";
 
                     File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                     //create directory if not exist
@@ -1782,7 +1782,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
 
                         File sd = Environment.getExternalStorageDirectory();
-                        String fileName = fileNames+ ".png";
+                        String fileName = fileNames+ ".jpg";
 
                         File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                         //create directory if not exist
@@ -1962,7 +1962,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
 
                     File sd = Environment.getExternalStorageDirectory();
-                    String fileName = fileNames+ ".jpeg";
+                    String fileName = fileNames+ ".jpg";
 
                     File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                     //create directory if not exist
@@ -2035,7 +2035,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
 
                         File sd = Environment.getExternalStorageDirectory();
-                        String fileName = fileNames+ ".jpeg";
+                        String fileName = fileNames+ ".jpg";
 
                         File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                         //create directory if not exist

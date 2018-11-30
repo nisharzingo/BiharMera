@@ -7,6 +7,7 @@ package tv.merabihar.app.merabihar.Util;
 public class Constants {
 
     public static final String BASE_URL = "http://zingolocals.azurewebsites.net/api/";
+    public static final String NEWSAPI_BASE_URL = "https://newsapi.org/v2/";
     public static final String IMAGE_URL = "http://zingolocals.azurewebsites.net/";
     public static final String USER_ID = "user_id";
     public static final String VIDEO_ID = "video_id";
@@ -23,4 +24,5 @@ public class Constants {
     public static final String YOUTUBE = "AIzaSyA5lz66RDcgiax1Ws65Cdg1M7ApDMXPU8w";
     public static final String KEY = "AIzaSyA5lz66RDcgiax1Ws65Cdg1M7ApDMXPU8w";
     public static final String USER_ROLE_UNIQUE_ID = "user_role_unique_id";
+    public static final String NEWSAPI_TOKEN = "50f164cfd717409682b670a71b1c95b6";
 }

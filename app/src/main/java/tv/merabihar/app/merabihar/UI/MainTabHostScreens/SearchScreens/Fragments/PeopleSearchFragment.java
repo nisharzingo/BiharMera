@@ -36,6 +36,7 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
  */
 public class PeopleSearchFragment extends Fragment {
 
+
     RecyclerView recyclerViewFolloers,recyclerViewNonFolloers,recyclerProfile;
     private ProgressBar mProgressBar;
     EditText mSearchText;
@@ -60,7 +61,6 @@ public class PeopleSearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
 
 
     @Override

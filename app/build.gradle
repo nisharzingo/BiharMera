@@ -14,9 +14,9 @@ android {
         applicationId "tv.merabihar.app.merabihar"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 14
+        versionCode 15
         multiDexEnabled true
-        versionName "1.13"
+        versionName "1.14"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

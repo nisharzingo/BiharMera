@@ -1,50 +1,50 @@
 package tv.merabihar.app.merabihar.Adapter;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.alexzh.circleimageview.CircleImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
-import com.tuyenmonkey.mkloader.MKLoader;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Lato_Regular;
 import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.InterestContentMapping;
+import tv.merabihar.app.merabihar.Model.NewsCategory;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.InterestContentListScreen;
+import tv.merabihar.app.merabihar.UI.Activity.NewsListCategoryScreen;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
-import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 
 /**
- * Created by ZingoHotels Tech on 01-11-2018.
+ * Created by ZingoHotels Tech on 29-11-2018.
  */
 
-public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrestAdapter.ViewHolder> {
+public class NewsCategoryAdapter extends RecyclerView.Adapter<NewsCategoryAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<InterestContentMapping> list;
-    public TrendingIntrestAdapter(Context context,ArrayList<InterestContentMapping> list) {
+    private ArrayList<NewsCategory> list;
+    public NewsCategoryAdapter(Context context,ArrayList<NewsCategory> list) {
 
         this.context = context;
         this.list = list;
@@ -71,76 +71,34 @@ public class TrendingIntrestAdapter extends RecyclerView.Adapter<TrendingIntrest
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        final InterestContentMapping content = list.get(position);
+        final NewsCategory content = list.get(position);
 
         if(content!=null){
 
-            if(content.getZingoInterst()!=null){
+            if(content.getTitle()!=null){
 
-                holder.mInterestName.setText(""+content.getZingoInterst().getInterestName());
+                holder.mInterestName.setText(""+content.getTitle());
             }
 
-            if(content.getContent()!=null){
+            if(content.getIcon() != 0 )
+            {
 
-                Contents contents = content.getContent();
-                if(contents.getContentType().equalsIgnoreCase("Video")){
+                holder.mContentImage.setImageResource(content.getIcon());
 
-                    //url = contents.getContentURL();
-
-                    //holder.mIcon.setVisibility(View.VISIBLE);
-                    if(contents.getContentURL()!=null&&!contents.getContentURL().isEmpty()){
-                        String img = "https://img.youtube.com/vi/"+contents.getContentURL()+"/0.jpg";
-
-                        if(img!=null&&!img.isEmpty()){
-                            // crop the image & load
-//                            loadCroppedImage(img,holder.mContentImage);
-
-                            Glide.with(context)
-                                    .load(img)
-                                    .apply(new RequestOptions()
-                                            .placeholder(R.drawable.no_image)
-                                            .error(R.drawable.no_image))
-                                    .into(holder.mContentImage);
-
-
-                        }
-                    }
-
-
-
-
-                }else{
-
-
-                    if(contents.getContentImage() != null && contents.getContentImage().size()!=0)
-                    {
-
-                        String img = contents.getContentImage().get(0).getImages();
-
-                        if(img!=null&&!img.isEmpty()){
-                            Picasso.with(context).load(img).placeholder(R.drawable.no_image).
-                                    error(R.drawable.no_image).into(holder.mContentImage);
-
-                        }else{
-                            holder.mContentImage.setImageResource(R.drawable.no_image);
-                        }
-
-
-
-                    }else{
-                        holder.mContentImage.setImageResource(R.drawable.no_image);
-                    }
-
-                }
+            }else{
+                holder.mContentImage.setImageResource(R.drawable.no_image);
             }
+
+
+
 
             holder.mInterestLay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(context, InterestContentListScreen.class);
+                    Intent intent = new Intent(context, NewsListCategoryScreen.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("Interest",content.getZingoInterst());
+                    bundle.putString("Category",content.getTitle());
                     intent.putExtras(bundle);
                     context.startActivity(intent);
 

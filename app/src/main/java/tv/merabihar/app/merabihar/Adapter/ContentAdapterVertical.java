@@ -1777,7 +1777,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
 
                     File sd = Environment.getExternalStorageDirectory();
-                    String fileName = fileNames+ ".png";
+                    String fileName = fileNames+ ".jpg";
 
                     File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                     //create directory if not exist
@@ -1796,7 +1796,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     OutputStream out = null;
                     try {
                         out = new FileOutputStream(file);
-                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        mark(result).compress(Bitmap.CompressFormat.JPEG, 100, out);
                         out.flush();
                         out.close();
                     } catch (Exception e) {
@@ -1840,7 +1840,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
 
                         File sd = Environment.getExternalStorageDirectory();
-                        String fileName = fileNames+ ".png";
+                        String fileName = fileNames+ ".jpg";
 
                         File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                         //create directory if not exist
@@ -1998,7 +1998,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
 
                     File sd = Environment.getExternalStorageDirectory();
-                    String fileName = fileNames+ ".png";
+                    String fileName = fileNames+ ".jpg";
 
                     File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                     //create directory if not exist
@@ -2017,7 +2017,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     OutputStream out = null;
                     try {
                         out = new FileOutputStream(file);
-                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        mark(result).compress(Bitmap.CompressFormat.JPEG, 100, out);
                         out.flush();
                         out.close();
                     } catch (Exception e) {
@@ -2121,7 +2121,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
 
                     File sd = Environment.getExternalStorageDirectory();
-                    String fileName = fileNames+ ".png";
+                    String fileName = fileNames+ ".jpg";
 
                     File directory = new File(sd.getAbsolutePath()+"/MeraBihar App/Download/Images");
                     //create directory if not exist
@@ -2140,7 +2140,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
                     OutputStream out = null;
                     try {
                         out = new FileOutputStream(file);
-                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        mark(result).compress(Bitmap.CompressFormat.JPEG, 100, out);
                         out.flush();
                         out.close();
                     } catch (Exception e) {

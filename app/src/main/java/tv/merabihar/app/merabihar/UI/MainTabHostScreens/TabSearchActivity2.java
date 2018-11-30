@@ -92,147 +92,155 @@ public class TabSearchActivity2 extends AppCompatActivity {
 
         db = new DataBaseHelper(TabSearchActivity2.this);
 
-        Thread interest = new Thread() {
+        waitForGarbageCollector(new Runnable() {
+            @Override
             public void run() {
-                getTrendingInterest();
-            }
-        };
 
-        Thread contentss = new Thread() {
-            public void run() {
-                loadFirstSetOfBlogs();
-            }
-        };
-
-        if (Util.isNetworkAvailable(TabSearchActivity2.this)) {
-
-            if(db.getContents()!=null&&db.getContents().size()!=0){
-
-                ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
-                ArrayList<Contents> contents = new ArrayList<>();
-                int count = 0;
-                ArrayList<Contents> contentsList = db.getContents();
-
-                Collections.shuffle(contentsList);
-
-                for (Contents content :contentsList) {
-
-
-                    //if(content.getContentType().equalsIgnoreCase("Image")){
-                    contents.add(content);
-                    count = count + 1;
-                    if (count == 9) {
-                        contentList.add(contents);
-                        count = 0;
-                        contents = new ArrayList<>();
+                Thread interest = new Thread() {
+                    public void run() {
+                        getTrendingInterest();
                     }
-                    // }
+                };
 
-
-                }
-
-                if (contentList != null && contentList.size() != 0) {
-                    loadNextPageDb(contentList);
-                }
-
-                progressBar.setVisibility(View.GONE);
-            }else{
-                Toast.makeText(TabSearchActivity2.this, "No Contents in db", Toast.LENGTH_SHORT).show();
-            }
-            interest.start();
-            contentss.start();
-        }
-        else{
-            progressBar.setVisibility(View.GONE);
-            mCategoryProgressBar.setVisibility(View.GONE);
-            SnackbarViewer.showSnackbar(findViewById(R.id.tab_search_activity_ll),"No Internet connection");
-            if(db.getContents()!=null&&db.getContents().size()!=0){
-
-                ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
-                ArrayList<Contents> contents = new ArrayList<>();
-                int count = 0;
-                ArrayList<Contents> contentsList = db.getContents();
-
-                Collections.shuffle(contentsList);
-
-                for (Contents content :contentsList) {
-
-
-                    //if(content.getContentType().equalsIgnoreCase("Image")){
-                    contents.add(content);
-                    count = count + 1;
-                    if (count == 9) {
-                        contentList.add(contents);
-                        count = 0;
-                        contents = new ArrayList<>();
+                Thread contentss = new Thread() {
+                    public void run() {
+                        loadFirstSetOfBlogs();
                     }
-                    // }
-
-
-                }
-
-                if (contentList != null && contentList.size() != 0) {
-                    loadNextPageDb(contentList);
-                }
-
-                progressBar.setVisibility(View.GONE);
-            }else{
-                Toast.makeText(TabSearchActivity2.this, "No Contents in db", Toast.LENGTH_SHORT).show();
-            }
-//            Toast.makeText(this, "no connection", Toast.LENGTH_SHORT).show();
-//            Log.e("NO Connection found", "xxxxxxxxxxx");
-        }
-
-
-        mSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent search = new Intent(TabSearchActivity2.this, SearchActivity.class);
-                startActivity(search);
-            }
-        });
-
-        mViewTags.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent search = new Intent(TabSearchActivity2.this, InterestListScreen.class);
-                startActivity(search);
-            }
-        });
-
-        contentsView.addOnScrollListener(new PageScrollListener(verticalLinearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-
-                currentPage = currentPage+1;
+                };
 
                 if (Util.isNetworkAvailable(TabSearchActivity2.this)) {
-                    loadNextSetOfItems();
 
-                }else{
-                    Toast.makeText(TabSearchActivity2.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                        ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                        ArrayList<Contents> contents = new ArrayList<>();
+                        int count = 0;
+                        ArrayList<Contents> contentsList = db.getContents();
+
+                        Collections.shuffle(contentsList);
+
+                        for (Contents content :contentsList) {
+
+
+                            //if(content.getContentType().equalsIgnoreCase("Image")){
+                            contents.add(content);
+                            count = count + 1;
+                            if (count == 9) {
+                                contentList.add(contents);
+                                count = 0;
+                                contents = new ArrayList<>();
+                            }
+                            // }
+
+
+                        }
+
+                        if (contentList != null && contentList.size() != 0) {
+                            loadNextPageDb(contentList);
+                        }
+
+                        progressBar.setVisibility(View.GONE);
+                    }else{
+                        Toast.makeText(TabSearchActivity2.this, "No Contents in db", Toast.LENGTH_SHORT).show();
+                    }
+                    interest.start();
+                    contentss.start();
+                }
+                else{
+                    progressBar.setVisibility(View.GONE);
+                    mCategoryProgressBar.setVisibility(View.GONE);
+                    SnackbarViewer.showSnackbar(findViewById(R.id.tab_search_activity_ll),"No Internet connection");
+                    if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                        ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                        ArrayList<Contents> contents = new ArrayList<>();
+                        int count = 0;
+                        ArrayList<Contents> contentsList = db.getContents();
+
+                        Collections.shuffle(contentsList);
+
+                        for (Contents content :contentsList) {
+
+
+                            //if(content.getContentType().equalsIgnoreCase("Image")){
+                            contents.add(content);
+                            count = count + 1;
+                            if (count == 9) {
+                                contentList.add(contents);
+                                count = 0;
+                                contents = new ArrayList<>();
+                            }
+                            // }
+
+
+                        }
+
+                        if (contentList != null && contentList.size() != 0) {
+                            loadNextPageDb(contentList);
+                        }
+
+                        progressBar.setVisibility(View.GONE);
+                    }else{
+                        Toast.makeText(TabSearchActivity2.this, "No Contents in db", Toast.LENGTH_SHORT).show();
+                    }
+//            Toast.makeText(this, "no connection", Toast.LENGTH_SHORT).show();
+//            Log.e("NO Connection found", "xxxxxxxxxxx");
                 }
 
-            }
 
-            @Override
-            public int getTotalPageCount() {
-                return currentPage;
-            }
+                mSearch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
+                        Intent search = new Intent(TabSearchActivity2.this, SearchActivity.class);
+                        startActivity(search);
+                    }
+                });
 
-            @Override
-            public boolean isLoading() {
-                return isLoading;
+                mViewTags.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        Intent search = new Intent(TabSearchActivity2.this, InterestListScreen.class);
+                        startActivity(search);
+                    }
+                });
+
+                contentsView.addOnScrollListener(new PageScrollListener(verticalLinearLayoutManager) {
+                    @Override
+                    protected void loadMoreItems() {
+                        isLoading = true;
+
+                        currentPage = currentPage+1;
+
+                        if (Util.isNetworkAvailable(TabSearchActivity2.this)) {
+                            loadNextSetOfItems();
+
+                        }else{
+                            Toast.makeText(TabSearchActivity2.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public int getTotalPageCount() {
+                        return currentPage;
+                    }
+
+                    @Override
+                    public boolean isLastPage() {
+                        return isLastPage;
+                    }
+
+                    @Override
+                    public boolean isLoading() {
+                        return isLoading;
+                    }
+                });
             }
         });
+
+
 
     }
 
@@ -688,4 +696,46 @@ public class TabSearchActivity2 extends AppCompatActivity {
 
     }
 
+
+    public static void waitForGarbageCollector(final Runnable callback) {
+
+        Runtime runtime;
+        long maxMemory;
+        long usedMemory;
+        double availableMemoryPercentage = 1.0;
+        final double MIN_AVAILABLE_MEMORY_PERCENTAGE = 0.1;
+        final int DELAY_TIME = 5 * 1000;
+
+        runtime =
+                Runtime.getRuntime();
+
+        maxMemory =
+                runtime.maxMemory();
+
+        usedMemory =
+                runtime.totalMemory() -
+                        runtime.freeMemory();
+
+        availableMemoryPercentage =
+                1 -
+                        (double) usedMemory /
+                                maxMemory;
+
+        if (availableMemoryPercentage < MIN_AVAILABLE_MEMORY_PERCENTAGE) {
+
+            try {
+                Thread.sleep(DELAY_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            waitForGarbageCollector(
+                    callback);
+        } else {
+
+            // Memory resources are availavle, go to next operation:
+
+            callback.run();
+        }
+    }
 }

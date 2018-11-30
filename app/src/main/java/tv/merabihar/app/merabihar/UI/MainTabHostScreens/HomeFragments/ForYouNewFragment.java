@@ -1,5 +1,6 @@
 package tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,6 +42,8 @@ import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
 import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 
 public class ForYouNewFragment extends Fragment {
@@ -108,6 +111,16 @@ public class ForYouNewFragment extends Fragment {
             adapter = new ContentAdapterVertical(getActivity());
             mtopBlogs.setAdapter(adapter);
 
+            Runtime rt = Runtime.getRuntime();
+            long maxMemory = rt.maxMemory();
+            Log.v("onCreate", "maxMemory:" + Long.toString(maxMemory));
+            System.out.println("onCreate Maxmemory "+Long.toString(maxMemory));
+
+            ActivityManager am = (ActivityManager) getActivity().getSystemService(ACTIVITY_SERVICE);
+            int memoryClass = am.getMemoryClass();
+            Log.v("onCreate", "memoryClass:" + Integer.toString(memoryClass));
+            System.out.println("onCreate memoryClass "+Integer.toString(memoryClass));
+
 
             /*SnapHelper snapHelper = new PagerSnapHelper();
             snapHelper.attachToRecyclerView(mtopBlogs);*/
@@ -120,40 +133,46 @@ public class ForYouNewFragment extends Fragment {
 
 
 
-            if(Util.isNetworkAvailable(getActivity())){
-
-                if(db.getContents()!=null&&db.getContents().size()!=0){
-                    ArrayList<Contents> contentsArrayList = db.getContents();
-                    duplicate = db.getContents();
-
-                    //Collections.shuffle(contentsArrayList);
-                    loadNextPageDb(contentsArrayList);
-                    progressBar.setVisibility(View.GONE);
-                }
-                currentPage = PAGE_START;
-                loadFirstSetOfBlogs();
-//                System.out.println("Db size"+db.getContents().size());
-            }else{
-                System.out.println("Db size"+db.getContents().size());
-                if(db.getContents()!=null&&db.getContents().size()!=0){
-
-                    ArrayList<Contents> contentsArrayList = db.getContents();
-
-                    //Collections.shuffle(contentsArrayList);
-                    loadNextPageDb(contentsArrayList);
-                    progressBar.setVisibility(View.GONE);
-                }else{
-                    Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            mtopBlogs.setOnScrollListener(new PageScrollListener(linearLayoutManager) {
+            waitForGarbageCollector(new Runnable() {
                 @Override
-                protected void loadMoreItems() {
-                    isLoading = false;
+                public void run() {
 
-                    currentPage = currentPage+1;
-                    loadNextSetOfItems();
+                    // Your operations.
+
+                    if(Util.isNetworkAvailable(getActivity())){
+
+                        if(db.getContents()!=null&&db.getContents().size()!=0){
+                            ArrayList<Contents> contentsArrayList = db.getContents();
+                            duplicate = db.getContents();
+
+                            //Collections.shuffle(contentsArrayList);
+                            loadNextPageDb(contentsArrayList);
+                            progressBar.setVisibility(View.GONE);
+                        }
+                        currentPage = PAGE_START;
+                        loadFirstSetOfBlogs();
+//                System.out.println("Db size"+db.getContents().size());
+                    }else{
+                        System.out.println("Db size"+db.getContents().size());
+                        if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                            ArrayList<Contents> contentsArrayList = db.getContents();
+
+                            //Collections.shuffle(contentsArrayList);
+                            loadNextPageDb(contentsArrayList);
+                            progressBar.setVisibility(View.GONE);
+                        }else{
+                            Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    mtopBlogs.setOnScrollListener(new PageScrollListener(linearLayoutManager) {
+                        @Override
+                        protected void loadMoreItems() {
+                            isLoading = false;
+
+                            currentPage = currentPage+1;
+                            loadNextSetOfItems();
 
                   /*  if (Util.isNetworkAvailable(getActivity())) {
                         loadNextSetOfItems();
@@ -162,34 +181,34 @@ public class ForYouNewFragment extends Fragment {
                         SnackbarViewer.showSnackbar(view.findViewById(R.id.follow_for_u_new),"No Internet connection");
                         progressBar.setVisibility(View.GONE);
                     }*/
-                }
+                        }
 
-                @Override
-                public int getTotalPageCount() {
-                    return currentPage;
-                }
+                        @Override
+                        public int getTotalPageCount() {
+                            return currentPage;
+                        }
 
-                @Override
-                public boolean isLastPage() {
-                    return isLastPage;
-                }
+                        @Override
+                        public boolean isLastPage() {
+                            return isLastPage;
+                        }
 
-                @Override
-                public boolean isLoading() {
-                    return isLoading;
-                }
-            });
+                        @Override
+                        public boolean isLoading() {
+                            return isLoading;
+                        }
+                    });
 
-            pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                int Refreshcounter = 1; //Counting how many times user have refreshed the layout
+                    pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        int Refreshcounter = 1; //Counting how many times user have refreshed the layout
 
-                @Override
-                public void onRefresh() {
+                        @Override
+                        public void onRefresh() {
 
-                    currentPage = PAGE_START;
-                    pullToRefresh.setRefreshing(false);
+                            currentPage = PAGE_START;
+                            pullToRefresh.setRefreshing(false);
 
-                    loadFirstSetOfBlogs();
+                            loadFirstSetOfBlogs();
 
                     /*if(db.getContents()!=null&&db.getContents().size()!=0){
                         ArrayList<Contents> contentsArrayList = db.getContents();
@@ -202,8 +221,11 @@ public class ForYouNewFragment extends Fragment {
                     currentPage = PAGE_START;
                     loadFirstSetOfBlogs();*/
 
+                        }
+                    });
                 }
             });
+
             return view;
 
         }catch (Exception e){
@@ -579,5 +601,48 @@ public class ForYouNewFragment extends Fragment {
 
 
     }
+
+    public static void waitForGarbageCollector(final Runnable callback) {
+
+        Runtime runtime;
+        long maxMemory;
+        long usedMemory;
+        double availableMemoryPercentage = 1.0;
+        final double MIN_AVAILABLE_MEMORY_PERCENTAGE = 0.1;
+        final int DELAY_TIME = 5 * 1000;
+
+        runtime =
+                Runtime.getRuntime();
+
+        maxMemory =
+                runtime.maxMemory();
+
+        usedMemory =
+                runtime.totalMemory() -
+                        runtime.freeMemory();
+
+        availableMemoryPercentage =
+                1 -
+                        (double) usedMemory /
+                                maxMemory;
+
+        if (availableMemoryPercentage < MIN_AVAILABLE_MEMORY_PERCENTAGE) {
+
+            try {
+                Thread.sleep(DELAY_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            waitForGarbageCollector(
+                    callback);
+        } else {
+
+            // Memory resources are availavle, go to next operation:
+
+            callback.run();
+        }
+    }
+
 
 }

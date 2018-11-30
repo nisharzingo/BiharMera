@@ -230,35 +230,31 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
             tabHost.addTab(tabMenu);
 
 
-            int page = getIntent().getIntExtra("ARG_PAGE", defaultValue);
-
-
-
-            int pageno = getIntent().getIntExtra("TABNAME",0);
-            if(pageno != 0)
-            {
-                tabHost.setCurrentTab(pageno-1);
-            }
-            else
-            {
-                tabHost.setCurrentTab(page);
-            }
-
-
-
-/*
-            // listener for Home fragment
-            getTabWidget().getChildAt(0).setOnClickListener(new View.OnClickListener() {
+            waitForGarbageCollector(new Runnable() {
                 @Override
-                public void onClick(View v) {
-                    // custom code
-                    tabHost.setCurrentTab(0);
-                    FragmentActivity fragmentActivity = new FragmentActivity();
-                    fragmentActivity.getSupportFragmentManager().findFragmentByTag("Your_Fragment_TAG");
+                public void run() {
+
+                    int page = getIntent().getIntExtra("ARG_PAGE", defaultValue);
+
+
+
+                    int pageno = getIntent().getIntExtra("TABNAME",0);
+                    if(pageno != 0)
+                    {
+                        tabHost.setCurrentTab(pageno-1);
+                    }
+                    else
+                    {
+                        tabHost.setCurrentTab(page);
+                    }
+
 
                 }
             });
-*/
+
+
+
+
 
 
 
@@ -362,7 +358,47 @@ public class TabMainActivity extends TabActivity implements TabHost.OnTabChangeL
         }
     }
 
+    public static void waitForGarbageCollector(final Runnable callback) {
 
+        Runtime runtime;
+        long maxMemory;
+        long usedMemory;
+        double availableMemoryPercentage = 1.0;
+        final double MIN_AVAILABLE_MEMORY_PERCENTAGE = 0.1;
+        final int DELAY_TIME = 5 * 1000;
+
+        runtime =
+                Runtime.getRuntime();
+
+        maxMemory =
+                runtime.maxMemory();
+
+        usedMemory =
+                runtime.totalMemory() -
+                        runtime.freeMemory();
+
+        availableMemoryPercentage =
+                1 -
+                        (double) usedMemory /
+                                maxMemory;
+
+        if (availableMemoryPercentage < MIN_AVAILABLE_MEMORY_PERCENTAGE) {
+
+            try {
+                Thread.sleep(DELAY_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            waitForGarbageCollector(
+                    callback);
+        } else {
+
+            // Memory resources are availavle, go to next operation:
+
+            callback.run();
+        }
+    }
 
 
 }

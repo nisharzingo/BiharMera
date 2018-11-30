@@ -90,6 +90,21 @@ public class Util {
         return retrofit;
     }
 
+    public static Retrofit getClientNews() {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS).build();
+        if (retrofit==null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(Constants.NEWSAPI_BASE_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        //System.out.println("Retrofit = "+retrofit.get);
+        return retrofit;
+    }
+
     public static boolean isNetworkAvailable(Context context) {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();

@@ -1540,6 +1540,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                                         sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
                                         profileSubScribed(sg);
                                     }else{
+                                        sg.setStatus("Activated");
                                         sg.setActiveDate(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
                                         profileSubScribed(sg);
                                     }
@@ -2021,7 +2022,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 
                     File sd = Environment.getExternalStorageDirectory();
-                    String fileName = fileNames+ ".png";
+                    String fileName = fileNames+ ".jpg";
 
                     File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                     //create directory if not exist
@@ -2040,7 +2041,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     OutputStream out = null;
                     try {
                         out = new FileOutputStream(file);
-                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        mark(result).compress(Bitmap.CompressFormat.JPEG, 100, out);
                         out.flush();
                         out.close();
                     } catch (Exception e) {
@@ -2083,7 +2084,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 
                         File sd = Environment.getExternalStorageDirectory();
-                        String fileName = fileNames+ ".png";
+                        String fileName = fileNames+ ".jpg";
 
                         File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                         //create directory if not exist
@@ -2102,7 +2103,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                         OutputStream out = null;
                         try {
                             out = new FileOutputStream(file);
-                            mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                            mark(result).compress(Bitmap.CompressFormat.JPEG, 100, out);
                             out.flush();
                             out.close();
                         } catch (Exception e) {
@@ -2265,7 +2266,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 
                     File sd = Environment.getExternalStorageDirectory();
-                    String fileName = fileNames+ ".png";
+                    String fileName = fileNames+ ".jpg";
 
                     File directory = new File(sd.getAbsolutePath()+"/Mera Bihar App/.Share/");
                     //create directory if not exist
@@ -2284,7 +2285,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                     OutputStream out = null;
                     try {
                         out = new FileOutputStream(file);
-                        mark(result).compress(Bitmap.CompressFormat.PNG, 100, out);
+                        mark(result).compress(Bitmap.CompressFormat.JPEG, 100, out);
                         out.flush();
                         out.close();
                     } catch (Exception e) {

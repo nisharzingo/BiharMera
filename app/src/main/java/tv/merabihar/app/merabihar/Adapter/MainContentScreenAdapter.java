@@ -8,6 +8,7 @@ import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.FollowFrag
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForFollowersFragment;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForYouFragment;
 import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForYouNewFragment;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.NewsFeedFragment;
 
 /**
  * Created by ZingoHotels Tech on 31-10-2018.
@@ -16,7 +17,7 @@ import tv.merabihar.app.merabihar.UI.MainTabHostScreens.HomeFragments.ForYouNewF
 public class MainContentScreenAdapter  extends FragmentStatePagerAdapter {
 
 
-    String[] tabTitles = {"For You", "Follow"};
+    String[] tabTitles = {"For You", "News"};
 
     public MainContentScreenAdapter(FragmentManager fm) {
         super(fm);
@@ -36,10 +37,15 @@ public class MainContentScreenAdapter  extends FragmentStatePagerAdapter {
                 ForYouNewFragment people = new ForYouNewFragment();
                 return people;
 
-            case 1:
+            /*case 1:
                 FollowFragments followFragments = new FollowFragments();
 //                ForFollowersFragment interest = new ForFollowersFragment();
-                return followFragments;
+                return followFragments;*/
+
+            case 1:
+                NewsFeedFragment followFragmentss = new NewsFeedFragment();
+//                ForFollowersFragment interest = new ForFollowersFragment();
+                return followFragmentss;
 
             default:
                 return null;

@@ -109,144 +109,154 @@ public class TabVideoNewDesign extends AppCompatActivity {
 
             db = new DataBaseHelper(TabVideoNewDesign.this);
 
-            Thread category = new Thread() {
-                public void run() {
-                    getCategories();
-                }
-            };
 
-            Thread video = new Thread() {
-                public void run() {
-
-                    loadFirstSetOfBlogs();
-                }
-            };
-
-
-
-            if (Util.isNetworkAvailable(this)) {
-
-                //video.start();
-                progressBar.setVisibility(View.GONE);
-                if(db.getContentByType("Video")!=null&&db.getContentByType("Video").size()!=0){
-
-                    ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
-                    ArrayList<Contents> contents = new ArrayList<>();
-                    int count = 0;
-
-                    ArrayList<Contents> contentsList = db.getContentByType("Video");
-                    Collections.shuffle(contentsList);
-
-                    for (Contents content : contentsList) {
-
-
-                        //if(content.getContentType().equalsIgnoreCase("Image")){
-                        contents.add(content);
-                        count = count + 1;
-                        if (count == 9) {
-                            contentList.add(contents);
-                            ContentImageAdapter blogAdapters = new ContentImageAdapter(TabVideoNewDesign.this,contents);//,pagerModelArrayList);
-                            mTrendingInterest.setAdapter(blogAdapters);
-                            mTrendingInterest.requestFocus();
-                            count = 0;
-                            contents = new ArrayList<>();
-                        }
-                        // }
-
-
-                    }
-
-                    if (contentList != null && contentList.size() != 0) {
-
-                        loadNextPageDb(contentList);
-
-
-                    }
-
-
-                    progressBar.setVisibility(View.GONE);
-                }
-                loadFirstSetOfBlogs();
-
-                //category.start();
-
-            }else{
-
-                SnackbarViewer.showSnackbar(findViewById(R.id.tab_new_design_ll),"No Internet connection");
-                if(db.getContentByType("Video")!=null&&db.getContentByType("Video").size()!=0){
-
-                    ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
-                    ArrayList<Contents> contents = new ArrayList<>();
-                    int count = 0;
-
-                    ArrayList<Contents> contentsList = db.getContentByType("Video");
-                    Collections.shuffle(contentsList);
-
-                    for (Contents content : contentsList) {
-
-
-                        //if(content.getContentType().equalsIgnoreCase("Image")){
-                        contents.add(content);
-                        count = count + 1;
-                        if (count == 9) {
-                            contentList.add(contents);
-                            count = 0;
-                            contents = new ArrayList<>();
-                        }
-                        // }
-
-
-                    }
-
-                    if (contentList != null && contentList.size() != 0) {
-
-                        loadNextPageDb(contentList);
-                    }
-
-
-                    progressBar.setVisibility(View.GONE);
-                }else{
-                    Toast.makeText(TabVideoNewDesign.this, "No Contents in db", Toast.LENGTH_SHORT).show();
-                }
-                progressBar.setVisibility(View.GONE);
-            }
-
-
-
-        mTrendingInterest.requestFocus();
-
-            mImagesList.addOnScrollListener(new PageScrollListener(verticalLinearLayoutManager) {
+            waitForGarbageCollector(new Runnable() {
                 @Override
-                protected void loadMoreItems() {
-                    isLoading = true;
+                public void run() {
 
-                    currentPage = currentPage+1;
+                    Thread category = new Thread() {
+                        public void run() {
+                            getCategories();
+                        }
+                    };
+
+                    Thread video = new Thread() {
+                        public void run() {
+
+                            loadFirstSetOfBlogs();
+                        }
+                    };
+
+
 
                     if (Util.isNetworkAvailable(TabVideoNewDesign.this)) {
-                        loadNextSetOfItems();
+
+                        //video.start();
+                        progressBar.setVisibility(View.GONE);
+                        if(db.getContentByType("Video")!=null&&db.getContentByType("Video").size()!=0){
+
+                            ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                            ArrayList<Contents> contents = new ArrayList<>();
+                            int count = 0;
+
+                            ArrayList<Contents> contentsList = db.getContentByType("Video");
+                            Collections.shuffle(contentsList);
+
+                            for (Contents content : contentsList) {
+
+
+                                //if(content.getContentType().equalsIgnoreCase("Image")){
+                                contents.add(content);
+                                count = count + 1;
+                                if (count == 9) {
+                                    contentList.add(contents);
+                                    ContentImageAdapter blogAdapters = new ContentImageAdapter(TabVideoNewDesign.this,contents);//,pagerModelArrayList);
+                                    mTrendingInterest.setAdapter(blogAdapters);
+                                    mTrendingInterest.requestFocus();
+                                    count = 0;
+                                    contents = new ArrayList<>();
+                                }
+                                // }
+
+
+                            }
+
+                            if (contentList != null && contentList.size() != 0) {
+
+                                loadNextPageDb(contentList);
+
+
+                            }
+
+
+                            progressBar.setVisibility(View.GONE);
+                        }
+                        loadFirstSetOfBlogs();
+
+                        //category.start();
 
                     }else{
-                       // SnackbarViewer.showSnackbar(findViewById(R.id.content_list_screen_ll),"No Internet connection");
-                        Toast.makeText(TabVideoNewDesign.this, "You are offline", Toast.LENGTH_SHORT).show();
+
+                        SnackbarViewer.showSnackbar(findViewById(R.id.tab_new_design_ll),"No Internet connection");
+                        if(db.getContentByType("Video")!=null&&db.getContentByType("Video").size()!=0){
+
+                            ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+                            ArrayList<Contents> contents = new ArrayList<>();
+                            int count = 0;
+
+                            ArrayList<Contents> contentsList = db.getContentByType("Video");
+                            Collections.shuffle(contentsList);
+
+                            for (Contents content : contentsList) {
+
+
+                                //if(content.getContentType().equalsIgnoreCase("Image")){
+                                contents.add(content);
+                                count = count + 1;
+                                if (count == 9) {
+                                    contentList.add(contents);
+                                    count = 0;
+                                    contents = new ArrayList<>();
+                                }
+                                // }
+
+
+                            }
+
+                            if (contentList != null && contentList.size() != 0) {
+
+                                loadNextPageDb(contentList);
+                            }
+
+
+                            progressBar.setVisibility(View.GONE);
+                        }else{
+                            Toast.makeText(TabVideoNewDesign.this, "No Contents in db", Toast.LENGTH_SHORT).show();
+                        }
+                        progressBar.setVisibility(View.GONE);
                     }
 
-                }
 
-                @Override
-                public int getTotalPageCount() {
-                    return currentPage;
-                }
 
-                @Override
-                public boolean isLastPage() {
-                    return isLastPage;
-                }
+                    mTrendingInterest.requestFocus();
 
-                @Override
-                public boolean isLoading() {
-                    return isLoading;
+                    mImagesList.addOnScrollListener(new PageScrollListener(verticalLinearLayoutManager) {
+                        @Override
+                        protected void loadMoreItems() {
+                            isLoading = true;
+
+                            currentPage = currentPage+1;
+
+                            if (Util.isNetworkAvailable(TabVideoNewDesign.this)) {
+                                loadNextSetOfItems();
+
+                            }else{
+                                // SnackbarViewer.showSnackbar(findViewById(R.id.content_list_screen_ll),"No Internet connection");
+                                Toast.makeText(TabVideoNewDesign.this, "You are offline", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+                        @Override
+                        public int getTotalPageCount() {
+                            return currentPage;
+                        }
+
+                        @Override
+                        public boolean isLastPage() {
+                            return isLastPage;
+                        }
+
+                        @Override
+                        public boolean isLoading() {
+                            return isLoading;
+                        }
+                    });
+
+
                 }
             });
+
 
 
         }catch (Exception e){
@@ -902,6 +912,48 @@ public class TabVideoNewDesign extends AppCompatActivity {
         else
             isLastPage = true;
 
+    }
+
+    public static void waitForGarbageCollector(final Runnable callback) {
+
+        Runtime runtime;
+        long maxMemory;
+        long usedMemory;
+        double availableMemoryPercentage = 1.0;
+        final double MIN_AVAILABLE_MEMORY_PERCENTAGE = 0.1;
+        final int DELAY_TIME = 5 * 1000;
+
+        runtime =
+                Runtime.getRuntime();
+
+        maxMemory =
+                runtime.maxMemory();
+
+        usedMemory =
+                runtime.totalMemory() -
+                        runtime.freeMemory();
+
+        availableMemoryPercentage =
+                1 -
+                        (double) usedMemory /
+                                maxMemory;
+
+        if (availableMemoryPercentage < MIN_AVAILABLE_MEMORY_PERCENTAGE) {
+
+            try {
+                Thread.sleep(DELAY_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            waitForGarbageCollector(
+                    callback);
+        } else {
+
+            // Memory resources are availavle, go to next operation:
+
+            callback.run();
+        }
     }
 
 }

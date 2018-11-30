@@ -114,142 +114,150 @@ public class FollowFragments extends Fragment {
         contentRecyclerView.setAdapter(adapter);
 
 
-        if (Util.isNetworkAvailable(getActivity())) {
-
-            if(db.getContents()!=null&&db.getContents().size()!=0){
-
-                ArrayList<Contents> contents = db.getContents();
-
-                if(contents!=null && contents.size()!=0) {
-
-                    ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
-
-                    int count = contents.size();
-                    int init = count - 1;
-
-                    while (count >= 9) {
-
-                        ArrayList<Contents> list = new ArrayList<>();
-
-                        for (int i = 0; i < 9; i++) {
-                            list.add(contents.get(init));
-                            init--;
-                        }
-                        contentList.add(list);
-                        count = count - 9;
-                    }
-
-                    if (contentList.size() != 0) {
-                        loadNextPageDb(contentList);
-                    }
-                }
-
-
-
-
-            }
-
-            if(db.getCategories()!=null&&db.getCategories().size()!=0){
-
-                FollowFragmentCategoriesAdapter followCategoriesAdapter = new FollowFragmentCategoriesAdapter(context, db.getCategories());
-                categoryRecyclerView.setLayoutManager(horizontalLinearLayoutManager);
-                categoryRecyclerView.setHasFixedSize(true);
-                categoryRecyclerView.setAdapter(followCategoriesAdapter);
-
-                mCategoryProgressBar.setVisibility(View.INVISIBLE);
-            }
-            mContentProgressBar.setVisibility(View.GONE);
-            mCategoryProgressBar.setVisibility(View.GONE);
-            loadFirstSetOfBlogs();
-            getCategories();
-
-        }else{
-
-            SnackbarViewer.showSnackbar(mFragmentView.findViewById(R.id.follow_frag_ll_main),"No Internet connection");
-//            Toast.makeText(context, "No internet Connection", Toast.LENGTH_SHORT).show();
-            mContentProgressBar.setVisibility(View.GONE);
-            mCategoryProgressBar.setVisibility(View.GONE);
-
-            if(db.getContents()!=null&&db.getContents().size()!=0){
-
-                ArrayList<Contents> contents = db.getContents();
-
-                if(contents!=null && contents.size()!=0) {
-
-                    ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
-
-                    int count = contents.size();
-                    int init = count - 1;
-
-                    while (count >= 9) {
-
-                        ArrayList<Contents> list = new ArrayList<>();
-
-                        for (int i = 0; i < 9; i++) {
-                            list.add(contents.get(init));
-                            init--;
-                        }
-                        contentList.add(list);
-                        count = count - 9;
-                    }
-
-                    if (contentList.size() != 0) {
-                        loadNextPageDb(contentList);
-                    }
-                }
-                mContentProgressBar.setVisibility(View.GONE);
-
-
-            }else{
-                Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
-            }
-
-            if(db.getCategories()!=null&&db.getCategories().size()!=0){
-
-                FollowFragmentCategoriesAdapter followCategoriesAdapter = new FollowFragmentCategoriesAdapter(context, db.getCategories());
-                categoryRecyclerView.setLayoutManager(horizontalLinearLayoutManager);
-                categoryRecyclerView.setHasFixedSize(true);
-                categoryRecyclerView.setAdapter(followCategoriesAdapter);
-
-                mCategoryProgressBar.setVisibility(View.INVISIBLE);
-            }else{
-                Toast.makeText(getActivity(), "No Category in db", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        // content recyclerview will be vertical
-
-        contentRecyclerView.addOnScrollListener(new PageScrollListener(verticalLinearLayoutManager) {
+        waitForGarbageCollector(new Runnable() {
             @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-
-                currentPage = currentPage+1;
+            public void run() {
 
                 if (Util.isNetworkAvailable(getActivity())) {
-                    loadNextSetOfItems();
+
+                    if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                        ArrayList<Contents> contents = db.getContents();
+
+                        if(contents!=null && contents.size()!=0) {
+
+                            ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+
+                            int count = contents.size();
+                            int init = count - 1;
+
+                            while (count >= 9) {
+
+                                ArrayList<Contents> list = new ArrayList<>();
+
+                                for (int i = 0; i < 9; i++) {
+                                    list.add(contents.get(init));
+                                    init--;
+                                }
+                                contentList.add(list);
+                                count = count - 9;
+                            }
+
+                            if (contentList.size() != 0) {
+                                loadNextPageDb(contentList);
+                            }
+                        }
+
+
+
+
+                    }
+
+                    if(db.getCategories()!=null&&db.getCategories().size()!=0){
+
+                        FollowFragmentCategoriesAdapter followCategoriesAdapter = new FollowFragmentCategoriesAdapter(context, db.getCategories());
+                        categoryRecyclerView.setLayoutManager(horizontalLinearLayoutManager);
+                        categoryRecyclerView.setHasFixedSize(true);
+                        categoryRecyclerView.setAdapter(followCategoriesAdapter);
+
+                        mCategoryProgressBar.setVisibility(View.INVISIBLE);
+                    }
+                    mContentProgressBar.setVisibility(View.GONE);
+                    mCategoryProgressBar.setVisibility(View.GONE);
+                    loadFirstSetOfBlogs();
+                    getCategories();
 
                 }else{
-                    Toast.makeText(context, "You are offline", Toast.LENGTH_SHORT).show();
+
+                    SnackbarViewer.showSnackbar(mFragmentView.findViewById(R.id.follow_frag_ll_main),"No Internet connection");
+//            Toast.makeText(context, "No internet Connection", Toast.LENGTH_SHORT).show();
+                    mContentProgressBar.setVisibility(View.GONE);
+                    mCategoryProgressBar.setVisibility(View.GONE);
+
+                    if(db.getContents()!=null&&db.getContents().size()!=0){
+
+                        ArrayList<Contents> contents = db.getContents();
+
+                        if(contents!=null && contents.size()!=0) {
+
+                            ArrayList<ArrayList<Contents>> contentList = new ArrayList<>();
+
+                            int count = contents.size();
+                            int init = count - 1;
+
+                            while (count >= 9) {
+
+                                ArrayList<Contents> list = new ArrayList<>();
+
+                                for (int i = 0; i < 9; i++) {
+                                    list.add(contents.get(init));
+                                    init--;
+                                }
+                                contentList.add(list);
+                                count = count - 9;
+                            }
+
+                            if (contentList.size() != 0) {
+                                loadNextPageDb(contentList);
+                            }
+                        }
+                        mContentProgressBar.setVisibility(View.GONE);
+
+
+                    }else{
+                        Toast.makeText(getActivity(), "No Contents in db", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(db.getCategories()!=null&&db.getCategories().size()!=0){
+
+                        FollowFragmentCategoriesAdapter followCategoriesAdapter = new FollowFragmentCategoriesAdapter(context, db.getCategories());
+                        categoryRecyclerView.setLayoutManager(horizontalLinearLayoutManager);
+                        categoryRecyclerView.setHasFixedSize(true);
+                        categoryRecyclerView.setAdapter(followCategoriesAdapter);
+
+                        mCategoryProgressBar.setVisibility(View.INVISIBLE);
+                    }else{
+                        Toast.makeText(getActivity(), "No Category in db", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
-            }
+                // content recyclerview will be vertical
 
-            @Override
-            public int getTotalPageCount() {
-                return currentPage;
-            }
+                contentRecyclerView.addOnScrollListener(new PageScrollListener(verticalLinearLayoutManager) {
+                    @Override
+                    protected void loadMoreItems() {
+                        isLoading = true;
 
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
+                        currentPage = currentPage+1;
 
-            @Override
-            public boolean isLoading() {
-                return isLoading;
+                        if (Util.isNetworkAvailable(getActivity())) {
+                            loadNextSetOfItems();
+
+                        }else{
+                            Toast.makeText(context, "You are offline", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public int getTotalPageCount() {
+                        return currentPage;
+                    }
+
+                    @Override
+                    public boolean isLastPage() {
+                        return isLastPage;
+                    }
+
+                    @Override
+                    public boolean isLoading() {
+                        return isLoading;
+                    }
+                });
+
             }
         });
+
         return mFragmentView;
     }
 
@@ -722,6 +730,49 @@ public class FollowFragments extends Fragment {
         else
             isLastPage = true;
 
+    }
+
+
+    public static void waitForGarbageCollector(final Runnable callback) {
+
+        Runtime runtime;
+        long maxMemory;
+        long usedMemory;
+        double availableMemoryPercentage = 1.0;
+        final double MIN_AVAILABLE_MEMORY_PERCENTAGE = 0.1;
+        final int DELAY_TIME = 5 * 1000;
+
+        runtime =
+                Runtime.getRuntime();
+
+        maxMemory =
+                runtime.maxMemory();
+
+        usedMemory =
+                runtime.totalMemory() -
+                        runtime.freeMemory();
+
+        availableMemoryPercentage =
+                1 -
+                        (double) usedMemory /
+                                maxMemory;
+
+        if (availableMemoryPercentage < MIN_AVAILABLE_MEMORY_PERCENTAGE) {
+
+            try {
+                Thread.sleep(DELAY_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            waitForGarbageCollector(
+                    callback);
+        } else {
+
+            // Memory resources are availavle, go to next operation:
+
+            callback.run();
+        }
     }
 
 }

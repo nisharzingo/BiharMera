@@ -42,6 +42,28 @@
         <item>Logout</item>
     </array>
 
+    <array name="news_title">
+        <!--<item>Home</item>-->
+        <item>Sports</item>
+        <!--<item>Politics</item>-->
+        <item>Health</item>
+        <item>Business</item>
+        <item>Science</item>
+        <item>Entertainment</item>
+        <item>Technology</item>
+
+    </array>
+    <array name="news_images">
+        <item>@drawable/sports_image</item>
+        <!--<item>@drawable/politics_image</item>-->
+        <item>@drawable/health_images</item>
+        <item>@drawable/business_images</item>
+        <item>@drawable/sciene_images</item>
+        <item>@drawable/entertainment_images</item>
+        <item>@drawable/technology_images</item>
+
+    </array>
+
     <string name="term_policy">MERA BIHAR is committed to respecting and protecting the privacy of others. We pledge to guard your personal information in accordance with our privacy policy and respect the confidentiality of all visitor or subscriber data submitted to Mera Bihar Mobile Application.\n\n
 Sharing of Information MERA BIHAR will not disclose or share any information pertaining to sub-merchants to any other organization at any time unless the sub-merchant authorizes it.\n\n
 We share the personal information of customers like name, company name, address, telephone no, E-mail address only for our records purpose which is used later in the processing of the order, communicating with customers.\n\n

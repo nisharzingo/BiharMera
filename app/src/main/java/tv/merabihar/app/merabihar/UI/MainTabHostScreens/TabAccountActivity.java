@@ -170,293 +170,302 @@ public class TabAccountActivity extends AppCompatActivity {
 
            profileId = PreferenceHandler.getInstance(TabAccountActivity.this).getUserId();
 
-           if(profileId!=0){
-
-               mProfileLoginLay.setVisibility(View.VISIBLE);
-               mNonProfileLay.setVisibility(View.GONE);
-
-           }else{
-
-               mProfileLoginLay.setVisibility(View.GONE);
-               mNonProfileLay.setVisibility(View.VISIBLE);
-           }
-
-
-            mLogin.setOnClickListener(new View.OnClickListener() {
+            waitForGarbageCollector(new Runnable() {
                 @Override
-                public void onClick(View view) {
-                    Intent login = new Intent(TabAccountActivity.this, LoginScreen.class);
-                    startActivity(login);
-                }
-            });
-
-            mSignUp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent login = new Intent(TabAccountActivity.this,SignUpScreen.class);
-                    startActivity(login);
-                }
-            });
-
-           mFollowersLay.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-
-                   if(profileId!=0){
-
-                       String followingCount = mFollowers.getText().toString();
-
-                       try{
-                           int follw = Integer.parseInt(followingCount);
-
-                           if(mFollowers.getText().toString().equalsIgnoreCase("0")||follw==0){
-
-                               Toast.makeText(TabAccountActivity.this, "No followings", Toast.LENGTH_SHORT).show();
-
-                           }else{
-
-                               if(Util.isNetworkAvailable(TabAccountActivity.this)){
-                                   Intent follow = new Intent(TabAccountActivity.this, FollowersListScreen.class);
-                                   startActivity(follow);
-                               }else{
-                                   Toast.makeText(TabAccountActivity.this, "You are offline", Toast.LENGTH_SHORT).show();
-                               }
-
-
-                           }
-                       }catch (Exception e){
-                           e.printStackTrace();
-                       }
-
-
-
-                   }else{
-
-                       Toast.makeText(TabAccountActivity.this, "Please login first", Toast.LENGTH_SHORT).show();
-                   }
-
-               }
-           });
-
-            mFollowingLay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                public void run() {
 
                     if(profileId!=0){
 
-                        String followingCount = mFollowings.getText().toString();
-
-                        try{
-                            int follw = Integer.parseInt(followingCount);
-
-                            if(mFollowings.getText().toString().equalsIgnoreCase("0")||follw==0){
-
-                                Toast.makeText(TabAccountActivity.this, "No followings", Toast.LENGTH_SHORT).show();
-
-                            }else{
-
-                                if(Util.isNetworkAvailable(TabAccountActivity.this)){
-                                    Intent follow = new Intent(TabAccountActivity.this, FollowingProfileListScreen.class);
-                                    startActivity(follow);
-                                }else{
-                                    Toast.makeText(TabAccountActivity.this, "You are offline", Toast.LENGTH_SHORT).show();
-                                }
-
-
-                            }
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-
-
+                        mProfileLoginLay.setVisibility(View.VISIBLE);
+                        mNonProfileLay.setVisibility(View.GONE);
 
                     }else{
 
-                        Toast.makeText(TabAccountActivity.this, "Please login first", Toast.LENGTH_SHORT).show();
+                        mProfileLoginLay.setVisibility(View.GONE);
+                        mNonProfileLay.setVisibility(View.VISIBLE);
                     }
 
-                }
-            });
 
-            applinear.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    app.setImageResource(R.drawable.ic_apps_blue);
-                    linear.setImageResource(R.drawable.ic_linear_grey);
-                    mPostsList.setAdapter(null);
-                    mFollowingPeoples.setAdapter(null);
-                    mPostsList.setVisibility(View.VISIBLE);
-                    mFollowingPeoples.setVisibility(View.GONE);
+                    mLogin.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent login = new Intent(TabAccountActivity.this, LoginScreen.class);
+                            startActivity(login);
+                        }
+                    });
+
+                    mSignUp.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent login = new Intent(TabAccountActivity.this,SignUpScreen.class);
+                            startActivity(login);
+                        }
+                    });
+
+                    mFollowersLay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            if(profileId!=0){
+
+                                String followingCount = mFollowers.getText().toString();
+
+                                try{
+                                    int follw = Integer.parseInt(followingCount);
+
+                                    if(mFollowers.getText().toString().equalsIgnoreCase("0")||follw==0){
+
+                                        Toast.makeText(TabAccountActivity.this, "No followings", Toast.LENGTH_SHORT).show();
+
+                                    }else{
+
+                                        if(Util.isNetworkAvailable(TabAccountActivity.this)){
+                                            Intent follow = new Intent(TabAccountActivity.this, FollowersListScreen.class);
+                                            startActivity(follow);
+                                        }else{
+                                            Toast.makeText(TabAccountActivity.this, "You are offline", Toast.LENGTH_SHORT).show();
+                                        }
+
+
+                                    }
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+
+
+                            }else{
+
+                                Toast.makeText(TabAccountActivity.this, "Please login first", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+
+                    mFollowingLay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            if(profileId!=0){
+
+                                String followingCount = mFollowings.getText().toString();
+
+                                try{
+                                    int follw = Integer.parseInt(followingCount);
+
+                                    if(mFollowings.getText().toString().equalsIgnoreCase("0")||follw==0){
+
+                                        Toast.makeText(TabAccountActivity.this, "No followings", Toast.LENGTH_SHORT).show();
+
+                                    }else{
+
+                                        if(Util.isNetworkAvailable(TabAccountActivity.this)){
+                                            Intent follow = new Intent(TabAccountActivity.this, FollowingProfileListScreen.class);
+                                            startActivity(follow);
+                                        }else{
+                                            Toast.makeText(TabAccountActivity.this, "You are offline", Toast.LENGTH_SHORT).show();
+                                        }
+
+
+                                    }
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+
+
+                            }else{
+
+                                Toast.makeText(TabAccountActivity.this, "Please login first", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+
+                    applinear.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            app.setImageResource(R.drawable.ic_apps_blue);
+                            linear.setImageResource(R.drawable.ic_linear_grey);
+                            mPostsList.setAdapter(null);
+                            mFollowingPeoples.setAdapter(null);
+                            mPostsList.setVisibility(View.VISIBLE);
+                            mFollowingPeoples.setVisibility(View.GONE);
+                            if(profileId!=0){
+
+                                if (Util.isNetworkAvailable(TabAccountActivity.this)) {
+
+                                    if(profileContents!=null&&profileContents.size()!=0){
+                                        adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,profileContents);
+                                        mPostsList.setAdapter(adapters);
+                                    }else{
+                                        getProfileContent(profileId);
+                                    }
+
+
+                                }else{
+
+                                    SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
+                                    progressBar.setVisibility(View.GONE);
+
+                                    if(db.getContentByProfileId(profileId)!=null&&db.getContentByProfileId(profileId).size()!=0){
+                                        adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,db.getContentByProfileId(profileId));
+                                        mPostsList.setAdapter(adapters);
+                                        progressBar.setVisibility(View.GONE);
+                                    }else{
+                                        Toast.makeText(TabAccountActivity.this, "No Contents in db", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            }else{
+
+                                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
+//                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    linearlinear.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            app.setImageResource(R.drawable.ic_apps_grey);
+                            linear.setImageResource(R.drawable.ic_linear_blue);
+                            mPostsList.setAdapter(null);
+                            mFollowingPeoples.setAdapter(null);
+                            mPostsList.setVisibility(View.GONE);
+                            mFollowingPeoples.setVisibility(View.VISIBLE);
+
+                            if(profileId!=0){
+                                adapter = new ContentAdapterVertical(TabAccountActivity.this);
+                                mFollowingPeoples.setAdapter(adapter);
+
+                                if (Util.isNetworkAvailable(TabAccountActivity.this)) {
+
+                                    if(profileContents!=null&&profileContents.size()!=0){
+
+                                        progressBar.setVisibility(View.GONE);
+                                        adapter.addAll(profileContents);
+
+                                        if (profileContents != null && profileContents.size() !=0)
+                                            adapter.addLoadingFooter();
+                                        else
+                                            isLastPage = true;
+
+                                    }else{
+                                        loadFirstSetOfBlogs(profileId);
+                                    }
+
+                                }else{
+
+                                    SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
+
+                                    if(db.getContentByProfileId(profileId)!=null&&db.getContentByProfileId(profileId).size()!=0){
+                                        adapter = new ContentAdapterVertical(TabAccountActivity.this);
+
+                                        mFollowingPeoples.setAdapter(adapter);
+                                        progressBar.setVisibility(View.GONE);
+                                        adapter.addAll(db.getContentByProfileId(profileId));
+
+
+
+                                    }else{
+                                        Toast.makeText(TabAccountActivity.this, "No Contents in db", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            }else{
+
+//                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
+                                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
+
+                            }
+
+
+                        }
+                    });
+
+
+
+
+
+                    //int profileId = 49;
                     if(profileId!=0){
 
                         if (Util.isNetworkAvailable(TabAccountActivity.this)) {
 
-                            if(profileContents!=null&&profileContents.size()!=0){
-                                adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,profileContents);
-                                mPostsList.setAdapter(adapters);
-                            }else{
-                                getProfileContent(profileId);
-                            }
+                            mProfileName.setText(""+PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName());
 
+                            if(db.getContentByProfileId(profileId)!=null&&db.getContentByProfileId(profileId).size()!=0){
+
+                                ArrayList<Contents> contentsProfile = db.getContentByProfileId(profileId);
+
+                                adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,contentsProfile);
+                                mPostsList.setAdapter(adapters);
+                                progressBar.setVisibility(View.GONE);
+                            }
+                            getProfileContent(profileId);
+                            getProfile(profileId);
+
+
+                            //getFollowingByProfileId(profileId);
 
                         }else{
 
                             SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
                             progressBar.setVisibility(View.GONE);
-
-                            if(db.getContentByProfileId(profileId)!=null&&db.getContentByProfileId(profileId).size()!=0){
-                                adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,db.getContentByProfileId(profileId));
-                                mPostsList.setAdapter(adapters);
-                                progressBar.setVisibility(View.GONE);
-                            }else{
-                                Toast.makeText(TabAccountActivity.this, "No Contents in db", Toast.LENGTH_SHORT).show();
+                            if(PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName()!=null&&!PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName().isEmpty()){
+                                mProfileName.setText(""+PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName());
                             }
                         }
 
                     }else{
-
-                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
-//                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            linearlinear.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    app.setImageResource(R.drawable.ic_apps_grey);
-                    linear.setImageResource(R.drawable.ic_linear_blue);
-                    mPostsList.setAdapter(null);
-                    mFollowingPeoples.setAdapter(null);
-                    mPostsList.setVisibility(View.GONE);
-                    mFollowingPeoples.setVisibility(View.VISIBLE);
-
-                    if(profileId!=0){
-                        adapter = new ContentAdapterVertical(TabAccountActivity.this);
-                        mFollowingPeoples.setAdapter(adapter);
-
-                        if (Util.isNetworkAvailable(TabAccountActivity.this)) {
-
-                            if(profileContents!=null&&profileContents.size()!=0){
-
-                                progressBar.setVisibility(View.GONE);
-                                adapter.addAll(profileContents);
-
-                                if (profileContents != null && profileContents.size() !=0)
-                                    adapter.addLoadingFooter();
-                                else
-                                    isLastPage = true;
-
-                            }else{
-                                loadFirstSetOfBlogs(profileId);
-                            }
-
-                        }else{
-
-                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
-
-                            if(db.getContentByProfileId(profileId)!=null&&db.getContentByProfileId(profileId).size()!=0){
-                                adapter = new ContentAdapterVertical(TabAccountActivity.this);
-
-                                mFollowingPeoples.setAdapter(adapter);
-                                progressBar.setVisibility(View.GONE);
-                                adapter.addAll(db.getContentByProfileId(profileId));
-
-
-
-                            }else{
-                                Toast.makeText(TabAccountActivity.this, "No Contents in db", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                    }else{
-
-//                        Toast.makeText(TabAccountActivity.this, "Something went wrong.Please login again", Toast.LENGTH_SHORT).show();
-                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
-
-                    }
-
-
-                }
-            });
-
-
-
-
-
-            //int profileId = 49;
-            if(profileId!=0){
-
-                if (Util.isNetworkAvailable(TabAccountActivity.this)) {
-
-                    mProfileName.setText(""+PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName());
-
-                    if(db.getContentByProfileId(profileId)!=null&&db.getContentByProfileId(profileId).size()!=0){
-
-                        ArrayList<Contents> contentsProfile = db.getContentByProfileId(profileId);
-
-                        adapters = new ImagePorifleContentAdapter(TabAccountActivity.this,contentsProfile);
-                        mPostsList.setAdapter(adapters);
-                        progressBar.setVisibility(View.GONE);
-                    }
-                    getProfileContent(profileId);
-                    getProfile(profileId);
-
-
-                    //getFollowingByProfileId(profileId);
-
-                }else{
-
-                    SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
-                    progressBar.setVisibility(View.GONE);
-                    if(PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName()!=null&&!PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName().isEmpty()){
-                        mProfileName.setText(""+PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName());
-                    }
-                }
-
-            }else{
 
 //                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
 
 
-            }
-
-            mFollow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent follow = new Intent(TabAccountActivity.this, FollowOptionsActivity.class);
-                    startActivity(follow);
-                }
-            });
-
-            mSettings.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent follow = new Intent(TabAccountActivity.this, SettingScreen.class);
-                    startActivity(follow);
-                }
-            });
-
-
-            mProfilePhoto.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(profileId!=0&&userProfile!=null){
-
-
-                        selectImage();
-
-
-                    }else{
-
-                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
-
                     }
 
+                    mFollow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Intent follow = new Intent(TabAccountActivity.this, FollowOptionsActivity.class);
+                            startActivity(follow);
+                        }
+                    });
+
+                    mSettings.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Intent follow = new Intent(TabAccountActivity.this, SettingScreen.class);
+                            startActivity(follow);
+                        }
+                    });
+
+
+                    mProfilePhoto.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(profileId!=0&&userProfile!=null){
+
+
+                                selectImage();
+
+
+                            }else{
+
+                                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
+
+                            }
+
+                        }
+                    });
+
+
                 }
             });
+
 
 
         }catch (Exception e){
@@ -1378,30 +1387,81 @@ public class TabAccountActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(profileId!=0){
+        waitForGarbageCollector(new Runnable() {
+            @Override
+            public void run() {
 
-            if (Util.isNetworkAvailable(TabAccountActivity.this)) {
+                if(profileId!=0){
 
-                profileContents = new ArrayList<>();
-                getProfileContent(profileId);
+                    if (Util.isNetworkAvailable(TabAccountActivity.this)) {
+
+                        profileContents = new ArrayList<>();
+                        getProfileContent(profileId);
 
 
-            }else{
+                    }else{
 
-                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
-                progressBar.setVisibility(View.GONE);
-                if(PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName()!=null&&!PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName().isEmpty()){
-                    mProfileName.setText(""+PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName());
-                }
-            }
+                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"No Internet connection");
+                        progressBar.setVisibility(View.GONE);
+                        if(PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName()!=null&&!PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName().isEmpty()){
+                            mProfileName.setText(""+PreferenceHandler.getInstance(TabAccountActivity.this).getUserFullName());
+                        }
+                    }
 
-        }else{
+                }else{
 
 //                SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong.Please login again");
 
 
-        }
+                }
 
+            }
+        });
+
+
+
+    }
+
+    public static void waitForGarbageCollector(final Runnable callback) {
+
+        Runtime runtime;
+        long maxMemory;
+        long usedMemory;
+        double availableMemoryPercentage = 1.0;
+        final double MIN_AVAILABLE_MEMORY_PERCENTAGE = 0.1;
+        final int DELAY_TIME = 5 * 1000;
+
+        runtime =
+                Runtime.getRuntime();
+
+        maxMemory =
+                runtime.maxMemory();
+
+        usedMemory =
+                runtime.totalMemory() -
+                        runtime.freeMemory();
+
+        availableMemoryPercentage =
+                1 -
+                        (double) usedMemory /
+                                maxMemory;
+
+        if (availableMemoryPercentage < MIN_AVAILABLE_MEMORY_PERCENTAGE) {
+
+            try {
+                Thread.sleep(DELAY_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            waitForGarbageCollector(
+                    callback);
+        } else {
+
+            // Memory resources are availavle, go to next operation:
+
+            callback.run();
+        }
     }
 
 
