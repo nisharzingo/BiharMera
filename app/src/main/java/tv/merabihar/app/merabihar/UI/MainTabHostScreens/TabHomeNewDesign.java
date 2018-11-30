@@ -1,6 +1,7 @@
 package tv.merabihar.app.merabihar.UI.MainTabHostScreens;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
@@ -8,11 +9,15 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import tv.merabihar.app.merabihar.Adapter.MainContentScreenAdapter;
 import tv.merabihar.app.merabihar.R;
@@ -128,7 +133,7 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
             }
         }.start();*/
 
-        new AlertDialog.Builder(this)
+        /*new AlertDialog.Builder(this)
                 .setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -139,7 +144,47 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
                     }
                 })
                 .setNegativeButton("No", null)
-                .show();
+                .show();*/
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(TabHomeNewDesign.this);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.ad_exit_pop_up,null);
+
+        final TextView yes = (TextView)view.findViewById(R.id.yes);
+        final TextView no = (TextView)view.findViewById(R.id.no);
+
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        builder.setView(view);
+        /*builder.setTitle("Blog Approve Need!");*/
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+
+
+
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                TabHomeNewDesign.this.finish();
+
+
+            }
+        });
+
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+
+            }
+        });
 
     }
 

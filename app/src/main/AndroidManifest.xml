@@ -187,7 +187,8 @@
         <activity
             android:name=".Rss.NewsSearchActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Rss.NewsDetailScreen"></activity>
+        <activity android:name=".Rss.NewsDetailScreen" />
+        <activity android:name=".Rss.SourceBasedNews"></activity>
     </application>
 
 </manifest>

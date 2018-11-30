@@ -28,6 +28,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -83,6 +85,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     RoundedImageView mContentPic;
     //AutoScrollAdapter mContentPic;
     ImageView mback;
+    private AdView mAdView;
     TextViewSFProDisplayRegular mSubCategory,mReadTime,mNocomments;
     MyTextView_SF_Pro_Light mContentTitle,mContentDesc;
     MyTextView_Lato_Regular mProfileName,mFollow;
@@ -166,6 +169,11 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
             mCommentsList = (RecyclerView) findViewById(R.id.comments_list);
             mCOntentDetailScreen = (FrameLayout) findViewById(R.id.content_detail_like_enabler_img_detail_screen);
+
+            mAdView = findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+
 
             final Bundle bundle = getIntent().getExtras();
             if(bundle!=null){

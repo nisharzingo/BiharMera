@@ -193,7 +193,8 @@ public class PostContentScreen extends AppCompatActivity {
 //            gotoGallery();
 
 
-            gotToCustomGallery();
+            //gotToCustomGallery();
+            gotoGallery();
 
 
 
@@ -235,8 +236,11 @@ public class PostContentScreen extends AppCompatActivity {
 
         }catch (Exception e){
             //This is custom gallery designed by us
-            Intent intent = new Intent(this,CustomImageGalleryActivity.class);
-            startActivityForResult(intent,PICK_IMAGE_MULTIPLE); // reqcode=105
+         /*   Intent intent = new Intent(this,CustomImageGalleryActivity.class);
+            startActivityForResult(intent,PICK_IMAGE_MULTIPLE); // reqcode=105*/
+
+
+         gotoGallery();
 
         }
 
@@ -317,7 +321,7 @@ public class PostContentScreen extends AppCompatActivity {
         if(resultCode == Activity.RESULT_OK)
         {
 
-            // For telegram library
+       /*     // For telegram library
             if(requestCode == 111){
                 List<String> photos = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
 //                Toast.makeText(this, ""+ photos.size(), Toast.LENGTH_SHORT).show();
@@ -340,10 +344,10 @@ public class PostContentScreen extends AppCompatActivity {
                     for (int i = 0; i < imagesPath.length; i++) {
                         selectedImageList.add(imagesPath[i]);
                         yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
-                        /*ImageView imageView = new ImageView(this);
+                        *//*ImageView imageView = new ImageView(this);
                         imageView.setImageBitmap(yourbitmap);
                         imageView.setAdjustViewBounds(true);
-                        lnrImages.addView(imageView);*/
+                        lnrImages.addView(imageView);*//*
                         addView(null, yourbitmap);
                     }
 
@@ -354,7 +358,7 @@ public class PostContentScreen extends AppCompatActivity {
 
                // previous code before implementing custom gallery
 
-            /*else if(requestCode == REQUEST_GALLERY)
+            else*/ if(requestCode == REQUEST_GALLERY)
             {
                 onSelectImageFromGalleryResult(data,"Multiple");
             }else if(requestCode == 1)
@@ -363,7 +367,7 @@ public class PostContentScreen extends AppCompatActivity {
             }else if (requestCode == SELECT_FILE){
 
                 onSelectImageFromGalleryResult(data,"Camera");
-            }*/
+            }
 
         }else{
             System.out.println("Result code "+resultCode);

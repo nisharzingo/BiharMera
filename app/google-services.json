@@ -23,6 +23,30 @@
           }
         },
         {
+          "client_id": "315573115950-s5p1uod0fgl1g7pagspfki7esmo18lr1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tv.merabihar.app.merabihar",
+            "certificate_hash": "69406ab06bcbd44a917fc376198d5af8b499de04"
+          }
+        },
+        {
+          "client_id": "315573115950-ema76i0i2l000in7enqe9qnmaee5c6hr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tv.merabihar.app.merabihar",
+            "certificate_hash": "f8d8c70386939349b855dc87d65b7564a0fe3a65"
+          }
+        },
+        {
+          "client_id": "315573115950-j00nt9a46kbjtrnug2241smijmvlrdve.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tv.merabihar.app.merabihar",
+            "certificate_hash": "2a133428873cf269614944d294d879ac76f572c3"
+          }
+        },
+        {
           "client_id": "315573115950-7v4vhtoe32hj3o6lh5337b6iu04khgc7.apps.googleusercontent.com",
           "client_type": 3
         }

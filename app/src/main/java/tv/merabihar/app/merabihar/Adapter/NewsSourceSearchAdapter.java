@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import tv.merabihar.app.merabihar.Model.Interest;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.Rss.NewsSource;
+import tv.merabihar.app.merabihar.Rss.SourceBasedNews;
 import tv.merabihar.app.merabihar.UI.Activity.InterestContentListScreen;
 
 /**
@@ -60,11 +61,11 @@ public class NewsSourceSearchAdapter  extends RecyclerView.Adapter<NewsSourceSea
                 @Override
                 public void onClick(View view) {
 
-                    /*Intent intent = new Intent(context, InterestContentListScreen.class);
+                    Intent intent = new Intent(context, SourceBasedNews.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("NewsSources",newsSource);
+                    bundle.putSerializable("Sources",newsSource);
                     intent.putExtras(bundle);
-                    context.startActivity(intent);*/
+                    context.startActivity(intent);
                 }
             });
 

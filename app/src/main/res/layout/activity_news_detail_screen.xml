@@ -56,6 +56,15 @@
         android:background="#60030303"
         />
 
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/category_news"
+            android:scrollbars="none"
+            android:layout_margin="5dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            />
+
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
@@ -124,6 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_gravity="bottom"
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:id="@+id/read_click"
         android:orientation="horizontal">

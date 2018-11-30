@@ -15,7 +15,7 @@ import tv.merabihar.app.merabihar.UI.MainTabHostScreens.SearchScreens.Fragments.
 public class NewsSearchAdapter  extends FragmentStatePagerAdapter {
 
 
-    String[] tabTitles = {"Sources", "Keywords"};
+    String[] tabTitles = {"Sources"/*, "Keywords"*/};
 
     public NewsSearchAdapter(FragmentManager fm) {
         super(fm);
@@ -35,9 +35,9 @@ public class NewsSearchAdapter  extends FragmentStatePagerAdapter {
                 SourceSearchFragment sources = new SourceSearchFragment();
                 return sources;
 
-            case 1:
+           /* case 1:
                 InterestSearchFragment interest = new InterestSearchFragment();
-                return interest;
+                return interest;*/
 
 
 

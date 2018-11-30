@@ -18,6 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -52,7 +55,7 @@ public class ForYouNewFragment extends Fragment {
     View view;
     private static RecyclerView mtopBlogs;
     ProgressBar progressBar;
-
+    private AdView mAdView;
     ArrayList<Contents> blogsList;
     LinearLayoutManager linearLayoutManager;
 
@@ -110,6 +113,11 @@ public class ForYouNewFragment extends Fragment {
             mtopBlogs.setItemAnimator(new DefaultItemAnimator());
             adapter = new ContentAdapterVertical(getActivity());
             mtopBlogs.setAdapter(adapter);
+
+
+            mAdView = view.findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
 
             Runtime rt = Runtime.getRuntime();
             long maxMemory = rt.maxMemory();

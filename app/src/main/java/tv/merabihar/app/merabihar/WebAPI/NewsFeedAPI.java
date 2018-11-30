@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import tv.merabihar.app.merabihar.Model.Category;
+import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.Model.NewsSources;
 import tv.merabihar.app.merabihar.Rss.NewsAPIData;
 
@@ -40,6 +43,9 @@ public interface NewsFeedAPI {
 
     @GET("top-headlines?sources=google-news-in&apiKey=50f164cfd717409682b670a71b1c95b6")
     Call<NewsAPIData> getGoogleNews();
+
+    @GET("top-headlines")
+    Call<NewsAPIData> getNewsBySource(@Query("sources") String sourcename,@Query("apiKey") String apiKey);
 
     @GET("sources?apiKey=50f164cfd717409682b670a71b1c95b6")
     Call<NewsSources> getSources();

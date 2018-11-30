@@ -39,6 +39,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.commit451.youtubeextractor.YouTubeExtractor;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -171,6 +173,10 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         try{
             if(mList.get(pos)!=null){
 
+
+
+
+
                 switch (getItemViewType(pos)) {
 
                     case ITEM:
@@ -181,7 +187,13 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                         final  Contents contents = mList.get(pos);
 
-
+                       /* if(pos%2==0){
+                            holder.mAdView.setVisibility(View.VISIBLE);
+                            AdRequest adRequest = new AdRequest.Builder().build();
+                            holder.mAdView.loadAd(adRequest);
+                        }else{
+                            holder.mAdView.setVisibility(View.GONE);
+                        }*/
                         if(contents!=null){
 
                             holder.mProfilePhoto.setImageResource(R.drawable.profile_image);
@@ -1065,7 +1077,7 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
         LinearLayout mWhatsapp,mDownLoad,mShare, mLikeLayout, mDislikeLayout, mCommentLayout ;
 
 
-
+        AdView mAdView ;
         public BlogViewHolder(View view) {
             super(view);
 
@@ -1102,6 +1114,9 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
             mShare = (LinearLayout) view.findViewById(R.id.share_image);
             mMoreShare = (ImageView) view.findViewById(R.id.more_icons);
             mDownLoad = (LinearLayout) view.findViewById(R.id.download_screen);
+
+            mAdView = view.findViewById(R.id.adView);
+
 
 
 
