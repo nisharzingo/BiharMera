@@ -35,6 +35,7 @@ import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.Rss.Article;
 import tv.merabihar.app.merabihar.Rss.NewArticles;
 import tv.merabihar.app.merabihar.Rss.NewsAPIData;
+import tv.merabihar.app.merabihar.Rss.NewsDetailScreen;
 import tv.merabihar.app.merabihar.Rss.NewsSourcePageScreen;
 import tv.merabihar.app.merabihar.UI.Activity.NewsListCategoryScreen;
 
@@ -174,9 +175,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
                 //show article content inside a dialog
 
-                Intent intent = new Intent(context, NewsSourcePageScreen.class);
+                Intent intent = new Intent(context, NewsDetailScreen.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("Source",currentArticle.getUrl());
+                bundle.putSerializable("Articles",currentArticle);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
                 /*articleView = new WebView(context);
