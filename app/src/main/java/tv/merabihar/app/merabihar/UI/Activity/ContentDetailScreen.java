@@ -2525,7 +2525,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
             youtubeWatcheTime = Seconds;
 
-            if(Seconds!=0&&Seconds%60==0){
+            if(Seconds!=0&&Seconds%600==0){
 
                 adContainer.setVisibility(View.VISIBLE);
             }/*else{
