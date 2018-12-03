@@ -25,6 +25,8 @@
     <string name="income">Income</string>
 
 
+    <string name="banner_ad_unit_id">ca-app-pub-2910452066154587/4449908992</string>
+
     <array name="nav_user">
         <!--<item>Check-In</item>-->
         <item>Time Watched</item>

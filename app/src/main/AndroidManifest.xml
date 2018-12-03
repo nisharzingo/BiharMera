@@ -43,6 +43,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2910452066154587~9953517117" />
         <activity android:name=".UI.Activity.SlideOptionScreen" />
         <activity
             android:name=".UI.Activity.LoginScreen"

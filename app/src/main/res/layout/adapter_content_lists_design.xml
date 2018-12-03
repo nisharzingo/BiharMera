@@ -497,14 +497,23 @@
 
     </android.support.v7.widget.CardView>
 
-    <com.google.android.gms.ads.AdView
+    <!--<RelativeLayout
+        android:id="@+id/adView"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"/>-->
+
+    <!--<com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:visibility="gone"
+
         app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:adUnitId="ca-app-pub-2910452066154587/4449908992"
         >
-    </com.google.android.gms.ads.AdView>
+    </com.google.android.gms.ads.AdView>-->
 
 </LinearLayout>

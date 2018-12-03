@@ -20,9 +20,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -77,6 +85,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
 
     ImageView mback;
+    TextView mAdClose;
     TextViewSFProDisplayRegular mSubCategory,mReadTime,mNocomments;
     MyTextView_SF_Pro_Light mContentTitle,mContentDesc;
     MyTextView_Lato_Regular mProfileName,mFollow;
@@ -85,6 +94,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     RecyclerView mCommentsList;
     MyTextView_Lato_Regular mCommentsCount,mLikesCount,mDislikesCount,mLikedId,mDislikedId,mWhatsappShareCount,postWatchedCount;;
     ImageView mLike,mDislike,mComment,mEditOption;
+    private InterstitialAd mInterstitialAd;
     LinearLayout mWhatsapp, mShare, mLikeLayout, mDislikeLayout, mCommentLayout ;
 
     int REQUEST_CODE = 101 ;
@@ -110,6 +120,9 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     int Seconds, Minutes, MilliSeconds ;
 
     DataBaseHelper db ;
+
+    //Ad
+    View adContainer ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +167,74 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
             //mMoreShare = (ImageView) findViewById(R.id.more_icons);
             mCommentsList = (RecyclerView) findViewById(R.id.comments_list);
 
+            adContainer = findViewById(R.id.adView);
+            mAdClose = findViewById(R.id.ad_close);
+            adContainer.setVisibility(View.GONE);
+
+            AdView mAdViews = new AdView(ContentDetailScreen.this);
+            mAdViews.setAdSize(AdSize.LARGE_BANNER);
+            mAdViews.setAdUnitId(getResources().getString(R.string.banner_ad_unit_id));
+           // mAdViews.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+            ((RelativeLayout)adContainer).addView(mAdViews);
+            AdRequest adRequests = new AdRequest.Builder().build();
+            mAdViews.loadAd(adRequests);
+
+
+           /* MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+*/
+            MobileAds.initialize(this, "ca-app-pub-2910452066154587~9054205359");
+
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-2910452066154587/5745817050");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+
+                }
+
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when the ad is displayed.
+
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+
+                }
+
+                @Override
+                public void onAdClosed() {
+                    // Code to be executed when when the interstitial ad is closed.
+                    ContentDetailScreen.this.finish();
+                }
+            });
+
+
+
+
+            mAdClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    adContainer.setVisibility(View.GONE);
+                }
+            });
             final Bundle bundle = getIntent().getExtras();
             if(bundle!=null){
                 contents = (Contents) bundle.getSerializable("Contents");
@@ -1554,6 +1635,8 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
                 }
 
             }
+
+
             super.finish();
 
         }catch (Exception e){
@@ -2436,6 +2519,13 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
             youtubeWatcheTime = Seconds;
 
+            if(Seconds!=0&&Seconds%600==0){
+
+                adContainer.setVisibility(View.VISIBLE);
+            }/*else{
+                adContainer.setVisibility(View.GONE);
+            }*/
+
             handler.postDelayed(this, 0);
         }
 
@@ -2570,5 +2660,26 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
         });
 
+    }
+
+    private void showInterstitial() {
+        // Show the ad if it's ready. Otherwise toast and restart the game.
+        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+
+            ContentDetailScreen.this.finish();
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if(youtubeWatcheTime>200&&youtubeWatcheTime<600){
+
+            showInterstitial();
+        }
     }
 }

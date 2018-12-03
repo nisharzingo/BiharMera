@@ -11,6 +11,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/adView"
         android:scrollbars="none">
 
         <LinearLayout
@@ -493,17 +494,19 @@
         android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         app:adSize="SMART_BANNER"
-        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:adUnitId="ca-app-pub-2910452066154587/4449908992"
+
         >
     </com.google.android.gms.ads.AdView>
 
 
 
     <!--<LinearLayout
+    app:adUnitId="ca-app-pub-2910452066154587/4449908992"
+    app:adUnitId="ca-app-pub-3940256099942544/6300978111"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

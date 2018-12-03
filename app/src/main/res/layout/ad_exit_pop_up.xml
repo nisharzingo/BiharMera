@@ -16,17 +16,27 @@
         android:textSize="18dp"
         android:textColor="#000000"/>
 
-    <com.google.android.gms.ads.AdView
+  <!--  <RelativeLayout
         android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
 
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
-        >
-    </com.google.android.gms.ads.AdView>
+
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/ad_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:layout_alignParentRight="true"
+            android:text="X"
+            android:background="@drawable/circular_txt_view"
+            android:textStyle="bold"
+            android:gravity="center" />
+    </RelativeLayout>-->
 
 
     <LinearLayout

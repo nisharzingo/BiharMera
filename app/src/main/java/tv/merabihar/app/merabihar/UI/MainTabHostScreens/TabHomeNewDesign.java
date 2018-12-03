@@ -12,15 +12,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
 import tv.merabihar.app.merabihar.Adapter.MainContentScreenAdapter;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.ContentDetailScreen;
 import tv.merabihar.app.merabihar.UI.Activity.VideoPlayerScreen;
 import tv.merabihar.app.merabihar.UI.YoutubePlayList.YouTubeListScreen;
 import tv.merabihar.app.merabihar.Util.Util;
@@ -153,9 +156,22 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
         final TextView yes = (TextView)view.findViewById(R.id.yes);
         final TextView no = (TextView)view.findViewById(R.id.no);
 
-        AdView mAdView = findViewById(R.id.adView);
+       /* final View adContainer ;
+
+        adContainer = findViewById(R.id.adView);
+        final TextView mAdClose = findViewById(R.id.ad_close);
+        adContainer.setVisibility(View.GONE);
+
+        AdView mAdViews = new AdView(Tab.this);
+        mAdViews.setAdSize(AdSize.LARGE_BANNER);
+        //mAdViews.setAdUnitId(getResources().getString(R.string.banner_ad_unit_id));
+        mAdViews.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+        ((RelativeLayout)adContainer).addView(mAdViews);
+        AdRequest adRequests = new AdRequest.Builder().build();
+        mAdViews.loadAd(adRequests);
+        AdView mAdView = (AdView)findViewById(R.id.adView_pop);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);*/
 
         builder.setView(view);
         /*builder.setTitle("Blog Approve Need!");*/

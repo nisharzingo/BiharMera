@@ -28,8 +28,11 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -97,6 +100,8 @@ public class ContentImageDetailScreen extends AppCompatActivity {
     RelativeLayout mParentRelativeLayout;
     LinearLayout mWhatsapp, mShare, mLikeLayout, mDislikeLayout, mCommentLayout ;
     FrameLayout mCOntentDetailScreen;
+
+    private InterstitialAd mInterstitialAd;
 
     Contents contents;
     boolean isFirstTimePressed = false;
@@ -175,6 +180,53 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             mAdView.loadAd(adRequest);
 
 
+           /* MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());*/
+
+            MobileAds.initialize(this, "ca-app-pub-2910452066154587~9054205359");
+
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-2910452066154587/5745817050");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+
+                }
+
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when the ad is displayed.
+
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+
+                }
+
+                @Override
+                public void onAdClosed() {
+                    // Code to be executed when when the interstitial ad is closed.
+                    ContentImageDetailScreen.this.finish();
+                }
+            });
+
+
+
             final Bundle bundle = getIntent().getExtras();
             if(bundle!=null){
                 contents = (Contents) bundle.getSerializable("Contents");
@@ -223,7 +275,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    ContentImageDetailScreen.this.finish();
+                    showInterstitial();
                 }
             });
 
@@ -2382,6 +2434,23 @@ public class ContentImageDetailScreen extends AppCompatActivity {
 
         });
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        showInterstitial();
+    }
+
+    private void showInterstitial() {
+        // Show the ad if it's ready. Otherwise toast and restart the game.
+        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+
+            ContentImageDetailScreen.this.finish();
+        }
     }
 
 }
