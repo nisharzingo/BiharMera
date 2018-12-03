@@ -6,17 +6,26 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
 import tv.merabihar.app.merabihar.UI.Activity.FriendList.FriendListScreen;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.InviteFriendsScreen;
 import tv.merabihar.app.merabihar.UI.Activity.Influencer.InviteScreen;
+import tv.merabihar.app.merabihar.Util.ThreadExecuter;
+import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.ProfileAPI;
 
 public class WatchedHistroyScreen extends TabActivity implements TabHost.OnTabChangeListener{
 
@@ -29,7 +38,7 @@ public class WatchedHistroyScreen extends TabActivity implements TabHost.OnTabCh
 
 
 
-    TextView labelHome, labelSearch,mReferCode;
+    TextView labelHome, labelSearch,mReferCode,mReferProfile;
     LinearLayout linearInvite,linearFriend;
 
 
@@ -50,6 +59,7 @@ public class WatchedHistroyScreen extends TabActivity implements TabHost.OnTabCh
             tabHost = (TabHost) findViewById(android.R.id.tabhost);
             mBack = (ImageView) findViewById(R.id.back);
             mReferCode = (TextView) findViewById(R.id.referalCodeUsed);
+            mReferProfile = (TextView) findViewById(R.id.referal_profile);
 
             Bundle bundle = getIntent().getExtras();
 
@@ -85,6 +95,13 @@ public class WatchedHistroyScreen extends TabActivity implements TabHost.OnTabCh
 
                 mReferCode.setVisibility(View.VISIBLE);
                 mReferCode.setText("Referal Code Used : "+rCode);
+
+                if(rCode.contains("MBR")){
+
+                    checkUserByReferalCode(rCode.replaceAll("MBR",""));
+                }else{
+                    checkUserByReferalCode(rCode);
+                }
             }
 
             tabHome.setIndicator(tabIndicatorInvite);
@@ -184,7 +201,58 @@ public class WatchedHistroyScreen extends TabActivity implements TabHost.OnTabCh
     }
 
 
+    private void checkUserByReferalCode(final String i){
 
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+
+
+                ProfileAPI apiService =
+                        Util.getClient().create(ProfileAPI.class);
+
+                Call<UserProfile> call = apiService.getProfileById(Integer.parseInt(i));
+
+                call.enqueue(new Callback<UserProfile>() {
+                    @Override
+                    public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
+//                List<RouteDTO.Routes> list = new ArrayList<RouteDTO.Routes>();
+                        int statusCode = response.code();
+
+                        if(statusCode == 200 || statusCode == 204)
+                        {
+                            UserProfile responseProfile = response.body();
+                            if(responseProfile != null )
+                            {
+
+
+
+                                mReferProfile.setVisibility(View.VISIBLE);
+                                mReferProfile.setText("Refered By "+responseProfile.getFullName());;
+
+                            }
+                            else
+                            {
+
+
+                            }
+                        }
+                        else
+                        {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserProfile> call, Throwable t) {
+
+                        Log.e("TAG", t.toString());
+                    }
+                });
+            }
+        });
+    }
 
 
 
