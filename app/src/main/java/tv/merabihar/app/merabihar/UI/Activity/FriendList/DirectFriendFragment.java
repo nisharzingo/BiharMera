@@ -132,7 +132,7 @@ public class DirectFriendFragment extends Fragment {
                             {
                                 //Collections.shuffle(responseProfile);
 
-                                ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),responseProfile);
+                                ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),responseProfile,"Direct");
                                 recyclerView.setAdapter(adapter);
                                 directViewContainer.setVisibility(View.VISIBLE);
 

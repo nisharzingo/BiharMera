@@ -29,12 +29,15 @@ public class WatchedHistroyScreen extends TabActivity implements TabHost.OnTabCh
 
 
 
-    TextView labelHome, labelSearch;
+    TextView labelHome, labelSearch,mReferCode;
     LinearLayout linearInvite,linearFriend;
 
 
     int defaultValue = 0;
     public static final int MY_PERMISSIONS_REQUEST_RESULT = 1;
+
+    int profileId=0;
+    String type="",rCode="";
 
 
     @Override
@@ -46,6 +49,16 @@ public class WatchedHistroyScreen extends TabActivity implements TabHost.OnTabCh
 
             tabHost = (TabHost) findViewById(android.R.id.tabhost);
             mBack = (ImageView) findViewById(R.id.back);
+            mReferCode = (TextView) findViewById(R.id.referalCodeUsed);
+
+            Bundle bundle = getIntent().getExtras();
+
+            if(bundle!=null){
+
+                profileId = bundle.getInt("ProfileId");
+                type = bundle.getString("FriendType");
+                rCode = bundle.getString("ReferalCode");
+            }
 
             tabIndicatorInvite = LayoutInflater.from(this).inflate(R.layout.tab_host_invite, null);
             tabIndicatorFriend= LayoutInflater.from(this).inflate(R.layout.tab_host_invite, null);
@@ -68,13 +81,26 @@ public class WatchedHistroyScreen extends TabActivity implements TabHost.OnTabCh
 /*9C9C9C*/
             labelHome.setText(getResources().getString(R.string.daily));
 
+            if(rCode!=null&&!rCode.isEmpty()){
+
+                mReferCode.setVisibility(View.VISIBLE);
+                mReferCode.setText("Referal Code Used : "+rCode);
+            }
+
             tabHome.setIndicator(tabIndicatorInvite);
             Intent dash = new Intent(this, TimeWatchedScreen.class);
+            dash.putExtra("ProfileId",profileId);
+            dash.putExtra("Friend",type);
+            dash.putExtra("ReferalCode",rCode);
             tabHome.setContent(dash);
 
             labelSearch.setText(getResources().getString(R.string.target));
             tabStay.setIndicator(tabIndicatorFriend);
-            tabStay.setContent(new Intent(this, TargetWatchTime.class));
+            Intent watch = new Intent(this, TargetWatchTime.class);
+            watch.putExtra("ProfileId",profileId);
+            watch.putExtra("Friend",type);
+            watch.putExtra("ReferalCode",rCode);
+            tabStay.setContent(watch);
             //tabStay.setContent(new Intent(this, RoomViewStayActivity.class));
 
 

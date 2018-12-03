@@ -180,7 +180,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             mAdView.loadAd(adRequest);
 
 
-           /* MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+            /*MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
             mInterstitialAd = new InterstitialAd(this);
             mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
@@ -189,7 +189,7 @@ public class ContentImageDetailScreen extends AppCompatActivity {
             MobileAds.initialize(this, "ca-app-pub-2910452066154587~9054205359");
 
             mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId("ca-app-pub-2910452066154587/5745817050");
+            mInterstitialAd.setAdUnitId(getResources().getString(R.string.image_back_ad));
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 

@@ -3,6 +3,7 @@
     package="tv.merabihar.app.merabihar">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -47,6 +48,7 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-2910452066154587~9953517117" />
+
         <activity android:name=".UI.Activity.SlideOptionScreen" />
         <activity
             android:name=".UI.Activity.LoginScreen"
@@ -192,7 +194,29 @@
             android:name=".Rss.NewsSearchActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".Rss.NewsDetailScreen" />
-        <activity android:name=".Rss.SourceBasedNews"></activity>
+        <activity android:name=".Rss.SourceBasedNews" />
+        <activity android:name=".YoutubeUpload.YoutubeVideoUploadScreen"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme"
+            android:label="@string/app_name">
+          <!--  <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+
+        </activity>
+
+        <service android:name=".YoutubeUpload.UploadService"
+            android:exported="true"/>
+        <activity android:name=".YoutubeUpload.PlayActivity"
+            android:label="@string/title_activity_play"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".YoutubeUpload.PlayActivity"/>
+        <activity android:name=".YoutubeUpload.ReviewActivity"
+            android:label="@string/title_activity_review"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".YoutubeUpload.PlayActivity"></activity>
     </application>
 
 </manifest>

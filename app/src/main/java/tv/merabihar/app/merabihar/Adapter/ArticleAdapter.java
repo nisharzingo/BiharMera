@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -86,6 +88,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
         Locale.setDefault(Locale.getDefault());
         String date = currentArticle.getPublishedAt();
+
+        if(position%2==0){
+
+            AdRequest adRequest = new AdRequest.Builder().build();
+            holder.mAdView.loadAd(adRequest);
+        }else{
+            holder.mAdView.setVisibility(View.GONE);
+        }
 
         if(date!=null){
             if(date.contains("T")){
@@ -223,13 +233,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
         TextView title,pubDate,category;
         ImageView image;
+        AdView mAdView ;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             context = itemView.getContext();
             itemView.setClickable(true);
-
+            mAdView = (AdView)itemView.findViewById(R.id.adView_news);
             title = itemView.findViewById(R.id.title);
             pubDate = itemView.findViewById(R.id.pubDate);
             image = itemView.findViewById(R.id.image);

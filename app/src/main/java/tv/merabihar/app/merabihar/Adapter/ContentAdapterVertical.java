@@ -190,23 +190,13 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
                         final  Contents contents = mList.get(pos);
 
-                        /*if(pos%2==0){
+                        if(pos%2==0){
 
-
-
-                            AdView mAdViews = new AdView(context);
-                            mAdViews.setAdSize(AdSize.LARGE_BANNER);
-                            //mAdViews.setAdUnitId(context.getResources().getString(R.string.banner_ad_unit_id));
-                            mAdViews.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
-                            ((RelativeLayout)holder.adContainer).addView(mAdViews);
-                            AdRequest adRequests = new AdRequest.Builder().build();
-                            mAdViews.loadAd(adRequests);
-                            *//*holder.mAdView.setVisibility(View.VISIBLE);
                             AdRequest adRequest = new AdRequest.Builder().build();
-                            holder.mAdView.loadAd(adRequest);*//*
+                            holder.mAdView.loadAd(adRequest);
                         }else{
-                            holder.adContainer.setVisibility(View.GONE);
-                        }*/
+                            holder.mAdView.setVisibility(View.GONE);
+                        }
 
 
                         if(contents!=null){
@@ -1091,13 +1081,12 @@ public class ContentAdapterVertical  extends RecyclerView.Adapter  implements Ac
 
         LinearLayout mWhatsapp,mDownLoad,mShare, mLikeLayout, mDislikeLayout, mCommentLayout ;
 
-        //View adContainer ;
-        //TextView mAdClose;
-        //AdView mAdView ;
+
+        AdView mAdView ;
         public BlogViewHolder(View view) {
             super(view);
 
-            //adContainer = (View)view.findViewById(R.id.adView);
+            mAdView = (AdView)view.findViewById(R.id.adView_recycler);
           //  mAdClose = (TextView)view.findViewById(R.id.ad_close);
             mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
             mProfileName = (MyTextView_Lato_Regular) view.findViewById(R.id.profile_name);

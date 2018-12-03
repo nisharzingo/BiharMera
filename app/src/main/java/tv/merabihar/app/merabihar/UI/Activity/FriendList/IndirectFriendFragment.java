@@ -278,14 +278,14 @@ public class IndirectFriendFragment  extends Fragment {
 
                                 if(responseProfile!=null&&responseProfile.size()!=0){
 
-                                    ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),responseProfile);
+                                    ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),responseProfile,"Indirect");
                                     recyclerView.setAdapter(adapter);
                                     indirectViewContainer.setVisibility(View.VISIBLE);
 
                                 }else{
 
                                     if(profileArrayList!=null){
-                                        ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList);
+                                        ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList,"Indirect");
                                         recyclerView.setAdapter(adapter);
                                         indirectViewContainer.setVisibility(View.VISIBLE);
                                     }/*else if(profileArrayLists!=null){
@@ -306,7 +306,7 @@ public class IndirectFriendFragment  extends Fragment {
                             else
                             {
                                 if(profileArrayList!=null){
-                                    ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList);
+                                    ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList,"Indirect");
                                     recyclerView.setAdapter(adapter);
                                     indirectViewContainer.setVisibility(View.VISIBLE);
                                 }/*else if(profileArrayLists!=null){
@@ -336,7 +336,7 @@ public class IndirectFriendFragment  extends Fragment {
                         mProgressBar.setVisibility(View.GONE);
 
                         if(profileArrayList!=null){
-                            ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList);
+                            ReferalPeopleListAdapter adapter = new ReferalPeopleListAdapter(getActivity(),profileArrayList,"Indirect");
                             recyclerView.setAdapter(adapter);
                             indirectViewContainer.setVisibility(View.VISIBLE);
                         }/*else if(profileArrayLists!=null){

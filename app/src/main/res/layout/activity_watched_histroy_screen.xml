@@ -51,6 +51,17 @@
                 android:layout_height="1dp"
                 android:background="#60030303"
                 />
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/referalCodeUsed"
+                android:text="Referal Code Used "
+                android:textColor="#000000"
+                android:visibility="gone"
+                android:textSize="18dp"
+                android:gravity="center_vertical"
+                android:padding="5dp"/>
 
             <TabWidget
 

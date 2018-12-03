@@ -19,6 +19,9 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
     </style>
 
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/curve</item>
+    </style>
 
     <style name="appBarLayout">
         <item name="android:theme">@style/AppTheme.AppBarOverlay</item>

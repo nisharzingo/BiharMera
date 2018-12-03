@@ -86,6 +86,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
     ImageView mback;
     TextView mAdClose;
+    private AdView mAdViewBottom;
     TextViewSFProDisplayRegular mSubCategory,mReadTime,mNocomments;
     MyTextView_SF_Pro_Light mContentTitle,mContentDesc;
     MyTextView_Lato_Regular mProfileName,mFollow;
@@ -173,23 +174,28 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
             AdView mAdViews = new AdView(ContentDetailScreen.this);
             mAdViews.setAdSize(AdSize.LARGE_BANNER);
-            mAdViews.setAdUnitId(getResources().getString(R.string.banner_ad_unit_id));
-           // mAdViews.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+            //mAdViews.setAdUnitId(getResources().getString(R.string.banner_ad_unit_id));
+            mAdViews.setAdUnitId(getResources().getString(R.string.video_pop_ad));
             ((RelativeLayout)adContainer).addView(mAdViews);
             AdRequest adRequests = new AdRequest.Builder().build();
             mAdViews.loadAd(adRequests);
+
+
+            mAdViewBottom = findViewById(R.id.adView_bottom);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdViewBottom.loadAd(adRequest);
+
 
 
            /* MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
             mInterstitialAd = new InterstitialAd(this);
             mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
-*/
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());*/
             MobileAds.initialize(this, "ca-app-pub-2910452066154587~9054205359");
 
             mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId("ca-app-pub-2910452066154587/5745817050");
+            mInterstitialAd.setAdUnitId(getResources().getString(R.string.video_back_ad));
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
@@ -2519,7 +2525,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
 
             youtubeWatcheTime = Seconds;
 
-            if(Seconds!=0&&Seconds%600==0){
+            if(Seconds!=0&&Seconds%60==0){
 
                 adContainer.setVisibility(View.VISIBLE);
             }/*else{
@@ -2677,7 +2683,7 @@ public class ContentDetailScreen extends YouTubeBaseActivity implements YouTubeP
     public void onBackPressed() {
         super.onBackPressed();
 
-        if(youtubeWatcheTime>200&&youtubeWatcheTime<600){
+        if(youtubeWatcheTime>15){
 
             showInterstitial();
         }

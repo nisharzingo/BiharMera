@@ -1,11 +1,13 @@
 package tv.merabihar.app.merabihar.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -22,6 +24,7 @@ import retrofit2.Response;
 import tv.merabihar.app.merabihar.CustomFonts.MyTextView_Roboto_Regular;
 import tv.merabihar.app.merabihar.Model.UserProfile;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.Activity.WatchedHistroyScreen;
 import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 import tv.merabihar.app.merabihar.Util.ThreadExecuter;
 import tv.merabihar.app.merabihar.Util.Util;
@@ -34,10 +37,12 @@ import tv.merabihar.app.merabihar.WebAPI.ProfileFollowAPI;
 public class ReferalPeopleListAdapter extends RecyclerView.Adapter<ReferalPeopleListAdapter.ViewHolder> {
     private Context context;
     private ArrayList<UserProfile> list;
-    public ReferalPeopleListAdapter(Context context,ArrayList<UserProfile> list) {
+    String type;
+    public ReferalPeopleListAdapter(Context context,ArrayList<UserProfile> list,String type) {
 
         this.context = context;
         this.list = list;
+        this.type = type;
 
     }
 
@@ -78,6 +83,18 @@ public class ReferalPeopleListAdapter extends RecyclerView.Adapter<ReferalPeople
 
             TextView earn_textview = holder.total_earning_value;
             getDirectRefer("MBR"+profile.getProfileId(),holder.total_invite_value, earn_textview);
+
+            holder.mFriendMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent wath = new Intent(context, WatchedHistroyScreen.class);
+                    wath.putExtra("ProfileId",profile.getProfileId());
+                    wath.putExtra("FriendType",type);
+                    wath.putExtra("ReferalCode",profile.getReferralCodeUsed());
+                    context.startActivity(wath);
+                }
+            });
 
            /* String date = profile.getSignUpDate();
 
@@ -126,7 +143,7 @@ public class ReferalPeopleListAdapter extends RecyclerView.Adapter<ReferalPeople
 
         /*CircleImageView mProfilePhoto;
         MyTextView_Roboto_Regular mProfileName,mSignUpDate;*/
-
+        LinearLayout mFriendMain;
         TextView top_user_value,top_nick_name,total_invite_value,total_earning_value;
 
         public ViewHolder(View itemView) {
@@ -134,6 +151,7 @@ public class ReferalPeopleListAdapter extends RecyclerView.Adapter<ReferalPeople
             context = itemView.getContext();
             itemView.setClickable(true);
 
+            mFriendMain = (LinearLayout) itemView.findViewById(R.id.friend_main);
             top_user_value = (TextView) itemView.findViewById(R.id.top_user_value);
             top_nick_name = (TextView) itemView.findViewById(R.id.top_nick_name);
             total_invite_value = (TextView) itemView.findViewById(R.id.total_invite_value);

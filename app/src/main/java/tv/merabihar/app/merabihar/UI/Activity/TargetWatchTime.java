@@ -31,6 +31,9 @@ public class TargetWatchTime extends AppCompatActivity {
             mThisWeek,mThisMonth;
     int penalty=0;
     // Toolbar mToolbar;
+    int ProfileId=0;
+    String type="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +52,21 @@ public class TargetWatchTime extends AppCompatActivity {
             mHistroy = findViewById(R.id.watch_history);
 
 
+            Bundle bundle = getIntent().getExtras();
+            if(bundle!=null){
+
+                ProfileId = bundle.getInt("ProfileId");
+                type = bundle.getString("FriendType");
+            }
+
+            if(ProfileId!=0&&type!=null&&!type.isEmpty()){
+                getGoalsByProfileId(ProfileId);
+            }else{
+                getGoalsByProfileId(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId());
+            }
 
 
-            getGoalsByProfileId(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId());
+
             //getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
 
 
@@ -320,21 +335,21 @@ public class TargetWatchTime extends AppCompatActivity {
                                     String startDate = sg.getStartDate();
                                     String endDate = sg.getEndDate();
                                     penalty = Integer.parseInt(sg.getExtraDescription());
-                                    getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
+                                    getTransactionsByIdType(id,"VideoWatched");
 
                                 }else{
-                                    getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
+                                    getTransactionsByIdType(id,"VideoWatched");
                                 }
 
 
                             }else{
-                                getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
+                                getTransactionsByIdType(id,"VideoWatched");
                             }
 
 
                         }else{
 
-                            getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
+                            getTransactionsByIdType(id,"VideoWatched");
 
                         }
                     }
@@ -343,7 +358,7 @@ public class TargetWatchTime extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<SubscribedGoals>> call, Throwable t) {
 
 
-                        getTransactionsByIdType(PreferenceHandler.getInstance(TargetWatchTime.this).getUserId(),"VideoWatched");
+                        getTransactionsByIdType(id,"VideoWatched");
 
                         //Toast.makeText(TimeWatchedScreen.this,t.getMessage(),Toast.LENGTH_SHORT).show();
                     }

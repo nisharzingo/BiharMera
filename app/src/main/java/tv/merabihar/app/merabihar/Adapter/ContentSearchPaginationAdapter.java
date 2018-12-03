@@ -14,6 +14,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -93,6 +95,8 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
 
         try{
 
+
+
             final ArrayList<Contents> content = mContentList.get(pos);
 
             if(mContentList.get(pos)!=null){
@@ -101,6 +105,9 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
 
                     case ITEM:
                         final BlogViewHolder holder = (BlogViewHolder) holders;
+
+                        AdRequest adRequest = new AdRequest.Builder().build();
+                        holder.mAdView.loadAd(adRequest);
 
                         final ImageView iv1 = holder.iv1 ;
                         ImageView iv2 = holder.iv2 ;
@@ -755,8 +762,11 @@ public class ContentSearchPaginationAdapter extends RecyclerView.Adapter {
 
         ImageView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9,ivp1, ivp2, ivp3, ivp4, ivp5, ivp6, ivp7, ivp8, ivp9 ;
 
+        AdView mAdView ;
+
         public BlogViewHolder(View view) {
             super(view);
+            mAdView = (AdView)view.findViewById(R.id.adView_search);
             iv1 = view.findViewById(R.id.follow_frag_img_view1);
             iv2 = view.findViewById(R.id.follow_frag_img_view2);
             iv3 = view.findViewById(R.id.follow_frag_img_view3);

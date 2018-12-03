@@ -35,6 +35,8 @@ public class TimeWatchedScreen extends AppCompatActivity {
                     mThisWeek,mThisMonth, mLifeTimeWatchedTime;
    // Toolbar mToolbar;
 
+    int ProfileId=0;
+    String type="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,20 +55,25 @@ public class TimeWatchedScreen extends AppCompatActivity {
             mHistroy = findViewById(R.id.watch_history);
             mLifeTimeWatchedTime = findViewById(R.id.lifetime_watched_time);
 
+            Bundle bundle = getIntent().getExtras();
+            if(bundle!=null){
 
-       /* setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Time watched");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
-
-            getTransactionsByIdType(PreferenceHandler.getInstance(TimeWatchedScreen.this).getUserId(),"VideoWatched");
-
-       /* mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // perform whenever back arrow click
-                TimeWatchedScreen.this.finish();
+                ProfileId = bundle.getInt("ProfileId");
+                type = bundle.getString("Friend");
             }
-        });*/
+
+
+
+
+
+            if(ProfileId!=0&&type!=null&&!type.isEmpty()){
+                getTransactionsByIdType(ProfileId,"VideoWatched");
+            }else{
+                getTransactionsByIdType(PreferenceHandler.getInstance(TimeWatchedScreen.this).getUserId(),"VideoWatched");
+            }
+
+
+
 
             mHistroy.setOnClickListener(new View.OnClickListener() {
                 @Override

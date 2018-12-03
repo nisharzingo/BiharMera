@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <TextView
@@ -16,27 +16,16 @@
         android:textSize="18dp"
         android:textColor="#000000"/>
 
-  <!--  <RelativeLayout
+    <com.google.android.gms.ads.NativeExpressAdView
         android:id="@+id/adView"
-
-
-        android:layout_gravity="center"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="280x280"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+    </com.google.android.gms.ads.NativeExpressAdView>
 
-        <TextView
-            android:id="@+id/ad_close"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:textColor="@color/white"
-            android:layout_alignParentRight="true"
-            android:text="X"
-            android:background="@drawable/circular_txt_view"
-            android:textStyle="bold"
-            android:gravity="center" />
-    </RelativeLayout>-->
 
 
     <LinearLayout
