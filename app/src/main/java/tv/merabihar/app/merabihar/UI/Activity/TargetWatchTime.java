@@ -113,6 +113,7 @@ public class TargetWatchTime extends AppCompatActivity {
                             int thisweekWatch = 0;
                             int totalWatch = 0;
                             int thisMonthWatch = 0;
+                            int todayWatch = 0;
 
                             for (TransactionHistroy tc:response.body()) {
 
@@ -174,17 +175,8 @@ public class TargetWatchTime extends AppCompatActivity {
 
                                 if(tc.getTransactionHistoryDate().contains(todayDate)){
 
-                                    int[] vale = splitToComponentTimes(7800-tc.getValue());
+                                    todayWatch = totalWatch+tc.getValue();
 
-                                    if(vale.length!=0&&vale.length==2){
-
-                                        if(vale[0]<=0&&vale[1]<=0){
-                                            mTodayWatchedTime.setText("0 hr "+"0 min" );
-                                        }else{
-                                            mTodayWatchedTime.setText(vale[0]+" hr "+vale[1]+" min" );
-                                        }
-
-                                    }
 
 
                                 }
@@ -241,7 +233,17 @@ public class TargetWatchTime extends AppCompatActivity {
                                 mThisWeek.setText(valet[0]+" hr "+valet[1]+" min" );
                             }*/
 
+                            int[] valess = splitToComponentTimes(7800-todayWatch);
 
+                            if(valess.length!=0&&valess.length==2){
+
+                                if(valess[0]<=0&&valess[1]<=0){
+                                    mTodayWatchedTime.setText("0 hr "+"0 min" );
+                                }else{
+                                    mTodayWatchedTime.setText(valess[0]+" hr "+valess[1]+" min" );
+                                }
+
+                            }
                             int[] valetm = splitToComponentTimes((216000+penalty)-thisMonthWatch);
 
                             if(valetm[0]<=0&&valetm[1]<=0){

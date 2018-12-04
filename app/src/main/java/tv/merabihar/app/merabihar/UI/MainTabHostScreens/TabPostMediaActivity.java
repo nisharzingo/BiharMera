@@ -27,7 +27,7 @@ import tv.merabihar.app.merabihar.YoutubeUpload.YoutubeVideoUploadScreen;
 
 public class TabPostMediaActivity extends AppCompatActivity {
 
-    LinearLayout mGallery,mYoutube;
+    LinearLayout mGallery,mYoutube,mYoutubeVideo;
 
     @Override
     protected void onResume() {
@@ -49,6 +49,7 @@ public class TabPostMediaActivity extends AppCompatActivity {
 
             mGallery = (LinearLayout)findViewById(R.id.gallery_post);
             mYoutube = (LinearLayout)findViewById(R.id.youtube_url);
+            mYoutubeVideo = (LinearLayout)findViewById(R.id.youtube_url_video);
 
             mGallery.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,6 +90,45 @@ public class TabPostMediaActivity extends AppCompatActivity {
             });
 
             mYoutube.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(PreferenceHandler.getInstance(TabPostMediaActivity.this).getUserId()!=0){
+
+                        Intent post = new Intent(TabPostMediaActivity.this, PostVideoYoutubeContent.class);
+                        startActivity(post);
+
+                    }else{
+
+                        new AlertDialog.Builder(TabPostMediaActivity.this)
+                                .setMessage("Please login/Signup to Like the Story")
+                                .setCancelable(false)
+                                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        Intent login = new Intent(TabPostMediaActivity.this, LoginScreen.class);
+                                        startActivity(login);
+
+                                    }
+                                })
+                                .setNegativeButton("SignUp", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        Intent signUp = new Intent(TabPostMediaActivity.this, SignUpScreen.class);
+                                        startActivity(signUp);
+
+                                    }
+                                })
+                                .show();
+
+
+                    }
+
+                }
+            });
+
+
+            mYoutubeVideo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 

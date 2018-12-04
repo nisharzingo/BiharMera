@@ -60,6 +60,8 @@ public class UploadsListFragment extends Fragment implements GoogleApiClient.Con
                 .addScope(Plus.SCOPE_PLUS_PROFILE)
                 .build();
 
+
+
     }
 
     @Override
@@ -120,6 +122,19 @@ public class UploadsListFragment extends Fragment implements GoogleApiClient.Con
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
     public void onConnected(Bundle bundle) {
         if (mGridView.getAdapter() != null) {
             ((UploadedVideoAdapter) mGridView.getAdapter()).notifyDataSetChanged();
@@ -137,8 +152,13 @@ public class UploadsListFragment extends Fragment implements GoogleApiClient.Con
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
+
+            String failReason = String.format(
+                    "Connection to Play Services Failed, error: %d, reason: %s",
+                    connectionResult.getErrorCode(),
+                    connectionResult.toString());
             Toast.makeText(getActivity(),
-                    R.string.connection_to_google_play_failed, Toast.LENGTH_SHORT)
+                    failReason, Toast.LENGTH_SHORT)
                     .show();
 
             Log.e(TAG,

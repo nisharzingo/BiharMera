@@ -117,6 +117,7 @@ public class TimeWatchedScreen extends AppCompatActivity {
                             int thisweekWatch = 0;
                             int totalWatch = 0;
                             int thisMonthWatch = 0;
+                            int todayWatch = 0;
 
                             for (TransactionHistroy tc:response.body()) {
 
@@ -178,11 +179,9 @@ public class TimeWatchedScreen extends AppCompatActivity {
 
                                 if(tc.getTransactionHistoryDate().contains(todayDate)){
 
-                                    int[] vale = splitToComponentTimes(tc.getValue());
+                                    todayWatch = todayWatch+tc.getValue();
 
-                                    if(vale.length!=0&&vale.length==2){
-                                        mTodayWatchedTime.setText(vale[0]+" hr "+vale[1]+" min" );
-                                    }
+
 
 
                                 }
@@ -228,6 +227,12 @@ public class TimeWatchedScreen extends AppCompatActivity {
 
                             if(valet.length!=0&&valet.length==2){
                                 mThisWeek.setText(valet[0]+" hr "+valet[1]+" min" );
+                            }
+
+                            int[] valess = splitToComponentTimes(todayWatch);
+
+                            if(valess.length!=0&&valess.length==2){
+                                mTodayWatchedTime.setText(valess[0]+" hr "+valess[1]+" min" );
                             }
 
 

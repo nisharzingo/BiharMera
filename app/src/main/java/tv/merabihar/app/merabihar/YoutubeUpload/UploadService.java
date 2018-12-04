@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -20,7 +21,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.Util.ThreadExecuter;
+import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
 
 /**
  * Created by ZingoHotels Tech on 03-12-2018.
@@ -58,6 +66,8 @@ public class UploadService extends IntentService {
      */
     private int mUploadAttemptCount;
 
+    Contents blogs;
+
     public UploadService() {
         super("YTUploadService");
     }
@@ -82,6 +92,13 @@ public class UploadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Uri fileUri = intent.getData();
         String chosenAccountName = intent.getStringExtra(YoutubeVideoUploadScreen.ACCOUNT_KEY);
+
+        Bundle bundle = intent.getExtras();
+
+        if(bundle!=null){
+
+            blogs = (Contents)bundle.getSerializable("Contents");
+        }
 
         credential =
                 GoogleAccountCredential.usingOAuth2(getApplicationContext(), Lists.newArrayList(Auth.SCOPES));
@@ -161,7 +178,20 @@ public class UploadService extends IntentService {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
 
-            videoId = ResumableUpload.upload(youtube, fileInputStream, fileSize, mFileUri, cursor.getString(column_index), getApplicationContext());
+            if(blogs!=null){
+
+                videoId = ResumableUpload.upload(youtube, fileInputStream, fileSize, mFileUri, cursor.getString(column_index), getApplicationContext(),blogs);
+                if(videoId!=null){
+                    blogs.setContentURL(videoId);
+                    postBlogs(blogs);
+                }
+
+            }else{
+
+                videoId = ResumableUpload.upload(youtube, fileInputStream, fileSize, mFileUri, cursor.getString(column_index), getApplicationContext(),null);
+            }
+
+
 
 
         } catch (FileNotFoundException e) {
@@ -174,6 +204,45 @@ public class UploadService extends IntentService {
             }
         }
         return videoId;
+    }
+    private void postBlogs(final Contents blogs) {
+
+
+        //System.out.println(sub.getCategoriesName()+","+sub.getDescription()+","+sub.getOrderNo()+","+sub.getCityId());
+
+        new ThreadExecuter().execute(new Runnable() {
+            @Override
+            public void run() {
+                ContentAPI blogsAPI = Util.getClient().create(ContentAPI.class);
+                Call<Contents> response = blogsAPI.postContent(blogs);
+                response.enqueue(new Callback<Contents>() {
+                    @Override
+                    public void onResponse(Call<Contents> call, Response<Contents> response) {
+
+
+
+                        if(response.code() == 201||response.code() == 200||response.code() == 204)
+                        {
+
+
+
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Contents> call, Throwable t) {
+
+//                        Toast.makeText(PostVideoYoutubeContent.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
     }
 
 }

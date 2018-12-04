@@ -13,11 +13,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.PostContent.PostVideoYoutubeContent;
+import tv.merabihar.app.merabihar.Util.PreferenceHandler;
 
 public class ReviewActivity extends Activity {
 
@@ -25,6 +33,7 @@ public class ReviewActivity extends Activity {
     MediaController mc;
     private String mChosenAccountName;
     private Uri mFileUri;
+    EditText mTitle,mDescriton;
 
 
     @Override
@@ -36,6 +45,8 @@ public class ReviewActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
             setContentView(R.layout.activity_review);
             Button uploadButton = (Button) findViewById(R.id.upload_button);
+            mTitle = (EditText) findViewById(R.id.title_video);
+            mDescriton = (EditText) findViewById(R.id.long_desc_blog);
             Intent intent = getIntent();
             if (Intent.ACTION_VIEW.equals(intent.getAction())) {
                 uploadButton.setVisibility(View.GONE);
@@ -84,10 +95,50 @@ public class ReviewActivity extends Activity {
             return;
         }*/
         // if a video is picked or recorded.
-        if (mFileUri != null) {
+
+        String title = mTitle.getText().toString();
+        String desc = mDescriton.getText().toString();
+
+        if(title==null||title.isEmpty()){
+
+            Toast.makeText(this, "Please Enter Title", Toast.LENGTH_SHORT).show();
+
+        }else if(desc==null||desc.isEmpty()){
+
+            Toast.makeText(this, "Please Enter Description", Toast.LENGTH_SHORT).show();
+
+        }else if (mFileUri == null) {
+
+            Toast.makeText(this, "File is not found.Something went wrong", Toast.LENGTH_SHORT).show();
+
+        }else{
+
+            SimpleDateFormat sdf  = new SimpleDateFormat("MM/dd/yyyy");
+
+            Contents blogs = new Contents();
+            blogs.setTitle(title+" Uploaded on Mera Bihar App");
+            if(mDescriton.getText().toString()!=null&&!mDescriton.getText().toString().isEmpty()){
+                blogs.setDescription(mDescriton.getText().toString());
+            }else{
+                blogs.setDescription("");
+            }
+
+            blogs.setContentType("Video");
+
+            blogs.setCreatedBy(PreferenceHandler.getInstance(ReviewActivity.this).getUserFullName());
+            blogs.setCreatedDate(""+new SimpleDateFormat("MM/dd/yyyyy").format(new Date()));
+            blogs.setUpdatedDate(""+new SimpleDateFormat("MM/dd/yyyyy").format(new Date()));
+            blogs.setProfileId(PreferenceHandler.getInstance(ReviewActivity.this).getUserId());
+            blogs.setSubCategoriesId(101);
+
+
             Intent uploadIntent = new Intent(this, UploadService.class);
             uploadIntent.setData(mFileUri);
             uploadIntent.putExtra(YoutubeVideoUploadScreen.ACCOUNT_KEY, mChosenAccountName);
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("Contents",blogs);
+            uploadIntent.putExtras(bundle);
             startService(uploadIntent);
             Toast.makeText(this, R.string.youtube_upload_started,
                     Toast.LENGTH_LONG).show();

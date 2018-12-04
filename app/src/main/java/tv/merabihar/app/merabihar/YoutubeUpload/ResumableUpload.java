@@ -1,17 +1,22 @@
 package tv.merabihar.app.merabihar.YoutubeUpload;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
@@ -33,7 +38,16 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import tv.merabihar.app.merabihar.Model.Contents;
 import tv.merabihar.app.merabihar.R;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.PostContent.PostVideoYoutubeContent;
+import tv.merabihar.app.merabihar.UI.MainTabHostScreens.TabMainActivity;
+import tv.merabihar.app.merabihar.Util.ThreadExecuter;
+import tv.merabihar.app.merabihar.Util.Util;
+import tv.merabihar.app.merabihar.WebAPI.ContentAPI;
 
 /**
  * Created by ZingoHotels Tech on 03-12-2018.
@@ -63,21 +77,26 @@ public class ResumableUpload {
      */
 
     public static String upload(YouTube youtube, final InputStream fileInputStream,
-                                final long fileSize, final Uri mFileUri, final String path, final Context context) {
-        final NotificationManager notifyManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+                                final long fileSize, final Uri mFileUri, final String path, final Context context, final Contents blogs) {
 
-        Intent notificationIntent = new Intent(context, ReviewActivity.class);
-        notificationIntent.setData(mFileUri);
-        notificationIntent.setAction(Intent.ACTION_VIEW);
-        Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
-        PendingIntent contentIntent = PendingIntent.getActivity(context,
-                0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        builder.setContentTitle(context.getString(R.string.youtube_upload))
-                .setContentText(context.getString(R.string.youtube_upload_started))
-                .setSmallIcon(R.drawable.ic_stat_device_access_video).setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
-        notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
+
+            final NotificationManager notifyManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+            Intent notificationIntent = new Intent(context, ReviewActivity.class);
+            notificationIntent.setData(mFileUri);
+            notificationIntent.setAction(Intent.ACTION_VIEW);
+            Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
+            PendingIntent contentIntent = PendingIntent.getActivity(context,
+                    0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            builder.setContentTitle(context.getString(R.string.youtube_upload))
+                    .setContentText(context.getString(R.string.youtube_upload_started))
+                    .setSmallIcon(R.drawable.ic_stat_device_access_video).setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
+            notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
+
+
+
 
         String videoId = null;
         try {
@@ -102,12 +121,40 @@ public class ResumableUpload {
        * and use your own standard names.
        */
             Calendar cal = Calendar.getInstance();
-            snippet.setTitle("Test Upload via Java on " + cal.getTime());
-            snippet.setDescription("Video uploaded via YouTube Data API V3 using the Java library "
-                    + "on " + cal.getTime());
+
+            if(blogs!=null){
+                snippet.setTitle(blogs.getTitle());
+            }else{
+                snippet.setTitle("Mera Bihar Videos Uploaded By Mera Bihar App");
+            }
+
+            snippet.setDescription("मेरा बिहार यूट्यूब चैनल आप सब लोगो को स्वागत करता है. अगर आप भी एक कलाकार है तो आप हमसे संपर्क करे और अपने वीडियो या गाने को हमारे चैनल पे लांच करे. \n" +
+                    "\n" +
+                    " \n" +
+                    "\n" +
+                    "To Download Mera Bihar Application Click Here- https://play.google.com/store/apps/details?id=tv.merabihar.app.merabihar\n" +
+                    "\n" +
+                    " \n" +
+                    "\n" +
+                    "Download the MeraBihar Android App and start seeing the best of Bihar with a few simple taps.\n" +
+                    "\n" +
+                    "Features of Mera Bihar:\n" +
+                    "\n" +
+                    "• Allows you to make new friends and find friends using the simple inbuilt friends search tool.\n" +
+                    "\n" +
+                    "• Has a wide collection of jokes, whatsapp status, memes, trolls and latest WhatsApp jokes.\n" +
+                    "\n" +
+                    "• Has a huge album of videos from Bihar. It also allows the user to keep up with the latest news related to Indian movies.\n" +
+                    "\n" +
+                    "• Get famous by showcasing your talent and becoming an internet celebrity.\n" +
+                    "\n" +
+                    "• Earn Money while you are enjoying the content in our mobile app.\n" +
+                    "\n" +
+                    "Mera Bihar Provides a Real way to earn money online through our Mera Bihar mobile app. You will get paytm money with-in 2 working days. Our app provides you Whatsapp status video download, HD videos and free video download. "
+                    );
 
             // Set your keywords.
-            snippet.setTags(Arrays.asList(Constants.DEFAULT_KEYWORD, Upload.generateKeywordFromPlaylistId(Constants.UPLOAD_PLAYLIST)));
+            snippet.setTags(Arrays.asList("#MeraBihar","#MeraBiharApp"));
 
             // Set completed snippet to the video object.
             videoObjectDefiningMetadata.setSnippet(snippet);
@@ -259,4 +306,6 @@ public class ResumableUpload {
         }
         return false;
     }
+
+
 }

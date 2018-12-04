@@ -629,7 +629,7 @@ public class TabAccountActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),response.message());
+                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong");
 
 //                            Toast.makeText(TabAccountActivity.this,response.message(),Toast.LENGTH_SHORT).show();
                         }
@@ -690,7 +690,7 @@ public class TabAccountActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),response.message());
+                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong");
 //                            Toast.makeText(TabAccountActivity.this,response.message(),Toast.LENGTH_SHORT).show();
                         }
 //                callGetStartEnd();
@@ -753,7 +753,7 @@ public class TabAccountActivity extends AppCompatActivity {
                         {
 
                             getFollowerByProfileId(id);
-                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),response.message());
+                            SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong");
 
                         }
 //                callGetStartEnd();
@@ -846,7 +846,7 @@ public class TabAccountActivity extends AppCompatActivity {
 
                         progressBar.setVisibility(View.GONE);
 
-                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),t.getMessage());
+                        SnackbarViewer.showSnackbar(findViewById(R.id.main_activity_tab_account),"Something went wrong");
 
                     }
                 });

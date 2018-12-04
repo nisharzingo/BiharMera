@@ -94,6 +94,36 @@
 
          </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/youtube_url_video"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/share_using_youtube_video"
+                android:layout_width="60dp"
+                android:src="@drawable/youtube_video"
+                android:layout_gravity="center"
+                android:layout_height="60dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:paddingTop="8sp"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Upload videos to Youtube"
+
+                />
+
+
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
