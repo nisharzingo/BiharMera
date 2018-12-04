@@ -87,7 +87,7 @@ public class ReviewActivity extends Activity {
         if (mFileUri != null) {
             Intent uploadIntent = new Intent(this, UploadService.class);
             uploadIntent.setData(mFileUri);
-            uploadIntent.putExtra(YoutubeVideoUploadScreen.ACCOUNT_KEY, "mednizar.s@gmail.com");
+            uploadIntent.putExtra(YoutubeVideoUploadScreen.ACCOUNT_KEY, mChosenAccountName);
             startService(uploadIntent);
             Toast.makeText(this, R.string.youtube_upload_started,
                     Toast.LENGTH_LONG).show();

@@ -113,7 +113,7 @@ public class YoutubeVideoUploadScreen extends Activity implements
                 } else {
                     loadAccount();
                 }
-                mChosenAccountName = "mednizar.s@gmail.com";
+                //mChosenAccountName = "mednizar.s@gmail.com";
                 credential.setSelectedAccountName(mChosenAccountName);
 
                 mUploadsListFragment = (UploadsListFragment) getFragmentManager()
@@ -315,10 +315,10 @@ public class YoutubeVideoUploadScreen extends Activity implements
                     String accountName = data.getExtras().getString(
                             AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
-                       mChosenAccountName = "mednizar.s@gmail.com";
-                        //mChosenAccountName = accountName;
+                      // mChosenAccountName = "mednizar.s@gmail.com";
+                        mChosenAccountName = accountName;
                         credential.setSelectedAccountName(accountName);
-                        //saveAccount();
+                        saveAccount();
                     }
                 }
                 break;

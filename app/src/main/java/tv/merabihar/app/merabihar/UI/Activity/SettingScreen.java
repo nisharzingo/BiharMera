@@ -3,11 +3,13 @@ package tv.merabihar.app.merabihar.UI.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -576,6 +578,9 @@ public class SettingScreen extends AppCompatActivity {
                 PreferenceHandler.getInstance(SettingScreen.this).clear();
                 Toast.makeText(SettingScreen.this,"Logout done successfully",Toast.LENGTH_SHORT).show();
                 PreferenceHandler.getInstance(SettingScreen.this).clear();
+                SharedPreferences sp = PreferenceManager
+                        .getDefaultSharedPreferences(this);
+                sp.edit().clear().apply();
                 Intent log = new Intent(SettingScreen.this, SlideOptionScreen.class);
                 log.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 log.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);

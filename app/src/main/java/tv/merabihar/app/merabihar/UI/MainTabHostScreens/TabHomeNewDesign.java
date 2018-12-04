@@ -198,43 +198,6 @@ public class TabHomeNewDesign extends AppCompatActivity implements TabLayout.OnT
 
 
         main_dialog.show();
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(TabHomeNewDesign.this);
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.ad_exit_pop_up,null);
-
-        final TextView yes = (TextView)view.findViewById(R.id.yes);
-        final TextView no = (TextView)view.findViewById(R.id.no);
-
-
-
-        builder.setView(view);
-        *//*builder.setTitle("Blog Approve Need!");*//*
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-
-
-
-
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                TabHomeNewDesign.this.finish();
-
-
-            }
-        });
-
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dialog.dismiss();
-
-            }
-        });*/
 
     }
 
