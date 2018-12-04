@@ -1,5 +1,6 @@
 package tv.merabihar.app.merabihar.UI.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -71,6 +72,7 @@ public class SplashScreen extends AppCompatActivity {
                         android. Manifest.permission.NFC,
                         android.Manifest.permission.READ_EXTERNAL_STORAGE,
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.GET_ACCOUNTS,
                 };
 
 

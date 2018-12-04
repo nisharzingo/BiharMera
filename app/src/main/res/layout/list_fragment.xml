@@ -15,7 +15,7 @@
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/avatar"
-            android:visibility="gone"
+
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="#1000"

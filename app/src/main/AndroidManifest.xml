@@ -211,12 +211,12 @@
             android:exported="true"/>
         <activity android:name=".YoutubeUpload.PlayActivity"
             android:label="@string/title_activity_play"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".YoutubeUpload.PlayActivity"/>
+            android:theme="@style/AppThemeY"
+            android:parentActivityName=".YoutubeUpload.YoutubeVideoUploadScreen"/>
         <activity android:name=".YoutubeUpload.ReviewActivity"
             android:label="@string/title_activity_review"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".YoutubeUpload.PlayActivity"></activity>
+            android:theme="@style/AppThemeY"
+            android:parentActivityName=".YoutubeUpload.YoutubeVideoUploadScreen"></activity>
     </application>
 
 </manifest>

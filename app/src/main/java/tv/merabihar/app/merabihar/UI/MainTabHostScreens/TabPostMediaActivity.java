@@ -94,7 +94,7 @@ public class TabPostMediaActivity extends AppCompatActivity {
 
                     if(PreferenceHandler.getInstance(TabPostMediaActivity.this).getUserId()!=0){
 
-                        Intent post = new Intent(TabPostMediaActivity.this, PostVideoYoutubeContent.class);
+                        Intent post = new Intent(TabPostMediaActivity.this, YoutubeVideoUploadScreen.class);
                         startActivity(post);
 
                     }else{

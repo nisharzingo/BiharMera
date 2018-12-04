@@ -8,6 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+        <!-- Customize your theme here. -->
+
+    </style>
+
+    <style name="AppThemeY" parent="AppBaseTheme">
+        <!-- Customize your theme here. -->
+
+    </style>
+
     <style name="AppThemes" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>

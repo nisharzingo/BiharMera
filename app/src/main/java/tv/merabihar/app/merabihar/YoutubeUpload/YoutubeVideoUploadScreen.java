@@ -107,13 +107,14 @@ public class YoutubeVideoUploadScreen extends Activity implements
                 // set exponential backoff policy
                 credential.setBackOff(new ExponentialBackOff());
 
-              /*  if (savedInstanceState != null) {
-                    mChosenAccountName = "shashank8157blr@gmail.com";
-                }*//* else {
+                if (savedInstanceState != null) {
+                    //mChosenAccountName = "shashank8157blr@gmail.com";
+                    mChosenAccountName = savedInstanceState.getString(ACCOUNT_KEY);
+                } else {
                     loadAccount();
-                }*/
-                mChosenAccountName = "shashank8157blr@gmail.com";
-                credential.setSelectedAccountName("shashank8157blr@gmail.com");
+                }
+                mChosenAccountName = "mednizar.s@gmail.com";
+                credential.setSelectedAccountName(mChosenAccountName);
 
                 mUploadsListFragment = (UploadsListFragment) getFragmentManager()
                         .findFragmentById(R.id.list_fragment);
@@ -280,6 +281,8 @@ public class YoutubeVideoUploadScreen extends Activity implements
                         Intent intent = new Intent(this, ReviewActivity.class);
                         intent.setData(mFileURI);
                         startActivity(intent);
+                    }else{
+                        Toast.makeText(this, "No file", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -312,7 +315,8 @@ public class YoutubeVideoUploadScreen extends Activity implements
                     String accountName = data.getExtras().getString(
                             AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
-                        mChosenAccountName = "shashank8157blr@gmail.com";
+                       mChosenAccountName = "mednizar.s@gmail.com";
+                        //mChosenAccountName = accountName;
                         credential.setSelectedAccountName(accountName);
                         //saveAccount();
                     }
@@ -474,7 +478,8 @@ public class YoutubeVideoUploadScreen extends Activity implements
     @Override
     public void onBackPressed() {
         // if (mDirectFragment.popPlayerFromBackStack()) {
-        // super.onBackPressed();
+        super.onBackPressed();
+        YoutubeVideoUploadScreen.this.finish();
         // }
     }
 
@@ -621,4 +626,6 @@ public class YoutubeVideoUploadScreen extends Activity implements
             }
         }
     }
+
+
 }

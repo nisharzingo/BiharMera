@@ -80,14 +80,14 @@ public class ReviewActivity extends Activity {
     }
 
     public void uploadVideo(View view) {
-        if (mChosenAccountName == null) {
+        /*if (mChosenAccountName == null) {
             return;
-        }
+        }*/
         // if a video is picked or recorded.
         if (mFileUri != null) {
             Intent uploadIntent = new Intent(this, UploadService.class);
             uploadIntent.setData(mFileUri);
-            uploadIntent.putExtra(YoutubeVideoUploadScreen.ACCOUNT_KEY, mChosenAccountName);
+            uploadIntent.putExtra(YoutubeVideoUploadScreen.ACCOUNT_KEY, "mednizar.s@gmail.com");
             startService(uploadIntent);
             Toast.makeText(this, R.string.youtube_upload_started,
                     Toast.LENGTH_LONG).show();

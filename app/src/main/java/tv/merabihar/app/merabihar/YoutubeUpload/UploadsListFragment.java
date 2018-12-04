@@ -89,8 +89,8 @@ public class UploadsListFragment extends Fragment implements GoogleApiClient.Con
     public void setProfileInfo() {
         //not sure if mGoogleapiClient.isConnect is appropriate...
         if (!mGoogleApiClient.isConnected() || Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) == null) {
-            /*((ImageView) getView().findViewById(R.id.avatar))
-                    .setImageDrawable(null);*/
+            ((ImageView) getView().findViewById(R.id.avatar))
+                    .setImageDrawable(null);
             ((TextView) getView().findViewById(R.id.display_name))
                     .setText(R.string.not_signed_in);
         } else {

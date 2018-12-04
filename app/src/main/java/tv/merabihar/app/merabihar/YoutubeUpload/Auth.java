@@ -9,7 +9,7 @@ import com.google.api.services.youtube.YouTubeScopes;
 
 public class Auth {
 
-    public static final String KEY = "AIzaSyA5lz66RDcgiax1Ws65Cdg1M7ApDMXPU8w";
+    public static final String KEY = "AIzaSyCZ1vesylXLugt0S60rVo7r3w0XuXpkZi4";
 
     public static final String[] SCOPES = {Scopes.PROFILE, YouTubeScopes.YOUTUBE};
 }

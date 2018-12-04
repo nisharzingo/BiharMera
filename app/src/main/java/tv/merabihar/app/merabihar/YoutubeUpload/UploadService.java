@@ -85,7 +85,8 @@ public class UploadService extends IntentService {
 
         credential =
                 GoogleAccountCredential.usingOAuth2(getApplicationContext(), Lists.newArrayList(Auth.SCOPES));
-        credential.setSelectedAccountName(chosenAccountName);
+        //credential.setSelectedAccountName(chosenAccountName);
+        credential.setSelectedAccountName("mednizar.s@gmail.com");
         credential.setBackOff(new ExponentialBackOff());
 
         String appName = getResources().getString(R.string.app_name);
